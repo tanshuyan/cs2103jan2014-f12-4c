@@ -1,4 +1,5 @@
 //DateTime.h
+//v 1.2
 
 #ifndef DATETIME_H
 #define DATETIME_H
@@ -8,6 +9,8 @@
 #include <string>
 #include <QRegExp>
 
+//#include "CalDate.h"
+//#include "CalTime.h"
 
 class DateTime{
 private:
@@ -24,7 +27,8 @@ public:
 	bool setDate(int day, int month, int year);
 	//returns false if time is invalid
 	bool setTime(int hour, int min);
-
+	bool setDate(QDate);
+	bool setTime(QTime);
 
 	//further setDate and setTime functionality:
 	//can convert "noon", "midnight", "today", "sunday"

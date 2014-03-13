@@ -1,4 +1,5 @@
 //DateTime.cpp
+//v 1.2
 #include "DateTime.h"
 
 DateTime::DateTime(){
@@ -21,6 +22,14 @@ bool DateTime::setDate(int day, int month, int year){
 
 bool DateTime::setTime(int hour, int min=0){
 	return _time.setHMS(hour, min, 0);
+}
+
+bool DateTime::setDate(QDate date){
+	return _date.setDate(date.year(), date.month(), date.day());
+}
+
+bool DateTime::setTime(QTime time){
+	return _time.setHMS(time.hour(), time.minute(), 0);
 }
 
 QDate DateTime::getDate(){
@@ -79,19 +88,19 @@ std::string DateTime::dataToString(){
 void DateTime::dataFromString(std::string data){
 	QRegExp rxDate("(\\d{2})(/)(\\d{2})(/)(\\d{4})(\\s)");
 	QString dataStr(data.c_str());
-	QString date;
-	QString time;
+	QString dateString;
+	QString timeString;
 
 	int pos = rxDate.indexIn(dataStr);
 	int len = rxDate.matchedLength();
 	if(pos != -1){
-		date = dataStr.mid(pos, len);
+		dateString = dataStr.mid(pos, len);
 		dataStr.remove(pos, len);
 	}
 
-	_date.fromString(date, "dd/MM/yyyy ");
-	time = dataStr;
-	_time.fromString(date, "hh:mm");
+	_date = QDate::fromString(dateString, "dd/MM/yyyy ");
+	timeString = dataStr;
+	_time = QTime::fromString(timeString, "hh:mm");
 
 	return;
 }
