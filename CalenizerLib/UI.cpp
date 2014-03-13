@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 #include "UI.h"
 #include "task.h"
 #include "DateTime.h"
@@ -21,13 +22,15 @@ const std::string UI::CMD_DISPLAY = "display";
 const std::string UI::CMD_EXIT = "exit";
 const std::string UI::CMD_SEARCH = "search";
 const std::string UI::CMD_COMPLETE = "complete";
-const std::string UI::CMD_USERPROMPT= "command: ";
+const std::string UI::CMD_USERPROMPT= "Enter command: ";
 
 UI::UI(){
 
 }
 
 void UI::ProgramLaunch() {
+	std::cout << "Welcome to Calenizer!" << std::endl;
+	_cmdOperation.getIncompleteTasks();
 	std::cout << CMD_USERPROMPT;
 	std::string command;
 	std::cin >> command;
@@ -36,6 +39,7 @@ void UI::ProgramLaunch() {
 		std::cout << CMD_USERPROMPT;
 		std::cin >> command;
 	}
+	exit(0);
 }
 
 UI::COMMAND_TYPE UI::determineCommand(std::string command) {
@@ -88,6 +92,7 @@ void UI::executeCommand(std::string command) {
 		std::getline(std::cin, dummy);
 		std::getline(std::cin, taskInfo);
 		_cmdOperation.addFloatTask(taskInfo);
+		_cmdOperation.getIncompleteTasks();
 		break;
 	}
 
@@ -95,6 +100,7 @@ void UI::executeCommand(std::string command) {
 		std::getline(std::cin, dummy);
 		std::getline(std::cin, taskInfo);
 		_cmdOperation.addDeadlineTask(taskInfo,deadline);
+		_cmdOperation.getIncompleteTasks();
 		break;
 	}
 
@@ -102,6 +108,7 @@ void UI::executeCommand(std::string command) {
 		std::getline(std::cin, dummy);
 		std::getline(std::cin, taskInfo);
 		_cmdOperation.addTimedTask(taskInfo, startTime, deadline);
+		_cmdOperation.getIncompleteTasks();
 		break;
 	}
 
@@ -111,10 +118,10 @@ void UI::executeCommand(std::string command) {
 		std::cin >> index;
 		std::getline(std::cin, dummy);
 		std::getline(std::cin, taskInfo);
-		std::getline(std::cin, dummy);
 		std::getline(std::cin, date1);
 		dead.dataFromString(date1);
 		_cmdOperation.editTask(index, taskInfo, dead);
+		_cmdOperation.getIncompleteTasks();
 		break;
 				}
 
@@ -126,13 +133,12 @@ void UI::executeCommand(std::string command) {
 		std::cin >> index;
 		std::getline(std::cin, dummy);
 		std::getline(std::cin, taskInfo);
-		std::getline(std::cin, dummy);
 		std::getline(std::cin, stark);
-		std::getline(std::cin, dummy);
 		std::getline(std::cin, date1);
 		dead.dataFromString(date1);
 		start.dataFromString(stark);
 		_cmdOperation.editTask(index, taskInfo, start, dead);
+		_cmdOperation.getIncompleteTasks();
 		break;
 				}
 
@@ -140,6 +146,7 @@ void UI::executeCommand(std::string command) {
 		int index;
 		std::cin>> index;
 		_cmdOperation.deleteTask(index);
+		_cmdOperation.getIncompleteTasks();
 		break;
 	}
 
@@ -148,6 +155,7 @@ void UI::executeCommand(std::string command) {
 		std::getline(std::cin, dummy);
 		std::getline(std::cin, taskInfo);
 		_cmdOperation.editTask(index, taskInfo);
+		_cmdOperation.getIncompleteTasks();
 		break;
 			   }
 	
@@ -177,16 +185,19 @@ void UI::executeCommand(std::string command) {
 		int index;
 		std::cin>> index;
 		_cmdOperation.toggleComplete(index);
+		_cmdOperation.getIncompleteTasks();
 		break;
 				   }
 
 	case UNDO: {
 		_cmdOperation.undo();		
+		_cmdOperation.getIncompleteTasks();
 		break;
 			   }
 
 	case REDO: {
 		_cmdOperation.redo();
+		_cmdOperation.getIncompleteTasks();
 		break;
 			   }
 
