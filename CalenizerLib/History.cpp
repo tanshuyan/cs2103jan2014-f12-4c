@@ -13,7 +13,12 @@ void History::saveHistory(std::vector<Task*> taskList){
 
 void History::clearRedo(){
 	while (!_nextHistorys.empty()){
+		_currHistory = _nextHistorys.top();
+		for(unsigned int i = 0; i < _currHistory.size(); i++) {
+			delete _currHistory[i];
+		}
 		_nextHistorys.pop();
+
 	}
 }
 

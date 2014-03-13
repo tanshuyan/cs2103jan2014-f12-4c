@@ -16,17 +16,28 @@ const std::string Logic::TASK_FLOAT = "FLOAT";
 Logic::Logic(){
 	loadFileContent();
 }
+
+Logic::~Logic() {
+	for(unsigned int i = 0; i < _taskList.size(); i++) {
+	delete _taskList[i];
+	}
+}
 	
 void Logic::loadFileContent() {
-	_taskList = _userStorage.loadStorage();
+	_taskList.clear();
+	_userStorage.loadFile(_taskList);
 }
 
+void Logic::generateBackUp() {
+	_History.saveHistory(_taskList);
+	loadFileContent();
+}
 
 void Logic::addFloatTask(std::string taskDesc){
 	TaskFloat* newFloatPtr = new TaskFloat;
 	newFloatPtr->setTask(TASK_FLOAT, false, taskDesc);
 	_taskList.push_back(newFloatPtr);
-	_userStorage.writeStorage(_taskList);
+	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
 	return;
 }
@@ -35,7 +46,7 @@ void Logic::addDeadlineTask(std::string taskDesc, DateTime deadline) {
 	TaskDeadline* newDeadlinePtr = new TaskDeadline;
 	newDeadlinePtr->setTask(TASK_DEADLINE, false, taskDesc, deadline);
 	_taskList.push_back(newDeadlinePtr);
-	_userStorage.writeStorage(_taskList);
+	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
 	return;
 }
@@ -44,7 +55,7 @@ void Logic::addTimedTask(std::string taskDesc, DateTime startDateTime, DateTime 
 	TaskTimed* newTimedPtr = new TaskTimed;
 	newTimedPtr->setTask(TASK_TIMED, false, taskDesc, startDateTime, endDateTime);
 	_taskList.push_back(newTimedPtr);
-	_userStorage.writeStorage(_taskList);
+	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
 	return;
 }
@@ -52,9 +63,8 @@ void Logic::addTimedTask(std::string taskDesc, DateTime startDateTime, DateTime 
 void Logic::deleteTask(int index){
 	std::vector<Task*>::iterator taskToDelete = indexToIterator(index);
 	delete *taskToDelete;
-	_taskList.erase(taskToDelete);
-		
-	_userStorage.writeStorage(_taskList);
+	_taskList.erase(taskToDelete);		
+	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
 	return;
 }
@@ -62,16 +72,17 @@ void Logic::deleteTask(int index){
 void Logic::editTask(int index, std::string taskDesc) {
 	std::vector<Task*>::iterator taskToEdit = indexToIterator(index);
 	(*taskToEdit)->setTaskDesc(taskDesc);
-	_userStorage.writeStorage(_taskList);
+	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
 	return;
 }
 
 void Logic::editTask(int index, std::string taskDesc, DateTime deadline) {
+	
 	std::vector<Task*>::iterator taskToEdit = indexToIterator(index);
 	(*taskToEdit)->setTaskDesc(taskDesc);
 	(*taskToEdit)->setDeadline(deadline);
-	_userStorage.writeStorage(_taskList);
+	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
 	return;
 }
@@ -81,7 +92,7 @@ void Logic::editTask(int index, std::string taskDesc, DateTime startDateTime, Da
 	(*taskToEdit)->setTaskDesc(taskDesc);
 	(*taskToEdit)->setStartDate(startDateTime);
 	(*taskToEdit)->setDeadline(endDateTime);
-	_userStorage.writeStorage(_taskList);
+	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
 	return;
 }
@@ -95,6 +106,7 @@ void Logic::toggleComplete(int index){
 	else{
 		(*taskToToggle)->setCompleteStatus(true);
 	}
+	_userStorage.writeFile(_taskList);
 }
 
 void Logic::getIncompleteTasks(){
