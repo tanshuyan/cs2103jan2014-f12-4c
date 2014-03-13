@@ -31,8 +31,8 @@ public:
 	TaskStorage(std::string);
 	~TaskStorage();
 
-	void writeFile();
-	void loadFile();
+	void writeFile(std::vector<Task*>);
+	void loadFile(std::vector<Task*>&);
 
 	std::vector<Task*> loadStorage();
 	void writeStorage(std::vector<Task*>);
