@@ -4,6 +4,7 @@
 #include <sstream>
 #include <iostream>
 #include "taskFloat.h"
+#include <iomanip>
 
 const std::string TaskFloat::STATUS_TRUE = "true";
 const std::string TaskFloat::STATUS_FALSE = "false";
@@ -20,7 +21,6 @@ TaskFloat::~TaskFloat(){
 }
 
 TaskFloat::TaskFloat() {
-	_completeStatus = false;
 }
 
 void TaskFloat::setTask(std::string taskType, bool status, std::string taskDesc) {
@@ -34,11 +34,7 @@ void TaskFloat::setTaskType(std::string taskType) {
 }
 
 void TaskFloat::setCompleteStatus(bool status) {
-	if(status == true) {
-		_completeStatus = true;
-	} else {
-		_completeStatus = false;
-	}
+	_completeStatus = status;
 }
 
 void TaskFloat::setTaskDesc(std::string taskDesc) {
@@ -92,6 +88,6 @@ void TaskFloat::stringToTask(std::string content) {
 	std::getline(input, taskType);
 	std::getline(input, taskDesc);
 	input >> status;
-
+	//std::cout << taskType << taskDesc << std::boolalpha << status;
 	setTask(taskType, status, taskDesc);
 }

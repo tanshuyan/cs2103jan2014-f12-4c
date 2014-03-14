@@ -5,13 +5,14 @@
 #include <fstream>
 #include "taskStorage.h"
 
-const std::string TaskStorage:: _fileName = "CalenizerStorage.txt";	
+const std::string TaskStorage:: _defaultFileName = "CalenizerStorage.txt";	
 const std::string TaskStorage::DELIMITER_SPACE = " ";
 const std::string TaskStorage::TASK_DEADLINE = "DEADLINE";
 const std::string TaskStorage::TASK_TIMED = "TIMED";
 const std::string TaskStorage::TASK_FLOAT = "FLOAT";
 
 TaskStorage::TaskStorage() {
+	_fileName = _defaultFileName;
 }
 
 TaskStorage::~TaskStorage() {
@@ -29,7 +30,7 @@ void TaskStorage::writeFile(std::vector<Task*> taskList){
 }
 
 void TaskStorage::loadFile(std::vector<Task*>& taskList) {
-	_fileInput.open(_fileName.c_str() /*std::fstream::app*/);
+	_fileInput.open(_fileName.c_str(), std::fstream::_Noreplace);
 
 	std::string taskType;
 	while(std::getline(_fileInput,taskType)) {
@@ -45,6 +46,7 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 			std::getline(_fileInput,content);
 			taskContent += content + "\n";
 			}
+
 			TaskDeadline *newTask = new TaskDeadline;
 			newTask->stringToTask(taskContent);
 			taskList.push_back(newTask);
@@ -56,9 +58,9 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 			std::getline(_fileInput,content);
 			taskContent  += content + "\n";
 			}
+
 			TaskFloat *newTaskFloat = new TaskFloat;
 			newTaskFloat->stringToTask(taskContent);
-		
 			taskList.push_back(newTaskFloat);
 		} else if (taskType == TASK_TIMED){
 			std::string taskContent;
@@ -68,13 +70,13 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 			std::getline(_fileInput,content);
 			taskContent += content + "\n";
 			}
+
 			TaskTimed *newTaskTimed = new TaskTimed;
 			newTaskTimed->stringToTask(taskContent);
 			taskList.push_back(newTaskTimed);
 		}
 	}
-
-	_fileOutput.close();
+	_fileInput.close();
 }
 std::vector<Task*> TaskStorage::loadStorage(){
 	//loadFile();

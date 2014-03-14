@@ -79,12 +79,10 @@ void UI::executeCommand(std::string command) {
 	int index;
 	std::string taskInfo;
 	std::string dummy;
-	std::string date = "20/07/1991 12:30";
+	std::string date;
 	DateTime deadline;
-	deadline.dataFromString(date);
-	std::string date2 = "21/03/1991 9:30";
+	std::string date2;
 	DateTime startTime;
-	startTime.dataFromString(date2) ;
 
 	switch(determineCommand(command)) {
 
@@ -99,6 +97,8 @@ void UI::executeCommand(std::string command) {
 	case ADDD: {
 		std::getline(std::cin, dummy);
 		std::getline(std::cin, taskInfo);
+		std::getline(std::cin, date);
+		deadline.dataFromString(date);
 		_cmdOperation.addDeadlineTask(taskInfo,deadline);
 		_cmdOperation.getIncompleteTasks();
 		break;
@@ -107,6 +107,10 @@ void UI::executeCommand(std::string command) {
 	case ADDT: {
 		std::getline(std::cin, dummy);
 		std::getline(std::cin, taskInfo);
+		std::getline(std::cin, date);
+		startTime.dataFromString(date);
+		std::getline(std::cin, date2);
+		deadline.dataFromString(date2);
 		_cmdOperation.addTimedTask(taskInfo, startTime, deadline);
 		_cmdOperation.getIncompleteTasks();
 		break;
