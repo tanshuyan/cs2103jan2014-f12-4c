@@ -162,7 +162,7 @@ void TaskDeadline::stringToTask(std::string content) {
 	std::getline(input, taskDesc);
 	std::getline(input, dateTime);
 	input >> statusString;
-	if (statusString == "true"){
+	if (statusString == STATUS_TRUE){
 		status = true;
 	}
 	else{

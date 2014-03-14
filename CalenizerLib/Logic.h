@@ -36,10 +36,9 @@ public:
 	Logic();
 	~Logic();
 
-	void generateBackUp();
-	void addFloatTask(std::string taskDesc);
-	void addDeadlineTask(std::string taskDesc, DateTime);
-	void addTimedTask(std::string taskDesc, DateTime, DateTime);
+	void addTask(std::string taskDesc);
+	void addTask(std::string taskDesc, DateTime);
+	void addTask(std::string taskDesc, DateTime, DateTime);
 
 	void deleteTask(int index);
 	void editTask(int index, std::string taskDesc);

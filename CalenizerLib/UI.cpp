@@ -25,16 +25,9 @@ const std::string UI::CMD_COMPLETE = "complete";
 const std::string UI::CMD_USERPROMPT= "Enter command: ";
 
 UI::UI(){
-
 }
 
 void UI::ProgramLaunch() {
-	bool status;
-	std::string temp = "false";
-	std::istringstream in(temp);
-	in >> status;
-	std::cout << std::boolalpha << status << std::endl;
-
 	std::cout << "Welcome to Calenizer!" << std::endl;
 	_cmdOperation.getIncompleteTasks();
 	std::cout << CMD_USERPROMPT;
@@ -95,7 +88,7 @@ void UI::executeCommand(std::string command) {
 	case ADD: {	
 		std::getline(std::cin, dummy);
 		std::getline(std::cin, taskInfo);
-		_cmdOperation.addFloatTask(taskInfo);
+		_cmdOperation.addTask(taskInfo);
 		_cmdOperation.getIncompleteTasks();
 		break;
 	}
@@ -105,7 +98,7 @@ void UI::executeCommand(std::string command) {
 		std::getline(std::cin, taskInfo);
 		std::getline(std::cin, date);
 		deadline.dataFromString(date);
-		_cmdOperation.addDeadlineTask(taskInfo,deadline);
+		_cmdOperation.addTask(taskInfo,deadline);
 		_cmdOperation.getIncompleteTasks();
 		break;
 	}
@@ -117,7 +110,7 @@ void UI::executeCommand(std::string command) {
 		startTime.dataFromString(date);
 		std::getline(std::cin, date2);
 		deadline.dataFromString(date2);
-		_cmdOperation.addTimedTask(taskInfo, startTime, deadline);
+		_cmdOperation.addTask(taskInfo, startTime, deadline);
 		_cmdOperation.getIncompleteTasks();
 		break;
 	}
