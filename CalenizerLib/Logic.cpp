@@ -26,14 +26,10 @@ Logic::~Logic() {
 void Logic::loadFileContent() {
 	_taskList.clear();
 	_userStorage.loadFile(_taskList);
-}
-
-void Logic::generateBackUp() {
 	_History.saveHistory(_taskList);
-	loadFileContent();
 }
 
-void Logic::addFloatTask(std::string taskDesc){
+void Logic::addTask(std::string taskDesc){
 	TaskFloat* newFloatPtr = new TaskFloat;
 	newFloatPtr->setTask(TASK_FLOAT, false, taskDesc);
 	_taskList.push_back(newFloatPtr);
@@ -42,7 +38,7 @@ void Logic::addFloatTask(std::string taskDesc){
 	return;
 }
 	
-void Logic::addDeadlineTask(std::string taskDesc, DateTime deadline) {
+void Logic::addTask(std::string taskDesc, DateTime deadline) {
 	TaskDeadline* newDeadlinePtr = new TaskDeadline;
 	newDeadlinePtr->setTask(TASK_DEADLINE, false, taskDesc, deadline);
 	_taskList.push_back(newDeadlinePtr);
@@ -51,7 +47,7 @@ void Logic::addDeadlineTask(std::string taskDesc, DateTime deadline) {
 	return;
 }
 
-void Logic::addTimedTask(std::string taskDesc, DateTime startDateTime, DateTime endDateTime) {
+void Logic::addTask(std::string taskDesc, DateTime startDateTime, DateTime endDateTime) {
 	TaskTimed* newTimedPtr = new TaskTimed;
 	newTimedPtr->setTask(TASK_TIMED, false, taskDesc, startDateTime, endDateTime);
 	_taskList.push_back(newTimedPtr);
