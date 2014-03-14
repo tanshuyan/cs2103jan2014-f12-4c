@@ -95,6 +95,8 @@ void Logic::toggleComplete(int index){
 	else{
 		(*taskToToggle)->setCompleteStatus(true);
 	}
+	_userStorage.writeStorage(_taskList);
+	_History.saveHistory(_taskList);
 }
 
 void Logic::getIncompleteTasks(){

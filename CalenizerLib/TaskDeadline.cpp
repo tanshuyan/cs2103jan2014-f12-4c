@@ -155,12 +155,19 @@ void TaskDeadline::stringToTask(std::string content) {
 	std::string taskDesc;
 	std::string dateTime;
 	DateTime deadline;
+	std::string statusString;
 	bool status;
 	
 	std::getline(input, taskType);
 	std::getline(input, taskDesc);
 	std::getline(input, dateTime);
-	input >> status;
+	input >> statusString;
+	if (statusString == "true"){
+		status = true;
+	}
+	else{
+		status = false;
+	}
 	deadline.dataFromString(dateTime);
 
 	setTask(taskType, status, taskDesc, deadline);

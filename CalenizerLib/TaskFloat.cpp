@@ -87,11 +87,18 @@ void TaskFloat::stringToTask(std::string content) {
 	std::string taskType;
 	std::string dump;
 	std::string taskDesc;
+	std::string statusString; 
 	bool status;
 	
 	std::getline(input, taskType);
 	std::getline(input, taskDesc);
-	input >> status;
+	input >> statusString;
+	if (statusString == "true"){
+		status = true;
+	}
+	else{
+		status = false;
+	}
 
 	setTask(taskType, status, taskDesc);
 }
