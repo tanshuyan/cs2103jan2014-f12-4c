@@ -15,8 +15,8 @@
 
 class TaskStorage { 
 private:
-    static const std::string _fileName;		
-
+    std::string _fileName;		
+	static const std::string _defaultFileName;
 	std::vector<Task *> _taskList;
 
 	std::ifstream _fileInput;
@@ -31,8 +31,8 @@ public:
 	TaskStorage(std::string);
 	~TaskStorage();
 
-	void writeFile();
-	void loadFile();
+	void writeFile(std::vector<Task*>);
+	void loadFile(std::vector<Task*>&);
 
 	std::vector<Task*> loadStorage();
 	void writeStorage(std::vector<Task*>);
