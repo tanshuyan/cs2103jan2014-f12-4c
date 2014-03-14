@@ -6,7 +6,7 @@
 #include "UI.h"
 #include "task.h"
 #include "DateTime.h"
-
+#include <iomanip>
 
 
 const std::string UI::CMD_UNDO = "undo";
@@ -29,6 +29,12 @@ UI::UI(){
 }
 
 void UI::ProgramLaunch() {
+	bool status;
+	std::string temp = "false";
+	std::istringstream in(temp);
+	in >> status;
+	std::cout << std::boolalpha << status << std::endl;
+
 	std::cout << "Welcome to Calenizer!" << std::endl;
 	_cmdOperation.getIncompleteTasks();
 	std::cout << CMD_USERPROMPT;
@@ -206,7 +212,6 @@ void UI::executeCommand(std::string command) {
 			   }
 
 	case EXIT: {
-		exit(0);
 		break;
 			   }
 
