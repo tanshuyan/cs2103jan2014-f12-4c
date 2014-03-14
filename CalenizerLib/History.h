@@ -7,12 +7,20 @@
 #include <vector>
 #include <stack>
 #include "Task.h"
+#include "TaskDeadline.h"
+#include "TaskFloat.h"
+#include "TaskTimed.h"
 
 class History {
 private:
 	std::vector<Task*> _currHistory;
+	std::vector<Task*> _deleteTaskList;
 	std::stack<std::vector<Task*>> _prevHistorys;
 	std::stack<std::vector<Task*>> _nextHistorys;
+
+	static const std::string TASK_TIMED;
+	static const std::string TASK_DEADLINE;
+	static const std::string TASK_FLOAT;
 
 public:
 	History();
