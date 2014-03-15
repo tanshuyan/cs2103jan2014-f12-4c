@@ -65,6 +65,51 @@ void Logic::deleteTask(int index){
 	return;
 }
 
+//TODO: the function doesnt support the ability to convert deadline to timed yet
+void Logic::editTask(int index, DateTime dateTime) {
+	std::vector<Task*>::iterator taskToEdit = indexToIterator(index);
+	if((*taskToEdit)->getTaskType() == TASK_FLOAT) { // if task is a float, convert it into a deadline task
+		std::string taskContent = (*taskToEdit)->taskToString();
+		TaskDeadline* newDeadlinePtr = new TaskDeadline;
+		newDeadlinePtr->stringToTask(taskContent);
+		newDeadlinePtr->setTaskType(TASK_DEADLINE);
+		newDeadlinePtr->setDeadline(dateTime);
+		delete *taskToEdit; // delete the old float task
+		_taskList.erase(taskToEdit); // delete the pointer to task
+		_taskList.push_back(newDeadlinePtr);
+	} else {
+		(*taskToEdit)->setDeadline(dateTime);
+	}
+	
+	_userStorage.writeFile(_taskList);
+	_History.saveHistory(_taskList);
+	return;
+}
+
+//TODO: this function doesnt support the checking of deadline time with the timed input
+void Logic::editTask(int index, DateTime startDateTime, DateTime endDateTime) {
+	std::vector<Task*>::iterator taskToEdit = indexToIterator(index);
+
+	if(((*taskToEdit)->getTaskType() == TASK_FLOAT) || ((*taskToEdit)->getTaskType() == TASK_DEADLINE)) { // if task is a float or deadline, convert it into a timed task
+		std::string taskContent = (*taskToEdit)->taskToString();
+		TaskTimed* newTimedPtr = new TaskTimed;
+		newTimedPtr->stringToTask(taskContent);
+		newTimedPtr->setTaskType(TASK_TIMED);
+		newTimedPtr->setStartDate(startDateTime);
+		newTimedPtr->setDeadline(endDateTime);
+		delete *taskToEdit; // delete the old float/deadline task
+		_taskList.erase(taskToEdit); // delete the pointer to task
+		_taskList.push_back(newTimedPtr);
+	} else {
+		(*taskToEdit)->setStartDate(startDateTime);
+		(*taskToEdit)->setDeadline(endDateTime);
+	}
+	
+	_userStorage.writeFile(_taskList);
+	_History.saveHistory(_taskList);
+	return;
+}
+
 void Logic::editTask(int index, std::string taskDesc) {
 	std::vector<Task*>::iterator taskToEdit = indexToIterator(index);
 	(*taskToEdit)->setTaskDesc(taskDesc);

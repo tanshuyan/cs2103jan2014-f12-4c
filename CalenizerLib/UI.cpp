@@ -15,6 +15,8 @@ const std::string UI::CMD_ADD = "add";
 const std::string UI::CMD_ADDD = "addd";
 const std::string UI::CMD_ADDT = "addt";
 const std::string UI::CMD_EDIT = "edit";
+const std::string UI::CMD_EDIT1 = "edit1";
+const std::string UI::CMD_EDIT2 = "edit2";
 const std::string UI::CMD_EDITD = "editd";
 const std::string UI::CMD_EDITT = "editt";
 const std::string UI::CMD_DELETE = "delete";
@@ -68,6 +70,10 @@ if(command == CMD_ADD) {
 		return COMMAND_TYPE::EDITD;
 	} else if ((command == CMD_EDITT)) {
 		return COMMAND_TYPE::EDITT;
+	} else if ((command == CMD_EDIT1)) {
+		return COMMAND_TYPE::EDIT1;
+	} else if ((command == CMD_EDIT2)) {
+		return COMMAND_TYPE::EDIT2;
 	} else {
 		return COMMAND_TYPE::INVALID;
 	}
@@ -141,6 +147,34 @@ void UI::executeCommand(std::string command) {
 		dead.dataFromString(date1);
 		start.dataFromString(stark);
 		_cmdOperation.editTask(index, taskInfo, start, dead);
+		_cmdOperation.getIncompleteTasks();
+		break;
+				}
+
+	case EDIT1: {
+		std::string date1;
+		DateTime dead;
+		std::cin >> index;
+		std::getline(std::cin, dummy);
+		std::getline(std::cin, date1);
+		dead.dataFromString(date1);
+		_cmdOperation.editTask(index, dead);
+		_cmdOperation.getIncompleteTasks();
+		break;
+				}
+
+	case EDIT2: {
+		std::string date1;
+		std::string stark;
+		DateTime dead;
+		DateTime start;
+		std::cin >> index;
+		std::getline(std::cin, dummy);
+		std::getline(std::cin, stark);
+		std::getline(std::cin, date1);
+		dead.dataFromString(date1);
+		start.dataFromString(stark);
+		_cmdOperation.editTask(index, start, dead);
 		_cmdOperation.getIncompleteTasks();
 		break;
 				}

@@ -17,9 +17,11 @@ private:
 	
 
 	enum COMMAND_TYPE {
-		ADD, ADDD, ADDT, DELETE, SEARCH, SORT, EXIT, INVALID, EDIT, EDITD, EDITT, COMPLETE, DISPLAY, UNDO, REDO
+		ADD, ADDD, ADDT, DELETE, SEARCH, SORT, EXIT, INVALID, EDIT, EDITD, EDITT, EDIT1, EDIT2, COMPLETE, DISPLAY, UNDO, REDO
 	};
 
+	static const std::string CMD_EDIT1;
+	static const std::string CMD_EDIT2;
 	static const std::string CMD_ADD;
 	static const std::string CMD_EDIT;
 	static const std::string CMD_DELETE;
