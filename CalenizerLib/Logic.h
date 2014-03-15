@@ -41,6 +41,8 @@ public:
 	void addTask(std::string taskDesc, DateTime, DateTime);
 
 	void deleteTask(int index);
+	void editTask(int index, DateTime);
+	void editTask(int index, DateTime, DateTime);
 	void editTask(int index, std::string taskDesc);
 	void editTask(int index, std::string taskDesc, DateTime);
 	void editTask(int index, std::string taskDesc, DateTime, DateTime);
