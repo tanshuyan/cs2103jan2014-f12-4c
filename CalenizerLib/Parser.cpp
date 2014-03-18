@@ -1,11 +1,8 @@
-#include "Parser.h"
-//#include "Logic.h"
+//Parser.h
+//IN PROGRESS
+//v 1.2
 
-#include <algorithm>
-#include <string>
-#include <sstream>
-#include <vector>
-#include <algorithm>
+#include "Parser.h"
 
 const std::string Parser::MSG_INVALID = "Invalid command.\n";
 
@@ -27,7 +24,7 @@ const std::string Parser::MSG_REDO = "redo last undo";
 
 const std::string Parser::MSG_ADD = "task has been added";
 
-const std::string Parser::MSG_EDIT = "task has been added";
+const std::string Parser::MSG_EDIT = "task has been edited";
 
 const std::string Parser::CMD_ADD = "add";
 const std::string Parser::CMD_EDIT = "edit";
@@ -43,18 +40,14 @@ const std::string Parser::KEYWORD_COMPLETE = "complete";
 const std::string Parser::KEYWORD_INCOMPLETE = "incomplete";
 const std::string Parser::KEYWORD_TODAY = "today";
 
-// for timed tasks
-const std::string Parser::KEYWORD_FROM = "from";
-const std::string Parser::KEYWORD_TO = "to";
+QRegExp Parser::RX_FROM_UNTIL("\\b(starting from|start|from|begin|beginning)\\b(.+)\\b(end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
+QRegExp Parser::RX_ON_AT_BY("\\b(on|at|by)\\b(.+)", Qt::CaseInsensitive);
+//should I implement these? hmmm
+QRegExp Parser::RX_FROM("\\b(starting from|start|from|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
+QRegExp Parser::RX_UNTIL("\\b(end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
+//this exists only because Jim might be a massive dick
+QRegExp Parser::RX_UNTIL_FROM("\\b(end|until|till|til|to)\\b(.+)\\b(starting from|start|from|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
 
-// for deadline tasks
-const std::string Parser::KEYWORD_ON = "on";
-const std::string Parser::KEYWORD_BY = "by";
-const std::string Parser::KEYWORD_AT = "at";
-
-// for edit
-const std::string Parser::KEYWORD_START = "start";
-const std::string Parser::KEYWORD_END = "end";
 
 Parser::Parser() {
 }
@@ -93,61 +86,50 @@ std::string Parser::executeUserInput(std::string userInput) {
 	std::getline(input, dummy, ' '); // trim whitespace 
 	std::string commandStatus;
 	switch(getCommand(command)) {
-
 	case ADD: {
 		commandStatus = addCMD(input.str());		
 		break;
 	}
-
 	case DELETE: {
 		commandStatus = deleteCMD(input.str());
 		break;
 	}
-
 	case EDIT: {
 		commandStatus = editCMD(input.str());
 		break;
-			   }
-	
+	}	
 	case SEARCH: {
 		commandStatus = searchCMD(input.str());
 		break;
-				 }
-
+	}
 	case DISPLAY: {
 		commandStatus = displayCMD(input.str());
 		break;
-				 }
-
+	}
 	case COMPLETE: {
 		commandStatus = completeCMD(input.str());
 		break;
-				   }
-
+	}
 	case UNDO: {
 		commandStatus = undoCMD();
 		break;
-			   }
-
+	}
 	case REDO: {
 		commandStatus = redoCMD();
 		break;
-			   }
-
+	}
 	case EXIT: {
 		commandStatus = CMD_EDIT;
 		break;
-			   }
-
+	}
 	case INVALID: {
 		commandStatus = MSG_INVALID;
 		break;
-				  }
+	}
 	} // end switch block
 
 	return commandStatus;
 }
-
 
 std::string Parser::undoCMD() {
 	// Logic::undo();
@@ -158,7 +140,6 @@ std::string Parser::redoCMD() {
 	// Logic::redo();
 	return MSG_REDO;
 }
-
 
 std::string Parser::searchCMD(std::string userInput) {
 	std::istringstream input(userInput);
@@ -282,6 +263,7 @@ bool Parser::isValidIndex(int index) {
 	}
 }
 
+//can delete
 std::string Parser::toLower(std::string userInput) {
 		for(int i = 0; i < (int) userInput.size(); i++){
 		userInput[i] = tolower(userInput[i]);
@@ -290,114 +272,53 @@ std::string Parser::toLower(std::string userInput) {
 }
 
 
-
 // from here onward, there is a need to rework and user regex for better parser
 
-
 std::string Parser::editCMD(std::string userInput) {
-	std::istringstream input(userInput);
+	std::istringstream inputStream(userInput);
 	int index;
-	std::string remainUserInput;
-	input >> index;
-	if(isValidIndex(index)) { // index is valid
-		std::getline(input, remainUserInput, ' '); // trim whitespace
-		std::getline(input,remainUserInput);
-
-		int keywordStart;
-		int keywordEnd;
-
-		keywordStart = remainUserInput.rfind(KEYWORD_START);
-		keywordEnd = remainUserInput.rfind(KEYWORD_END);
-	
-		if(keywordStart == std::string::npos) {
-			if(keywordEnd == std::string::npos) { // change task desc
-				// Logic::editTask(index, remainUserInput);
-				return MSG_EDIT;
-			} else { // start is not present, end is present
-				if(keywordEnd == 0) {// end is the first word, only changing endDate
-					std::string endDate;
-					endDate = remainUserInput.substr(keywordEnd + 4, remainUserInput.size()-1);
-					//_endDate = setDate(endDate);
-					// Logic::editTask(index, _endDate); // editTask need to take in the index and check if its floating task, if it is, then it need to be deleted and a deadline task to be recreated
-					return MSG_EDIT;
-				} else { 
-					if(keywordEnd != (remainUserInput.size() -3)) { // will edit taskdesc and enddate as end isnt the last word
-					std::string endDate;
-					std::string taskDesc;
-					taskDesc = remainUserInput.substr(0, keywordEnd -1);
-					endDate = remainUserInput.substr(keywordEnd + 4, remainUserInput.size()-1);
-					//_endDate = setDate(endDate);
-					// Logic::editTask(index, taskDesc, _endDate);
-					return MSG_EDIT;
-				} else { // end is the lastword, edit taskdesc only
-					//Logic::editTask(index, remainUserInput; 
-					return MSG_EDIT;
-					}
-			}
-			}
-		}
-		else { // start is present, not compared with end yet
-			if(keywordEnd == std::string::npos) { // end isnt present
-				if(keywordStart == 0) { // only changing startDate
-					std::string startDate;
-					startDate = remainUserInput.substr(keywordStart + 6, remainUserInput.size()-1);
-					//_startDate = setDate(startDate);
-					// Logic::editTask(index, _startDate); // editTask need to check if its floating task or deadline task, if it is, then it need to be deleted and create a new timed task
-					return MSG_EDIT;
-				} else { // will edit taskdesc also
-					if(keywordStart != (remainUserInput.size() - 5)) {
-					std::string taskDesc;
-					std::string startDate;
-					startDate = remainUserInput.substr(keywordStart + 6, remainUserInput.size()-1);
-					taskDesc = remainUserInput.substr(0, keywordStart -1);
-					//_startDate = setDate(startDate);
-					// Logic::editTask(index, taskDesc, _startDate); // need to check also
-					return MSG_EDIT;
-					} else { // start is the last word == change taskDesc
-						// Logic::editTask(index, remainUserInput);
-						return MSG_EDIT;
-					}
-				}
-			} else { // both start and end are present
-				if(keywordStart == 0) { // start is at the beginning 
-					if( (keywordStart < keywordEnd) && (keywordEnd != remainUserInput.size() -3)) { // end is not the last word
-						std::string startDate;
-						std::string endDate; 
-						startDate = remainUserInput.substr(keywordStart +6, keywordEnd-keywordStart-6);
-						endDate = remainUserInput.substr(keywordEnd+4, remainUserInput.size()-1);
-						//_startDate = setDate(startDate);
-						//_endDate = setDate(startDate);
-						//Logic::editTask(index, _startDate, _endDate); // need to check for respectively task type..
-						return MSG_EDIT;
-					} else { // end comes before start / end is last word, edit taskdesc
-						//Logic::editTask(index, remainUserInput);
-						return MSG_EDIT;
-					}
-				} else { // start is not the starting word, edit task desc also
-					if( (keywordStart < keywordEnd) && (keywordEnd != remainUserInput.size() -3)) { // end is not the last word
-						std::string taskDesc;
-						std::string startDate;
-						std::string endDate;
-						taskDesc = remainUserInput.substr(0, keywordStart-1); 
-						startDate = remainUserInput.substr(keywordStart +6, keywordEnd-keywordStart-6);
-						endDate = remainUserInput.substr(keywordEnd+4, remainUserInput.size()-1);
-						//_startDate = setDate(startDate);
-						//_endDate = setDate(startDate);
-						// Logic::editTask(index, taskDesc, _startDate, _endDate);
-						return MSG_EDIT;
-					} else { // end is the last word / end comes before start / edit taskdesc
-						//Logic::editTask(index, remainUserInput);
-						return MSG_EDIT;
-					}
-				}
-			}
-
-		}
-	} else {
+	std::string remainingUserInput;
+	inputStream >> index;
+	if(!isValidIndex(index)) { // index is invalid
 		return invalidIndexMsg();
 	}
+	
+	std::getline(inputStream, remainingUserInput);
+	QString descString(remainingUserInput.c_str());
+
+	QDate startDate;
+	QTime startTime;
+	QDate endDate;
+	QTime endTime;
+	QDate nullDate;
+	QTime nullTime;
+	
+	//search for "from... until..." format
+	RX_FROM_UNTIL.lastIndexIn(descString);
+	bool fromStringIsValid = _dateTimeParser.parseString(RX_FROM_UNTIL.cap(2), startDate, startTime);
+	bool untilStringIsValid = _dateTimeParser.parseString(RX_FROM_UNTIL.cap(4), endDate, endTime);
+	if (fromStringIsValid && untilStringIsValid){
+		descString.truncate(RX_FROM_UNTIL.pos());
+		descString.trimmed();
+		return _logic.editTask(index, descString, startDate, startTime, endDate, endTime);
 	}
 
+	//search for "at... on..." format
+	int pos = RX_ON_AT_BY.indexIn(descString);
+	bool onStringIsValid = _dateTimeParser.parseString(RX_ON_AT_BY.cap(2), startDate, startTime);
+	while(!onStringIsValid && pos != -1){
+		pos = RX_ON_AT_BY.indexIn(descString, pos+1);
+		onStringIsValid = _dateTimeParser.parseString(RX_ON_AT_BY.cap(2), startDate, startTime);
+	}
+	if (onStringIsValid){
+		descString.truncate(RX_ON_AT_BY.pos());
+		descString.trimmed();
+		return _logic.editTask(index, descString, startDate, startTime, endDate, endTime);
+	}
+
+	//This should be an error message
+	return MSG_EDIT;
+}
 
 
 std::string Parser::addCMD(std::string userInput) {
