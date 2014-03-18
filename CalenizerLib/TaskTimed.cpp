@@ -113,13 +113,12 @@ void TaskTimed::stringToTask(std::string content) {
 	std::string statusString;
 	bool status = false;
 
-	
 	std::getline(input, taskType);
 	std::getline(input, taskDesc);
 	std::getline(input, dateTime);
 	std::getline(input, endDate);
 	input >> statusString;
-	if (statusString == "true"){
+	if (statusString == STATUS_TRUE){
 		status = true;
 	}
 	else{
