@@ -26,14 +26,10 @@ Logic::~Logic() {
 void Logic::loadFileContent() {
 	_taskList.clear();
 	_userStorage.loadFile(_taskList);
-}
-
-void Logic::generateBackUp() {
 	_History.saveHistory(_taskList);
-	loadFileContent();
 }
 
-void Logic::addFloatTask(std::string taskDesc){
+void Logic::addTask(std::string taskDesc){
 	TaskFloat* newFloatPtr = new TaskFloat;
 	newFloatPtr->setTask(TASK_FLOAT, false, taskDesc);
 	_taskList.push_back(newFloatPtr);
@@ -42,7 +38,7 @@ void Logic::addFloatTask(std::string taskDesc){
 	return;
 }
 	
-void Logic::addDeadlineTask(std::string taskDesc, DateTime deadline) {
+void Logic::addTask(std::string taskDesc, DateTime deadline) {
 	TaskDeadline* newDeadlinePtr = new TaskDeadline;
 	newDeadlinePtr->setTask(TASK_DEADLINE, false, taskDesc, deadline);
 	_taskList.push_back(newDeadlinePtr);
@@ -51,7 +47,7 @@ void Logic::addDeadlineTask(std::string taskDesc, DateTime deadline) {
 	return;
 }
 
-void Logic::addTimedTask(std::string taskDesc, DateTime startDateTime, DateTime endDateTime) {
+void Logic::addTask(std::string taskDesc, DateTime startDateTime, DateTime endDateTime) {
 	TaskTimed* newTimedPtr = new TaskTimed;
 	newTimedPtr->setTask(TASK_TIMED, false, taskDesc, startDateTime, endDateTime);
 	_taskList.push_back(newTimedPtr);
@@ -69,6 +65,51 @@ void Logic::deleteTask(int index){
 	return;
 }
 
+//TODO: the function doesnt support the ability to convert deadline to timed yet
+void Logic::editTask(int index, DateTime dateTime) {
+	std::vector<Task*>::iterator taskToEdit = indexToIterator(index);
+	if((*taskToEdit)->getTaskType() == TASK_FLOAT) { // if task is a float, convert it into a deadline task
+		std::string taskContent = (*taskToEdit)->taskToString();
+		TaskDeadline* newDeadlinePtr = new TaskDeadline;
+		newDeadlinePtr->stringToTask(taskContent);
+		newDeadlinePtr->setTaskType(TASK_DEADLINE);
+		newDeadlinePtr->setDeadline(dateTime);
+		delete *taskToEdit; // delete the old float task
+		_taskList.erase(taskToEdit); // delete the pointer to task
+		_taskList.push_back(newDeadlinePtr);
+	} else {
+		(*taskToEdit)->setDeadline(dateTime);
+	}
+	
+	_userStorage.writeFile(_taskList);
+	_History.saveHistory(_taskList);
+	return;
+}
+
+//TODO: this function doesnt support the checking of deadline time with the timed input
+void Logic::editTask(int index, DateTime startDateTime, DateTime endDateTime) {
+	std::vector<Task*>::iterator taskToEdit = indexToIterator(index);
+
+	if(((*taskToEdit)->getTaskType() == TASK_FLOAT) || ((*taskToEdit)->getTaskType() == TASK_DEADLINE)) { // if task is a float or deadline, convert it into a timed task
+		std::string taskContent = (*taskToEdit)->taskToString();
+		TaskTimed* newTimedPtr = new TaskTimed;
+		newTimedPtr->stringToTask(taskContent);
+		newTimedPtr->setTaskType(TASK_TIMED);
+		newTimedPtr->setStartDate(startDateTime);
+		newTimedPtr->setDeadline(endDateTime);
+		delete *taskToEdit; // delete the old float/deadline task
+		_taskList.erase(taskToEdit); // delete the pointer to task
+		_taskList.push_back(newTimedPtr);
+	} else {
+		(*taskToEdit)->setStartDate(startDateTime);
+		(*taskToEdit)->setDeadline(endDateTime);
+	}
+	
+	_userStorage.writeFile(_taskList);
+	_History.saveHistory(_taskList);
+	return;
+}
+
 void Logic::editTask(int index, std::string taskDesc) {
 	std::vector<Task*>::iterator taskToEdit = indexToIterator(index);
 	(*taskToEdit)->setTaskDesc(taskDesc);
@@ -77,11 +118,26 @@ void Logic::editTask(int index, std::string taskDesc) {
 	return;
 }
 
-void Logic::editTask(int index, std::string taskDesc, DateTime deadline) {
-	
+// edit deadline task and allows float tasks to convert to deadline tasks
+void Logic::editTask(int index, std::string taskDesc, DateTime deadline) {	
 	std::vector<Task*>::iterator taskToEdit = indexToIterator(index);
-	(*taskToEdit)->setTaskDesc(taskDesc);
-	(*taskToEdit)->setDeadline(deadline);
+
+	if((*taskToEdit)->getTaskType() == TASK_FLOAT) { // if task is a float, convert it into a deadline task
+		std::string taskContent = (*taskToEdit)->taskToString();
+		TaskDeadline* newDeadlinePtr = new TaskDeadline;
+		newDeadlinePtr->stringToTask(taskContent);
+		newDeadlinePtr->setTaskType(TASK_DEADLINE);
+		newDeadlinePtr->setTaskDesc(taskDesc);
+		newDeadlinePtr->setDeadline(deadline);
+		delete *taskToEdit; // delete the old float task
+		_taskList.erase(taskToEdit); // delete the pointer to task
+		_taskList.push_back(newDeadlinePtr);
+		
+	} else {
+		(*taskToEdit)->setTaskDesc(taskDesc);
+		(*taskToEdit)->setDeadline(deadline);
+	}
+	
 	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
 	return;
@@ -89,19 +145,33 @@ void Logic::editTask(int index, std::string taskDesc, DateTime deadline) {
 
 void Logic::editTask(int index, std::string taskDesc, DateTime startDateTime, DateTime endDateTime) {
 	std::vector<Task*>::iterator taskToEdit = indexToIterator(index);
-	(*taskToEdit)->setTaskDesc(taskDesc);
-	(*taskToEdit)->setStartDate(startDateTime);
-	(*taskToEdit)->setDeadline(endDateTime);
+
+	if(((*taskToEdit)->getTaskType() == TASK_FLOAT) || ((*taskToEdit)->getTaskType() == TASK_DEADLINE)) { // if task is a float or deadline, convert it into a timed task
+		std::string taskContent = (*taskToEdit)->taskToString();
+		TaskTimed* newTimedPtr = new TaskTimed;
+		newTimedPtr->stringToTask(taskContent);
+		newTimedPtr->setTaskType(TASK_TIMED);
+		newTimedPtr->setTaskDesc(taskDesc);
+		newTimedPtr->setStartDate(startDateTime);
+		newTimedPtr->setDeadline(endDateTime);
+		delete *taskToEdit; // delete the old float/deadline task
+		_taskList.erase(taskToEdit); // delete the pointer to task
+		_taskList.push_back(newTimedPtr);
+	} else {
+		(*taskToEdit)->setTaskDesc(taskDesc);
+		(*taskToEdit)->setStartDate(startDateTime);
+		(*taskToEdit)->setDeadline(endDateTime);
+	}
+	
 	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
 	return;
 }
 
-
 void Logic::toggleComplete(int index){
 	std::vector<Task*>::iterator taskToToggle = indexToIterator(index);
 	if ((*taskToToggle)->getCompleteStatus()){
-		(*taskToToggle)->setCompleteStatus(false);
+		(*taskToToggle)->setCompleteStatus(false); // we allow the switching of tasks between complete and incomplete, but in timed and deadline tasks, we need a flag to check if the date has passed current date
 	}
 	else{
 		(*taskToToggle)->setCompleteStatus(true);
