@@ -14,7 +14,7 @@
 #include <vector>
 #include <algorithm>
 #include <QRegExp>
-#include "DateTimeParser.h"
+#include "NLParser.h"
 
 enum TaskType{
 	ACTIVITY, DEADLINE, EVENT, FLOATINGTASK
@@ -27,6 +27,8 @@ private:
 	//std::string _userInput;
 	std::vector<int> _validIndex;
 	std::vector<int> _invalidIndex;
+
+	NLParser _nlParser;
 	
 	std::vector<std::string> _taskDesc;
 	// _startDate ;
