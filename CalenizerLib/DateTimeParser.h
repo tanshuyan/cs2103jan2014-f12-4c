@@ -1,5 +1,5 @@
 //DateTimeParser.h
-//v 1.2
+//v 2.0
 
 #ifndef DATETIMEPARSER_H
 #define DATETIMEPARSER_H
@@ -26,39 +26,26 @@ private:
 
 	static QRegExp rxDashesSlashes;
 
-	static QRegExp rxHourDigits;
-	static QRegExp rxMinuteDigits;
-
-	static QRegExp rxDayDigits;
-	static QRegExp rxMonthDigits;
-	static QRegExp rxYearDigits;
-
 	//parsing functions for all supported time formats
 	//e.g. 10:00PM, 1000Pm, 10 : 00 pm	(13:00 pm not accepted)
-	bool parseHourMinAP(QString &timeStr, QTime &time);
+	bool parseHourMinAP(QRegExp &rxHourMinAP, QTime &time);
 	//e.g. 10PM, 10Pm, 10 pm			(13 pm not accepted)
-	bool parseHourAP(QString &timeStr, QTime &time);
+	bool parseHourAP(QRegExp &rxHourAP, QTime &time);
 	//e.g. 10:00, 10 : 00				(24:00 not accepted)
-	bool parseHourColMin(QString &timeStr, QTime &time);
+	bool parseHourColMin(QRegExp &rxHourColMin, QTime &time);
 	//e.g. at 10:00, at 10				(24:00 not accepted)
 
 	//parsing functions for all supported date formats
 	//any combination of DD or D, MM or M, YY or YYYY, in that order (e.g. 31/1/2014, 1-12-14)
 	//year is optional
-	bool parseDashesSlashes(QString &dateStr, QDate &date);
-
-	bool getRxFromFront(QString &str, int &number, QRegExp &rx);
-	bool getRxFromBack(QString &str, int &number, QRegExp &rx);
-
+	bool parseDashesSlashes(QRegExp &rxDashesSlashes, QDate &date);
 
 public:
 	DateTimeParser();
 
 	//returns false if anything aside from date or time is found in string, or if string is blank (string should then be treated as part of desc)
 	//sets date or time to null if no valid date or time is found
-	bool parseString(std::string inputString, QDate &outputDate, QTime &outputTime);
-	
-
+	bool parseString(QString input, QDate &outputDate, QTime &outputTime);
 	
 	//returns false if no valid time found
 	bool extractTime(QString &input, QTime &time);
