@@ -1,5 +1,5 @@
 //DateTimeParser.h
-//v 1.5
+//v 2.0
 
 #ifndef DATETIMEPARSER_H
 #define DATETIMEPARSER_H
@@ -17,7 +17,6 @@ private:
 	QTime _time;
 	
 	static QRegExp rxEmpty;
-	static QRegExp rxOn;
 
 	static QRegExp rxHourMinAP;
 	static QRegExp rxHourAP;
