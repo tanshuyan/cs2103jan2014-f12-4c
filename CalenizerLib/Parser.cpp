@@ -1,6 +1,6 @@
-//Parser.h
+//Parser.cpp
 //IN PROGRESS
-//v 1.2
+//v 1.3
 
 #include "Parser.h"
 
@@ -290,31 +290,11 @@ std::string Parser::editCMD(std::string userInput) {
 	QTime startTime;
 	QDate endDate;
 	QTime endTime;
-	QDate nullDate;
-	QTime nullTime;
-	
-	//search for "from... until..." format
-	RX_FROM_UNTIL.lastIndexIn(descString);
-	bool fromStringIsValid = _dateTimeParser.parseString(RX_FROM_UNTIL.cap(2), startDate, startTime);
-	bool untilStringIsValid = _dateTimeParser.parseString(RX_FROM_UNTIL.cap(4), endDate, endTime);
-	if (fromStringIsValid && untilStringIsValid){
-		descString.truncate(RX_FROM_UNTIL.pos());
-		descString.trimmed();
-		return _logic.editTask(index, descString, startDate, startTime, endDate, endTime);
-	}
 
-	//search for "at... on..." format
-	int pos = RX_ON_AT_BY.indexIn(descString);
-	bool onStringIsValid = _dateTimeParser.parseString(RX_ON_AT_BY.cap(2), startDate, startTime);
-	while(!onStringIsValid && pos != -1){
-		pos = RX_ON_AT_BY.indexIn(descString, pos+1);
-		onStringIsValid = _dateTimeParser.parseString(RX_ON_AT_BY.cap(2), startDate, startTime);
-	}
-	if (onStringIsValid){
-		descString.truncate(RX_ON_AT_BY.pos());
-		descString.trimmed();
-		return _logic.editTask(index, descString, startDate, startTime, endDate, endTime);
-	}
+	_nlParser.parseEdit(descString, startDate, startTime, endDate, endTime);
+	_logic.editTask(index, descString, startDate, startTime, endDate, endTime);
+
+	//catch the error for invalid time and invalid date here, thrown by parseEdit, thrown by DateTimeParser
 
 	//This should be an error message
 	return MSG_EDIT;
