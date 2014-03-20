@@ -78,6 +78,7 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 	}
 	_fileInput.close();
 }
+
 std::vector<Task*> TaskStorage::loadStorage(){
 	//loadFile();
 	return _taskList;
