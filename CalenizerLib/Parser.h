@@ -1,14 +1,34 @@
+//Parser.h
+//IN PROGRESS
+//v 1.2
 
 #ifndef PARSER_H
 #define PARSER_H
+
+#include "Logic.h"
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <algorithm>
+#include <QRegExp>
+#include "NLParser.h"
+
+enum TaskType{
+	ACTIVITY, DEADLINE, EVENT, FLOATINGTASK
+};
 
 class Parser{
 private:
+	DateTimeParser _dateTimeParser;
+	Logic _logic;
 	//std::string _userInput;
 	std::vector<int> _validIndex;
 	std::vector<int> _invalidIndex;
+
+	NLParser _nlParser;
 	
 	std::vector<std::string> _taskDesc;
 	// _startDate ;
@@ -57,9 +77,12 @@ private:
 	static const std::string KEYWORD_AT;
 	
 	// this are keywords for edit
-	static const std::string KEYWORD_START;
-	static const std::string KEYWORD_END;
-
+	static QRegExp RX_FROM_UNTIL;
+	static QRegExp RX_FROM;
+	//Not yet implemented
+	static QRegExp RX_UNTIL;
+	static QRegExp RX_ON_AT_BY;
+	static QRegExp RX_UNTIL_FROM;
 
 
 public:
