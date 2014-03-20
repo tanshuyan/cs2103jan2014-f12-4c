@@ -22,3 +22,21 @@ shuyan
 12/12/1991 13:13
 12/12/2999 13:13
 false
+FLOAT
+xiaoyan
+false
+FLOAT
+shuyannnn
+false
+FLOAT
+siaooo
+false
+FLOAT
+shuuuuuuuuuuuuuuuu'
+false
+FLOAT
+xiaoooo
+false
+FLOAT
+xiaooooo
+false

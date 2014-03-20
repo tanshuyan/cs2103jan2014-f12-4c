@@ -1,9 +1,8 @@
 //DateTimeParser.cpp
-//v 1.5
+//v 2.0
 #include "DateTimeParser.h"
 
 QRegExp DateTimeParser::rxEmpty("(^\\s*$)");
-QRegExp DateTimeParser::rxOn("\\b(on|by|at)\\b",Qt::CaseInsensitive);
 
 QRegExp DateTimeParser::rxHourMinAP("(?:at|on|by)?(?:\\s*)(\\d{1,2})(?:\\s*)(?::?)(?:\\s*)(\\d{2})(?:\\s*)(am|pm)",Qt::CaseInsensitive);
 QRegExp DateTimeParser::rxHourAP("(?:at|on|by)?(?:\\s*)(\\d{1,2})(?:\\s*)(am|pm)",Qt::CaseInsensitive);
@@ -15,8 +14,7 @@ QRegExp DateTimeParser::rxDashesSlashes("(?:at|on|by)?(?:\\s*)(\\d{1,2})(?:/|-|.
 DateTimeParser::DateTimeParser(){
 }
 
-bool DateTimeParser::parseString(std::string inputString, QDate &outputDate, QTime &outputTime){
-	QString input(inputString.c_str());
+bool DateTimeParser::parseString(QString input, QDate &outputDate, QTime &outputTime){
 	QDate nullDate;
 	QTime nullTime;
 
@@ -25,10 +23,6 @@ bool DateTimeParser::parseString(std::string inputString, QDate &outputDate, QTi
 		outputDate = nullDate;
 		outputTime = nullTime;
 		return false;
-	}
-	
-	while(rxOn.indexIn(input) != -1){
-		input.remove(rxOn.pos(), rxOn.matchedLength());
 	}
 
 	bool timeIsValid = extractTime(input, outputTime);
