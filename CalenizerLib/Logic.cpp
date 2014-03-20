@@ -1,12 +1,14 @@
 // Logics.cpp
 
 #include <string>
+#include <assert.h>
 #include "task.h"
 #include "taskDeadline.h"
 #include "taskFloat.h"
 #include "TaskTimed.h"
 #include "Logic.h"
 #include "TaskStorage.h"
+#include "Logger.h"
 
 const std::string Logic::TASK_DEADLINE = "DEADLINE";
 const std::string Logic::TASK_TIMED = "TIMED";
@@ -57,6 +59,7 @@ void Logic::addTask(std::string taskDesc, DateTime startDateTime, DateTime endDa
 }
 
 void Logic::deleteTask(int index){
+	assert(index > 0);
 	std::vector<Task*>::iterator taskToDelete = indexToIterator(index);
 	delete *taskToDelete;
 	_taskList.erase(taskToDelete);		
@@ -169,6 +172,7 @@ void Logic::editTask(int index, std::string taskDesc, DateTime startDateTime, Da
 }
 
 void Logic::toggleComplete(int index){
+	assert(index > 0);
 	std::vector<Task*>::iterator taskToToggle = indexToIterator(index);
 	if ((*taskToToggle)->getCompleteStatus()){
 		(*taskToToggle)->setCompleteStatus(false); // we allow the switching of tasks between complete and incomplete, but in timed and deadline tasks, we need a flag to check if the date has passed current date
@@ -183,6 +187,9 @@ void Logic::toggleComplete(int index){
 void Logic::getIncompleteTasks(){
 	_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, false);
 	_display.displayTasks(_displayList);
+	Logger& logLogic = Logger::getInstance();
+	logLogic.addLog("display incomplete\n");
+
 }
 	
 void Logic::getCompleteTasks(){
@@ -196,21 +203,26 @@ void Logic::searchTasks(std::string searchTerm){
 }
 
 void Logic::undo(){
+	Logger& logLogic = Logger::getInstance();
+
 	if(_History.undo(_taskList)){
 		_userStorage.writeStorage(_taskList);
 		//_display.something();//confirmation message I haven't coded yet
 	}
 	else{
+		logLogic.addLog("undo failed\n");
 		//_display.something();//error message I haven't coded yet
 	}
 }
 
 void Logic::redo(){
+	Logger& logLogic = Logger::getInstance();
 	if(_History.redo(_taskList)){
 		_userStorage.writeStorage(_taskList);
 		//_display.something();//confirmation message I haven't coded yet
 	}
 	else{
+		logLogic.addLog("redo failed\n");
 		//_display.something();//error message I haven't coded yet
 	}
 }

@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClCompile Include="DateTime.cpp" />
     <ClCompile Include="History.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Task.cpp" />
@@ -93,6 +94,7 @@
   <ItemGroup>
     <ClInclude Include="DateTime.h" />
     <ClInclude Include="History.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="Logic.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Task.h" />
