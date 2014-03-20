@@ -9,7 +9,6 @@
 #include <string>
 #include <QRegExp>
 #include "DateTimeParser.h"
-#include "DateTime.h"
 
 //All functions return false if any error occurs
 class NLParser{
@@ -24,7 +23,7 @@ private:
 
 public:
 	NLParser();
-	void parseEdit(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime);
+	void parse(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled);
 
 
 

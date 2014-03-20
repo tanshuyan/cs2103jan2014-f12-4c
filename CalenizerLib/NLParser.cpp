@@ -10,9 +10,10 @@ QRegExp NLParser::RX_FROM("\\b(?:starting|start|from(?!\\s+from)|begin|beginning
 QRegExp NLParser::RX_UNTIL("\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_ON_AT_BY("\\b(?:at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by))|by(?!\\s+(on|at|by)))\\b(.+)", Qt::CaseInsensitive);
 
-void NLParser::parseEdit(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime){
+void NLParser::parse(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled){
 	QDate nullDate;
 	QTime nullTime;
+	dateTimeIsUnlablled = false;
 
 	//search for "from... until..." format
 	RX_FROM_UNTIL.lastIndexIn(descString);
@@ -26,8 +27,8 @@ void NLParser::parseEdit(QString &descString, QDate &startDate, QTime &startTime
 
 	//search for "until... from..." format
 	RX_UNTIL_FROM.lastIndexIn(descString);
-	bool fromStringIsValid = _dateTimeParser.parseString(RX_UNTIL_FROM.cap(2), startDate, startTime);
-	bool untilStringIsValid = _dateTimeParser.parseString(RX_UNTIL_FROM.cap(1), endDate, endTime);
+	fromStringIsValid = _dateTimeParser.parseString(RX_UNTIL_FROM.cap(2), startDate, startTime);
+	untilStringIsValid = _dateTimeParser.parseString(RX_UNTIL_FROM.cap(1), endDate, endTime);
 	if (fromStringIsValid && untilStringIsValid){
 		descString.truncate(RX_UNTIL_FROM.pos());
 		descString.trimmed();
@@ -36,7 +37,7 @@ void NLParser::parseEdit(QString &descString, QDate &startDate, QTime &startTime
 
 	//search for "start..." format
 	RX_FROM.lastIndexIn(descString);
-	bool fromStringIsValid = _dateTimeParser.parseString(RX_FROM.cap(1), startDate, startTime);
+	fromStringIsValid = _dateTimeParser.parseString(RX_FROM.cap(1), startDate, startTime);
 	if (fromStringIsValid){
 		descString.truncate(RX_FROM.pos());
 		descString.trimmed();
@@ -47,7 +48,7 @@ void NLParser::parseEdit(QString &descString, QDate &startDate, QTime &startTime
 
 	//search for "end..." format
 	RX_FROM_UNTIL.lastIndexIn(descString);
-	bool untilStringIsValid = _dateTimeParser.parseString(RX_UNTIL.cap(1), endDate, endTime);
+	untilStringIsValid = _dateTimeParser.parseString(RX_UNTIL.cap(1), endDate, endTime);
 	if (untilStringIsValid){
 		descString.truncate(RX_UNTIL.pos());
 		descString.trimmed();
@@ -61,12 +62,15 @@ void NLParser::parseEdit(QString &descString, QDate &startDate, QTime &startTime
 	bool onStringIsValid = false;
 	do{
 		pos = RX_ON_AT_BY.indexIn(descString, pos+1);
-		onStringIsValid = _dateTimeParser.parseString(RX_ON_AT_BY.cap(1), endDate, endTime);
+		onStringIsValid = _dateTimeParser.parseString(RX_ON_AT_BY.cap(1), startDate, startTime);
 	}while (!onStringIsValid && pos != -1);
 
 	if (onStringIsValid){
 		descString.truncate(RX_ON_AT_BY.pos());
 		descString.trimmed();
+		endDate = nullDate;
+		endTime = nullTime;
+		dateTimeIsUnlablled = true;
 		return;
 	}
 }
