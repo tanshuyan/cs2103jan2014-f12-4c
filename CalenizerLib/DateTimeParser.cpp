@@ -3,11 +3,11 @@
 #include "DateTimeParser.h"
 
 QRegExp DateTimeParser::rxEmpty("(^\\s*$)");
+QRegExp DateTimeParser::rxOn("\\b(on|by|at)\\b",Qt::CaseInsensitive);
 
 QRegExp DateTimeParser::rxHourMinAP("(\\d{1,2})(?:\\s*)(:?)(?:\\s*)(\\d{2})(?:\\s*)(am|pm)",Qt::CaseInsensitive);
 QRegExp DateTimeParser::rxHourAP("(\\d{1,2})(?:\\s*)(am|pm)",Qt::CaseInsensitive);
 QRegExp DateTimeParser::rxHourColMin("(\\d{1,2})(?:\\s*)(:)(?:\\s*)(\\d{2})",Qt::CaseInsensitive);
-QRegExp DateTimeParser::rxAtHourMin("(at)(?:\\s*)(\\d{1,2})(?:\\s*)(:?)(?:\\s*)(\\d{2}?)",Qt::CaseInsensitive);
 
 //const QRegExp rxWorded("(\\d{1,2})(?:\\s*)(:?)(?:\\s*)(\\d{2})(?:\\s*)(am|pm)",Qt::CaseInsensitive);
 QRegExp DateTimeParser::rxDashesSlashes("(\\d{1,2})(/|-)(\\d{1,2})(/|-)?(\\d{1,4})?",Qt::CaseInsensitive);
@@ -22,18 +22,32 @@ QRegExp DateTimeParser::rxYearDigits("\\d{1,4}");
 DateTimeParser::DateTimeParser(){
 }
 
-bool DateTimeParser::parseString(std::string inputString, QDate &outputDate, QTime &outputTime, bool &isValidDate, bool &isValidTime){
+bool DateTimeParser::parseString(std::string inputString, QDate &outputDate, QTime &outputTime){
 	QString input(inputString.c_str());
+	QDate nullDate;
+	QTime nullTime;
 
+	//if the input string is empty, or only contains white spaces, the keyword is assumed to be part of the description
 	if (rxEmpty.exactMatch(input)){
-		isValidDate = false;
-		isValidTime = false;
+		outputDate = nullDate;
+		outputTime = nullTime;
 		return false;
 	}
 	
-	isValidTime = extractTime(input, outputTime);
-	isValidDate = extractDate(input, outputDate);
+	while(rxOn.indexIn(input) != -1){
+		input.remove(rxOn.pos(), rxOn.matchedLength());
+	}
+
+	bool timeIsValid = extractTime(input, outputTime);
+	if (!timeIsValid){
+		outputTime = nullTime;
+	}
 	
+	bool dateIsValid = extractDate(input, outputDate);
+	if (!dateIsValid){
+		outputDate = nullDate;
+	}
+
 	return input.trimmed().isEmpty();
 }
 
@@ -44,28 +58,25 @@ bool DateTimeParser::extractTime(QString &input, QTime &time){
 
 	//check for HourMinAP format (1000 AM)
 	pos = rxHourMinAP.indexIn(input);
-	len = rxHourMinAP.matchedLength();
 	if(pos != -1){
-		timeStr = input.mid(pos, len);
-		input.remove(pos, len);
+		timeStr = rxHourMinAP.cap();
+		input.remove(pos, rxHourMinAP.matchedLength());
 		return parseHourMinAP(timeStr, time);
 	}
 
 	//check for HourAP format (10 AM)
 	pos = rxHourAP.indexIn(input);
-	len = rxHourAP.matchedLength();
 	if(pos != -1){
-		timeStr = input.mid(pos, len);
-		input.remove(pos, len);
+		timeStr = rxHourAP.cap();
+		input.remove(pos, rxHourAP.matchedLength());
 		return parseHourAP(timeStr, time);
 	}
 
 	//check for HourColMin format (10:00)
 	pos = rxHourColMin.indexIn(input);
-	len = rxHourColMin.matchedLength();
 	if(pos != -1){
-		timeStr = input.mid(pos, len);
-		input.remove(pos, len);
+		timeStr = rxHourColMin.cap();
+		input.remove(pos, rxHourColMin.matchedLength());
 		return parseHourColMin(timeStr, time);
 	}
 	return false;
@@ -74,15 +85,13 @@ bool DateTimeParser::extractTime(QString &input, QTime &time){
 bool DateTimeParser::extractDate(QString &input, QDate &date){
 
 	int pos;
-	int len;
 	QString dateStr;
 
 	//check for DashesSlashes format (31/1/2014, 31-1-2014)
 	pos = rxDashesSlashes.indexIn(input);
-	len = rxDashesSlashes.matchedLength();
 	if(pos != -1){
-		dateStr = input.mid(pos, len);
-		input.remove(pos, len);
+		dateStr = rxDashesSlashes.cap();
+		input.remove(pos, rxDashesSlashes.matchedLength());
 		return parseDashesSlashes(dateStr, date);
 	}
 	return false;
@@ -224,7 +233,7 @@ bool DateTimeParser::getRxFromFront(QString &str, int &number, QRegExp &rx){
 	bool *ok = false;
 
 	int pos = rx.indexIn(str);	
-	number = str.mid(pos, rx.matchedLength()).toInt(ok);
+	number = rx.cap().toInt(ok);
 	//assert *ok is true, meaning toInt conversion is success
 	str.remove(pos, rx.matchedLength());
 
@@ -239,7 +248,7 @@ bool DateTimeParser::getRxFromBack(QString &str, int &number, QRegExp &rx){
 	bool *ok = false;
 
 	int pos = rx.lastIndexIn(str);	
-	number = str.mid(pos, rx.matchedLength()).toInt(ok);
+	number = rx.cap().toInt(ok);
 	//assert *ok is true, meaning toInt conversion is success
 	str.remove(pos, rx.matchedLength());
 

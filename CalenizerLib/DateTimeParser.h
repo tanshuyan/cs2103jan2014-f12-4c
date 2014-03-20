@@ -17,6 +17,7 @@ private:
 	QTime _time;
 	
 	static QRegExp rxEmpty;
+	static QRegExp rxOn;
 
 	static QRegExp rxHourMinAP;
 	static QRegExp rxHourAP;
@@ -31,7 +32,6 @@ private:
 	static QRegExp rxDayDigits;
 	static QRegExp rxMonthDigits;
 	static QRegExp rxYearDigits;
-
 
 	//parsing functions for all supported time formats
 	//e.g. 10:00PM, 1000Pm, 10 : 00 pm	(13:00 pm not accepted)
@@ -54,9 +54,11 @@ private:
 public:
 	DateTimeParser();
 
-	//returns false if anything aside from date or time is found in string (string should then be treated as part of desc)
-	bool parseString(std::string inputString, QDate &outputDate, QTime &outputTime, bool &isValidDate, bool &isValidTime);
+	//returns false if anything aside from date or time is found in string, or if string is blank (string should then be treated as part of desc)
+	//sets date or time to null if no valid date or time is found
+	bool parseString(std::string inputString, QDate &outputDate, QTime &outputTime);
 	
+
 	
 	//returns false if no valid time found
 	bool extractTime(QString &input, QTime &time);
