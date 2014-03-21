@@ -1,5 +1,5 @@
 //DateTimeParser.cpp
-//v 2.0
+//v 2.1
 #include "DateTimeParser.h"
 
 QRegExp DateTimeParser::rxEmpty("(^\\s*$)");
@@ -10,6 +10,10 @@ QRegExp DateTimeParser::rxHourColMin("(?:at|on|by)?(?:\\s*)(\\d{1,2})(?:\\s*)(?:
 
 //const QRegExp rxWorded("(\\d{1,2})(?:\\s*)(:?)(?:\\s*)(\\d{2})(?:\\s*)(am|pm)",Qt::CaseInsensitive);
 QRegExp DateTimeParser::rxDashesSlashes("(?:at|on|by)?(?:\\s*)(\\d{1,2})(?:/|-|.)(\\d{1,2})(?:/|-|.)?(\\d{1,4})?",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxToday("(?:by)?(today|td|yesterday|ystd|the day after tomorrow)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxTomorrow("(?:by)?(tomorrow|tommorrow|tommorow|tmr)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxYesterday("(yesterday|ystd)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxDayAfter("(?:by)?(the day after)(tomorrow|tommorrow|tommorow|tmr)",Qt::CaseInsensitive);
 
 DateTimeParser::DateTimeParser(){
 }
@@ -17,22 +21,22 @@ DateTimeParser::DateTimeParser(){
 bool DateTimeParser::parseString(QString input, QDate &outputDate, QTime &outputTime){
 	QDate nullDate;
 	QTime nullTime;
+	outputDate = nullDate;
+	outputTime = nullTime;
 
 	//if the input string is empty, or only contains white spaces, the keyword is assumed to be part of the description
 	if (rxEmpty.exactMatch(input)){
-		outputDate = nullDate;
-		outputTime = nullTime;
 		return false;
 	}
 
-	bool timeIsValid = extractTime(input, outputTime);
-	if (!timeIsValid){
-		outputTime = nullTime;
+	bool isInvalidTime = !extractTime(input, outputTime);
+	if (isInvalidTime){
+		throw (10);
 	}
 	
-	bool dateIsValid = extractDate(input, outputDate);
-	if (!dateIsValid){
-		outputDate = nullDate;
+	bool isInvalidDate = !extractDate(input, outputDate);
+	if (isInvalidDate){
+		throw (20);
 	}
 
 	return input.trimmed().isEmpty();
@@ -45,23 +49,23 @@ bool DateTimeParser::extractTime(QString &input, QTime &time){
 	pos = rxHourMinAP.indexIn(input);
 	if(pos != -1){
 		input.remove(pos, rxHourMinAP.matchedLength());
-		return parseHourMinAP(rxHourMinAP, time);
+		return parseHourMinAP(time);
 	}
 
 	//check for HourAP format (10 AM)
 	pos = rxHourAP.indexIn(input);
 	if(pos != -1){
 		input.remove(pos, rxHourAP.matchedLength());
-		return parseHourAP(rxHourAP, time);
+		return parseHourAP(time);
 	}
 
 	//check for HourColMin format (10:00)
 	pos = rxHourColMin.indexIn(input);
 	if(pos != -1){
 		input.remove(pos, rxHourColMin.matchedLength());
-		return parseHourColMin(rxHourColMin, time);
+		return parseHourColMin(time);
 	}
-	return false;
+	return true;
 }
 
 bool DateTimeParser::extractDate(QString &input, QDate &date){
@@ -71,12 +75,13 @@ bool DateTimeParser::extractDate(QString &input, QDate &date){
 	pos = rxDashesSlashes.indexIn(input);
 	if(pos != -1){
 		input.remove(pos, rxDashesSlashes.matchedLength());
-		return parseDashesSlashes(rxDashesSlashes, date);
+		return parseDashesSlashes(date);
 	}
-	return false;
+
+	return true;
 }
 
-bool DateTimeParser::parseHourMinAP(QRegExp &rxHourMinAP, QTime &time){
+bool DateTimeParser::parseHourMinAP(QTime &time){
 	
 	//Get hours
 	int hour = rxHourMinAP.cap(1).toInt();
@@ -96,10 +101,10 @@ bool DateTimeParser::parseHourMinAP(QRegExp &rxHourMinAP, QTime &time){
 	return true;
 }
 
-bool DateTimeParser::parseHourAP(QRegExp &rxHourColMin, QTime &time){
+bool DateTimeParser::parseHourAP(QTime &time){
 	
 	//Get hours
-	int hour = rxHourColMin.cap(1).toInt();
+	int hour = rxHourAP.cap(1).toInt();
 	
 	if(hour > 12 || hour < 1){
 		return false;
@@ -107,14 +112,14 @@ bool DateTimeParser::parseHourAP(QRegExp &rxHourColMin, QTime &time){
 	if(hour == 12){
 		hour = 0;
 	}
-	if (rxHourColMin.cap(2).contains("pm", Qt::CaseInsensitive)){
+	if (rxHourAP.cap(2).contains("pm", Qt::CaseInsensitive)){
 		hour += 12;
 	}
 	time.setHMS(hour, 0, 0);
 	return true;
 }
 
-bool DateTimeParser::parseHourColMin(QRegExp &rxHourColMin, QTime &time){
+bool DateTimeParser::parseHourColMin(QTime &time){
 	
 	//Get hours
 	int hour = rxHourColMin.cap(1).toInt();
@@ -155,12 +160,28 @@ bool DateTimeParser::parseAtHour(QString &timeStr, QTime &time){
 }
 */
 
-bool DateTimeParser::parseDashesSlashes(QRegExp &rxDashesSlashes, QDate &date){
+bool DateTimeParser::parseDashesSlashes(QDate &date){
 		
 	//Get days
 	int day = rxDashesSlashes.cap(1).toInt();
 	//Get Months
-	int month = rxDashesSlashes.cap(2).toInt();;
+	int month = rxDashesSlashes.cap(2).toInt();
+	//Get Years
+	int year = rxDashesSlashes.cap(3).toInt();
+
+	if(rxDashesSlashes.pos(3) == -1){
+		year = guessYear(day, month);
+	}
+
+	return date.setDate(year, month, day);
+}
+
+bool DateTimeParser::parseDateWords(QDate &date){
+		
+	//Get days
+	int day = rxDashesSlashes.cap(1).toInt();
+	//Get Months
+	int month = rxDashesSlashes.cap(2).toInt();
 	//Get Years
 	int year = rxDashesSlashes.cap(3).toInt();
 
