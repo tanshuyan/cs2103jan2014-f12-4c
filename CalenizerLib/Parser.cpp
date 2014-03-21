@@ -40,6 +40,15 @@ const std::string Parser::KEYWORD_COMPLETE = "complete";
 const std::string Parser::KEYWORD_INCOMPLETE = "incomplete";
 const std::string Parser::KEYWORD_TODAY = "today";
 
+QRegExp Parser::RX_FROM_UNTIL("\\b(starting from|start|from|begin|beginning)\\b(.+)\\b(end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
+QRegExp Parser::RX_ON_AT_BY("\\b(on|at|by)\\b(.+)", Qt::CaseInsensitive);
+//should I implement these? hmmm
+QRegExp Parser::RX_FROM("\\b(starting from|start|from|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
+QRegExp Parser::RX_UNTIL("\\b(end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
+//this exists only because Jim might be a massive dick
+QRegExp Parser::RX_UNTIL_FROM("\\b(end|until|till|til|to)\\b(.+)\\b(starting from|start|from|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
+
+
 Parser::Parser() {
 }
 
@@ -273,11 +282,8 @@ std::string Parser::editCMD(std::string userInput) {
 	if(!isValidIndex(index)) { // index is invalid
 		return invalidIndexMsg();
 	}
-
-	std::string input;
-	std::getline(inputStream, input);
-
-	QString descString(input.c_str());
+	
+	QString descString(inputStream.str().c_str());
 	QDate startDate;
 	QTime startTime;
 	QDate endDate;
@@ -286,14 +292,13 @@ std::string Parser::editCMD(std::string userInput) {
 
 	_nlParser.parse(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlablled);
 	//catch the error for invalid time and invalid date here, thrown by nlParser, thrown by DateTimeParser
-	descString = descString.trimmed();
+	
 	if (dateTimeIsUnlablled){
 		//user did not specify if date/time was a start date or an end date
-		_logic.editTask(descString.toStdString(), startDate, startTime);
-
+		_logic.addTask(descString, startDate, startTime);
 	}
 	else{
-		_logic.editTask(descString.toStdString(), startDate, startTime, endDate, endTime);
+		_logic.addTask(descString, startDate, startTime, endDate, endTime);
 	}
 
 	//This should be an error message?
@@ -310,14 +315,14 @@ std::string Parser::addCMD(std::string userInput) {
 	bool dateTimeIsUnlablled;
 
 	_nlParser.parse(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlablled);
-	descString = descString.trimmed();
 	//catch the error for invalid time and invalid date here, thrown by nlParser, thrown by DateTimeParser
-	if (dateTimeIsUnlablled || (endDate.isNull() && endTime.isNull())){
+	
+	if (dateTimeIsUnlablled){
 		//user did not specify if date/time was a start date or an end date
-		_logic.addTask(descString.toStdString(), startDate, startTime);
+		_logic.addTask(descString, startDate, startTime);
 	}
 	else{
-		_logic.addTask(descString.toStdString(), startDate, startTime, endDate, endTime);
+		_logic.addTask(descString, startDate, startTime, endDate, endTime);
 	}
 
 	
