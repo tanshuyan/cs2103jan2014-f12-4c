@@ -1,6 +1,6 @@
 //Parser.cpp
 //IN PROGRESS
-//v 1.3
+//v 1.4
 
 #include "Parser.h"
 
@@ -39,15 +39,6 @@ const std::string Parser::CMD_REDO = "redo";
 const std::string Parser::KEYWORD_COMPLETE = "complete";
 const std::string Parser::KEYWORD_INCOMPLETE = "incomplete";
 const std::string Parser::KEYWORD_TODAY = "today";
-
-QRegExp Parser::RX_FROM_UNTIL("\\b(starting from|start|from|begin|beginning)\\b(.+)\\b(end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
-QRegExp Parser::RX_ON_AT_BY("\\b(on|at|by)\\b(.+)", Qt::CaseInsensitive);
-//should I implement these? hmmm
-QRegExp Parser::RX_FROM("\\b(starting from|start|from|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
-QRegExp Parser::RX_UNTIL("\\b(end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
-//this exists only because Jim might be a massive dick
-QRegExp Parser::RX_UNTIL_FROM("\\b(end|until|till|til|to)\\b(.+)\\b(starting from|start|from|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
-
 
 Parser::Parser() {
 }
@@ -273,171 +264,76 @@ std::string Parser::toLower(std::string userInput) {
 
 
 // from here onward, there is a need to rework and user regex for better parser
+// Reworked!
 
 std::string Parser::editCMD(std::string userInput) {
 	std::istringstream inputStream(userInput);
 	int index;
-	std::string remainingUserInput;
 	inputStream >> index;
 	if(!isValidIndex(index)) { // index is invalid
 		return invalidIndexMsg();
 	}
-	
-	std::getline(inputStream, remainingUserInput);
-	QString descString(remainingUserInput.c_str());
 
+	std::string input;
+	std::getline(inputStream, input);
+
+	QString descString(input.c_str());
 	QDate startDate;
 	QTime startTime;
 	QDate endDate;
 	QTime endTime;
+	bool dateTimeIsUnlablled;
 
-	_nlParser.parseEdit(descString, startDate, startTime, endDate, endTime);
-	_logic.editTask(index, descString, startDate, startTime, endDate, endTime);
+	_nlParser.parse(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlablled);
+	//catch the error for invalid time and invalid date here, thrown by nlParser, thrown by DateTimeParser
+	descString = descString.trimmed();
+	if (dateTimeIsUnlablled){
+		//user did not specify if date/time was a start date or an end date
+		_logic.editTask(descString.toStdString(), startDate, startTime);
 
-	//catch the error for invalid time and invalid date here, thrown by parseEdit, thrown by DateTimeParser
+	}
+	else{
+		_logic.editTask(descString.toStdString(), startDate, startTime, endDate, endTime);
+	}
 
-	//This should be an error message
+	//This should be an error message?
 	return MSG_EDIT;
 }
 
 
 std::string Parser::addCMD(std::string userInput) {
-	_taskDesc.clear();
-	int i = 1;
-	if(isTimedTask(userInput)) {
-		// _startDate = setDate(_taskDesc[i];
-		// _endDate = setDate(_taskDesc[i+1];
-		// Logic::addTimedTask(_taskDesc[i-1], _startDate, _endDate);
-		return MSG_ADD;
-	} else if(isDeadlineTask(userInput)) {
-		if(_taskDesc.size() == 3) {
-		// _endDate = setDate(_taskDesc[i];
-		// _endTime = setDate(_taskDesc[i+1];
-		// Logic::addDeadlineTask(_taskDesc[i-1], _endDate, _endTime);
-		return MSG_ADD;
-		} else if(_taskDesc.size() == 2) {
-			// _endDate = setDate(_taskDesc[i];
-			// Logic::addDeadlineTask(_taskDesc[i-1], _endDate);
-		return MSG_ADD;
-		}
-	} else {
-		// Logic::addFloatingTask(userInput);
-		return MSG_ADD;
+	QString descString(userInput.c_str());
+	QDate startDate;
+	QTime startTime;
+	QDate endDate;
+	QTime endTime;
+	bool dateTimeIsUnlablled;
+	try{
+	_nlParser.parse(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlablled);
 	}
+	catch(int e){
+		if (e == 10){
+			std::cout<<"invalid time\n";
+		}
+		if (e == 20){
+			std::cout<<"invalid date\n";
+		}
+	return "lalala";
+	}
+	_nlParser.guessContextualTime(descString, startTime);
+	descString = descString.trimmed();
+	//catch the error for invalid time and invalid date here, thrown by nlParser, thrown by DateTimeParser
+	if (dateTimeIsUnlablled || (endDate.isNull() && endTime.isNull())){
+		//user did not specify if date/time was a start date or an end date
+		_logic.addTask(descString.toStdString(), startDate, startTime);
+	}
+	else{
+		_logic.addTask(descString.toStdString(), startDate, startTime, endDate, endTime);
+	}
+
+	
+	//This should be an error message?
+	return MSG_EDIT;
 
 }
 
-bool Parser::isDeadlineTask(std::string userInput) {
-	int keywordOn;
-	int keywordBy;
-	int keywordAt;
-
-	keywordOn = userInput.rfind(KEYWORD_ON);
-	keywordBy = userInput.rfind(KEYWORD_BY);
-	keywordAt = userInput.rfind(KEYWORD_AT);
-
-	if(keywordOn == std::string::npos) { // on not there
-		if(keywordBy == std::string::npos) { // by not there
-			if(keywordAt == std::string::npos) { // at not there
-				return false;
-			} else { // on and by not there, at is there format at _____
-				if(keywordAt != (userInput.size()-2)) {
-				std::string taskDesc;
-				std::string endDate;
-				taskDesc = userInput.substr(0, keywordAt - 1);
-				endDate = userInput.substr(keywordAt + 3, userInput.size()-1);
-				_taskDesc.push_back(taskDesc);
-				_taskDesc.push_back(endDate);
-				return true;
-				} else {
-					return false;
-				}
-			}
-		} else { // on not there, by is there, at not compared yet
-			if((keywordBy < keywordAt) && (keywordAt!= (userInput.size()-2))) {// by comes before at, at is present format by ____ at _____
-				std::string taskDesc;
-				std::string endDate;
-				taskDesc = userInput.substr(0, keywordAt - 1);
-				endDate = userInput.substr(keywordAt + 3, userInput.size()-1);
-				_taskDesc.push_back(taskDesc);
-				_taskDesc.push_back(endDate);
-				return true;
-			} else { // on not there, by is there, at is not present or before by format by____
-				if(keywordBy != (userInput.size()-2)) {
-				std::string taskDesc;
-				std::string endDate;
-				taskDesc = userInput.substr(0, keywordBy - 1);
-				endDate = userInput.substr(keywordBy + 3, userInput.size()-1);
-				_taskDesc.push_back(taskDesc);
-				_taskDesc.push_back(endDate);
-				return true;
-				} else {
-						return false;
-					}
-				}
-			} 
-	}else { // on is there, not compared with by or at
-			if((keywordOn > keywordAt) && (keywordOn > keywordBy) && (keywordOn != (userInput.size()-2))) { // on is the last occurence format on ____
-				std::string taskDesc;
-				std::string endDate;
-				taskDesc = userInput.substr(0, keywordOn - 1);
-				endDate = userInput.substr(keywordOn + 3, userInput.size()-1);
-				_taskDesc.push_back(taskDesc);
-				_taskDesc.push_back(endDate);
-				return true;
-			} else if((keywordOn < keywordAt) && (keywordAt > keywordBy) && (keywordOn > keywordBy) && (keywordAt != (userInput.size()-2))) { // format is on ___ at ____
-				std::string taskDesc;
-				std::string endDate;
-				std::string endTime;
-				taskDesc = userInput.substr(0, keywordOn - 1);
-				endDate = userInput.substr(keywordOn + 3, keywordAt-keywordOn-4);
-				endTime = userInput.substr(keywordAt + 3, userInput.size()-1);
-				_taskDesc.push_back(taskDesc);
-				_taskDesc.push_back(endDate);
-				_taskDesc.push_back(endTime);
-				return true;
-			} else if((keywordOn < keywordBy) && (keywordBy > keywordAt) && (keywordOn > keywordAt) && (keywordBy != (userInput.size()-2))) { // format is on ___ by ____
-				std::string taskDesc;
-				std::string endDate;
-				std::string endTime;
-				taskDesc = userInput.substr(0, keywordOn - 1);
-				endDate = userInput.substr(keywordOn + 3, keywordBy-keywordOn-4);
-				endTime = userInput.substr(keywordBy + 3, userInput.size()-1);
-				_taskDesc.push_back(taskDesc);
-				_taskDesc.push_back(endDate);
-				_taskDesc.push_back(endTime);
-				return true;
-			} else { // none of the format
-					return false;
-				}
-	}
-
-}
-
-
-bool Parser::isTimedTask(std::string userInput) {
-	int keywordTo;
-	int keywordFrom;
-	keywordFrom = userInput.rfind(KEYWORD_FROM);
-	keywordTo = userInput.rfind(KEYWORD_TO);
-
-	if(keywordFrom == std::string::npos ||keywordTo == std::string::npos || keywordFrom <= keywordTo) {
-		return false;
-	} else {
-		if(keywordTo != (userInput.size()-2)) { // to is not the last word
-		std::string startDate;
-		std::string endDate;
-		std::string taskDesc;
-		taskDesc = userInput.substr(0, keywordFrom - 1); // from beginning to before " from "
-		startDate =userInput.substr(keywordFrom + 5, keywordTo - keywordFrom - 6); // from between "from " to before "to"
-		endDate = userInput.substr(keywordTo + 3, userInput.size()-1); // from after "to " to end of string
-		_taskDesc.push_back(taskDesc);
-		_taskDesc.push_back(startDate);
-		_taskDesc.push_back(endDate);
-		return true;
-		}
-		else {
-			return false;
-		}
-	}
-}
