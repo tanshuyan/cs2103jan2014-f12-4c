@@ -26,8 +26,7 @@ private:
 public:
 	NLParser();
 	void parse(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled);
-
-
-
+	//Does not alter descString
+	void guessContextualTime(QString descString, QTime &startTime);
 };
 #endif
