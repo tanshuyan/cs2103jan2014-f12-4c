@@ -1,5 +1,5 @@
 //NLParser.h
-//v 2.2
+//v 2.0
 
 #ifndef NLPARSER_H
 #define NLPARSER_H
@@ -26,7 +26,8 @@ private:
 public:
 	NLParser();
 	void parse(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled);
-	//Does not alter descString
-	void guessContextualTime(QString descString, QTime &startTime);
+
+
+
 };
 #endif

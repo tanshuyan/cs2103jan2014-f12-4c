@@ -1,6 +1,6 @@
 //Parser.cpp
 //IN PROGRESS
-//v 2.2
+//v 1.4
 
 #include "Parser.h"
 
@@ -308,19 +308,8 @@ std::string Parser::addCMD(std::string userInput) {
 	QDate endDate;
 	QTime endTime;
 	bool dateTimeIsUnlablled;
-	try{
+
 	_nlParser.parse(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlablled);
-	}
-	catch(int e){
-		if (e == 10){
-			std::cout<<"invalid time\n";
-		}
-		if (e == 20){
-			std::cout<<"invalid date\n";
-		}
-	return "lalala";
-	}
-	_nlParser.guessContextualTime(descString, startTime);
 	descString = descString.trimmed();
 	//catch the error for invalid time and invalid date here, thrown by nlParser, thrown by DateTimeParser
 	if (dateTimeIsUnlablled || (endDate.isNull() && endTime.isNull())){

@@ -1,6 +1,7 @@
 //NLParser.cpp
 //IN PROGRESS
-//v 2.2
+//v 1.3
+//"starting from" does not detect the "starting"
 
 #include "NLParser.h"
 
@@ -107,13 +108,6 @@ void NLParser::parse(QString &descString, QDate &startDate, QTime &startTime, QD
 		dateTimeIsUnlablled = true;
 		return;
 	}
-	return;
 }
 
-void NLParser::guessContextualTime(QString descString, QTime &startTime){
-	if (startTime.isNull()){
-		//may need to ensure that this point doesn't throw exceptions
-		_dateTimeParser.extractTime(descString, startTime);
-	}
-	return;
-}
+
