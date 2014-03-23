@@ -1,6 +1,6 @@
 //NLParser.cpp
 //IN PROGRESS
-//v 2.2
+//v 2.4
 
 #include "NLParser.h"
 
@@ -8,9 +8,10 @@ QRegExp NLParser::RX_FROM_UNTIL("\\b(?:starting|start|from(?!\\s+from)|begin|beg
 QRegExp NLParser::RX_UNTIL_FROM("\\b(?:ending|end|until|till|til|to)\\b(.+)\\b(?:starting|start|from(?!\\s+from)|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_ON_UNTIL("\\b(?:at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by))|by(?!\\s+(on|at|by)))\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_START("\\b(?:starting|starting from|from(?!\\s+from)|start|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
+QRegExp NLParser::RX_FROM("^(?:\\s*)(?:from)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_END("\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_ON_AT_BY("\\b(?:at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by))|by(?!\\s+(on|at|by)))\\b(.+)", Qt::CaseInsensitive);
-QRegExp NLParser::RX_FROM("^(?:\\s*)(?:from)\\b(.+)", Qt::CaseInsensitive);
+QRegExp NLParser::RX_TODAY(DateTimeParser::RX_DAYWORDS.pattern()+"\\b(.*)", Qt::CaseInsensitive);
 
 
 NLParser::NLParser(){
@@ -72,7 +73,7 @@ void NLParser::parse(QString &descString, QDate &startDate, QTime &startTime, QD
 		}
 		fromStringIsValid = _dateTimeParser.parseString(fromString, startDate, startTime);
 	}while (!fromStringIsValid && pos != -1);
-
+	
 	if (fromStringIsValid){
 		descString.truncate(RX_START.pos());
 		descString = descString.trimmed();
@@ -82,6 +83,7 @@ void NLParser::parse(QString &descString, QDate &startDate, QTime &startTime, QD
 	}
 
 	//search for "end..." format
+	RX_END.lastIndexIn(descString);
 	untilStringIsValid = _dateTimeParser.parseString(RX_END.cap(1), endDate, endTime);
 	if (untilStringIsValid){
 		descString.truncate(RX_END.pos());
@@ -91,15 +93,32 @@ void NLParser::parse(QString &descString, QDate &startDate, QTime &startTime, QD
 		return;
 	}
 
+	//search for "Today/tomorrow/etc. ..." format
+	pos = -1;
+	bool stringIsValid = false;
+	do{
+		pos = RX_TODAY.indexIn(descString, pos+1);
+		stringIsValid = _dateTimeParser.parseString(RX_TODAY.cap(1), startDate, startTime);
+	}while (!stringIsValid && pos != -1);
+
+	if (stringIsValid){
+		descString.truncate(RX_TODAY.pos());
+		descString = descString.trimmed();
+		endDate = nullDate;
+		endTime = nullTime;
+		dateTimeIsUnlablled = true;
+		return;
+	}
+
 	//search for "at... on..." format
 	pos = -1;
-	bool onStringIsValid = false;
+	stringIsValid = false;
 	do{
 		pos = RX_ON_AT_BY.indexIn(descString, pos+1);
-		onStringIsValid = _dateTimeParser.parseString(RX_ON_AT_BY.cap(1), startDate, startTime);
-	}while (!onStringIsValid && pos != -1);
+		stringIsValid = _dateTimeParser.parseString(RX_ON_AT_BY.cap(1), startDate, startTime);
+	}while (!stringIsValid && pos != -1);
 
-	if (onStringIsValid){
+	if (stringIsValid){
 		descString.truncate(RX_ON_AT_BY.pos());
 		descString = descString.trimmed();
 		endDate = nullDate;
@@ -107,6 +126,7 @@ void NLParser::parse(QString &descString, QDate &startDate, QTime &startTime, QD
 		dateTimeIsUnlablled = true;
 		return;
 	}
+
 	return;
 }
 
