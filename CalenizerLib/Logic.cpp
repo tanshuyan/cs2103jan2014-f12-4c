@@ -10,6 +10,7 @@
 #include "Logic.h"
 #include "TaskStorage.h"
 #include "Logger.h"
+#include <iostream>
 
 const std::string Logic::TASK_DEADLINE = "DEADLINE";
 const std::string Logic::TASK_TIMED = "TIMED";
@@ -192,7 +193,12 @@ void Logic::getIncompleteTasks(){
 	logLogic.addLog("display incomplete\n");
 
 }
-	
+
+void Logic::getTasks() {
+	_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList);
+	_display.displayTasks(_displayList);
+}
+
 void Logic::getCompleteTasks(){
 	_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, true);
 	_display.displayTasks(_displayList);		
@@ -234,4 +240,8 @@ std::vector<Task*>::iterator Logic::indexToIterator(int index){
 		iter++;
 	}
 	return *iter;
+}
+
+unsigned int Logic::getDisplaySize() {
+	return _displayList.size();
 }

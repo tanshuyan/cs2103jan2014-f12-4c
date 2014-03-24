@@ -1,5 +1,5 @@
 // Logic.h
-// v 1.0
+// v 1.1
 
 #pragma once
 #ifndef LOGIC_H
@@ -48,12 +48,14 @@ public:
 	void editTask(int index, std::string taskDesc, DateTime);
 	void editTask(int index, std::string taskDesc, DateTime, DateTime);
 	void toggleComplete(int index);
+	void Logic::getTasks();
 	void getIncompleteTasks();
 	void getCompleteTasks();
 	void searchTasks(std::string searchTerm);
 	void undo();
 	void redo();
 	std::vector<Task*>::iterator indexToIterator(int index);
+	unsigned int getDisplaySize();
 
 	void loadFileContent();
 };

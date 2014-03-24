@@ -1,5 +1,5 @@
 //UI.cpp
-// v1.0
+// v1.1
 
 #include <iostream>
 #include <string>
@@ -31,18 +31,18 @@ UI::UI(){
 
 void UI::ProgramLaunch() {
 	std::cout << "Welcome to Calenizer!" << std::endl;
-	_cmdOperation.getIncompleteTasks();
-	std::cout << CMD_USERPROMPT;
 	std::string command;
-	std::cin >> command;
-	while(command != CMD_EXIT) {
-		executeCommand(command);
+	_parser.getIncompleteTasks();
+	while(_commandStatus != CMD_EXIT) {
 		std::cout << CMD_USERPROMPT;
-		std::cin >> command;
+		std::getline(std::cin, command);
+		_commandStatus = _parser.executeUserInput(command);
+		std::cout << _commandStatus << std::endl;
 	}
 	exit(0);
 }
 
+/*
 UI::COMMAND_TYPE UI::determineCommand(std::string command) {
 if(command == CMD_ADD) {
 		return COMMAND_TYPE::ADD;
@@ -250,3 +250,4 @@ void UI::executeCommand(std::string command) {
 
 
 }
+*/

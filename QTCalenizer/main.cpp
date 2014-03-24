@@ -5,6 +5,7 @@
 #include "Logic.h"
 #include "TaskStorage.h"
 #include "UI.h"
+#include "Parser.h"
 
 int main(int argc, char *argv[])
 {

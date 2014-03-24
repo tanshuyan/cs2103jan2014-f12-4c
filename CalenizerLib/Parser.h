@@ -1,6 +1,6 @@
 //Parser.h
 //IN PROGRESS
-//v 2.4
+//v 2.5
 
 #ifndef PARSER_H
 #define PARSER_H
@@ -25,7 +25,6 @@ class Parser{
 private:
 	DateTimeParser _dateTimeParser;
 	Logic _logic;
-	//std::string _userInput;
 	std::vector<int> _validIndex;
 	std::vector<int> _invalidIndex;
 
@@ -55,6 +54,7 @@ private:
 	static const std::string MSG_DISPLAYCOM;
 	static const std::string MSG_DISPLAYINCOM;
 	static const std::string MSG_DISPLAYTODAY;
+	static const std::string MSG_DISPLAYALL;
 	static const std::string MSG_SEARCH;
 	static const std::string MSG_DELETE;
 	static const std::string MSG_COMPLETE;
@@ -67,23 +67,14 @@ private:
 	static const std::string KEYWORD_COMPLETE;
 	static const std::string KEYWORD_INCOMPLETE;
 	static const std::string KEYWORD_TODAY;
-
-	// this are keywords for timed tasks
-	static const std::string KEYWORD_FROM;
-	static const std::string KEYWORD_TO;
-
-	// this are keywords for deadline tasks
-	static const std::string KEYWORD_ON;
-	static const std::string KEYWORD_BY;
-	static const std::string KEYWORD_AT;
-
+	static const std::string KEYWORD_ALL;
 
 public:
 	Parser();
 	
+	void getIncompleteTasks();
+	void getCompleteTasks();
 	std::string executeUserInput(std::string userInput);
-
-	std::string toLower(std::string);
 
 	COMMAND_TYPE getCommand(std::string);
 	
