@@ -9,8 +9,6 @@
 #include <string>
 #include <QRegExp>
 
-//#include "CalDate.h"
-//#include "CalTime.h"
 
 class DateTime{
 private:
