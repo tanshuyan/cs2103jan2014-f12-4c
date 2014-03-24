@@ -1,5 +1,5 @@
 //NLParser.h
-//v 2.1
+//v 2.4
 
 #ifndef NLPARSER_H
 #define NLPARSER_H
@@ -22,6 +22,7 @@ private:
 	static QRegExp RX_END;
 	static QRegExp RX_ON_AT_BY;
 	static QRegExp RX_FROM;
+	static QRegExp RX_TODAY;
 
 public:
 	NLParser();

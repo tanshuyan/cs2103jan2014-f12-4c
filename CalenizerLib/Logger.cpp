@@ -3,7 +3,7 @@
 #include <fstream>
 #include "Logger.h"
 
-const std::string LOG_FILENAME = "log.log";
+const std::string LOG_FILENAME = "log.txt";
 
 Logger::Logger() {
 }
