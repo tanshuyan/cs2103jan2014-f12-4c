@@ -1,6 +1,6 @@
 // TaskFilter.h
 //updates the displayList and displayIndexList to show only the tasks that the user wants to see (i.e. only completed tasks, only tasks with search term inside)
-
+// v1.0
 #pragma once
 #ifndef TASKFILTER_H
 #define TASKFILTER_H

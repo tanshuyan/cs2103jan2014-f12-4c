@@ -1,5 +1,5 @@
 // TaskTimed.h
-
+// v1.0
 #pragma once
 #ifndef TASKTIMED_H
 #define TASKTIMED_H
@@ -9,11 +9,6 @@
 #include "task.h"
 #include "DateTime.h"
 
-/*
-enum TaskType {
-		DEADLINE, FLOAT, TIMED
-};
-*/
 
 class TaskTimed: public Task {
 private:

@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_CalenizerGUI_t {
     QByteArrayData data[3];
-    char stringdata[38];
+    char stringdata[41];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -30,10 +30,10 @@ struct qt_meta_stringdata_CalenizerGUI_t {
 static const qt_meta_stringdata_CalenizerGUI_t qt_meta_stringdata_CalenizerGUI = {
     {
 QT_MOC_LITERAL(0, 0, 12),
-QT_MOC_LITERAL(1, 13, 22),
-QT_MOC_LITERAL(2, 36, 0)
+QT_MOC_LITERAL(1, 13, 25),
+QT_MOC_LITERAL(2, 39, 0)
     },
-    "CalenizerGUI\0on_pushButton_released\0"
+    "CalenizerGUI\0on_lineEdit_returnPressed\0"
     "\0"
 };
 #undef QT_MOC_LITERAL
@@ -65,7 +65,7 @@ void CalenizerGUI::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
     if (_c == QMetaObject::InvokeMetaMethod) {
         CalenizerGUI *_t = static_cast<CalenizerGUI *>(_o);
         switch (_id) {
-        case 0: _t->on_pushButton_released(); break;
+        case 0: _t->on_lineEdit_returnPressed(); break;
         default: ;
         }
     }

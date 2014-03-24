@@ -1,3 +1,5 @@
+// v1.0
+
 #include <QtTest\Qttest>
 #include <QtCore/QCoreApplication>
 #include <QTest>

@@ -67,6 +67,12 @@
     <ClCompile Include="Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DateTimeParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NLParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Task.h">
@@ -109,6 +115,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DateTimeParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NLParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

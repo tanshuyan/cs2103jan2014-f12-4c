@@ -1,3 +1,6 @@
+// Logger.cpp
+// v1.0
+
 #include <iostream>
 #include <string>
 #include <fstream>

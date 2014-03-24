@@ -1,4 +1,5 @@
-// Logics.cpp
+// Logic.cpp
+// v1.0
 
 #include <string>
 #include <assert.h>
