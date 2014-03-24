@@ -289,11 +289,11 @@ std::string Parser::editCMD(std::string userInput) {
 	descString = descString.trimmed();
 	if (dateTimeIsUnlablled){
 		//user did not specify if date/time was a start date or an end date
-		_logic.editTask(descString.toStdString(), startDate, startTime);
+		//_logic.editTask(descString.toStdString(), startDate, startTime);
 
 	}
 	else{
-		_logic.editTask(descString.toStdString(), startDate, startTime, endDate, endTime);
+		//_logic.editTask(descString.toStdString(), startDate, startTime, endDate, endTime);
 	}
 
 	//This should be an error message?
@@ -325,10 +325,10 @@ std::string Parser::addCMD(std::string userInput) {
 	//catch the error for invalid time and invalid date here, thrown by nlParser, thrown by DateTimeParser
 	if (dateTimeIsUnlablled || (endDate.isNull() && endTime.isNull())){
 		//user did not specify if date/time was a start date or an end date
-		_logic.addTask(descString.toStdString(), startDate, startTime);
+	//	_logic.addTask(descString.toStdString(), startDate, startTime);
 	}
 	else{
-		_logic.addTask(descString.toStdString(), startDate, startTime, endDate, endTime);
+//		_logic.addTask(descString.toStdString(), startDate, startTime, endDate, endTime);
 	}
 
 	
