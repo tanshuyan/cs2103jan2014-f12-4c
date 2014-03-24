@@ -1,6 +1,6 @@
 //Parser.cpp
 //IN PROGRESS
-//v 2.4
+//v 2.5
 
 #include "Parser.h"
 
@@ -10,6 +10,7 @@ const std::string Parser::MSG_INVALID = "Invalid command.\n";
 const std::string Parser::MSG_DISPLAYCOM = "displayed completed tasks";
 const std::string Parser::MSG_DISPLAYINCOM = "displayed incompleted tasks";
 const std::string Parser::MSG_DISPLAYTODAY = "displayed today tasks";
+const std::string Parser::MSG_DISPLAYALL = "displayed all tasks";
 
 //search msg
 const std::string Parser::MSG_SEARCH = "search completed";
@@ -39,9 +40,19 @@ const std::string Parser::CMD_REDO = "redo";
 const std::string Parser::KEYWORD_COMPLETE = "complete";
 const std::string Parser::KEYWORD_INCOMPLETE = "incomplete";
 const std::string Parser::KEYWORD_TODAY = "today";
+const std::string Parser::KEYWORD_ALL = "all";
 
 Parser::Parser() {
 }
+
+void Parser::getIncompleteTasks() {
+	_logic.getIncompleteTasks();
+}
+
+void Parser::getCompleteTasks() {
+	_logic.getCompleteTasks();
+}
+
 
 Parser::COMMAND_TYPE Parser::getCommand(std::string command) {
 	if(command == CMD_ADD) {
@@ -69,36 +80,37 @@ Parser::COMMAND_TYPE Parser::getCommand(std::string command) {
 
 
 std::string Parser::executeUserInput(std::string userInput) {
-	userInput = toLower(userInput);
 	std::istringstream input(userInput);
 	std::string command;
 	std::string dummy;
+	std::string commandLine;
 	input >> command; // the first word is always a command
 	std::getline(input, dummy, ' '); // trim whitespace 
+	std::getline(input, commandLine); // commandLine gets the remaining userInput
 	std::string commandStatus;
 	switch(getCommand(command)) {
 	case ADD: {
-		commandStatus = addCMD(input.str());		
+		commandStatus = addCMD(commandLine);		
 		break;
 	}
 	case DELETE: {
-		commandStatus = deleteCMD(input.str());
+		commandStatus = deleteCMD(commandLine);
 		break;
 	}
 	case EDIT: {
-		commandStatus = editCMD(input.str());
+		commandStatus = editCMD(commandLine);
 		break;
 	}	
 	case SEARCH: {
-		commandStatus = searchCMD(input.str());
+		commandStatus = searchCMD(commandLine);
 		break;
 	}
 	case DISPLAY: {
-		commandStatus = displayCMD(input.str());
+		commandStatus = displayCMD(commandLine);
 		break;
 	}
 	case COMPLETE: {
-		commandStatus = completeCMD(input.str());
+		commandStatus = completeCMD(commandLine);
 		break;
 	}
 	case UNDO: {
@@ -110,7 +122,7 @@ std::string Parser::executeUserInput(std::string userInput) {
 		break;
 	}
 	case EXIT: {
-		commandStatus = CMD_EDIT;
+		commandStatus = CMD_EXIT;
 		break;
 	}
 	case INVALID: {
@@ -123,23 +135,17 @@ std::string Parser::executeUserInput(std::string userInput) {
 }
 
 std::string Parser::undoCMD() {
-	// Logic::undo();
+	_logic.undo();
 	return MSG_UNDO;
 }
 
 std::string Parser::redoCMD() {
-	// Logic::redo();
+	_logic.redo();
 	return MSG_REDO;
 }
 
 std::string Parser::searchCMD(std::string userInput) {
-	std::istringstream input(userInput);
-	std::string searchTerm;
-	input >> searchTerm;
-	while(!input.eof()) {
-	//	Logic::searchTasks(searchTerm);
-		input >> searchTerm;
-	}
+	_logic.searchTasks(userInput);
 	return MSG_SEARCH;
 }
 
@@ -148,14 +154,17 @@ std::string Parser::displayCMD(std::string userInput) {
 	std::string displayType;
 	input >> displayType;
 	if (displayType == KEYWORD_COMPLETE) {
-		//Logic::getCompleteTasks();
+		_logic.getCompleteTasks();
 		return MSG_DISPLAYCOM;
 	} else if (displayType == KEYWORD_INCOMPLETE) {
-		//Logic::getIncompleteTasks();
+		_logic.getIncompleteTasks();
 		return MSG_DISPLAYINCOM;
 	} else if(displayType == KEYWORD_TODAY) {
 		//Logic::getTodayTasks();
 		return MSG_DISPLAYTODAY;
+	} else if (displayType == KEYWORD_ALL) {
+		_logic.getTasks();
+		return MSG_DISPLAYALL;
 	} else {
 		return MSG_INVALID;
 	}
@@ -163,8 +172,8 @@ std::string Parser::displayCMD(std::string userInput) {
 
 std::string Parser::completeCMD(std::string userInput) {
 	getValidIndex(userInput);
-	for(unsigned int i =_validIndex.size(); i > 0; i--) {
-		//Logic::toggleComplete(_validIndex[i-1]);
+	for(unsigned int i = _validIndex.size(); i > 0; i--) {
+		_logic.toggleComplete(_validIndex[i-1]);
 	}
 
 	if(!_invalidIndex.empty()) {// have invalid index
@@ -177,8 +186,8 @@ std::string Parser::completeCMD(std::string userInput) {
 
 std::string Parser::deleteCMD(std::string userInput) {
 	getValidIndex(userInput);
-	for(unsigned int i =_validIndex.size(); i > 0; i--) { 
-		//Logic::deleteTask(_validIndex[i-1]);
+	for(unsigned int i = _validIndex.size(); i > 0; i--) { 
+		_logic.deleteTask(_validIndex[i-1]);
 	}
 
 	if(!_invalidIndex.empty()) {// have invalid index
@@ -186,7 +195,6 @@ std::string Parser::deleteCMD(std::string userInput) {
 	} else {
 		return MSG_DELETE;
 	}
-	
 }
 
 std::string Parser::invalidIndexMsg() {
@@ -247,19 +255,11 @@ int Parser::convertToIndex(std::string userInput) {
 }
 
 bool Parser::isValidIndex(int index) {
-	if (index >= 1 /*&& index <= Display::getDisplaySize()*/) { 
+	if (index >= 1 && index <= _logic.getDisplaySize()) { 
 		return true; 
 	} else { 
 		return false; 
 	}
-}
-
-//can delete
-std::string Parser::toLower(std::string userInput) {
-		for(int i = 0; i < (int) userInput.size(); i++){
-		userInput[i] = tolower(userInput[i]);
-	}
-		return userInput;
 }
 
 

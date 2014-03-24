@@ -1,6 +1,6 @@
 //UI.h
 // for testing purposes
-// v1.0
+// v1.1
 #pragma once
 #ifndef UI_H
 #define UI_H
@@ -12,10 +12,14 @@
 #include "TaskStorage.h"
 #include "Task.h"
 #include "Logic.h"
+#include "Parser.h"
 
 class UI {
 private:
 	
+	Parser _parser;
+	std::string _commandStatus;
+	std::istringstream _inputStream;
 
 	enum COMMAND_TYPE {
 		ADD, ADDD, ADDT, DELETE, SEARCH, SORT, EXIT, INVALID, EDIT, EDITD, EDITT, EDIT1, EDIT2, COMPLETE, DISPLAY, UNDO, REDO
@@ -38,14 +42,12 @@ private:
 	static const std::string CMD_REDO;
 	static const std::string CMD_USERPROMPT;
 
-	std::istringstream _inputStream;
-	Logic _cmdOperation;
 
 public:
 	UI();
 	void ProgramLaunch();
-	COMMAND_TYPE determineCommand(std::string);
-	void executeCommand(std::string);
+	//COMMAND_TYPE determineCommand(std::string);
+	//void executeCommand(std::string);
 
 };
 
