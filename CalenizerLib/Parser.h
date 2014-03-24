@@ -5,10 +5,11 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include "LogicStub.h"
+#include "Logic.h"
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <iostream>
 #include <string>
 #include <sstream>
 #include <vector>

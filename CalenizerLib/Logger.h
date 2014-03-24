@@ -1,3 +1,5 @@
+// v 1.0
+
 #ifndef LOGGER_H
 #define LOGGER_H
 

@@ -13,7 +13,7 @@ public:
 	CalenizerGUI(QWidget *parent = 0);
 	~CalenizerGUI();
 
-public slots: void on_pushButton_released();
+public slots: void on_lineEdit_returnPressed();
 
 private:
 	Ui::CalenizerGUIClass ui;

@@ -1,5 +1,5 @@
 // TaskFloat.h
-
+// v1.0
 #pragma once
 #ifndef TaskFloat_H
 #define TaskFloat_H
@@ -8,12 +8,6 @@
 #include <sstream>
 #include "task.h"
 #include "DateTime.h"
-
-/*
-enum TaskType {
-		DEADLINE, FLOAT, TIMED
-};
-*/
 
 class TaskFloat: public Task {
 private:
