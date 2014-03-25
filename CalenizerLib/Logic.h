@@ -1,5 +1,5 @@
 // Logic.h
-// v 1.1
+// v 1.2
 
 #pragma once
 #ifndef LOGIC_H
@@ -41,13 +41,14 @@ public:
 	void addTask(std::string taskDesc, DateTime);
 	void addTask(std::string taskDesc, DateTime, DateTime);
 
-	void deleteTask(int index);
+	void deleteTask(std::vector<int>);
 	void editTask(int index, DateTime);
 	void editTask(int index, DateTime, DateTime);
 	void editTask(int index, std::string taskDesc);
 	void editTask(int index, std::string taskDesc, DateTime);
 	void editTask(int index, std::string taskDesc, DateTime, DateTime);
-	void toggleComplete(int index);
+	void setComplete(std::vector<int>);
+	void setIncomplete(std::vector<int>);
 	void Logic::getTasks();
 	void getIncompleteTasks();
 	void getCompleteTasks();
@@ -55,7 +56,9 @@ public:
 	void undo();
 	void redo();
 	std::vector<Task*>::iterator indexToIterator(int index);
-	unsigned int getDisplaySize();
+	
+	bool isValidIndex(int);
+	// unsigned int getDisplaySize();
 
 	void loadFileContent();
 };
