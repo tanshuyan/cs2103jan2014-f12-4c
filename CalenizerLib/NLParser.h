@@ -1,5 +1,5 @@
 //NLParser.h
-//v 2.4
+//v 2.6
 
 #ifndef NLPARSER_H
 #define NLPARSER_H
@@ -24,9 +24,13 @@ private:
 	static QRegExp RX_FROM;
 	static QRegExp RX_TODAY;
 
+	void parseMarkedDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled);
+	void parseTodayWords(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled);
+	
+
 public:
 	NLParser();
-	void parse(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled);
+	void parseDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled);
 	//Does not alter descString
 	void guessContextualTime(QString descString, QTime &startTime);
 };
