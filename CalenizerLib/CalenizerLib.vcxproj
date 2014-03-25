@@ -81,6 +81,7 @@
     <ClCompile Include="History.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Logic.cpp" />
+    <ClCompile Include="MultipleIndexParser.cpp" />
     <ClCompile Include="NLParser.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="Task.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="History.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Logic.h" />
+    <ClInclude Include="MultipleIndexParser.h" />
     <ClInclude Include="NLParser.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Task.h" />
