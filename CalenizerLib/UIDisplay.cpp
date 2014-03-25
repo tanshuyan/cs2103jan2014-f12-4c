@@ -23,7 +23,7 @@ void UIDisplay::displayTasks(std::vector<Task*> displayList){
 }
 
 const std::string UIDisplay::MSG_WELCOME = "Welcome to %s. It is ready for use";
-const std::string UIDisplay::MSG_USERPROMPT= "command: ";
+const std::string UIDisplay::MSG_USERPROMPT= "what would you like %s to do? Give your command: ";
 const std::string UIDisplay::MSG_ADD_SUCCESS ="added to %s: \"%s\"";
 const std::string UIDisplay::MSG_EDIT_SUCCESS ="%s updated";
 const std::string UIDisplay::MSG_DELETE_SUCCESS ="deleted from %s: \"%s\"";
@@ -49,6 +49,17 @@ void UIDisplay::displayUI(std::string output) {
 	}
 }
 
+std::string UIDisplay::welcomeMsg(){
+	sprintf_s(buffer, MSG_WELCOME.c_str(), _programName.c_str());
+	return buffer;
+}
+
+std::string UIDisplay::promptMsg(){
+	sprintf_s(buffer, MSG_USERPROMPT.c_str(), _programName.c_str());
+	return buffer;
+}
+
+
 std::string UIDisplay::emptyFeedback() {
 	sprintf_s(buffer, MSG_EMPTY_FILE.c_str(), _programName.c_str());
 	return buffer;
@@ -71,11 +82,6 @@ std::string UIDisplay::invalidFeedback(){
 
 std::string UIDisplay::notFoundFeedback(std::string userInput){
 	sprintf_s(buffer, MSG_NOT_FOUND.c_str(), userInput.c_str(), _programName.c_str());
-	return buffer;
-}
-
-std::string UIDisplay::welcomeMsg(){
-	sprintf_s(buffer, MSG_WELCOME.c_str(), _programName.c_str());
 	return buffer;
 }
 

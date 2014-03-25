@@ -17,6 +17,7 @@ private:
 
 	static const std::string MSG_WELCOME;
 	static const std::string MSG_USERPROMPT;
+
 	static const std::string MSG_ADD_SUCCESS;
 	static const std::string MSG_EDIT_SUCCESS;
 	static const std::string MSG_DELETE_SUCCESS;
@@ -43,6 +44,8 @@ public:
 	void displayTasks(std::vector<Task*>);
 
 	std::string welcomeMsg();
+	std::string promptMsg();
+
 	std::string clearFeedback();
 	std::string emptyFeedback();
 	std::string editFeedback(std::string);

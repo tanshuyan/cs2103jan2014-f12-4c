@@ -8,7 +8,7 @@
 #include "task.h"
 #include "DateTime.h"
 
-
+/*
 const std::string UI::CMD_UNDO = "undo";
 const std::string UI::CMD_REDO = "redo";
 const std::string UI::CMD_ADD = "add";
@@ -21,20 +21,22 @@ const std::string UI::CMD_EDITD = "editd";
 const std::string UI::CMD_EDITT = "editt";
 const std::string UI::CMD_DELETE = "delete";
 const std::string UI::CMD_DISPLAY = "display";
-const std::string UI::CMD_EXIT = "exit";
 const std::string UI::CMD_SEARCH = "search";
 const std::string UI::CMD_COMPLETE = "complete";
-const std::string UI::CMD_USERPROMPT= "Enter command: ";
+*/ 
+
+const std::string UI::CMD_EXIT = "exit";
 
 UI::UI(){
 }
 
 void UI::ProgramLaunch() {
-	std::cout << "Welcome to Calenizer!" << std::endl;
+	_displayInstance.displayUI(_displayInstance.welcomeMsg());
 	std::string command;
 	_parser.getIncompleteTasks();
+	std::cout << std::endl;
 	while(_commandStatus != CMD_EXIT) {
-		std::cout << CMD_USERPROMPT;
+		_displayInstance.displayUI(_displayInstance.promptMsg());
 		std::getline(std::cin, command);
 		_commandStatus = _parser.executeUserInput(command);
 		std::cout << _commandStatus << std::endl;

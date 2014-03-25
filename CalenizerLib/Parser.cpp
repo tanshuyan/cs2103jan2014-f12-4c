@@ -331,9 +331,7 @@ std::string Parser::addCMD(std::string userInput) {
 //		_logic.addTask(descString.toStdString(), startDate, startTime, endDate, endTime);
 	}
 
-	
 	//This should be an error message?
 	return MSG_EDIT;
 
 }
-
