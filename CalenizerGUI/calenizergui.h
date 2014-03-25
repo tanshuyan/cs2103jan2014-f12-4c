@@ -13,11 +13,12 @@ public:
 	CalenizerGUI(QWidget *parent = 0);
 	~CalenizerGUI();
 
-public slots: void on_lineEdit_returnPressed();
+public slots: 
+	void on_lineEdit_returnPressed();
 
 private:
 	Ui::CalenizerGUIClass ui;
-	Parser _g_parser;
+	Parser *_g_parser;
 };
 
 #endif // CALENIZERGUI_H
