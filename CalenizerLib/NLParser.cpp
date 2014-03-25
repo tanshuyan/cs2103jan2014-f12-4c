@@ -161,33 +161,7 @@ void NLParser::parseTodayWords(QString &descString, QDate &startDate, QTime &sta
 				dateTimeIsUnlablled = false;
 			}
 		}
-		return;
 	}
-
-	//if (startDate.isNull()){
-	//	if (RX_TODAY.lastIndexIn(descString) == -1){
-	//		return;
-	//	}
-	//	int pos = -1;
-	//	bool stringIsValid = false;
-	//	do{
-	//		pos = RX_TODAY.indexIn(descString, pos+1);
-	//		QString todayString = RX_TODAY.cap(0);
-	//		//May need to remove this
-	//		if (RX_FROM.indexIn(RX_TODAY.cap(1)) != -1){
-	//			todayString = RX_FROM.cap(0);
-	//		}
-	//		//
-	//		stringIsValid = _dateTimeParser.parseString(todayString, startDate, startTime);
-	//	}while (!stringIsValid && pos != -1);
-	//
-	//	if (stringIsValid){
-	//		descString.truncate(RX_TODAY.pos());
-	//		if (endDate.isNull() && endTime.isNull()){
-	//			dateTimeIsUnlablled = true;
-	//		}
-	//	}
-	//}
 	return;
 }
 
