@@ -1,6 +1,6 @@
 //Parser.cpp
 //IN PROGRESS
-//v 2.5
+//v 2.6
 
 #include "Parser.h"
 
@@ -18,6 +18,7 @@ const std::string Parser::MSG_SEARCH = "search completed";
 const std::string Parser::MSG_DELETE = "all indicated tasks deleted";
 //complete msg
 const std::string Parser::MSG_COMPLETE = "all indicated tasks completed";
+const std::string Parser::MSG_INCOMPLETE = "all indicated tasks incompleted";
 //undo msg
 const std::string Parser::MSG_UNDO = "undo last action";
 //redo msg
@@ -34,6 +35,7 @@ const std::string Parser::CMD_DISPLAY = "display";
 const std::string Parser::CMD_EXIT = "exit";
 const std::string Parser::CMD_SEARCH = "search";
 const std::string Parser::CMD_COMPLETE = "complete";
+const std::string Parser::CMD_INCOMPLETE = "incomplete";
 const std::string Parser::CMD_UNDO = "undo";
 const std::string Parser::CMD_REDO = "redo";
 	
@@ -69,6 +71,8 @@ Parser::COMMAND_TYPE Parser::getCommand(std::string command) {
 		return COMMAND_TYPE::EDIT;
 	} else if ((command== CMD_COMPLETE)) {
 		return COMMAND_TYPE::COMPLETE;
+	} else if ((command == CMD_INCOMPLETE)) {
+		return COMMAND_TYPE::INCOMPLETE;
 	} else if ((command == CMD_UNDO)) {
 		return COMMAND_TYPE::UNDO;
 	} else if ((command == CMD_REDO)) {
@@ -111,6 +115,10 @@ std::string Parser::executeUserInput(std::string userInput) {
 	}
 	case COMPLETE: {
 		commandStatus = completeCMD(commandLine);
+		break;
+	}
+	case INCOMPLETE: {
+		commandStatus = incompleteCMD(commandLine);
 		break;
 	}
 	case UNDO: {
@@ -170,33 +178,97 @@ std::string Parser::displayCMD(std::string userInput) {
 	}
 }
 
-std::string Parser::completeCMD(std::string userInput) {
-	getValidIndex(userInput);
-	for(unsigned int i = _validIndex.size(); i > 0; i--) {
-		_logic.toggleComplete(_validIndex[i-1]);
-	}
+std::string Parser::incompleteCMD(std::string userInput) {
+	_index = _multipleIndexParser.parseMultipleIndex(userInput);
+	_logic.setIncomplete(_index);
+	return MSG_INCOMPLETE;
+}
 
-	if(!_invalidIndex.empty()) {// have invalid index
-		return invalidIndexMsg();
-	} else {
-		return MSG_COMPLETE;
-	}
-	
+std::string Parser::completeCMD(std::string userInput) {
+	_index = _multipleIndexParser.parseMultipleIndex(userInput);
+	_logic.setComplete(_index);
+	return MSG_COMPLETE;
 }
 
 std::string Parser::deleteCMD(std::string userInput) {
-	getValidIndex(userInput);
-	for(unsigned int i = _validIndex.size(); i > 0; i--) { 
-		_logic.deleteTask(_validIndex[i-1]);
-	}
-
-	if(!_invalidIndex.empty()) {// have invalid index
-		return invalidIndexMsg();
-	} else {
-		return MSG_DELETE;
-	}
+	_index = _multipleIndexParser.parseMultipleIndex(userInput);
+	_logic.deleteTask(_index);
+	return MSG_DELETE;
 }
 
+// from here onward, there is a need to rework and user regex for better parser
+// Reworked!
+
+std::string Parser::editCMD(std::string userInput) {
+	std::istringstream inputStream(userInput);
+	int index;
+	inputStream >> index;
+	std::string input;
+	std::getline(inputStream, input);
+
+	QString descString(input.c_str());
+	QDate startDate;
+	QTime startTime;
+	QDate endDate;
+	QTime endTime;
+	bool dateTimeIsUnlablled;
+
+	_nlParser.parse(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlablled);
+	//catch the error for invalid time and invalid date here, thrown by nlParser, thrown by DateTimeParser
+	descString = descString.trimmed();
+	if (dateTimeIsUnlablled){
+		//user did not specify if date/time was a start date or an end date
+		//_logic.editTask(index, descString.toStdString(), startDate, startTime);
+
+	}
+	else{
+		//_logic.editTask(index, descString.toStdString(), startDate, startTime, endDate, endTime);
+	}
+
+	//This should be an error message?
+	return MSG_EDIT;
+}
+
+
+std::string Parser::addCMD(std::string userInput) {
+	QString descString(userInput.c_str());
+	QDate startDate;
+	QTime startTime;
+	QDate endDate;
+	QTime endTime;
+	bool dateTimeIsUnlablled;
+	try{
+	_nlParser.parse(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlablled);
+	}
+	catch(int e){
+		if (e == 10){
+			std::cout<<"invalid time\n";
+		}
+		if (e == 20){
+			std::cout<<"invalid date\n";
+		}
+	return "lalala";
+	}
+	_nlParser.guessContextualTime(descString, startTime);
+	descString = descString.trimmed();
+	//catch the error for invalid time and invalid date here, thrown by nlParser, thrown by DateTimeParser
+	if (dateTimeIsUnlablled || (endDate.isNull() && endTime.isNull())){
+		//user did not specify if date/time was a start date or an end date
+	//	_logic.addTask(descString.toStdString(), startDate, startTime);
+	}
+	else{
+//		_logic.addTask(descString.toStdString(), startDate, startTime, endDate, endTime);
+	}
+
+	
+	//This should be an error message?
+	return MSG_EDIT;
+
+}
+
+
+
+/*
 std::string Parser::invalidIndexMsg() {
 	std::ostringstream invalidIndexOuput;
 	invalidIndexOuput << "Index ";
@@ -262,78 +334,5 @@ bool Parser::isValidIndex(int index) {
 	}
 }
 
-
-// from here onward, there is a need to rework and user regex for better parser
-// Reworked!
-
-std::string Parser::editCMD(std::string userInput) {
-	std::istringstream inputStream(userInput);
-	int index;
-	inputStream >> index;
-	if(!isValidIndex(index)) { // index is invalid
-		return invalidIndexMsg();
-	}
-
-	std::string input;
-	std::getline(inputStream, input);
-
-	QString descString(input.c_str());
-	QDate startDate;
-	QTime startTime;
-	QDate endDate;
-	QTime endTime;
-	bool dateTimeIsUnlablled;
-
-	_nlParser.parse(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlablled);
-	//catch the error for invalid time and invalid date here, thrown by nlParser, thrown by DateTimeParser
-	descString = descString.trimmed();
-	if (dateTimeIsUnlablled){
-		//user did not specify if date/time was a start date or an end date
-		//_logic.editTask(descString.toStdString(), startDate, startTime);
-
-	}
-	else{
-		//_logic.editTask(descString.toStdString(), startDate, startTime, endDate, endTime);
-	}
-
-	//This should be an error message?
-	return MSG_EDIT;
-}
-
-
-std::string Parser::addCMD(std::string userInput) {
-	QString descString(userInput.c_str());
-	QDate startDate;
-	QTime startTime;
-	QDate endDate;
-	QTime endTime;
-	bool dateTimeIsUnlablled;
-	try{
-	_nlParser.parse(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlablled);
-	}
-	catch(int e){
-		if (e == 10){
-			std::cout<<"invalid time\n";
-		}
-		if (e == 20){
-			std::cout<<"invalid date\n";
-		}
-	return "lalala";
-	}
-	_nlParser.guessContextualTime(descString, startTime);
-	descString = descString.trimmed();
-	//catch the error for invalid time and invalid date here, thrown by nlParser, thrown by DateTimeParser
-	if (dateTimeIsUnlablled || (endDate.isNull() && endTime.isNull())){
-		//user did not specify if date/time was a start date or an end date
-	//	_logic.addTask(descString.toStdString(), startDate, startTime);
-	}
-	else{
-//		_logic.addTask(descString.toStdString(), startDate, startTime, endDate, endTime);
-	}
-
-	
-	//This should be an error message?
-	return MSG_EDIT;
-
-}
+*/
 
