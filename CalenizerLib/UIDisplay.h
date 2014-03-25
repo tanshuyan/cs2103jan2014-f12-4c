@@ -1,5 +1,5 @@
 //UIDisplay.h
-// v1.0
+// v1.3
 #pragma once
 #ifndef UIDISPLAY_H
 #define UIDISPLAY_H
@@ -19,14 +19,21 @@ private:
 	static const std::string MSG_USERPROMPT;
 
 	static const std::string MSG_ADD_SUCCESS;
+
 	static const std::string MSG_EDIT_SUCCESS;
+
 	static const std::string MSG_DELETE_SUCCESS;
+
 	static const std::string MSG_UNDO_SUCCESS;
+	static const std::string MSG_UNDO_FAILURE;
+
 	static const std::string MSG_REDO_SUCCESS;
+	static const std::string MSG_REDO_FAILURE;
+
 	static const std::string MSG_COMPLETE_SUCCESS;
 
 	static const std::string MSG_INVALID_CMD;
-	static const std::string MSG_INVALID_LINENO;
+	static const std::string MSG_INVALID_INDEX;
 	static const std::string MSG_INVALID_TIME;
 	static const std::string MSG_INVALID_DATE;
 
@@ -51,8 +58,10 @@ public:
 	std::string editFeedback(std::string);
 	std::string addFeedback(std::string);
 	std::string deleteFeedback(std::string);
-	std::string undoFeedback();
-	std::string redoFeedback();
+	std::string undoSuccessFeedback();
+	std::string undoFailureFeedback();
+	std::string redoSucessFeedback();
+	std::string redoFailureFeedback();
 	std::string notFoundFeedback(std::string);
 	std::string invalidFeedback();
 	std::string invalidTimeFeedback();

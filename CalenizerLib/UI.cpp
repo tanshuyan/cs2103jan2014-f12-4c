@@ -39,7 +39,8 @@ void UI::ProgramLaunch() {
 		_displayInstance.displayUI(_displayInstance.promptMsg());
 		std::getline(std::cin, command);
 		_commandStatus = _parser.executeUserInput(command);
-		std::cout << _commandStatus << std::endl;
+		_displayInstance.displayUI(_commandStatus);
+		std::cout << std::endl;
 	}
 	exit(0);
 }
