@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <QRegExp>
 #include "NLParser.h"
+#include "ParserFeedback.h"
 
 enum TaskType{
 	ACTIVITY, DEADLINE, EVENT, FLOATINGTASK
@@ -29,6 +30,7 @@ private:
 	std::vector<int> _invalidIndex;
 
 	NLParser _nlParser;
+	ParserFeedback _feedback;
 	
 	std::vector<std::string> _taskDesc;
 	// _startDate ;
@@ -50,6 +52,7 @@ private:
 	static const std::string CMD_UNDO;
 	static const std::string CMD_REDO;
 
+/*
 	static const std::string MSG_INVALID;
 	static const std::string MSG_DISPLAYCOM;
 	static const std::string MSG_DISPLAYINCOM;
@@ -62,7 +65,7 @@ private:
 	static const std::string MSG_REDO;
 	static const std::string MSG_ADD;
 	static const std::string MSG_EDIT;
-
+*/
 	// this are keywords for display
 	static const std::string KEYWORD_COMPLETE;
 	static const std::string KEYWORD_INCOMPLETE;
