@@ -91,7 +91,6 @@
     <ClCompile Include="TaskTimed.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="UIDisplay.cpp" />
-    <ClCompile Include="UILoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DateTime.h" />
@@ -109,7 +108,6 @@
     <ClInclude Include="TaskTimed.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="UIDisplay.h" />
-    <ClInclude Include="UILoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
