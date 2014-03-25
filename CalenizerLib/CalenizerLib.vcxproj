@@ -83,6 +83,7 @@
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="NLParser.cpp" />
     <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="ParserFeedback.cpp" />
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskDeadline.cpp" />
     <ClCompile Include="TaskFilter.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="Logic.h" />
     <ClInclude Include="NLParser.h" />
     <ClInclude Include="Parser.h" />
+    <ClInclude Include="ParserFeedback.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskDeadline.h" />
     <ClInclude Include="TaskFilter.h" />
