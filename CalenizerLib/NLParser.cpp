@@ -1,9 +1,13 @@
 //NLParser.cpp
-//IN PROGRESS
-//v 2.4
+//v 2.5
+//Reworked algorithm to fix bugs pertaining to "Today/Tomorrow/..." (i.e. "event tomorrow from 6pm until 7pm lalala")
+//v 2.6
+//Fix bugs pertaining to "The day after tomorrow the day after tomorrow"
+//Fixed: correct labelling for datTimeisUnlabelled tags
 
 #include "NLParser.h"
-
+//rmb to remove later
+#include <iostream>
 QRegExp NLParser::RX_FROM_UNTIL("\\b(?:starting|start|from(?!\\s+from)|begin|beginning)\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_UNTIL_FROM("\\b(?:ending|end|until|till|til|to)\\b(.+)\\b(?:starting|start|from(?!\\s+from)|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_ON_UNTIL("\\b(?:at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by))|by(?!\\s+(on|at|by)))\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
@@ -17,10 +21,17 @@ QRegExp NLParser::RX_TODAY(DateTimeParser::RX_DAYWORDS.pattern()+"\\b(.*)", Qt::
 NLParser::NLParser(){
 }
 
-void NLParser::parse(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled){
+void NLParser::parseDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled){
+	parseMarkedDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlablled);
+	//
+	parseTodayWords(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlablled);
+	
+	return;
+}
+void NLParser::parseMarkedDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled){
 	QDate nullDate;
 	QTime nullTime;
-	dateTimeIsUnlablled = false;
+	dateTimeIsUnlablled = true;
 
 	//search for "from... until..." format
 	int pos = -1;
@@ -39,6 +50,7 @@ void NLParser::parse(QString &descString, QDate &startDate, QTime &startTime, QD
 	if (fromStringIsValid && untilStringIsValid){
 		descString.truncate(RX_FROM_UNTIL.pos());
 		descString = descString.trimmed();
+		dateTimeIsUnlablled = false;
 		return;
 	}
 
@@ -49,6 +61,7 @@ void NLParser::parse(QString &descString, QDate &startDate, QTime &startTime, QD
 	if (fromStringIsValid && untilStringIsValid){
 		descString.truncate(RX_UNTIL_FROM.pos());
 		descString = descString.trimmed();
+		dateTimeIsUnlablled = false;
 		return;
 	}
 
@@ -59,6 +72,7 @@ void NLParser::parse(QString &descString, QDate &startDate, QTime &startTime, QD
 	if (fromStringIsValid && untilStringIsValid){
 		descString.truncate(RX_ON_UNTIL.pos());
 		descString = descString.trimmed();
+		dateTimeIsUnlablled = false;
 		return;
 	}
 
@@ -79,6 +93,7 @@ void NLParser::parse(QString &descString, QDate &startDate, QTime &startTime, QD
 		descString = descString.trimmed();
 		endDate = nullDate;
 		endTime = nullTime;
+		dateTimeIsUnlablled = false;
 		return;
 	}
 
@@ -90,29 +105,13 @@ void NLParser::parse(QString &descString, QDate &startDate, QTime &startTime, QD
 		descString = descString.trimmed();
 		startDate = nullDate;
 		startTime = nullTime;
-		return;
-	}
-
-	//search for "Today/tomorrow/etc. ..." format
-	pos = -1;
-	bool stringIsValid = false;
-	do{
-		pos = RX_TODAY.indexIn(descString, pos+1);
-		stringIsValid = _dateTimeParser.parseString(RX_TODAY.cap(1), startDate, startTime);
-	}while (!stringIsValid && pos != -1);
-
-	if (stringIsValid){
-		descString.truncate(RX_TODAY.pos());
-		descString = descString.trimmed();
-		endDate = nullDate;
-		endTime = nullTime;
-		dateTimeIsUnlablled = true;
+		dateTimeIsUnlablled = false;
 		return;
 	}
 
 	//search for "at... on..." format
 	pos = -1;
-	stringIsValid = false;
+	bool stringIsValid = false;
 	do{
 		pos = RX_ON_AT_BY.indexIn(descString, pos+1);
 		stringIsValid = _dateTimeParser.parseString(RX_ON_AT_BY.cap(1), startDate, startTime);
@@ -123,16 +122,78 @@ void NLParser::parse(QString &descString, QDate &startDate, QTime &startTime, QD
 		descString = descString.trimmed();
 		endDate = nullDate;
 		endTime = nullTime;
-		dateTimeIsUnlablled = true;
 		return;
 	}
 
 	return;
 }
 
+void NLParser::parseTodayWords(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled){
+	QDate foundDate;
+	QTime foundTime;
+	//if(dateTimeIsUnlablled && startDate.isNull()){
+	if(startDate.isNull()){
+		//exit if not found
+		if (RX_TODAY.indexIn(descString) == -1){
+			return;
+		}
+		//check: if foundStartDate is found and string is empty (use parseDateTime)(accept extra time i.e. decription today 7pm at 6pm){
+		int pos = -1;
+		bool stringIsValid = false;
+		do{
+			pos = RX_TODAY.indexIn(descString, pos+1);
+			QString todayString = RX_TODAY.cap(0);
+			//May need to remove this
+			if (RX_FROM.indexIn(RX_TODAY.cap(1)) != -1){
+				todayString = RX_FROM.cap(0);
+			}
+			//
+			stringIsValid = _dateTimeParser.parseString(todayString, foundDate, foundTime);
+		}while (!stringIsValid && pos != -1);
+	
+		if (stringIsValid){
+			startDate = foundDate;
+			if (startTime.isNull()){
+				startTime = foundTime;
+			}
+			descString.truncate(RX_TODAY.pos());
+			if (RX_FROM.pos() != -1){
+				dateTimeIsUnlablled = false;
+			}
+		}
+		return;
+	}
+
+	//if (startDate.isNull()){
+	//	if (RX_TODAY.lastIndexIn(descString) == -1){
+	//		return;
+	//	}
+	//	int pos = -1;
+	//	bool stringIsValid = false;
+	//	do{
+	//		pos = RX_TODAY.indexIn(descString, pos+1);
+	//		QString todayString = RX_TODAY.cap(0);
+	//		//May need to remove this
+	//		if (RX_FROM.indexIn(RX_TODAY.cap(1)) != -1){
+	//			todayString = RX_FROM.cap(0);
+	//		}
+	//		//
+	//		stringIsValid = _dateTimeParser.parseString(todayString, startDate, startTime);
+	//	}while (!stringIsValid && pos != -1);
+	//
+	//	if (stringIsValid){
+	//		descString.truncate(RX_TODAY.pos());
+	//		if (endDate.isNull() && endTime.isNull()){
+	//			dateTimeIsUnlablled = true;
+	//		}
+	//	}
+	//}
+	return;
+}
+
+
 void NLParser::guessContextualTime(QString descString, QTime &startTime){
 	if (startTime.isNull()){
-		//may need to ensure that this point doesn't throw exceptions
 		_dateTimeParser.extractTime(descString, startTime);
 	}
 	return;
