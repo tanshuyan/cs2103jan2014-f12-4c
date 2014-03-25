@@ -3,29 +3,20 @@
 //v 2.5
 
 #include "Parser.h"
-
+/*
 const std::string Parser::MSG_INVALID = "Invalid command.\n";
-
-//display msg
 const std::string Parser::MSG_DISPLAYCOM = "displayed completed tasks";
 const std::string Parser::MSG_DISPLAYINCOM = "displayed incompleted tasks";
 const std::string Parser::MSG_DISPLAYTODAY = "displayed today tasks";
 const std::string Parser::MSG_DISPLAYALL = "displayed all tasks";
-
-//search msg
 const std::string Parser::MSG_SEARCH = "search completed";
-//delete msg
 const std::string Parser::MSG_DELETE = "all indicated tasks deleted";
-//complete msg
 const std::string Parser::MSG_COMPLETE = "all indicated tasks completed";
-//undo msg
 const std::string Parser::MSG_UNDO = "undo last action";
-//redo msg
 const std::string Parser::MSG_REDO = "redo last undo";
-
 const std::string Parser::MSG_ADD = "task has been added";
-
 const std::string Parser::MSG_EDIT = "task has been edited";
+*/
 
 const std::string Parser::CMD_ADD = "add";
 const std::string Parser::CMD_EDIT = "edit";
@@ -126,7 +117,7 @@ std::string Parser::executeUserInput(std::string userInput) {
 		break;
 	}
 	case INVALID: {
-		commandStatus = MSG_INVALID;
+		commandStatus = _feedback.invalidFeedback();
 		break;
 	}
 	} // end switch block
@@ -136,17 +127,17 @@ std::string Parser::executeUserInput(std::string userInput) {
 
 std::string Parser::undoCMD() {
 	_logic.undo();
-	return MSG_UNDO;
+	return _feedback.undoSuccessFeedback();
 }
 
 std::string Parser::redoCMD() {
 	_logic.redo();
-	return MSG_REDO;
+	return _feedback.redoSuccessFeedback();
 }
 
 std::string Parser::searchCMD(std::string userInput) {
 	_logic.searchTasks(userInput);
-	return MSG_SEARCH;
+	return _feedback.searchSuccessFeedback(userInput);
 }
 
 std::string Parser::displayCMD(std::string userInput) {
@@ -155,18 +146,18 @@ std::string Parser::displayCMD(std::string userInput) {
 	input >> displayType;
 	if (displayType == KEYWORD_COMPLETE) {
 		_logic.getCompleteTasks();
-		return MSG_DISPLAYCOM;
+		return _feedback.displayCompleteFeedback();
 	} else if (displayType == KEYWORD_INCOMPLETE) {
 		_logic.getIncompleteTasks();
-		return MSG_DISPLAYINCOM;
+		return _feedback.displayIncompleteFeedback();
 	} else if(displayType == KEYWORD_TODAY) {
 		//Logic::getTodayTasks();
-		return MSG_DISPLAYTODAY;
+		return _feedback.displayTodayFeedback();
 	} else if (displayType == KEYWORD_ALL) {
 		_logic.getTasks();
-		return MSG_DISPLAYALL;
+		return _feedback.displayTodayFeedback();
 	} else {
-		return MSG_INVALID;
+		return _feedback.invalidFeedback();
 	}
 }
 
@@ -179,7 +170,7 @@ std::string Parser::completeCMD(std::string userInput) {
 	if(!_invalidIndex.empty()) {// have invalid index
 		return invalidIndexMsg();
 	} else {
-		return MSG_COMPLETE;
+		return _feedback.completeFeedback(userInput);
 	}
 	
 }
@@ -193,7 +184,7 @@ std::string Parser::deleteCMD(std::string userInput) {
 	if(!_invalidIndex.empty()) {// have invalid index
 		return invalidIndexMsg();
 	} else {
-		return MSG_DELETE;
+		return _feedback.deleteFeedback(userInput);
 	}
 }
 
@@ -297,7 +288,7 @@ std::string Parser::editCMD(std::string userInput) {
 	}
 
 	//This should be an error message?
-	return MSG_EDIT;
+	return _feedback.invalidFeedback();
 }
 
 
@@ -332,6 +323,6 @@ std::string Parser::addCMD(std::string userInput) {
 	}
 
 	//This should be an error message?
-	return MSG_EDIT;
+	return _feedback.invalidFeedback();
 
 }

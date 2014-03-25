@@ -31,15 +31,15 @@ UI::UI(){
 }
 
 void UI::ProgramLaunch() {
-	_displayInstance.displayUI(_displayInstance.welcomeMsg());
+	_displayInstance.displayToUser(_displayInstance.welcomeMsg());
 	std::string command;
 	_parser.getIncompleteTasks();
 	std::cout << std::endl;
 	while(_commandStatus != CMD_EXIT) {
-		_displayInstance.displayUI(_displayInstance.promptMsg());
+		_displayInstance.displayToUser(_displayInstance.promptMsg());
 		std::getline(std::cin, command);
 		_commandStatus = _parser.executeUserInput(command);
-		_displayInstance.displayUI(_commandStatus);
+		_displayInstance.displayToUser(_commandStatus);
 		std::cout << std::endl;
 	}
 	exit(0);
