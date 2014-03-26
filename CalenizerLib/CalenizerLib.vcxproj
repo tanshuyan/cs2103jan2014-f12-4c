@@ -76,14 +76,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnalysedData.cpp" />
     <ClCompile Include="DateTime.cpp" />
     <ClCompile Include="DateTimeParser.cpp" />
+    <ClCompile Include="DisplayOutput.cpp" />
     <ClCompile Include="History.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Logic.cpp" />
+    <ClCompile Include="MultipleIndexParser.cpp" />
     <ClCompile Include="NLParser.cpp" />
     <ClCompile Include="Parser.cpp" />
-    <ClCompile Include="ParserFeedback.cpp" />
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskDeadline.cpp" />
     <ClCompile Include="TaskFilter.cpp" />
@@ -91,17 +93,18 @@
     <ClCompile Include="TaskStorage.cpp" />
     <ClCompile Include="TaskTimed.cpp" />
     <ClCompile Include="UI.cpp" />
-    <ClCompile Include="UIDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnalysedData.h" />
     <ClInclude Include="DateTime.h" />
     <ClInclude Include="DateTimeParser.h" />
+    <ClInclude Include="DisplayOutput.h" />
     <ClInclude Include="History.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Logic.h" />
+    <ClInclude Include="MultipleIndexParser.h" />
     <ClInclude Include="NLParser.h" />
     <ClInclude Include="Parser.h" />
-    <ClInclude Include="ParserFeedback.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskDeadline.h" />
     <ClInclude Include="TaskFilter.h" />
@@ -109,7 +112,6 @@
     <ClInclude Include="TaskStorage.h" />
     <ClInclude Include="TaskTimed.h" />
     <ClInclude Include="UI.h" />
-    <ClInclude Include="UIDisplay.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
