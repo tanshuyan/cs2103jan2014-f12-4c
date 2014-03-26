@@ -5,6 +5,8 @@
 //Fix bugs pertaining to "The day after tomorrow the day after tomorrow"
 //Fixed: correct labelling for datTimeisUnlabelled tags
 
+// take note of startDate conversion to endDate for Deadline Tasks
+
 #include "NLParser.h"
 //rmb to remove later
 #include <iostream>
