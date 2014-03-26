@@ -1,0 +1,15 @@
+FLOAT
+siaooo2
+true
+FLOAT
+siaooo3
+true
+FLOAT
+siaooo4
+true
+FLOAT
+siaooo12
+true
+FLOAT
+siaooo12132
+false
