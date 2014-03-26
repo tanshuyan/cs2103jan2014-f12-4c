@@ -75,7 +75,7 @@ bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displa
 		}
 		// for timed tasks, display those that are ongoing 	
 		if((*iter)->getTaskType() == TASK_TIMED) {
-			if((*iter)->getStartDate().getDate().operator>=(currentDate) && (*iter)->getDeadline().getDate().operator<=(currentDate)) {
+			if((*iter)->getStartDate().getDate().operator<=(currentDate) && (*iter)->getDeadline().getDate().operator>=(currentDate)) {
 				displayList.push_back(*iter);
 				displayIndexList.push_back(iter);
 			}
