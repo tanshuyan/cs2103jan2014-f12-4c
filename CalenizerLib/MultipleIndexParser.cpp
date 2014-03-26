@@ -34,6 +34,7 @@ std::vector<int> MultipleIndexParser::parseMultipleIndex(std::string userInput) 
 		pos = RX_TO.indexIn(descString, pos);
 	}
 	
+	pos = 0;
 	pos = RX_INDEX.indexIn(descString, pos);
 	while(pos != -1){
 		int index = RX_INDEX.cap(1).toInt();

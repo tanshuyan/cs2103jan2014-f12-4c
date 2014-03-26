@@ -23,6 +23,8 @@ private:
 
 	static const std::string _programName;
 
+	std::vector<std::string> _displayList;
+
 public:
 	UIDisplay();
 	

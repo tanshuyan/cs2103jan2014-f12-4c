@@ -9,6 +9,7 @@
 #include <sstream>
 #include <vector>
 #include "Task.h"
+#include "DateTime.h"
 
 class TaskFilter {
 private:
@@ -29,6 +30,9 @@ public:
 
 	//displays all the tasks
 	bool search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList);
+
+	//displays today tasks
+	bool search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, QDate);
 
 };
 
