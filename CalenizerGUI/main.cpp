@@ -1,20 +1,17 @@
 #include "calenizergui.h"
 #include <QtWidgets/QApplication>
-#include <QSplashScreen>
-#include "Windows.h"
-
 // v1.0
 int main(int argc, char *argv[])
 {
-	QApplication app(argc, argv);
-	
-	QPixmap pixmap(":/CalenizerGUI/Resources/hc.jpg");
-	QSplashScreen splash(pixmap, Qt::WindowStaysOnTopHint);
-	splash.show();
-	Sleep(300);
+	QApplication a(argc, argv);
+	CalenizerGUI w;
+	w.setStyleSheet("background-color: #A52A2A ");
+	w.show();
+	return a.exec();
+}
 
-	CalenizerGUI calenizer;
-	calenizer.setStyleSheet("background-color: #ffffff");
-	calenizer.show();
-	return app.exec();
+void CalenizerGUI::on_lineEdit_returnPressed()
+{
+	ui.textEdit->setTextColor(Qt::white);
+	ui.textEdit->append(QString::fromStdString(_g_parser.displayCMD(ui.lineEdit->text().toStdString())));	
 }
