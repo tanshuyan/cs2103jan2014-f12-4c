@@ -81,9 +81,9 @@
     <ClCompile Include="History.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Logic.cpp" />
+    <ClCompile Include="MultipleIndexParser.cpp" />
     <ClCompile Include="NLParser.cpp" />
     <ClCompile Include="Parser.cpp" />
-    <ClCompile Include="ParserFeedback.cpp" />
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskDeadline.cpp" />
     <ClCompile Include="TaskFilter.cpp" />
@@ -92,6 +92,7 @@
     <ClCompile Include="TaskTimed.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="UIDisplay.cpp" />
+    <ClCompile Include="UILoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DateTime.h" />
@@ -99,9 +100,9 @@
     <ClInclude Include="History.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Logic.h" />
+    <ClInclude Include="MultipleIndexParser.h" />
     <ClInclude Include="NLParser.h" />
     <ClInclude Include="Parser.h" />
-    <ClInclude Include="ParserFeedback.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskDeadline.h" />
     <ClInclude Include="TaskFilter.h" />
@@ -110,6 +111,7 @@
     <ClInclude Include="TaskTimed.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="UIDisplay.h" />
+    <ClInclude Include="UILoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
