@@ -1,5 +1,5 @@
 // Logic.cpp
-// v1.0
+// v1.2
 
 #include <string>
 #include <assert.h>
@@ -55,16 +55,6 @@ void Logic::addTask(std::string taskDesc, DateTime startDateTime, DateTime endDa
 	TaskTimed* newTimedPtr = new TaskTimed;
 	newTimedPtr->setTask(TASK_TIMED, false, taskDesc, startDateTime, endDateTime);
 	_taskList.push_back(newTimedPtr);
-	_userStorage.writeFile(_taskList);
-	_History.saveHistory(_taskList);
-	return;
-}
-
-void Logic::deleteTask(int index){
-	assert(index > 0);
-	std::vector<Task*>::iterator taskToDelete = indexToIterator(index);
-	delete *taskToDelete;
-	_taskList.erase(taskToDelete);		
 	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
 	return;
@@ -173,14 +163,60 @@ void Logic::editTask(int index, std::string taskDesc, DateTime startDateTime, Da
 	return;
 }
 
-void Logic::toggleComplete(int index){
-	assert(index > 0);
-	std::vector<Task*>::iterator taskToToggle = indexToIterator(index);
-	if ((*taskToToggle)->getCompleteStatus()){
-		(*taskToToggle)->setCompleteStatus(false); // we allow the switching of tasks between complete and incomplete, but in timed and deadline tasks, we need a flag to check if the date has passed current date
+bool Logic::isValidIndex(int index) {
+	if (index >= 1 && index <= _displayList.size()) { 
+		return true; 
+	} else { 
+		return false; 
 	}
-	else{
-		(*taskToToggle)->setCompleteStatus(true);
+}
+
+void Logic::deleteTask(std::vector<int> index){
+	int taskIndex;
+	std::vector<int> invalidIndex;
+	for(unsigned int i = index.size(); i > 0; i--) {
+		taskIndex = index[i-1];
+		if(isValidIndex(taskIndex)) {
+			std::vector<Task*>::iterator taskToDelete = indexToIterator(taskIndex);
+			delete *taskToDelete;
+			_taskList.erase(taskToDelete);
+		} else {
+			invalidIndex.push_back(taskIndex);
+		}
+	}
+	
+	_userStorage.writeFile(_taskList);
+	_History.saveHistory(_taskList);
+	return;
+}
+
+void Logic::setComplete(std::vector<int> index){
+	int taskIndex;
+	std::vector<int> invalidIndex;
+	for(unsigned int i = index.size(); i > 0; i--) {
+		taskIndex = index[i-1];
+		if(isValidIndex(taskIndex)) {
+			std::vector<Task*>::iterator taskToComplete = indexToIterator(taskIndex);
+			(*taskToComplete)->setCompleteStatus(true);
+		} else {
+			invalidIndex.push_back(taskIndex);
+		}
+	}
+	_userStorage.writeStorage(_taskList);
+	_History.saveHistory(_taskList);
+}
+
+void Logic::setIncomplete(std::vector<int> index){
+	int taskIndex;
+	std::vector<int> invalidIndex;
+	for(unsigned int i = index.size(); i > 0; i--) {
+		taskIndex = index[i-1];
+		if(isValidIndex(taskIndex)) {
+			std::vector<Task*>::iterator taskToIncomplete = indexToIterator(taskIndex);
+			(*taskToIncomplete)->setCompleteStatus(false);
+		} else {
+			invalidIndex.push_back(taskIndex);
+		}
 	}
 	_userStorage.writeStorage(_taskList);
 	_History.saveHistory(_taskList);
@@ -242,6 +278,7 @@ std::vector<Task*>::iterator Logic::indexToIterator(int index){
 	return *iter;
 }
 
+/*
 unsigned int Logic::getDisplaySize() {
 	return _displayList.size();
-}
+}*/

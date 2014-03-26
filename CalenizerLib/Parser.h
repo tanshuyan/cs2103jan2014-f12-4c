@@ -1,6 +1,6 @@
 //Parser.h
 //IN PROGRESS
-//v 2.5
+//v 2.6
 
 #ifndef PARSER_H
 #define PARSER_H
@@ -16,7 +16,7 @@
 #include <algorithm>
 #include <QRegExp>
 #include "NLParser.h"
-#include "ParserFeedback.h"
+#include "MultipleIndexParser.h"
 
 enum TaskType{
 	ACTIVITY, DEADLINE, EVENT, FLOATINGTASK
@@ -26,19 +26,12 @@ class Parser{
 private:
 	DateTimeParser _dateTimeParser;
 	Logic _logic;
-	std::vector<int> _validIndex;
-	std::vector<int> _invalidIndex;
-
+	std::vector<int> _index;
 	NLParser _nlParser;
-	ParserFeedback _feedback;
+	MultipleIndexParser _multipleIndexParser;
 	
-	std::vector<std::string> _taskDesc;
-	// _startDate ;
-	// _startTime;
-
-
 	enum COMMAND_TYPE {
-		ADD, DELETE, SEARCH, EDIT, COMPLETE, UNDO, REDO, DISPLAY, EXIT, INVALID
+		ADD, DELETE, SEARCH, EDIT, COMPLETE, INCOMPLETE, UNDO, REDO, DISPLAY, EXIT, INVALID
 	};
 
 
@@ -49,10 +42,10 @@ private:
 	static const std::string CMD_EXIT;
 	static const std::string CMD_SEARCH;
 	static const std::string CMD_COMPLETE;
+	static const std::string CMD_INCOMPLETE;
 	static const std::string CMD_UNDO;
 	static const std::string CMD_REDO;
 
-/*
 	static const std::string MSG_INVALID;
 	static const std::string MSG_DISPLAYCOM;
 	static const std::string MSG_DISPLAYINCOM;
@@ -61,11 +54,12 @@ private:
 	static const std::string MSG_SEARCH;
 	static const std::string MSG_DELETE;
 	static const std::string MSG_COMPLETE;
+	static const std::string MSG_INCOMPLETE;
 	static const std::string MSG_UNDO;
 	static const std::string MSG_REDO;
 	static const std::string MSG_ADD;
 	static const std::string MSG_EDIT;
-*/
+
 	// this are keywords for display
 	static const std::string KEYWORD_COMPLETE;
 	static const std::string KEYWORD_INCOMPLETE;
@@ -80,16 +74,14 @@ public:
 	std::string executeUserInput(std::string userInput);
 
 	COMMAND_TYPE getCommand(std::string);
-	
-	bool isTimedTask(std::string);
-	bool isDeadlineTask(std::string);
-	
+		
 	std::string editCMD(std::string userInput);
 	std::string addCMD(std::string userInput);
 	
 	//Able to delete multiple indexes 
 	std::string deleteCMD(std::string);
 	std::string completeCMD(std::string);
+	std::string incompleteCMD(std::string);
 	
 	//checks if user input is complete, incomplete, today, tmr, this week, next week, this month, specific date)
 	//additional functionailty if you can code: display from specific day1 to specific day2
@@ -102,10 +94,10 @@ public:
 	std::string redoCMD();
 
 	// these functions are shared with deleteCMD and completeCMD
-	std::string invalidIndexMsg();
-	void getValidIndex(std::string);
-	bool isValidIndex(int index);
-	int convertToIndex(std::string); 
+	//std::string invalidIndexMsg();
+	//void getValidIndex(std::string);
+	//bool isValidIndex(int index);
+	//int convertToIndex(std::string); 
 
 };
 #endif
