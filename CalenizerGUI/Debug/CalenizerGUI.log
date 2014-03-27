@@ -1,0 +1,43 @@
+﻿Build started 3/24/2014 3:37:21 PM.
+     1>Project "C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\CalenizerGUI.vcxproj" on node 2 (Rebuild target(s)).
+     1>CustomBuild:
+         Moc'ing calenizergui.h...
+         Uic'ing calenizergui.ui...
+         Rcc'ing calenizergui.qrc...
+     1>RCC : warning : No resources in 'C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\calenizergui.qrc'.
+         
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\CalenizerLib /I.\GeneratedFiles /I. /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include /I.\GeneratedFiles\Debug /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtCore /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtGui /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtWidgets /Zi /nologo /W1 /WX- /Od /Oy- /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t- /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt calenizergui.cpp GeneratedFiles\Debug\moc_calenizergui.cpp main.cpp
+         calenizergui.cpp
+         moc_calenizergui.cpp
+         main.cpp
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\CalenizerLib /I.\GeneratedFiles /I. /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include /I.\GeneratedFiles\Debug /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtCore /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtGui /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtWidgets /Zi /nologo /W1 /WX- /Od /Oy- /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t- /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt GeneratedFiles\qrc_calenizergui.cpp
+         qrc_calenizergui.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Desmond\Desktop\QTCalenizer\Win32\Debug\\CalenizerGUI.exe" /NOLOGO /LIBPATH:C:\Qt\Qt5.2.1\5.2.1\msvc2012\lib qtmaind.lib Qt5Cored.lib Qt5Guid.lib Qt5Widgetsd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Desmond\Desktop\QTCalenizer\Win32\Debug\CalenizerGUI.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Desmond\Desktop\QTCalenizer\Win32\Debug\CalenizerGUI.lib" /MACHINE:X86 /SAFESEH Debug\calenizergui.obj
+         Debug\moc_calenizergui.obj
+         Debug\qrc_calenizergui.obj
+         Debug\main.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\DateTime.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\DateTimeParser.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\History.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\Logger.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\Logic.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\NLParser.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\Parser.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\Task.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\TaskDeadline.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\TaskFilter.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\TaskFloat.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\TaskStorage.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\TaskTimed.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\UI.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\UIDisplay.obj
+         C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\UILoader.obj
+     1>LINK : fatal error LNK1104: cannot open file 'C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Debug\Parser.obj'
+     1>Done Building Project "C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\CalenizerGUI.vcxproj" (Rebuild target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:05.83
