@@ -400,9 +400,6 @@ void Logic::displayTask(AnalysedData analysedData, DisplayOutput& displayOutput)
 		_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, analysedData.getDisplayType());
 	}
 	
-	if(analysedData.getCommand() == CMD_DISPLAY || analysedData.getCommand() == CMD_SEARCH) {
-		displayOutput.setFeedBack("displayed all relevant tasks\n");
-	}
 	displayOutput.displayTasks(_displayList);
 	_currentDisplayType.setCommand(analysedData.getCommand());
 	_currentDisplayType.setDisplayType(analysedData.getDisplayType());
