@@ -84,8 +84,8 @@ std::string TaskTimed::statusToString() {
 
 std::string TaskTimed::outputToString() {
 	std::ostringstream output;
-	output << getTaskType() << " "; 
-	output << getTaskDesc() << " ";
+	output << getTaskType() << "<>"; 
+	output << getTaskDesc() << "<>";
 	output << _startDateTime.dataToString() << " " << _endDateTime.dataToString() << " ";
 	output << statusToString() << std::endl;
 	return output.str();

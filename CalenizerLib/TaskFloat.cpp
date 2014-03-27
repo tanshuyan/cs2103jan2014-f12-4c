@@ -63,8 +63,8 @@ std::string TaskFloat::statusToString() {
 
 std::string TaskFloat::outputToString() {
 	std::ostringstream output;
-	output << getTaskType() << " "; 
-	output << getTaskDesc() << " ";
+	output << getTaskType() << "<>"; 
+	output << getTaskDesc() << "<>";
 	output << statusToString() << std::endl;
 	return output.str();
 }
