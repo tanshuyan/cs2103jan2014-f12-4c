@@ -161,7 +161,7 @@ void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	endDateTime.setTime(endTime);
 
 	if(!isValidIndex(index)) {
-		displayOutput.setFeedBack("invalid index\n");
+		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
 		return;
 	}
 
@@ -174,7 +174,7 @@ void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 		
 		_userStorage.writeFile(_taskList);
 		_History.saveHistory(_taskList);
-		displayOutput.setFeedBack("task editted\n");
+		displayOutput.setFeedBack(_actionMsg.editFeedback(taskDesc));
 		return;
 	}
 
@@ -189,7 +189,7 @@ void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 		}
 		_userStorage.writeFile(_taskList);
 		_History.saveHistory(_taskList);
-		displayOutput.setFeedBack("task editted\n");
+		displayOutput.setFeedBack(_actionMsg.editFeedback(taskDesc));
 		return;
 	}
 	
@@ -206,7 +206,7 @@ void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 		
 		_userStorage.writeFile(_taskList);
 		_History.saveHistory(_taskList);
-		displayOutput.setFeedBack("task editted\n");
+		displayOutput.setFeedBack(_actionMsg.editFeedback(taskDesc));
 		return;
 	}
 
@@ -234,7 +234,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 		_taskList.push_back(newFloatPtr);
 		_userStorage.writeFile(_taskList);
 		_History.saveHistory(_taskList);
-		displayOutput.setFeedBack("task added\n");
+		displayOutput.setFeedBack(_actionMsg.addFeedback(taskDesc));
 		return;
 	}
 
@@ -244,7 +244,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 		_taskList.push_back(newDeadlinePtr);
 		_userStorage.writeFile(_taskList);
 		_History.saveHistory(_taskList);
-		displayOutput.setFeedBack("task added\n");
+		displayOutput.setFeedBack(_actionMsg.addFeedback(taskDesc));
 		return;
 	}
 
@@ -254,7 +254,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 		_taskList.push_back(newDeadlinePtr);
 		_userStorage.writeFile(_taskList);
 		_History.saveHistory(_taskList);
-		displayOutput.setFeedBack("task added\n");
+		displayOutput.setFeedBack(_actionMsg.addFeedback(taskDesc));
 		return;
 	}
 
@@ -263,7 +263,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	_taskList.push_back(newTimedPtr);
 	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
-	displayOutput.setFeedBack("task added\n");
+	displayOutput.setFeedBack(_actionMsg.addFeedback(taskDesc));
 	return;
 }
 
@@ -286,7 +286,7 @@ void Logic::deleteTask(AnalysedData analysedData, DisplayOutput& displayOutput){
 	if(!invalidIndex.empty()) { // invalid tasks inputted
 		displayOutput.setFeedBack(invalidIndex);
 	} else {
-		displayOutput.setFeedBack("all tasks deleted\n");
+		displayOutput.setFeedBack(_actionMsg.deleteFeedback());
 	}
 
 	_userStorage.writeFile(_taskList);
@@ -312,7 +312,7 @@ void Logic::setComplete(AnalysedData analysedData, DisplayOutput& displayOutput)
 	if(!invalidIndex.empty()) { // invalid tasks inputted
 		displayOutput.setFeedBack(invalidIndex);
 	} else {
-		displayOutput.setFeedBack("all tasks completed\n");
+		displayOutput.setFeedBack(_actionMsg.completeSuccessFeedback());
 	}
 
 	_userStorage.writeStorage(_taskList);
@@ -337,7 +337,7 @@ void Logic::setIncomplete(AnalysedData analysedData, DisplayOutput& displayOutpu
 	if(!invalidIndex.empty()) { // invalid tasks inputted
 		displayOutput.setFeedBack(invalidIndex);
 	} else {
-		displayOutput.setFeedBack("all tasks incompleted\n");
+		displayOutput.setFeedBack(_actionMsg.incompleteSuccessFeedback());
 	}
 
 	_userStorage.writeStorage(_taskList);
@@ -349,10 +349,10 @@ void Logic::undo(DisplayOutput& displayOutput) {
 
 	if(_History.undo(_taskList)){
 		_userStorage.writeStorage(_taskList);
-		displayOutput.setFeedBack("undo done\n");
+		displayOutput.setFeedBack(_actionMsg.undoSuccessFeedback());
 	}
 	else{
-		displayOutput.setFeedBack("undo failed\n");
+		displayOutput.setFeedBack(_actionMsg.undoFailureFeedback());
 	}
 }
 
@@ -360,10 +360,10 @@ void Logic::redo(DisplayOutput& displayOutput) {
 	Logger& logLogic = Logger::getInstance();
 	if(_History.redo(_taskList)){
 		_userStorage.writeStorage(_taskList);
-		displayOutput.setFeedBack("redo done\n");
+		displayOutput.setFeedBack(_actionMsg.redoSuccessFeedback());
 	}
 	else{
-		displayOutput.setFeedBack("redo failed\n");
+		displayOutput.setFeedBack(_actionMsg.undoFailureFeedback());
 	}
 }
 

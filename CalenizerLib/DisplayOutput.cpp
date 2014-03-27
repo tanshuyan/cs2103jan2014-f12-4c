@@ -78,7 +78,8 @@ const std::string DisplayOutput::MSG_REDO_SUCCESS ="latest undo to %s reverted";
 const std::string DisplayOutput::MSG_REDO_FAILURE ="Nothing to redo in %s";
 const std::string DisplayOutput::MSG_SEARCH_SUCCESS ="search term %s found in %s";
 const std::string DisplayOutput::MSG_SEARCH_FAILURE ="search term %s not found in %s";
-const std::string DisplayOutput::MSG_COMPLETE_SUCCESS ="%S marked as complete";
+const std::string DisplayOutput::MSG_COMPLETE_SUCCESS ="task marked as complete";
+const std::string DisplayOutput::MSG_INCOMPLETE_SUCCESS ="task marked as incomplete";
 
 const std::string DisplayOutput::MSG_DISPLAYCOM = "completed tasks in %s shown";
 const std::string DisplayOutput::MSG_DISPLAYINCOM = "incompleted tasks in %s shown";
@@ -163,8 +164,13 @@ std::string DisplayOutput::invalidDateFeedback(){
 	return buffer;
 }
 
-std::string DisplayOutput::completeFeedback(std::string userInput){
-	sprintf_s(buffer,  MSG_COMPLETE_SUCCESS.c_str(), userInput.c_str());
+std::string DisplayOutput::completeSuccessFeedback(){
+	sprintf_s(buffer,  MSG_COMPLETE_SUCCESS.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::incompleteSuccessFeedback(){
+	sprintf_s(buffer,  MSG_INCOMPLETE_SUCCESS.c_str());
 	return buffer;
 }
 
