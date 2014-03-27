@@ -44,7 +44,7 @@ void History::saveHistory(std::vector<Task*> taskList){
 void History::clearRedo(){
 	while (!_nextHistorys.empty()){
 		_deleteTaskList = _nextHistorys.top();
-		for(unsigned int i = 0; i < _currHistory.size(); i++) {
+		for(unsigned int i = 0; i < _deleteTaskList.size(); i++) {
 			delete _deleteTaskList[i];
 		}
 		_nextHistorys.pop();
