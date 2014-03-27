@@ -17,7 +17,11 @@ void UI::ProgramLaunch() {
 	_displayOutput.displayToUser(_displayOutput.welcomeMsg());
 	std::string command;
 	std::vector<std::string> display;
-	_logic.executeUserInput("display all");
+	_displayOutput = _logic.executeUserInput("display all");
+	display = _displayOutput.getDisplay();
+	for(std::vector<std::string>::iterator iter = display.begin(); iter != display.end(); iter++) {
+		std::cout << *iter;
+	}
 	std::cout << std::endl;
 	while(_displayOutput.getFeedBack() != CMD_EXIT) {
 		_displayOutput.displayToUser(_displayOutput.promptMsg());
