@@ -41,6 +41,7 @@ private:
 	static const std::string MSG_SEARCH_FAILURE;
 
 	static const std::string MSG_COMPLETE_SUCCESS;
+	static const std::string MSG_INCOMPLETE_SUCCESS;
 
 	static const std::string MSG_DISPLAYCOM;
 	static const std::string MSG_DISPLAYINCOM;
@@ -77,7 +78,8 @@ public:
 	std::string redoFailureFeedback();
 	std::string searchSuccessFeedback(std::string);
 	std::string searchFailureFeedback(std::string);
-	std::string completeFeedback(std::string);
+	std::string completeSuccessFeedback();
+	std::string incompleteSuccessFeedback();
 
 	std::string notFoundFeedback(std::string);
 	std::string invalidFeedback();
