@@ -1,5 +1,5 @@
 //UI.cpp
-// v1.0
+// v1.1
 
 #include <iostream>
 #include <string>
@@ -8,41 +8,35 @@
 #include "task.h"
 #include "DateTime.h"
 
-
-const std::string UI::CMD_UNDO = "undo";
-const std::string UI::CMD_REDO = "redo";
-const std::string UI::CMD_ADD = "add";
-const std::string UI::CMD_ADDD = "addd";
-const std::string UI::CMD_ADDT = "addt";
-const std::string UI::CMD_EDIT = "edit";
-const std::string UI::CMD_EDIT1 = "edit1";
-const std::string UI::CMD_EDIT2 = "edit2";
-const std::string UI::CMD_EDITD = "editd";
-const std::string UI::CMD_EDITT = "editt";
-const std::string UI::CMD_DELETE = "delete";
-const std::string UI::CMD_DISPLAY = "display";
 const std::string UI::CMD_EXIT = "exit";
-const std::string UI::CMD_SEARCH = "search";
-const std::string UI::CMD_COMPLETE = "complete";
-const std::string UI::CMD_USERPROMPT= "Enter command: ";
 
 UI::UI(){
 }
 
 void UI::ProgramLaunch() {
-	std::cout << "Welcome to Calenizer!" << std::endl;
-	_cmdOperation.getIncompleteTasks();
-	std::cout << CMD_USERPROMPT;
+	_displayOutput.displayToUser(_displayOutput.welcomeMsg());
 	std::string command;
-	std::cin >> command;
-	while(command != CMD_EXIT) {
-		executeCommand(command);
-		std::cout << CMD_USERPROMPT;
-		std::cin >> command;
+	std::vector<std::string> display;
+	_displayOutput = _logic.executeUserInput("display all");
+	display = _displayOutput.getDisplay();
+	for(std::vector<std::string>::iterator iter = display.begin(); iter != display.end(); iter++) {
+		std::cout << *iter;
+	}
+	std::cout << std::endl;
+	while(_displayOutput.getFeedBack() != CMD_EXIT) {
+		_displayOutput.displayToUser(_displayOutput.promptMsg());
+		std::getline(std::cin, command);
+		_displayOutput = _logic.executeUserInput(command);
+		_displayOutput.displayToUser(_displayOutput.getFeedBack());
+		display = _displayOutput.getDisplay();
+		for(std::vector<std::string>::iterator iter = display.begin(); iter != display.end(); iter++) {
+		std::cout << *iter;
+		}
 	}
 	exit(0);
 }
 
+/*
 UI::COMMAND_TYPE UI::determineCommand(std::string command) {
 if(command == CMD_ADD) {
 		return COMMAND_TYPE::ADD;
@@ -250,3 +244,4 @@ void UI::executeCommand(std::string command) {
 
 
 }
+*/

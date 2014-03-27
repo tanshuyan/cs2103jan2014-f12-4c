@@ -1,5 +1,5 @@
 //DateTimeParser.cpp
-//v 2.4
+//v 2.6
 #include "DateTimeParser.h"
 
 QRegExp DateTimeParser::rxEmpty("(^\\s*$)");
@@ -19,7 +19,7 @@ QRegExp DateTimeParser::rxYesterday("(?:since)?(?:\\s*)(yesterday|ystd)",Qt::Cas
 QRegExp DateTimeParser::rxDayAfter("(?:by)?(?:\\s*)(the)?(?:\\s*)(day)(?:\\s*)(after)(?:\\s*)(tomorrow|tommorrow|tommorow|tmr)",Qt::CaseInsensitive);
 QRegExp DateTimeParser::rxNextWeek("(?:by)?(?:\\s*)(next|nxt)(?:\\s*)(week|wk)",Qt::CaseInsensitive);
 
-QRegExp DateTimeParser::RX_DAYWORDS("((today)|("+rxToday.pattern()+")|("+rxTomorrow.pattern()+")|("+rxYesterday.pattern()+")|("+rxYesterday.pattern()+")|("+rxDayAfter.pattern()+")|("+rxNextWeek.pattern()+")|("+rxShortWeekDays.pattern()+")|("+rxLongWeekDays.pattern()+"))",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_DAYWORDS("(("+rxToday.pattern()+")|("+rxTomorrow.pattern()+")|("+rxYesterday.pattern()+")|("+rxYesterday.pattern()+")|("+rxDayAfter.pattern()+")|("+rxNextWeek.pattern()+")|("+rxShortWeekDays.pattern()+")|("+rxLongWeekDays.pattern()+"))",Qt::CaseInsensitive);
 
 DateTimeParser::DateTimeParser(){
 }
@@ -45,27 +45,13 @@ bool DateTimeParser::parseString(QString input, QDate &outputDate, QTime &output
 		throw (20);
 	}
 
-	return input.trimmed().isEmpty();
-}
-
-bool DateTimeParser::parseDayString(QString input, QDate &outputDate, QTime &outputTime){
-	QDate nullDate;
-	QTime nullTime;
-	outputDate = nullDate;
-	outputTime = nullTime;
-
-	//might not need to extract time?
-	bool isInvalidTime = !extractTime(input, outputTime);
-	if (isInvalidTime){
-		throw (10);
+	bool isTaskDesc = !input.trimmed().isEmpty();
+	if (isTaskDesc){
+		outputDate = nullDate;
+		outputTime = nullTime;
+		return false;
 	}
-	
-	bool isInvalidDate = !extractDate(input, outputDate);
-	if (isInvalidDate){
-		throw (20);
-	}
-
-	return input.trimmed().isEmpty();
+	return true;
 }
 
 
