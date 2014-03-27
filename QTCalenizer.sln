@@ -5,7 +5,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CalenizerLib", "CalenizerLi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unittest", "unittest\unittest.vcxproj", "{3A52398A-485F-45DE-A24F-956FB2C20D77}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CalenizerGUI", "CalenizerGUI\CalenizerGUI.vcxproj", "{A1A30F06-6D4C-4F0A-B71E-A8C15966E80B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QTCalenizer", "QTCalenizer\QTCalenizer.vcxproj", "{B12702AD-ABFB-343A-A199-8E24837244A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +21,10 @@ Global
 		{3A52398A-485F-45DE-A24F-956FB2C20D77}.Debug|Win32.Build.0 = Debug|Win32
 		{3A52398A-485F-45DE-A24F-956FB2C20D77}.Release|Win32.ActiveCfg = Release|Win32
 		{3A52398A-485F-45DE-A24F-956FB2C20D77}.Release|Win32.Build.0 = Release|Win32
-		{A1A30F06-6D4C-4F0A-B71E-A8C15966E80B}.Debug|Win32.ActiveCfg = Debug|Win32
-		{A1A30F06-6D4C-4F0A-B71E-A8C15966E80B}.Debug|Win32.Build.0 = Debug|Win32
-		{A1A30F06-6D4C-4F0A-B71E-A8C15966E80B}.Release|Win32.ActiveCfg = Release|Win32
-		{A1A30F06-6D4C-4F0A-B71E-A8C15966E80B}.Release|Win32.Build.0 = Release|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|Win32.Build.0 = Debug|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|Win32.ActiveCfg = Release|Win32
+		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

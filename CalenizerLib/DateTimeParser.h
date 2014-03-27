@@ -1,5 +1,5 @@
 //DateTimeParser.h
-//v 2.4
+//v 2.6
 
 #ifndef DATETIMEPARSER_H
 #define DATETIMEPARSER_H
@@ -66,9 +66,8 @@ public:
 	static QRegExp RX_DAYWORDS;
 	
 	//sets date or time to null if no valid date or time is found respectively
-	//Post: returns false if string is suspected to be part of desc
+	//Post: returns false if string is suspected to be part of desc, and date and time will be set to null
 	bool parseString(QString input, QDate &outputDate, QTime &outputTime);
-	bool parseDayString(QString input, QDate &outputDate, QTime &outputTime);
 
 	//Post: returns false if an invalid time found
 	bool extractTime(QString &input, QTime &time);
