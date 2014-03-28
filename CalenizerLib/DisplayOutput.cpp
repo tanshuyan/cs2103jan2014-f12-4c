@@ -5,7 +5,7 @@
 #include "DisplayOutput.h"
 #include <iostream>
 
-const std::string DisplayOutput:: _programName = "Calenzier";	
+const std::string DisplayOutput:: _programName = "Calenizer";	
 
 DisplayOutput::DisplayOutput() {
 }

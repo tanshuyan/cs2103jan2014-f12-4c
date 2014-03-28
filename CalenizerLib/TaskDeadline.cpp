@@ -136,7 +136,7 @@ std::string TaskDeadline::outputToString() {
 	std::ostringstream output;
 	output << getTaskType() << "<>"; 
 	output << getTaskDesc() << "<>";
-	output << _deadline.dataToString() << " ";
+	output << _deadline.dataToString() << "<>";
 	output << statusToString() << std::endl;
 	return output.str();
 }
