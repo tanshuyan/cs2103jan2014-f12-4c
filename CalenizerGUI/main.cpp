@@ -43,4 +43,5 @@ void CalenizerGUI::on_lineEdit_returnPressed()
 		ui.tableWidget->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(duration)));
 		ui.tableWidget->setItem(row, 2, new QTableWidgetItem(QString::fromStdString(taskStatus)));
 	}
+	ui.lineEdit->clear();
 }
