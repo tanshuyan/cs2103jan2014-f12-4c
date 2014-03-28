@@ -134,9 +134,9 @@ std::string TaskDeadline::toStandardDateTime(){
 
 std::string TaskDeadline::outputToString() {
 	std::ostringstream output;
-	output << getTaskType() << " "; 
-	output << getTaskDesc() << " ";
-	output << _deadline.dataToString() << " ";
+	output << getTaskType() << "<>"; 
+	output << getTaskDesc() << "<>";
+	output << _deadline.dataToString() << "<>";
 	output << statusToString() << std::endl;
 	return output.str();
 }

@@ -28,7 +28,7 @@ private:
 	std::vector<Task*> _taskList;
 	std::vector<Task*> _displayList;
 	std::vector<std::vector<Task*>::iterator> _displayIndexList;
-	//UIDisplay _display;
+	DisplayOutput _actionMsg;
 	TaskFilter _filter;
 	History _History;
 	TaskStorage _userStorage;

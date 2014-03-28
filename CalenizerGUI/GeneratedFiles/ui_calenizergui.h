@@ -13,13 +13,13 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QFrame>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
@@ -33,14 +33,8 @@ public:
     QLabel *label;
     QLineEdit *lineEdit;
     QTextEdit *textEdit;
-    QTextEdit *textEdit_2;
     QLabel *label_2;
-    QFrame *line;
-    QFrame *line_2;
-    QFrame *line_3;
-    QFrame *line_4;
-    QFrame *line_5;
-    QFrame *line_6;
+    QTableWidget *tableWidget;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -54,51 +48,50 @@ public:
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(30, 40, 101, 16));
+        label->setGeometry(QRect(20, 40, 101, 16));
+        QFont font;
+        font.setFamily(QStringLiteral("Malgun Gothic"));
+        font.setPointSize(9);
+        font.setBold(true);
+        font.setWeight(75);
+        label->setFont(font);
         lineEdit = new QLineEdit(centralWidget);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
-        lineEdit->setGeometry(QRect(120, 40, 471, 20));
+        lineEdit->setGeometry(QRect(120, 40, 461, 20));
+        QFont font1;
+        font1.setFamily(QStringLiteral("Malgun Gothic"));
+        lineEdit->setFont(font1);
         textEdit = new QTextEdit(centralWidget);
         textEdit->setObjectName(QStringLiteral("textEdit"));
-        textEdit->setGeometry(QRect(10, 290, 581, 51));
-        textEdit_2 = new QTextEdit(centralWidget);
-        textEdit_2->setObjectName(QStringLiteral("textEdit_2"));
-        textEdit_2->setGeometry(QRect(10, 70, 581, 211));
-        textEdit_2->setFrameShadow(QFrame::Sunken);
-        textEdit_2->setLineWidth(7);
+        textEdit->setGeometry(QRect(10, 290, 571, 51));
+        textEdit->setFont(font1);
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
         label_2->setGeometry(QRect(210, 10, 181, 16));
-        line = new QFrame(centralWidget);
-        line->setObjectName(QStringLiteral("line"));
-        line->setGeometry(QRect(20, 90, 561, 20));
-        line->setFrameShape(QFrame::HLine);
-        line->setFrameShadow(QFrame::Sunken);
-        line_2 = new QFrame(centralWidget);
-        line_2->setObjectName(QStringLiteral("line_2"));
-        line_2->setGeometry(QRect(20, 120, 561, 20));
-        line_2->setFrameShape(QFrame::HLine);
-        line_2->setFrameShadow(QFrame::Sunken);
-        line_3 = new QFrame(centralWidget);
-        line_3->setObjectName(QStringLiteral("line_3"));
-        line_3->setGeometry(QRect(20, 150, 561, 20));
-        line_3->setFrameShape(QFrame::HLine);
-        line_3->setFrameShadow(QFrame::Sunken);
-        line_4 = new QFrame(centralWidget);
-        line_4->setObjectName(QStringLiteral("line_4"));
-        line_4->setGeometry(QRect(20, 180, 561, 20));
-        line_4->setFrameShape(QFrame::HLine);
-        line_4->setFrameShadow(QFrame::Sunken);
-        line_5 = new QFrame(centralWidget);
-        line_5->setObjectName(QStringLiteral("line_5"));
-        line_5->setGeometry(QRect(20, 210, 561, 20));
-        line_5->setFrameShape(QFrame::HLine);
-        line_5->setFrameShadow(QFrame::Sunken);
-        line_6 = new QFrame(centralWidget);
-        line_6->setObjectName(QStringLiteral("line_6"));
-        line_6->setGeometry(QRect(20, 240, 561, 20));
-        line_6->setFrameShape(QFrame::HLine);
-        line_6->setFrameShadow(QFrame::Sunken);
+        QFont font2;
+        font2.setFamily(QStringLiteral("Malgun Gothic"));
+        font2.setPointSize(10);
+        label_2->setFont(font2);
+        tableWidget = new QTableWidget(centralWidget);
+        if (tableWidget->columnCount() < 3)
+            tableWidget->setColumnCount(3);
+        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
+        tableWidget->setHorizontalHeaderItem(0, __qtablewidgetitem);
+        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
+        tableWidget->setHorizontalHeaderItem(1, __qtablewidgetitem1);
+        QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
+        tableWidget->setHorizontalHeaderItem(2, __qtablewidgetitem2);
+        tableWidget->setObjectName(QStringLiteral("tableWidget"));
+        tableWidget->setGeometry(QRect(10, 70, 581, 201));
+        QFont font3;
+        font3.setFamily(QStringLiteral("Malgun Gothic"));
+        font3.setBold(false);
+        font3.setWeight(50);
+        tableWidget->setFont(font3);
+        tableWidget->setFrameShape(QFrame::NoFrame);
+        tableWidget->setFrameShadow(QFrame::Sunken);
+        tableWidget->setRowCount(0);
+        tableWidget->setColumnCount(3);
         CalenizerGUIClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(CalenizerGUIClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -113,6 +106,7 @@ public:
 
         retranslateUi(CalenizerGUIClass);
         QObject::connect(lineEdit, SIGNAL(returnPressed()), textEdit, SLOT(copy()));
+        QObject::connect(lineEdit, SIGNAL(returnPressed()), tableWidget, SLOT(doItemsLayout()));
 
         QMetaObject::connectSlotsByName(CalenizerGUIClass);
     } // setupUi
@@ -122,6 +116,12 @@ public:
         CalenizerGUIClass->setWindowTitle(QApplication::translate("CalenizerGUIClass", "CalenizerGUI", 0));
         label->setText(QApplication::translate("CalenizerGUIClass", "Enter command:", 0));
         label_2->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p align=\"center\"><span style=\" font-size:10pt; font-weight:600; color:#ffffff;\">Welcome to Calenizer!</span></p></body></html>", 0));
+        QTableWidgetItem *___qtablewidgetitem = tableWidget->horizontalHeaderItem(0);
+        ___qtablewidgetitem->setText(QApplication::translate("CalenizerGUIClass", "Task Description", 0));
+        QTableWidgetItem *___qtablewidgetitem1 = tableWidget->horizontalHeaderItem(1);
+        ___qtablewidgetitem1->setText(QApplication::translate("CalenizerGUIClass", "Duration", 0));
+        QTableWidgetItem *___qtablewidgetitem2 = tableWidget->horizontalHeaderItem(2);
+        ___qtablewidgetitem2->setText(QApplication::translate("CalenizerGUIClass", "Status", 0));
     } // retranslateUi
 
 };
