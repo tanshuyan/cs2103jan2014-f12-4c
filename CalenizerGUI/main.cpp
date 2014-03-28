@@ -20,10 +20,27 @@ void CalenizerGUI::on_lineEdit_returnPressed()
 	for(int row=0; row<displayoutput.getDisplay().size(); row++){
 		std::string initialString = displayoutput.getDisplay().at(row);
 		int startIndex = initialString.find_first_of("<>");
-		int lastIndex = initialString.find_last_of("<>");
-		std::string taskDesc = initialString.substr(startIndex+2,lastIndex-(startIndex+3));
-		std::string duration = initialString.substr(lastIndex+1);
+		int pos = initialString.find("<>", initialString.find("<>") + 1);
+		std::string taskDesc = initialString.substr(startIndex+2,pos-(startIndex+2));
+		startIndex = pos+1;
+		int lastIndex = initialString.find("<>", startIndex);
+		std::string duration;
+		std::string status;
+		if(lastIndex != initialString.npos){
+			duration = initialString.substr(pos+2,lastIndex-(pos+2));
+			status = initialString.substr(lastIndex+2);
+		} else {
+			duration = "";
+			status = initialString.substr(startIndex+1);
+		}
+		std::string taskStatus;
+		if(status == "true\n"){
+			taskStatus = "complete";
+		} else {
+			taskStatus = "incomplete";
+		}
 		ui.tableWidget->setItem(row, 0, new QTableWidgetItem(QString::fromStdString(taskDesc)));
 		ui.tableWidget->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(duration)));
+		ui.tableWidget->setItem(row, 2, new QTableWidgetItem(QString::fromStdString(taskStatus)));
 	}
 }

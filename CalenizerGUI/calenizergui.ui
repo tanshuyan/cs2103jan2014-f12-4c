@@ -110,7 +110,7 @@
      <number>0</number>
     </property>
     <property name="columnCount">
-     <number>2</number>
+     <number>3</number>
     </property>
     <column>
      <property name="text">
@@ -120,6 +120,11 @@
     <column>
      <property name="text">
       <string>Duration</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Status</string>
      </property>
     </column>
    </widget>

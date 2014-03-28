@@ -73,12 +73,14 @@ public:
         font2.setPointSize(10);
         label_2->setFont(font2);
         tableWidget = new QTableWidget(centralWidget);
-        if (tableWidget->columnCount() < 2)
-            tableWidget->setColumnCount(2);
+        if (tableWidget->columnCount() < 3)
+            tableWidget->setColumnCount(3);
         QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
         tableWidget->setHorizontalHeaderItem(0, __qtablewidgetitem);
         QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
         tableWidget->setHorizontalHeaderItem(1, __qtablewidgetitem1);
+        QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
+        tableWidget->setHorizontalHeaderItem(2, __qtablewidgetitem2);
         tableWidget->setObjectName(QStringLiteral("tableWidget"));
         tableWidget->setGeometry(QRect(10, 70, 581, 201));
         QFont font3;
@@ -89,7 +91,7 @@ public:
         tableWidget->setFrameShape(QFrame::NoFrame);
         tableWidget->setFrameShadow(QFrame::Sunken);
         tableWidget->setRowCount(0);
-        tableWidget->setColumnCount(2);
+        tableWidget->setColumnCount(3);
         CalenizerGUIClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(CalenizerGUIClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -118,6 +120,8 @@ public:
         ___qtablewidgetitem->setText(QApplication::translate("CalenizerGUIClass", "Task Description", 0));
         QTableWidgetItem *___qtablewidgetitem1 = tableWidget->horizontalHeaderItem(1);
         ___qtablewidgetitem1->setText(QApplication::translate("CalenizerGUIClass", "Duration", 0));
+        QTableWidgetItem *___qtablewidgetitem2 = tableWidget->horizontalHeaderItem(2);
+        ___qtablewidgetitem2->setText(QApplication::translate("CalenizerGUIClass", "Status", 0));
     } // retranslateUi
 
 };

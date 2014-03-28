@@ -12,7 +12,8 @@ CalenizerGUI::CalenizerGUI(QWidget *parent)
 	ui.lineEdit->setPalette(*palette);
 
 	ui.tableWidget->setColumnWidth(0,  200);
-	ui.tableWidget->setColumnWidth(1,  355);
+	ui.tableWidget->setColumnWidth(1,  255);
+	ui.tableWidget->setColumnWidth(2,  100);
 	ui.tableWidget->setStyleSheet("color: black;" 
 								  "gridline-color: white;"
 								  "background-color: gray;");
