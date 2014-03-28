@@ -4,7 +4,7 @@
 #include <QtWidgets/QMainWindow>
 #include <iostream>
 #include "ui_calenizergui.h"
-#include "Parser.h"
+#include "DisplayOutput.h"
 #include "Logic.h"
 
 class CalenizerGUI : public QMainWindow
