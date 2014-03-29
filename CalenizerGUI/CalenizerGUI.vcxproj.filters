@@ -50,6 +50,9 @@
     <ClCompile Include="GeneratedFiles\qrc_calenizergui.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="inputline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="calenizergui.h">
@@ -65,6 +68,9 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_calenizergui.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inputline.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
