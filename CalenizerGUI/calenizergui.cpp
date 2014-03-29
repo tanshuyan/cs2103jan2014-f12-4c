@@ -17,13 +17,16 @@ const std::string CalenizerGUI::STATUS_FALSE= "false\n";
 const std::string CalenizerGUI::STATUS_COMPLETE = "complete";
 const std::string CalenizerGUI::STATUS_INCOMPLETE = "incomplete";
 
+const std::string CalenizerGUI::CMD_DISPLAY_TODAY = "display today";
+
 CalenizerGUI::CalenizerGUI(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
+	initialiseConnections();
+	todayDisplay();
 	initialiseTableStyle();
 	initialiseTableSize();
-
 	_g_current_row = 0;
 }
 
@@ -119,10 +122,18 @@ void CalenizerGUI::getTask(DisplayOutput displayoutput, int row){
 		ui.tableWidget->setItem(row, 2, new QTableWidgetItem(QString::fromStdString(status)));
 }
 
-void CalenizerGUI::on_lineEdit_returnPressed()
-{
+void CalenizerGUI:: initialiseConnections() {
+	//connect(ui.lineEdit, SIGNAL(textEdited(QString)), this, SLOT(checkAlphabet(QString)));
+	connect(ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(run()));
+}
 
-	DisplayOutput displayoutput= _g_logic.executeUserInput(ui.lineEdit->text().toStdString());
+void CalenizerGUI::run()
+{
+	std::string userInput = ui.lineEdit->text().toStdString();
+	//char alphabet = userInput.at(0);
+	//checkAlphabet(alphabet);
+
+	DisplayOutput displayoutput= _g_logic.executeUserInput(userInput);
 	getFeedback(displayoutput);
 
 	ui.tableWidget->setRowCount(displayoutput.getDisplay().size());
@@ -134,19 +145,27 @@ void CalenizerGUI::on_lineEdit_returnPressed()
 	ui.lineEdit->clear();
 }
 
-//below part need to try more
-//void QCursor::setPos ( const QPoint & p ) [static]
+void CalenizerGUI::todayDisplay() {
+	DisplayOutput displayoutput= _g_logic.executeUserInput(CMD_DISPLAY_TODAY);
+	getFeedback(displayoutput);
 
-std::string CalenizerGUI::setAdd(std::string command){
+	ui.tableWidget->setRowCount(displayoutput.getDisplay().size());
+
+	for(int row=0; row<displayoutput.getDisplay().size(); row++){
+		getTask(displayoutput,row);
+	}
+}
+/*
+//checking shd be okay, prob shd be with signal
+void CalenizerGUI::checkAlphabet(QString string){
+	std::string text = string.toStdString();
+	char alphabet = text.at(0);
 
 	QCursor c;
-	//QPoint p;
-
-	std::string text = ui.lineEdit->text().toStdString();
-	if(text[0] == 'a'){
-		ui.lineEdit->setText(ADD_MSG);
-		c.setPos (4,0);
+	if(alphabet == 'a'){
+	ui.lineEdit->setText(ADD_MSG);
+	//c.setPos (4,0);
 	}
 
-	//QLineEdit *line = new QLineEdit();
 }
+*/
