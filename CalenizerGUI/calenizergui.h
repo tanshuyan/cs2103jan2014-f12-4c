@@ -20,8 +20,10 @@ public:
 
 	void displayTasks(std::vector<Task*>* displayList);
 
-public slots:
-	void on_lineEdit_returnPressed();
+private slots:
+	//void on_lineEdit_returnPressed();
+	void run();
+
 private:
 	Ui::CalenizerGUIClass ui;
 
@@ -53,10 +55,16 @@ private:
 	static const std::string STATUS_COMPLETE;
 	static const std::string STATUS_INCOMPLETE;
 
-	std::string setAdd(std::string);
+	static const std::string CMD_DISPLAY_TODAY;
+
 	void getFeedback(DisplayOutput);
 	void getTask(DisplayOutput, int);
 	std::string setStatus(std::string);
+
+	void CalenizerGUI:: initialiseConnections();
+	void CalenizerGUI:: todayDisplay();
+
+	//void checkAlphabet(QString);
 };
 
 #endif // CALENIZERGUI_H
