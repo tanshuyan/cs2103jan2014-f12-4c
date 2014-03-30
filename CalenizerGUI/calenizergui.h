@@ -23,6 +23,9 @@ public:
 private slots:
 	//void on_lineEdit_returnPressed();
 	void run();
+	void checkAlphabet();
+	void resetInput();
+	void todayDisplay();
 
 private:
 	Ui::CalenizerGUIClass ui;
@@ -61,10 +64,7 @@ private:
 	void getTask(DisplayOutput, int);
 	std::string setStatus(std::string);
 
-	void CalenizerGUI:: initialiseConnections();
-	void CalenizerGUI:: todayDisplay();
-
-	//void checkAlphabet(QString);
+	void initialiseConnections();
 };
 
 #endif // CALENIZERGUI_H
