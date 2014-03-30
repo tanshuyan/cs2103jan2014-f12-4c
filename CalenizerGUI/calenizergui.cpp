@@ -24,10 +24,11 @@ CalenizerGUI::CalenizerGUI(QWidget *parent)
 {
 	ui.setupUi(this);
 	initialiseConnections();
-	todayDisplay();
 	initialiseTableStyle();
 	initialiseTableSize();
+	new QShortcut(Qt::Key_Escape, this, SLOT(resetInput()));
 	_g_current_row = 0;
+	todayDisplay();
 }
 
 CalenizerGUI::~CalenizerGUI()
@@ -123,15 +124,14 @@ void CalenizerGUI::getTask(DisplayOutput displayoutput, int row){
 }
 
 void CalenizerGUI:: initialiseConnections() {
-	//connect(ui.lineEdit, SIGNAL(textEdited(QString)), this, SLOT(checkAlphabet(QString)));
+	connect(ui.lineEdit, SIGNAL(textEdited(QString)), this, SLOT(checkAlphabet()));
+	connect(ui.lineEdit, SIGNAL(Qt::Key_Escape), this, SLOT(resetInput()));
 	connect(ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(run()));
 }
 
 void CalenizerGUI::run()
 {
 	std::string userInput = ui.lineEdit->text().toStdString();
-	//char alphabet = userInput.at(0);
-	//checkAlphabet(alphabet);
 
 	DisplayOutput displayoutput= _g_logic.executeUserInput(userInput);
 	getFeedback(displayoutput);
@@ -155,17 +155,30 @@ void CalenizerGUI::todayDisplay() {
 		getTask(displayoutput,row);
 	}
 }
-/*
-//checking shd be okay, prob shd be with signal
-void CalenizerGUI::checkAlphabet(QString string){
-	std::string text = string.toStdString();
-	char alphabet = text.at(0);
 
-	QCursor c;
-	if(alphabet == 'a'){
-	ui.lineEdit->setText(ADD_MSG);
-	//c.setPos (4,0);
-	}
-
+void CalenizerGUI::checkAlphabet() {
+	std::string text = ui.lineEdit->text().toStdString();
+	if(text.at(0) == 'a' && text.length() <= 4) {
+		ui.lineEdit->setText(ADD_MSG + " ");
+	} else if (text.at(0) == 'c' && text.length() <= 9) {
+		ui.lineEdit->setText(COMPLETE_MSG + " ");
+	} else if (text.at(0) == 'd' && text.length() <= 7) {
+		ui.lineEdit->setText(DELETE_MSG + " ");
+	} else if (text.at(0) == 'e' && text.length() <= 5) {
+		ui.lineEdit->setText(EDIT_MSG + " ");
+	} else if (text.at(0) == 'i' && text.length() <= 11) {
+		ui.lineEdit->setText(INCOMPLETE_MSG + " ");
+	} else if (text.at(0) == 'r') {
+		ui.lineEdit->setText(REDO_MSG);
+	} else if (text.at(0) == 's' && text.length() <= 7) {
+		ui.lineEdit->setText(SEARCH_MSG + " ");
+	} else if (text.at(0) == 'u') {
+		ui.lineEdit->setText(UNDO_MSG+ " ");
+	} else if (text.at(0) == 'v' && text.length() <= 6) {
+		ui.lineEdit->setText(VIEW_MSG + " ");
+	} 
 }
-*/
+
+void CalenizerGUI::resetInput(){
+	ui.lineEdit->setText("");
+}
