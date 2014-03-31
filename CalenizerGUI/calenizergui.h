@@ -18,7 +18,7 @@ public:
 	CalenizerGUI(QWidget *parent = 0);
 	~CalenizerGUI();
 
-	void displayTasks(std::vector<Task*>* displayList);
+	//void displayTasks(std::vector<Task*>* displayList);
 
 private slots:
 	//void on_lineEdit_returnPressed();
@@ -32,6 +32,9 @@ private:
 
 	void initialiseTableStyle();
 	void initialiseTableSize();
+	void initialiseTable(QTableWidget *table);
+	void setColumnWidth(QTableWidget *table);
+	void fixColumnWidth(QTableWidget *table);
 
 	QPalette* palette;
 	//QLineEdit* line;
@@ -65,6 +68,12 @@ private:
 	std::string setStatus(std::string);
 
 	void initialiseConnections();
+
+	static enum ColumnHeader {
+		TASK_DESC, 
+		TASK_DURATION, 
+		TASK_STATUS,
+	};
 };
 
 #endif // CALENIZERGUI_H
