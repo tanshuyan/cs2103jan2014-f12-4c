@@ -22,10 +22,12 @@ const std::string CalenizerGUI::CMD_DISPLAY_TODAY = "display today";
 CalenizerGUI::CalenizerGUI(QWidget *parent)
 	: QMainWindow(parent)
 {
-	ui.setupUi(this);
+	ui.setupUi(this);;
+	initialiseTable(ui.tableWidget);
 	initialiseConnections();
 	initialiseTableStyle();
-	initialiseTableSize();
+	//initialiseTableSize();
+	
 	new QShortcut(Qt::Key_Escape, this, SLOT(resetInput()));
 	_g_current_row = 0;
 	todayDisplay();
@@ -51,20 +53,20 @@ void CalenizerGUI::initialiseTableStyle(){
 	ui.lineEdit->setPalette(*palette);
 
 	ui.tableWidget->setStyleSheet("color: black;" 
-								  "gridline-color: black;"
+								  "gridline-color: gray;"
 								  "background-color: white;");
 
 	ui.textEdit->setTextColor(Qt::blue);
-	//this line of code is unecessary. if we use new, then u must destruct it, but then QlineEdit cannot be destructed. 
 	//QLineEdit *line = new QLineEdit();
 }
 
+//this function not used for now - old code
 void CalenizerGUI::initialiseTableSize(){
 	ui.tableWidget->setColumnWidth(0,  200);
 	ui.tableWidget->setColumnWidth(1,  255);
 	ui.tableWidget->setColumnWidth(2,  100);
 }
-
+/*
 void CalenizerGUI::displayTasks(std::vector<Task*>* displayList){
 	std::stringstream output;
 	int counter = 1;
@@ -78,7 +80,7 @@ void CalenizerGUI::displayTasks(std::vector<Task*>* displayList){
 	}
 	ui.tableWidget->setItem(0,_g_current_row, new QTableWidgetItem(QString::fromStdString(output.str())));
 }
-
+*/
 void CalenizerGUI::getFeedback(DisplayOutput displayoutput)
 {
 	ui.textEdit->append(QString::fromStdString(displayoutput.getFeedBack()));
@@ -101,7 +103,7 @@ void CalenizerGUI::getTask(DisplayOutput displayoutput, int row){
 		int startIndex = initialString.find_first_of("<>");
 
 		int pos = initialString.find("<>", initialString.find("<>") + 1);
-		std::string taskDesc = initialString.substr(startIndex+2,pos-(startIndex+2));
+		std::string desc = initialString.substr(startIndex+2,pos-(startIndex+2));
 
 		startIndex = pos+1;
 		int lastIndex = initialString.find("<>", startIndex);
@@ -118,9 +120,24 @@ void CalenizerGUI::getTask(DisplayOutput displayoutput, int row){
 
 		status = setStatus(status);
 
-		ui.tableWidget->setItem(row, 0, new QTableWidgetItem(QString::fromStdString(taskDesc)));
-		ui.tableWidget->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(duration)));
-		ui.tableWidget->setItem(row, 2, new QTableWidgetItem(QString::fromStdString(status)));
+		QTableWidgetItem *taskDesc = new QTableWidgetItem(QString::fromStdString(desc));
+		QTableWidgetItem *taskDuration = new QTableWidgetItem(QString::fromStdString(duration));
+		QTableWidgetItem *taskStatus = new QTableWidgetItem(QString::fromStdString(status));
+		
+		ui.tableWidget->setItem(row, 0, taskDesc);
+		ui.tableWidget->setItem(row, 1, taskDuration);
+		ui.tableWidget->setItem(row, 2, taskStatus);
+		
+		if(status == STATUS_COMPLETE) {
+				taskDesc->setBackgroundColor(QColor(167,255,169));
+				taskDuration->setBackgroundColor(QColor(167,255,169));
+				taskStatus->setBackgroundColor(QColor(167,255,169));
+		}
+		if(status == STATUS_INCOMPLETE) {
+				taskDesc->setBackgroundColor(QColor(255,221,221));
+				taskDuration->setBackgroundColor(QColor(255,221,221));
+				taskStatus->setBackgroundColor(QColor(255,221,221));
+		}
 }
 
 void CalenizerGUI:: initialiseConnections() {
@@ -173,12 +190,35 @@ void CalenizerGUI::checkAlphabet() {
 	} else if (text.at(0) == 's' && text.length() <= 7) {
 		ui.lineEdit->setText(SEARCH_MSG + " ");
 	} else if (text.at(0) == 'u') {
-		ui.lineEdit->setText(UNDO_MSG+ " ");
-	} else if (text.at(0) == 'v' && text.length() <= 6) {
+		ui.lineEdit->setText(UNDO_MSG + " ");
+	} else if (text.at(0) == 'v' && text.length() <= 5) {
 		ui.lineEdit->setText(VIEW_MSG + " ");
 	} 
 }
 
 void CalenizerGUI::resetInput(){
 	ui.lineEdit->setText("");
+}
+
+void CalenizerGUI::setColumnWidth(QTableWidget *table) {
+	QStringList tableHeader;
+	tableHeader << "Task Description" << "Duration" << "Status";
+	table->setColumnCount(3);
+	table->setHorizontalHeaderLabels(tableHeader);
+
+	table->setColumnWidth(TASK_DESC, 200);
+	table->setColumnWidth(TASK_DURATION, 200);
+	table->setColumnWidth(TASK_STATUS,200);
+}
+
+void CalenizerGUI::initialiseTable(QTableWidget *table) {
+	setColumnWidth(table);
+	fixColumnWidth(table);
+}
+
+void CalenizerGUI::fixColumnWidth(QTableWidget *table) {
+	
+	for(unsigned int col = 0 ; col < 3; col++) {
+		table->horizontalHeader()->setSectionResizeMode(col, QHeaderView::Fixed);
+	}
 }

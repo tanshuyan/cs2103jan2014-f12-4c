@@ -18,16 +18,8 @@
 
 int main(int argc, char *argv[])
 {
-	QApplication a(argc, argv);
-	
-	QPixmap pixmap(":/CalenizerGUI/HwaChong.jpg");
-	QSplashScreen splash(pixmap);
-	splash.show();
-	splash.showMessage("Loading");
-	QTimer::singleShot(2000, &splash, SLOT(close()));
-	Sleep(500);
-
-    CalenizerGUI w;
-    w.show();
-	return a.exec();
+	QApplication app(argc, argv);
+    CalenizerGUI program;
+    program.show();
+	return app.exec();
 }
