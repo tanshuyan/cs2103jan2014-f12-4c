@@ -10,7 +10,7 @@ const std::string History::TASK_FLOAT = "FLOAT";
 History::History(){
 }
 
-void History::saveHistory(std::vector<Task*> taskList){
+void History::saveHistory(std::vector<Task*> &taskList){
 
 	// to create a deep copy of the vector <Task*> 
 	_currHistory.clear();

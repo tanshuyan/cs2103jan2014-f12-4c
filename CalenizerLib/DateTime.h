@@ -1,5 +1,7 @@
 //DateTime.h
-//v 1.2
+//v 1.3
+//removed useless functions of getSystemDate and getSystemTime
+//added setCurrDateTime
 
 #ifndef DATETIME_H
 #define DATETIME_H
@@ -35,8 +37,7 @@ public:
 	QDate getDate();
 	QTime getTime();
 	
-	QDate getSystemDate();
-	QTime getSystemTime();
+	void setCurrDateTime();
 
 	//returns date in format 16 Jul 2014
 	//set bool to "true" if you want the date to display as "Today", "Tomorrow", or "Yesterday"

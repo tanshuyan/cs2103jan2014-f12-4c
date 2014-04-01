@@ -1,5 +1,5 @@
 //DateTime.cpp
-//v 1.2
+//v 1.3
 #include "DateTime.h"
 
 DateTime::DateTime(){
@@ -40,15 +40,10 @@ QTime DateTime::getTime(){
 	return _time;
 }
 
-QDate DateTime::getSystemDate(){
-	return _date.currentDate();
-}
-
-QTime DateTime::getSystemTime(){
-	int hour = (_time.currentTime()).hour();
-	int minute = (_time.currentTime()).minute();
-	QTime systemTime(hour, minute);
-	return systemTime;
+void DateTime::setCurrDateTime(){
+	_date = QDate::currentDate();
+	_time = QTime::currentTime();
+	return;
 }
 
 std::string DateTime::dateToString(bool displayTodayAsWord){

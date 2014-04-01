@@ -1,5 +1,6 @@
 // taskDeadline.h
-// v1.0
+// v1.1
+// added operator <
 #pragma once
 #ifndef TASKDEADLINE_H
 #define TASKDEADLINE_H
@@ -33,20 +34,20 @@ public:
 	void setDeadline(DateTime);
 	void setStartDate(DateTime) {return;}
 
-	DateTime getDeadline();
-	DateTime getStartDate() {return DateTime::DateTime();}  
+	DateTime getDeadline() const ;
+	DateTime getStartDate() const {return DateTime::DateTime();}  
 
 
-	std::string getTaskDesc();
-	std::string getTaskType();
+	std::string getTaskDesc() const ;
+	std::string getTaskType() const ;
 	std::string statusToString();
 	std::string dateTimeToString();
-	bool getCompleteStatus();
+	bool getCompleteStatus() const ;
 	std::string outputToString();
 	// for storage
 	std::string taskToString();
 	void stringToTask(std::string);
-
+	//bool operator<(TaskDeadline);
 };
 
 #endif

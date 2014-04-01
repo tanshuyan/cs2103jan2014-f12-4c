@@ -1,5 +1,6 @@
 // TaskStorage.h
-// v1.0
+// v1.1
+// removed useless functions
 #pragma once
 #ifndef TASKSTORAGE_H
 #define TASKSTORAGE_H
@@ -17,8 +18,6 @@ class TaskStorage {
 private:
     std::string _fileName;		
 	static const std::string _defaultFileName;
-	std::vector<Task *> _taskList;
-
 	std::ifstream _fileInput;
 	std::ofstream _fileOutput;
 
@@ -28,14 +27,11 @@ private:
 	static const std::string TASK_FLOAT;
 public:
 	TaskStorage();
-	TaskStorage(std::string);
+//	TaskStorage(std::string);
 	~TaskStorage();
 
 	void writeFile(std::vector<Task*>);
 	void loadFile(std::vector<Task*>&);
-
-	std::vector<Task*> loadStorage();
-	void writeStorage(std::vector<Task*>);
 
 };
 

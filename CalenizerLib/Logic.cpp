@@ -1,8 +1,11 @@
 // Logic.cpp
-// v1.2
-
-#include "Logic.h"
+// v2.1
+// changed display string to view, exit string to quit
+// added the msg feedback for search
+// added sort function
 #include <assert.h>
+#include <algorithm>
+#include "Logic.h"
 
 const std::string Logic::TASK_DEADLINE = "DEADLINE";
 const std::string Logic::TASK_TIMED = "TIMED";
@@ -15,9 +18,9 @@ const std::string Logic::DISPLAY_TODAY = "today";
 
 const std::string Logic::CMD_ADD = "add";
 const std::string Logic::CMD_DELETE = "delete";
-const std::string Logic::CMD_DISPLAY = "display";
+const std::string Logic::CMD_DISPLAY = "view";
 const std::string Logic::CMD_EDIT = "edit";
-const std::string Logic::CMD_EXIT = "exit";
+const std::string Logic::CMD_EXIT = "quit";
 const std::string Logic::CMD_SEARCH = "search";
 const std::string Logic::CMD_COMPLETE = "complete";
 const std::string Logic::CMD_INCOMPLETE = "incomplete";
@@ -60,8 +63,6 @@ const std::string Logic::CMD_INVALID = "invalid";
 
 Logic::Logic() {
 	loadFileContent();
-	_currentDisplayType.setCommand(CMD_DISPLAY);
-	_currentDisplayType.setDisplayType(DISPLAY_ALL);
 }
 
 Logic::~Logic() {
@@ -103,6 +104,11 @@ DisplayOutput Logic::executeUserInput(std::string userInput) {
 
 	if(analysedData.getCommand() == CMD_SEARCH) {
 		displayTask(analysedData, displayOutput);
+		if(displayOutput.getDisplayStatus()) {
+			displayOutput.setFeedBack(_actionMsg.searchSuccessFeedback(analysedData.getDisplayType()));
+		} else {
+			displayOutput.setFeedBack(_actionMsg.searchFailureFeedback(analysedData.getDisplayType()));
+		}
 	}
 
 	if(analysedData.getCommand() == CMD_COMPLETE) {
@@ -130,7 +136,7 @@ DisplayOutput Logic::executeUserInput(std::string userInput) {
 	}
 
 	if(analysedData.getCommand() == CMD_INVALID) {
-		displayOutput.setFeedBack("Invalid command\n");
+		displayOutput.setFeedBack(_actionMsg.invalidFeedback());
 		displayTask(_currentDisplayType, displayOutput);
 	}
 
@@ -171,7 +177,7 @@ void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 		if(!taskDesc.empty()) {
 		(*taskToEdit)->setTaskDesc(taskDesc);
 		}
-		
+		sortTaskList();
 		_userStorage.writeFile(_taskList);
 		_History.saveHistory(_taskList);
 		displayOutput.setFeedBack(_actionMsg.editFeedback(taskDesc));
@@ -187,6 +193,7 @@ void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 		} else if(endDate.isValid() || endTime.isValid()) {
 			(*taskToEdit)->setDeadline(endDateTime);
 		}
+		sortTaskList();
 		_userStorage.writeFile(_taskList);
 		_History.saveHistory(_taskList);
 		displayOutput.setFeedBack(_actionMsg.editFeedback(taskDesc));
@@ -203,7 +210,8 @@ void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 		if(endDate.isValid() || endTime.isValid()) {
 			(*taskToEdit)->setDeadline(endDateTime);
 		}
-		
+
+		sortTaskList();
 		_userStorage.writeFile(_taskList);
 		_History.saveHistory(_taskList);
 		displayOutput.setFeedBack(_actionMsg.editFeedback(taskDesc));
@@ -232,6 +240,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 		TaskFloat* newFloatPtr = new TaskFloat;
 		newFloatPtr->setTask(TASK_FLOAT, false, taskDesc);
 		_taskList.push_back(newFloatPtr);
+		sortTaskList();
 		_userStorage.writeFile(_taskList);
 		_History.saveHistory(_taskList);
 		displayOutput.setFeedBack(_actionMsg.addFeedback(taskDesc));
@@ -242,6 +251,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 		TaskDeadline* newDeadlinePtr = new TaskDeadline;
 		newDeadlinePtr->setTask(TASK_DEADLINE, false, taskDesc, endDateTime);
 		_taskList.push_back(newDeadlinePtr);
+		sortTaskList();
 		_userStorage.writeFile(_taskList);
 		_History.saveHistory(_taskList);
 		displayOutput.setFeedBack(_actionMsg.addFeedback(taskDesc));
@@ -252,6 +262,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 		TaskDeadline* newDeadlinePtr = new TaskDeadline;
 		newDeadlinePtr->setTask(TASK_DEADLINE, false, taskDesc, startDateTime);
 		_taskList.push_back(newDeadlinePtr);
+		sortTaskList();
 		_userStorage.writeFile(_taskList);
 		_History.saveHistory(_taskList);
 		displayOutput.setFeedBack(_actionMsg.addFeedback(taskDesc));
@@ -261,6 +272,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	TaskTimed* newTimedPtr = new TaskTimed;
 	newTimedPtr->setTask(TASK_TIMED, false, taskDesc, startDateTime, endDateTime);
 	_taskList.push_back(newTimedPtr);
+	sortTaskList();
 	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
 	displayOutput.setFeedBack(_actionMsg.addFeedback(taskDesc));
@@ -289,6 +301,7 @@ void Logic::deleteTask(AnalysedData analysedData, DisplayOutput& displayOutput){
 		displayOutput.setFeedBack(_actionMsg.deleteFeedback());
 	}
 
+	sortTaskList();
 	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
 	return;
@@ -315,7 +328,8 @@ void Logic::setComplete(AnalysedData analysedData, DisplayOutput& displayOutput)
 		displayOutput.setFeedBack(_actionMsg.completeSuccessFeedback());
 	}
 
-	_userStorage.writeStorage(_taskList);
+	sortTaskList();
+	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
 }
 
@@ -340,7 +354,8 @@ void Logic::setIncomplete(AnalysedData analysedData, DisplayOutput& displayOutpu
 		displayOutput.setFeedBack(_actionMsg.incompleteSuccessFeedback());
 	}
 
-	_userStorage.writeStorage(_taskList);
+	sortTaskList();
+	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
 }
 
@@ -348,7 +363,7 @@ void Logic::undo(DisplayOutput& displayOutput) {
 	Logger& logLogic = Logger::getInstance();
 
 	if(_History.undo(_taskList)){
-		_userStorage.writeStorage(_taskList);
+		_userStorage.writeFile(_taskList);
 		displayOutput.setFeedBack(_actionMsg.undoSuccessFeedback());
 	}
 	else{
@@ -359,7 +374,7 @@ void Logic::undo(DisplayOutput& displayOutput) {
 void Logic::redo(DisplayOutput& displayOutput) {
 	Logger& logLogic = Logger::getInstance();
 	if(_History.redo(_taskList)){
-		_userStorage.writeStorage(_taskList);
+		_userStorage.writeFile(_taskList);
 		displayOutput.setFeedBack(_actionMsg.redoSuccessFeedback());
 	}
 	else{
@@ -375,33 +390,120 @@ std::vector<Task*>::iterator Logic::indexToIterator(int index){
 	return *iter;
 }
 
-void Logic::displayTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
+/*
+void Logic::mergeSortedList(std::vector<Task*> &sortedDisplayList, std::vector<Task*> &timedList, std::vector<Task*> &deadlineList, std::vector<Task*> &floatList) {
+	std::vector<Task*>::iterator timedIter = timedList.begin();
+	std::vector<Task*>::iterator deadlineIter = deadlineList.begin();
+	std::vector<Task*>::iterator floatIter = floatList.begin();
+	while(timedIter != timedList.end() && deadlineIter != deadlineList.end()) {
+		if((*timedIter)->getStartDate() < (*deadlineIter)->getDeadline()) { // timed task started earlier than deadline task
+			sortedDisplayList.push_back(*timedIter);
+			timedIter++;
+		} else {
+			sortedDisplayList.push_back(*deadlineIter);
+			deadlineIter++;
+		}
+	}
+	while(timedIter != timedList.end()) {
+		sortedDisplayList.push_back(*timedIter);
+			timedIter++;
+	}
+	while(deadlineIter != deadlineList.end()) {
+		sortedDisplayList.push_back(*deadlineIter);
+		deadlineIter++;
+	}
+	while(floatIter != floatList.end()) {
+		sortedDisplayList.push_back(*floatIter);
+		floatIter++;
+	}
+}
+*/
+/*
+void Logic::orderSortedList(std::vector<Task*> &sortedTaskList, std::vector<Task*> &sortedList) {
+	std::vector<Task*>::iterator iter;
+	sortedTaskList.clear();
+	for(iter = sortedList.begin(); iter!=sortedList.end(); iter++) { 
+		if((*iter)->getCompleteStatus() == false) { 
+			sortedTaskList.push_back(*iter);
+		}
+	}
+	// pushes the remaining completed tasks to the back of vector in sorted order
+	for(iter = sortedList.begin(); iter!=sortedList.end(); iter++) { 
+		if((*iter)->getCompleteStatus() == true) { 
+			sortedTaskList.push_back(*iter);
+		}
+	}
+}
+*/
+
+void Logic::sortTaskList() {
+	/*
+	std::vector<Task*> sortedList;
+	std::vector<Task*> sortedTaskList;
+	std::vector<Task*> timedList;	
+	std::vector<Task*> deadlineList;
+	std::vector<Task*> floatList;
 	
+	std::vector<Task*>::iterator iter;
+	// this splits the displayList into the different types of tasks
+	for(iter = _taskList.begin(); iter!= _taskList.end(); iter++) {
+		if((*iter)->getTaskType() == TASK_FLOAT) {
+			floatList.push_back(*iter);
+		} 
+		if((*iter)->getTaskType() == TASK_DEADLINE) {
+			deadlineList.push_back(*iter);
+		}
+		if((*iter)->getTaskType() == TASK_TIMED) {
+			timedList.push_back(*iter);
+		}
+	}
+
+	if(!timedList.empty()) {
+		std::sort(timedList.begin(), timedList.end(), Comparator::sortTimedTask);
+	}
+	if(!deadlineList.empty()) {
+		std::sort(deadlineList.begin(), deadlineList.end(), Comparator::sortDeadlineTask);
+	}
+	//merges back the display list into a sorted tasklist
+	mergeSortedList(sortedList, timedList, deadlineList, floatList);
+	orderSortedList(sortedTaskList, sortedList); 
+	_taskList = sortedTaskList;
+	*/
+
+	std::sort(_taskList.begin(), _taskList.end(), Comparator::sortByDate);
+	std::sort(_taskList.begin(), _taskList.end(), Comparator::sortByCompleteness);
+}
+
+void Logic::displayTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
+	std::vector<std::string> displayListStatus;
+	_displayList.clear();
+	_displayIndexList.clear();
 	if(analysedData.getCommand() == CMD_DISPLAY) {
 
 		if(analysedData.getDisplayType() == DISPLAY_COMPLETE) { // display completed task
-			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, true);
+			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, true, displayListStatus);
 		}
 			
 		if(analysedData.getDisplayType() == DISPLAY_INCOMPLETE) { // display incompleted task
-			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, false);
+			_displayStatus = _filter.search(_taskList, _displayList,_displayIndexList, false, displayListStatus);
 		}
 
 		if(analysedData.getDisplayType() == DISPLAY_ALL) {
-			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList);
+			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, displayListStatus);
 		}
 
 		if(analysedData.getDisplayType() == DISPLAY_TODAY) {
-			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, QDate::currentDate());
+			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, QDate::currentDate(), displayListStatus);
 		}
 	}
 
 	if(analysedData.getCommand() == CMD_SEARCH) {
-		_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, analysedData.getDisplayType());
+		_displayStatus = _filter.search(_taskList, _displayList,  _displayIndexList, analysedData.getDisplayType(), displayListStatus);
 	}
-	
+
+	displayOutput.setDisplayStatus(_displayStatus);
 	displayOutput.displayTasks(_displayList);
+	displayOutput.setDisplayListStatus(displayListStatus);
 	_currentDisplayType.setCommand(analysedData.getCommand());
 	_currentDisplayType.setDisplayType(analysedData.getDisplayType());
-	
 }

@@ -1,14 +1,16 @@
 //Parser.cpp
 //IN PROGRESS
-//v 2.6
+//v 2.7
+//editted the display string to view, exit to quit
+
 
 #include "Parser.h"
 
 const std::string Parser::CMD_ADD = "add";
 const std::string Parser::CMD_EDIT = "edit";
 const std::string Parser::CMD_DELETE = "delete";
-const std::string Parser::CMD_DISPLAY = "display";
-const std::string Parser::CMD_EXIT = "exit";
+const std::string Parser::CMD_DISPLAY = "view";
+const std::string Parser::CMD_EXIT = "quit";
 const std::string Parser::CMD_SEARCH = "search";
 const std::string Parser::CMD_COMPLETE = "complete";
 const std::string Parser::CMD_INCOMPLETE = "incomplete";
