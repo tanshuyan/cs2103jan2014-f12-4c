@@ -115,7 +115,7 @@ public:
     {
         CalenizerGUIClass->setWindowTitle(QApplication::translate("CalenizerGUIClass", "CalenizerGUI", 0));
         label->setText(QApplication::translate("CalenizerGUIClass", "Enter command:", 0));
-        label_2->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p align=\"center\"><span style=\" font-size:10pt; font-weight:600; color:#ffffff;\">Welcome to Calenizer!</span></p></body></html>", 0));
+        label_2->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p align=\"center\"><span style=\" font-weight:600; color:#000000;\">Welcome to Calenizer!</span></p></body></html>", 0));
         QTableWidgetItem *___qtablewidgetitem = tableWidget->horizontalHeaderItem(0);
         ___qtablewidgetitem->setText(QApplication::translate("CalenizerGUIClass", "Task Description", 0));
         QTableWidgetItem *___qtablewidgetitem1 = tableWidget->horizontalHeaderItem(1);

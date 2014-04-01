@@ -1,7 +1,7 @@
 // Logic.h
-// v 1.3
+// v 2.1
 // updated logic to accomodate new architecture
-
+// added sort function
 #pragma once
 #ifndef LOGIC_H
 #define LOGIC_H
@@ -22,6 +22,7 @@
 #include "DisplayOutput.h"
 #include "Logger.h"
 #include "DateTime.h"
+#include "Comparator.h"
 
 class Logic {
 private:
@@ -71,10 +72,12 @@ private:
 	void redo(DisplayOutput&);
 
 	std::vector<Task*>::iterator indexToIterator(int index);
-	
+	void generateDisplayListIndex();
 	bool isValidIndex(int);
 	void loadFileContent();
-
+	void sortTaskList();
+	void mergeSortedList(std::vector<Task*> &sortedDisplayList, std::vector<Task*> &timedList, std::vector<Task*> &deadlineList, std::vector<Task*> &floatList);
+	void orderSortedList(std::vector<Task*> &sortedTaskList, std::vector<Task*> &sortedList);
 public:
 	Logic();
 	~Logic();

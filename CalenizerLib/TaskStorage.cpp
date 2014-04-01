@@ -1,6 +1,6 @@
 // TaskStorage.cpp
-// v1.0
-
+// v1.1
+// remove useless functions
 #include <string>
 #include <iostream>
 #include <vector>
@@ -19,9 +19,6 @@ TaskStorage::TaskStorage() {
 }
 
 TaskStorage::~TaskStorage() {
-	for(unsigned int i = 0; i < _taskList.size(); i++) {
-		delete _taskList[i];
-	}
 }
 
 void TaskStorage::writeFile(std::vector<Task*> taskList){
@@ -80,15 +77,4 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 		}
 	}
 	_fileInput.close();
-}
-
-std::vector<Task*> TaskStorage::loadStorage(){
-	//loadFile();
-	return _taskList;
-}
-
-void TaskStorage::writeStorage(std::vector<Task*> userInput) {
-	_taskList.clear();
-	_taskList = userInput;
-	writeFile(userInput);
 }

@@ -1,5 +1,6 @@
 // TaskFloat.h
-// v1.0
+// v1.1
+// added operator <
 #pragma once
 #ifndef TaskFloat_H
 #define TaskFloat_H
@@ -33,18 +34,19 @@ public:
 	void setDeadline(DateTime) {return;}
 	void setStartDate(DateTime) {return;}
 	
-	DateTime getDeadline() {return DateTime::DateTime();}
-	DateTime getStartDate() {return DateTime::DateTime();}  
+	DateTime getDeadline() const {return DateTime::DateTime();}
+	DateTime getStartDate() const {return DateTime::DateTime();}  
 
-	std::string getTaskDesc();
-	std::string getTaskType();
+	std::string getTaskDesc() const ;
+	std::string getTaskType() const ;
 	std::string dateTimeToString() {return "";}
 	std::string statusToString();
-	bool getCompleteStatus();
+	bool getCompleteStatus() const ;
 	std::string outputToString();
 	// for storage
 	std::string taskToString();
 	void stringToTask(std::string);
+	//bool operator<(TaskFloat) {return false;}
 };
 
 #endif

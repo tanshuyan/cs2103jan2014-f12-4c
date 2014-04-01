@@ -1,5 +1,6 @@
 // taskDeadline.cpp
-// v1.0
+// v1.1
+// added operator <
 
 #include <string>
 #include <sstream>
@@ -51,15 +52,15 @@ void TaskDeadline::setDeadline(DateTime deadline) {
 	_deadline = deadline;
 }
 
-std::string TaskDeadline::getTaskType() {
+std::string TaskDeadline::getTaskType() const {
 	return _taskType;
 }
 
-bool TaskDeadline::getCompleteStatus() {
+bool TaskDeadline::getCompleteStatus() const {
 	return _completeStatus;
 }
 
-std::string TaskDeadline::getTaskDesc() {
+std::string TaskDeadline::getTaskDesc() const {
 	return _taskDesc;
 }
 
@@ -75,7 +76,7 @@ std::string TaskDeadline::dateTimeToString() {
 	return _deadline.dataToString();
 }
 
-DateTime TaskDeadline::getDeadline() {
+DateTime TaskDeadline::getDeadline() const {
 	return _deadline;
 }
 
@@ -173,3 +174,7 @@ void TaskDeadline::stringToTask(std::string content) {
 
 	setTask(taskType, status, taskDesc, deadline);
 }
+
+//bool TaskDeadline::operator<(TaskDeadline taskDeadline) {
+	//return (_deadline < taskDeadline.getDeadline());
+//}

@@ -25,7 +25,7 @@ private:
 public:
 	History();
 
-	void saveHistory(std::vector<Task*>);
+	void saveHistory(std::vector<Task*>&);
 	void clearRedo();
 
 	//Returns success of undo operation

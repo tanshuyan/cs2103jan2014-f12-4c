@@ -25,7 +25,8 @@ private:
 	std::string _feedback;
 	std::vector<std::string> _displayList;
 	// keeps a corresponding tracker on the status of task, if it is overdue, completed, incompleted etc
-	std::vector<int> _displayTaskStatus;
+	std::vector<std::string> _displayListStatus;
+	bool _displayStatus;
 
 	static const std::string MSG_ADD_SUCCESS;
 	static const std::string MSG_EDIT_SUCCESS;
@@ -61,9 +62,13 @@ public:
 	void displayTasks(std::vector<Task*>);
 	void setFeedBack(std::string);
 	void setFeedBack(std::vector<int>);
+	void setDisplayStatus(bool);
+	void setDisplayListStatus(std::vector<std::string>);
+	std::vector<std::string> getDisplayListStatus();
 	std::string getFeedBack();
 	std::vector<std::string> getDisplay();
-	
+	bool getDisplayStatus();
+
 	std::string welcomeMsg();
 	std::string promptMsg();
 	void displayToUser(std::string output);
