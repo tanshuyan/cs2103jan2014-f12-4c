@@ -7,8 +7,13 @@ const std::string TASK_FLOAT = "FLOAT";
 const std::string TASK_DEADLINE = "DEADLINE";
 const std::string TASK_TIMED = "TIMED";
 
-
-void TaskEditor::edit(Task* task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
+void TaskEditor::edit(Task* task, AnalysedData &analysedData){
+	std::string taskDesc = analysedData.getTaskDesc();
+	QDate startDate = analysedData.getStartDate();
+	QTime startTime = analysedData.getStartTime();
+	QDate endDate = analysedData.getEndDate();
+	QTime endTime = analysedData.getEndTime();
+	
 	if(task->getTaskType() == TASK_FLOAT){
 		editFloat(task, taskDesc, startDate, startTime, endDate, endTime);
 	}
@@ -152,7 +157,7 @@ void TaskEditor::setEndTime(Task* task, QTime endTime){
 }
 
 void TaskEditor::convertToDeadline(Task* task, QDate date, QTime time){
-	task->setTaskDesc(TASK_DEADLINE);
+	task->setTaskType(TASK_DEADLINE);
 	DateTime deadline;
 	deadline.setDate(date);
 	deadline.setTime(time);
@@ -161,7 +166,7 @@ void TaskEditor::convertToDeadline(Task* task, QDate date, QTime time){
 }
 
 void TaskEditor::convertToTimed(Task* task, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
-	task->setTaskDesc(TASK_TIMED);
+	task->setTaskType(TASK_TIMED);
 	DateTime start;
 	start.setDate(startDate);
 	start.setTime(startTime);

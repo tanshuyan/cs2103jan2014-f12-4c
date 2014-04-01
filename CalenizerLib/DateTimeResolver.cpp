@@ -1,6 +1,7 @@
 //DateTimeResolver.cpp
 //Beta 1.0
 //totally untested
+//changed the class to accomodate analysedData
 
 #include "DateTimeResolver.h"
 
@@ -13,16 +14,34 @@ DateTimeResolver::DateTimeResolver(){
 	_dayStart.setHMS(0,0,0);
 	_dayEnd.setHMS(23,59,0);
 }
-bool DateTimeResolver::resolveAdd(QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime){
+bool DateTimeResolver::resolveAdd(AnalysedData &analysedData) {
+	QDate startDate = analysedData.getStartDate();
+	QTime startTime = analysedData.getStartTime();
+	QDate endDate = analysedData.getEndDate();
+	QTime endTime = analysedData.getEndTime();
 	completeAdd(startDate, startTime, endDate, endTime);
+	analysedData.setStartDate(startDate);
+	analysedData.setStartTime(startTime);
+	analysedData.setEndDate(endDate);
+	analysedData.setEndTime(endTime);
 	return checkDateOrderIsValid(startDate, startTime, endDate, endTime);
 }
 
-bool DateTimeResolver::resolveEdit(const Task* task, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled){
-	completeEdit(task, startDate, startTime, endDate, endTime, dateTimeIsUnlablled);
+bool DateTimeResolver::resolveEdit(const Task* task, AnalysedData &analysedData){
+	QDate startDate = analysedData.getStartDate();
+	QTime startTime = analysedData.getStartTime();
+	QDate endDate = analysedData.getEndDate();
+	QTime endTime = analysedData.getEndTime();
+	bool dateTimeIsUnlabelled = analysedData.getDateTimeUnlabelled();
+	completeEdit(task, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled);
+	analysedData.setStartDate(startDate);
+	analysedData.setStartTime(startTime);
+	analysedData.setEndDate(endDate);
+	analysedData.setEndTime(endTime);
+	analysedData.setDateTimeUnlabelled(dateTimeIsUnlabelled);
 	return checkDateOrderIsValid(startDate, startTime, endDate, endTime);
 }
-void DateTimeResolver::completeEdit(const Task* task, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled){
+void DateTimeResolver::completeEdit(const Task* task, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled){
 	//User input contains only desc
 	if(startDate.isNull() && startTime.isNull() && endDate.isNull() && endTime.isNull()){
 		return;
@@ -72,7 +91,7 @@ void DateTimeResolver::completeEdit(const Task* task, QDate &startDate, QTime &s
 	}
 
 	if(task->getTaskType() == TASK_TIMED){
-		if(dateTimeIsUnlablled){
+		if(dateTimeIsUnlabelled){
 			if (startDate.isNull()){
 				startDate = task->getStartDate().getDate();
 			}

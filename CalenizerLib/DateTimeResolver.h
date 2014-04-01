@@ -1,10 +1,14 @@
 //DateTimeResolver.h
 //Beta 1.0
 //totally untested
-
+//changed the class to accomodate analysedData
 #include "DateTime.h"
 #include <QDateTime>
 #include "Task.h"
+#include "taskDeadline.h"
+#include "TaskFloat.h"
+#include "TaskTimed.h"
+#include "AnalysedData.h"
 #include <assert.h>
 
 #ifndef DATETIMERESOLVER
@@ -16,7 +20,7 @@ private:
 	QTime _dayEnd;
 
 	//Completes the date and time fields the user left blank for the case of Edit
-	void completeEdit(const Task* task, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled);
+	void completeEdit(const Task* task, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled);
 	//Completes the date and time fields the user left blank for the case of Add
 	void completeAdd(QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime);
 	//Given a reference 'curr' date & time, it guesses the event date given the upcoming event time
@@ -28,9 +32,9 @@ public:
 	DateTimeResolver();
 	//Completes the missing date or time entries as much as possible, and checks if they are in the correct order
 	//Returns false if start and end date/time are not in correct order
-	bool resolveAdd(QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime);
+	bool resolveAdd(AnalysedData &);
 	//Completes the missing date or time entries in certain special scenarios, and checks if they are in the correct order
 	//Returns false if start and end date/time are not in correct order
-	bool resolveEdit(const Task* task, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime,bool &dateTimeIsUnlablled);
+	bool resolveEdit(const Task* task, AnalysedData &);
 };
 #endif
