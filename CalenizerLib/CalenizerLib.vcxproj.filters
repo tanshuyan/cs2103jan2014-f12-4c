@@ -73,10 +73,13 @@
     <ClCompile Include="DisplayOutput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Task.cpp">
+    <ClCompile Include="Comparator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Comparator.cpp">
+    <ClCompile Include="DateTimeResolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -133,6 +136,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Comparator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DateTimeResolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

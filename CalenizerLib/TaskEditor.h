@@ -5,6 +5,10 @@
 #include "DateTime.h"
 #include <QDateTime>
 #include "Task.h"
+#include "AnalysedData.h"
+#include "taskDeadline.h"
+#include "TaskFloat.h"
+#include "TaskTimed.h"
 #include <assert.h>
 
 #ifndef TASKEDITOR
@@ -25,6 +29,6 @@ private:
 
 public:
 	//Edits the given task using the given parameters. Does not make changes if the parameters are null or empty
-	void edit(Task* task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime);
+	void edit(Task* task, AnalysedData&);
 };
 #endif
