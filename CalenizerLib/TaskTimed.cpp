@@ -1,5 +1,6 @@
 // TaskTimed.cpp
-// v1.0
+// v1.1
+// added operator <
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -11,6 +12,9 @@ const std::string TaskTimed::STATUS_FALSE = "false";
 
 TaskTimed::TaskTimed() {
 	_completeStatus = false;
+}
+
+TaskTimed::~TaskTimed() {
 }
 
 void TaskTimed::setTask(std::string taskType, bool status, std::string taskDesc, DateTime startDateTime, DateTime endDateTime) {
@@ -45,24 +49,23 @@ void TaskTimed::setStartDate(DateTime startDate) {
 	_startDateTime = startDate;
 }
 
-
-std::string TaskTimed::getTaskType() {
+std::string TaskTimed::getTaskType() const {
 	return _taskType;
 }
 
-bool TaskTimed::getCompleteStatus() {
+bool TaskTimed::getCompleteStatus() const {
 	return _completeStatus;
 }
 
-DateTime TaskTimed::getDeadline() {
+DateTime TaskTimed::getDeadline() const {
 	return _endDateTime;
 }
 
-DateTime TaskTimed::getStartDate() {
+DateTime TaskTimed::getStartDate() const {
 	return _startDateTime;
 }
 
-std::string TaskTimed::getTaskDesc() {
+std::string TaskTimed::getTaskDesc() const {
 	return _taskDesc;
 }
 
@@ -129,3 +132,7 @@ void TaskTimed::stringToTask(std::string content) {
 
 	setTask(taskType, status, taskDesc, startDateTime, endDateTime);
 }
+
+//bool TaskTimed::operator<(TaskTimed taskTimed) {
+	//return (_startDateTime < taskTimed.getStartDate());
+//}

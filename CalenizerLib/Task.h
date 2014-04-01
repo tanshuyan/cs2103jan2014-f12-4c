@@ -1,5 +1,6 @@
 // task.h
-// v1.0
+// v1.1
+// added operator <
 #pragma once
 #ifndef TASK_H
 #define TASK_H
@@ -28,17 +29,17 @@ public:
 	virtual void setDeadline(DateTime) {return;}
 	virtual void setStartDate(DateTime) {return;}
 	
-	virtual DateTime getDeadline() {return DateTime::DateTime();}
-	virtual DateTime getStartDate() {return DateTime::DateTime();}  
+	virtual DateTime getDeadline() const {return DateTime::DateTime();}
+	virtual DateTime getStartDate() const {return DateTime::DateTime();}  
 	virtual std::string dateTimeToString() {return "";}
 	virtual std::string statusToString() {return "";}
-	virtual std::string getTaskDesc() {return "";}
-	virtual std::string getTaskType() {return "";}
-	virtual bool getCompleteStatus() {return false;}
+	virtual std::string getTaskDesc() const {return "";}
+	virtual std::string getTaskType() const {return "";}
+	virtual bool getCompleteStatus() const  {return false;}
 	virtual std::string outputToString() {return "";}
 	virtual std::string taskToString() {return "";}
 	virtual void stringToTask(std::string) {return;}
-	
+	//virtual bool operator<(Task) {return false;}
 };
 
 #endif

@@ -1,5 +1,6 @@
 // taskDealine.cpp
-// v1.0
+// v1.1
+// added operator <
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -41,15 +42,15 @@ void TaskFloat::setTaskDesc(std::string taskDesc) {
 	_taskDesc = taskDesc;
 }
 
-std::string TaskFloat::getTaskType() {
+std::string TaskFloat::getTaskType() const {
 	return _taskType;
 }
 
-bool TaskFloat::getCompleteStatus() {
+bool TaskFloat::getCompleteStatus() const {
 	return _completeStatus;
 }
 
-std::string TaskFloat::getTaskDesc() {
+std::string TaskFloat::getTaskDesc() const {
 	return _taskDesc;
 }
 
