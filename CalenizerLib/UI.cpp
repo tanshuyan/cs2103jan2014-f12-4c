@@ -8,7 +8,7 @@
 #include "task.h"
 #include "DateTime.h"
 
-const std::string UI::CMD_EXIT = "exit";
+const std::string UI::CMD_EXIT = "quit";
 
 UI::UI(){
 }
@@ -17,7 +17,7 @@ void UI::ProgramLaunch() {
 	_displayOutput.displayToUser(_displayOutput.welcomeMsg());
 	std::string command;
 	std::vector<std::string> display;
-	_displayOutput = _logic.executeUserInput("display all");
+	_displayOutput = _logic.executeUserInput("view all");
 	display = _displayOutput.getDisplay();
 	for(std::vector<std::string>::iterator iter = display.begin(); iter != display.end(); iter++) {
 		std::cout << *iter;
