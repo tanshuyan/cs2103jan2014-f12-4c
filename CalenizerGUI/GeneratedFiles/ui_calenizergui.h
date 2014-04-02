@@ -43,27 +43,58 @@ public:
     {
         if (CalenizerGUIClass->objectName().isEmpty())
             CalenizerGUIClass->setObjectName(QStringLiteral("CalenizerGUIClass"));
+<<<<<<< local
+<<<<<<< local
+        CalenizerGUIClass->resize(859, 483);
+=======
+=======
+>>>>>>> other
         CalenizerGUIClass->resize(697, 536);
+<<<<<<< local
+>>>>>>> other
+=======
+>>>>>>> other
         centralWidget = new QWidget(CalenizerGUIClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(20, 40, 101, 16));
+        label->setGeometry(QRect(690, 40, 151, 101));
         QFont font;
         font.setFamily(QStringLiteral("Malgun Gothic"));
-        font.setPointSize(9);
+        font.setPointSize(12);
         font.setBold(true);
         font.setWeight(75);
         label->setFont(font);
+        label->setLayoutDirection(Qt::RightToLeft);
         lineEdit = new QLineEdit(centralWidget);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
+<<<<<<< local
+<<<<<<< local
+        lineEdit->setGeometry(QRect(20, 40, 651, 20));
+=======
+=======
+>>>>>>> other
         lineEdit->setGeometry(QRect(120, 40, 551, 20));
+<<<<<<< local
+>>>>>>> other
+=======
+>>>>>>> other
         QFont font1;
         font1.setFamily(QStringLiteral("Malgun Gothic"));
         lineEdit->setFont(font1);
         textEdit = new QTextEdit(centralWidget);
         textEdit->setObjectName(QStringLiteral("textEdit"));
+<<<<<<< local
+<<<<<<< local
+        textEdit->setGeometry(QRect(690, 170, 151, 251));
+=======
+=======
+>>>>>>> other
         textEdit->setGeometry(QRect(20, 430, 650, 50));
+<<<<<<< local
+>>>>>>> other
+=======
+>>>>>>> other
         textEdit->setFont(font1);
         textEdit->setFocusPolicy(Qt::NoFocus);
         textEdit->setContextMenuPolicy(Qt::NoContextMenu);
@@ -76,7 +107,17 @@ public:
         textEdit->setTextInteractionFlags(Qt::NoTextInteraction);
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
+<<<<<<< local
+<<<<<<< local
+        label_2->setGeometry(QRect(550, 0, 131, 31));
+=======
+=======
+>>>>>>> other
         label_2->setGeometry(QRect(470, 0, 251, 31));
+<<<<<<< local
+>>>>>>> other
+=======
+>>>>>>> other
         QFont font2;
         font2.setFamily(QStringLiteral("Malgun Gothic"));
         font2.setPointSize(10);
@@ -86,12 +127,26 @@ public:
         tableWidget->setGeometry(QRect(20, 70, 650, 350));
         QFont font3;
         font3.setFamily(QStringLiteral("Malgun Gothic"));
+        font3.setPointSize(10);
         font3.setBold(false);
         font3.setWeight(50);
         tableWidget->setFont(font3);
         tableWidget->setFocusPolicy(Qt::NoFocus);
+<<<<<<< local
+<<<<<<< local
+        tableWidget->setFrameShape(QFrame::StyledPanel);
+        tableWidget->setFrameShadow(QFrame::Raised);
+        tableWidget->setLineWidth(5);
+        tableWidget->setMidLineWidth(3);
+=======
+=======
+>>>>>>> other
         tableWidget->setFrameShape(QFrame::NoFrame);
         tableWidget->setFrameShadow(QFrame::Sunken);
+<<<<<<< local
+>>>>>>> other
+=======
+>>>>>>> other
         tableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
         tableWidget->setTabKeyNavigation(false);
@@ -107,7 +162,17 @@ public:
         CalenizerGUIClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(CalenizerGUIClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
+<<<<<<< local
+<<<<<<< local
+        menuBar->setGeometry(QRect(0, 0, 859, 21));
+=======
+=======
+>>>>>>> other
         menuBar->setGeometry(QRect(0, 0, 697, 21));
+<<<<<<< local
+>>>>>>> other
+=======
+>>>>>>> other
         CalenizerGUIClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(CalenizerGUIClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
