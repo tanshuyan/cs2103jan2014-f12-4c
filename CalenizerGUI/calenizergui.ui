@@ -6,19 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-<<<<<<< local
-<<<<<<< local
-    <width>859</width>
-    <height>483</height>
-=======
-=======
->>>>>>> other
     <width>697</width>
     <height>536</height>
-<<<<<<< local
->>>>>>> other
-=======
->>>>>>> other
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,22 +17,19 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>690</x>
+      <x>20</x>
       <y>40</y>
-      <width>151</width>
-      <height>101</height>
+      <width>101</width>
+      <height>16</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Malgun Gothic</family>
-      <pointsize>12</pointsize>
+      <pointsize>9</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
-    </property>
-    <property name="layoutDirection">
-     <enum>Qt::RightToLeft</enum>
     </property>
     <property name="text">
      <string>Enter command:</string>
@@ -52,19 +38,9 @@
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>120</x>
       <y>40</y>
-<<<<<<< local
-<<<<<<< local
-      <width>651</width>
-=======
-=======
->>>>>>> other
       <width>551</width>
-<<<<<<< local
->>>>>>> other
-=======
->>>>>>> other
       <height>20</height>
      </rect>
     </property>
@@ -77,23 +53,10 @@
    <widget class="QTextEdit" name="textEdit">
     <property name="geometry">
      <rect>
-<<<<<<< local
-<<<<<<< local
-      <x>690</x>
-      <y>170</y>
-      <width>151</width>
-      <height>251</height>
-=======
-=======
->>>>>>> other
       <x>20</x>
       <y>430</y>
       <width>650</width>
       <height>50</height>
-<<<<<<< local
->>>>>>> other
-=======
->>>>>>> other
      </rect>
     </property>
     <property name="font">
@@ -132,29 +95,9 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-<<<<<<< local
-<<<<<<< local
-      <x>550</x>
-=======
-=======
->>>>>>> other
       <x>470</x>
-<<<<<<< local
->>>>>>> other
-=======
->>>>>>> other
       <y>0</y>
-<<<<<<< local
-<<<<<<< local
-      <width>131</width>
-=======
-=======
->>>>>>> other
       <width>251</width>
-<<<<<<< local
->>>>>>> other
-=======
->>>>>>> other
       <height>31</height>
      </rect>
     </property>
@@ -180,7 +123,6 @@
     <property name="font">
      <font>
       <family>Malgun Gothic</family>
-      <pointsize>10</pointsize>
       <weight>50</weight>
       <bold>false</bold>
      </font>
@@ -195,70 +137,10 @@
      <string/>
     </property>
     <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
+     <enum>QFrame::NoFrame</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <property name="lineWidth">
-     <number>5</number>
-    </property>
-    <property name="midLineWidth">
-     <number>3</number>
-    </property>
-    <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="editTriggers">
-     <set>QAbstractItemView::NoEditTriggers</set>
-    </property>
-    <property name="tabKeyNavigation">
-     <bool>false</bool>
-    </property>
-    <property name="showDropIndicator" stdset="0">
-     <bool>false</bool>
-    </property>
-    <property name="dragDropOverwriteMode">
-     <bool>false</bool>
-    </property>
-    <property name="selectionMode">
-     <enum>QAbstractItemView::NoSelection</enum>
-    </property>
-    <property name="textElideMode">
-     <enum>Qt::ElideNone</enum>
-    </property>
-    <property name="sortingEnabled">
-     <bool>true</bool>
-    </property>
-    <property name="cornerButtonEnabled">
-     <bool>false</bool>
-    </property>
-    <property name="horizontalScrollBarPolicy">
-     <enum>Qt::ScrollBarAlwaysOff</enum>
-    </property>
-    <property name="editTriggers">
-     <set>QAbstractItemView::NoEditTriggers</set>
-    </property>
-    <property name="tabKeyNavigation">
-     <bool>false</bool>
-    </property>
-    <property name="showDropIndicator" stdset="0">
-     <bool>false</bool>
-    </property>
-    <property name="dragDropOverwriteMode">
-     <bool>false</bool>
-    </property>
-    <property name="selectionMode">
-     <enum>QAbstractItemView::NoSelection</enum>
-    </property>
-    <property name="textElideMode">
-     <enum>Qt::ElideNone</enum>
-    </property>
-    <property name="sortingEnabled">
-     <bool>true</bool>
-    </property>
-    <property name="cornerButtonEnabled">
-     <bool>false</bool>
+     <enum>QFrame::Sunken</enum>
     </property>
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -303,17 +185,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-<<<<<<< local
-<<<<<<< local
-     <width>859</width>
-=======
-=======
->>>>>>> other
      <width>697</width>
-<<<<<<< local
->>>>>>> other
-=======
->>>>>>> other
      <height>21</height>
     </rect>
    </property>
