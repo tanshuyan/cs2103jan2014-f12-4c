@@ -7,6 +7,8 @@
 #include <qobject.h>
 #include "taskStorage.h"
 #include "Task.h"
+#include "NLParser.h"
+#include "Parser.h"
 #include "TaskDeadline.h"
 #include "TaskTimed.h"
 #include <cstdlib>
@@ -19,6 +21,7 @@ private:
                 // Unit Test START
 
                 void testDeadlineTask() {
+					NLParser parser;
 					std::string deadlineTaskString = "DEADLINE\ncs2013 is fun\n13/02/2014 14:00\nfalse\n";
 					TaskDeadline* deadlineTaskPtr = new TaskDeadline;
 					deadlineTaskPtr->stringToTask(deadlineTaskString);
