@@ -1,7 +1,6 @@
 //AnalysedData.h
-//v 1.0
-// this is an object between the interaction of Logic and Parser
-
+// v1.1
+// Added == operator for unit test purposes
 #ifndef ANALYSEDDATA_H
 #define ANALYSEDDATA_H
 
@@ -49,6 +48,8 @@ public:
 	QDate getStartDate();
 	QDate getEndDate();
 	std::vector<int> getIndexVector();
+
+	bool operator==(AnalysedData other);
 
 };
 #endif
