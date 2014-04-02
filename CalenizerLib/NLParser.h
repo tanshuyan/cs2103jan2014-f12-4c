@@ -14,7 +14,8 @@
 class NLParser{
 private:
 	DateTimeParser _dateTimeParser;
-	
+
+	static QRegExp RX_QUOTES;
 	static QRegExp RX_FROM_UNTIL;
 	static QRegExp RX_UNTIL_FROM;
 	static QRegExp RX_ON_UNTIL;
@@ -24,8 +25,9 @@ private:
 	static QRegExp RX_FROM;
 	static QRegExp RX_TODAY;
 
-	void parseMarkedDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled);
-	void parseTodayWords(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled);
+	QString extractDesc(QString &descString);
+	void extractMarkedDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled);
+	void extractTodayWords(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled);
 	
 
 public:
