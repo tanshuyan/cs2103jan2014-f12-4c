@@ -1,6 +1,7 @@
 // Task.h
-// v1.2
+// v1.3
 // removed setTaskType, moved tasktype-setting to the constructor
+// added taskDetailsToString
 #pragma once
 #ifndef TASK_H
 #define TASK_H
@@ -31,6 +32,7 @@ public:
 	virtual DateTime getDeadline() const {return DateTime::DateTime();}
 	virtual DateTime getStartDate() const {return DateTime::DateTime();}  
 
+	virtual std::string taskDetailsToString() {return "";}
 	virtual std::string dateTimeToString() {return "";}
 	virtual std::string statusToString() {return "";}
 	virtual std::string getTaskDesc() const {return "";}

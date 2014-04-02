@@ -3,6 +3,7 @@
 // v1.2
 // added search float == display float tasks also
 // added sorting functions
+
 #pragma once
 #ifndef TASKFILTER_H
 #define TASKFILTER_H

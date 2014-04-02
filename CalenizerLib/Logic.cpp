@@ -84,11 +84,7 @@ DisplayOutput Logic::executeUserInput(std::string userInput) {
 	analysedData = _parser.parse(userInput);
 
 	if(analysedData.getCommand() == CMD_ADD) {
-		if(!(_dateTimeResolver.resolveAdd(analysedData))) {
-			displayOutput.setFeedBack("input order of start and end date is wrong\n");
-		} else {
 		addTask(analysedData, displayOutput);
-		}
 		displayTask(_currentDisplayType, displayOutput);
 	}
 
@@ -157,18 +153,6 @@ bool Logic::isValidIndex(int index) {
 
 void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	int index = analysedData.getIndex();
-	std::string taskDesc = analysedData.getTaskDesc();
-	QDate startDate = analysedData.getStartDate();
-	QDate endDate = analysedData.getEndDate();
-	QTime startTime = analysedData.getStartTime();
-	QTime endTime = analysedData.getEndTime();
-	DateTime startDateTime;
-	startDateTime.setDate(startDate);
-	startDateTime.setTime(startTime);
-	
-	DateTime endDateTime;
-	endDateTime.setDate(endDate);
-	endDateTime.setTime(endTime);
 
 	if(!isValidIndex(index)) {
 		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
@@ -177,15 +161,19 @@ void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 
 	std::vector<Task*>::iterator taskToEdit = indexToIterator(index);
 
-	if((*taskToEdit)->getTaskType() == TASK_FLOAT) {
-		if(!taskDesc.empty()) {
-		(*taskToEdit)->setTaskDesc(taskDesc);
-		}
-		sortTaskList();
-		_userStorage.writeFile(_taskList);
-		_History.saveHistory(_taskList);
-		displayOutput.setFeedBack(_actionMsg.editFeedback(taskDesc));
+	if(!_dateTimeResolver.resolveEdit(*taskToEdit, analysedData)) {
+		displayOutput.setFeedBack("input order of start and end date is wrong\n");
 		return;
+	} 
+		
+	_taskEditor.edit(*taskToEdit, analysedData);
+
+	sortTaskList();
+	_userStorage.writeFile(_taskList);
+	_History.saveHistory(_taskList);
+	displayOutput.setFeedBack(_actionMsg.editFeedback(analysedData.getTaskDesc()));
+	return;
+/*		return;
 	}
 
 	if((*taskToEdit)->getTaskType() == TASK_DEADLINE) {
@@ -223,10 +211,15 @@ void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	}
 
 	assert(false);
-	return;
+	*/
 }
 
 void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
+	if(!(_dateTimeResolver.resolveAdd(analysedData))) {
+		displayOutput.setFeedBack("input order of start and end date is wrong\n");
+		return;
+	} 
+
 	std::string taskDesc = analysedData.getTaskDesc();
 	QDate startDate = analysedData.getStartDate();
 	QDate endDate = analysedData.getEndDate();
@@ -242,7 +235,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	
 	if(startDate.isNull() && endDate.isNull() && startTime.isNull() && endTime.isNull()) { // floating task
 		TaskFloat* newFloatPtr = new TaskFloat;
-		newFloatPtr->setTask(TASK_FLOAT, false, taskDesc);
+		newFloatPtr->setTask(false, taskDesc);
 		_taskList.push_back(newFloatPtr);
 		sortTaskList();
 		_userStorage.writeFile(_taskList);
@@ -253,7 +246,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 
 	if((startDate.isNull() && startTime.isNull())) {
 		TaskDeadline* newDeadlinePtr = new TaskDeadline;
-		newDeadlinePtr->setTask(TASK_DEADLINE, false, taskDesc, endDateTime);
+		newDeadlinePtr->setTask(false, taskDesc, endDateTime);
 		_taskList.push_back(newDeadlinePtr);
 		sortTaskList();
 		_userStorage.writeFile(_taskList);
@@ -264,7 +257,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 
 	if((endDate.isNull() && endTime.isNull())) {
 		TaskDeadline* newDeadlinePtr = new TaskDeadline;
-		newDeadlinePtr->setTask(TASK_DEADLINE, false, taskDesc, startDateTime);
+		newDeadlinePtr->setTask(false, taskDesc, startDateTime);
 		_taskList.push_back(newDeadlinePtr);
 		sortTaskList();
 		_userStorage.writeFile(_taskList);
@@ -274,7 +267,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	}
 
 	TaskTimed* newTimedPtr = new TaskTimed;
-	newTimedPtr->setTask(TASK_TIMED, false, taskDesc, startDateTime, endDateTime);
+	newTimedPtr->setTask(false, taskDesc, startDateTime, endDateTime);
 	_taskList.push_back(newTimedPtr);
 	sortTaskList();
 	_userStorage.writeFile(_taskList);
