@@ -1,33 +1,31 @@
 // TaskTimed.cpp
-// v1.1
-// added operator <
+// v1.2
+// removed setTaskType, moved tasktype-setting to the constructor
 #include <string>
 #include <sstream>
 #include <iostream>
 #include "TaskTimed.h"
 #include "DateTime.h"
 
+const std::string TaskTimed::TASK_TIMED = "TIMED";
 const std::string TaskTimed::STATUS_TRUE = "true";
 const std::string TaskTimed::STATUS_FALSE = "false";
 
 TaskTimed::TaskTimed() {
 	_completeStatus = false;
+	_taskType = TASK_TIMED;
 }
 
 TaskTimed::~TaskTimed() {
 }
 
-void TaskTimed::setTask(std::string taskType, bool status, std::string taskDesc, DateTime startDateTime, DateTime endDateTime) {
-	setTaskType(taskType);
+void TaskTimed::setTask(bool status, std::string taskDesc, DateTime startDateTime, DateTime endDateTime) {
 	setCompleteStatus(status);
 	setTaskDesc(taskDesc);
 	setStartDate(startDateTime);
 	setDeadline(endDateTime);
 }
 
-void TaskTimed::setTaskType(std::string taskType) {
-	_taskType = taskType;
-}
 
 void TaskTimed::setCompleteStatus(bool status) {
 	if(status == true) {
@@ -130,7 +128,7 @@ void TaskTimed::stringToTask(std::string content) {
 	startDateTime.dataFromString(dateTime);
 	endDateTime.dataFromString(endDate);
 
-	setTask(taskType, status, taskDesc, startDateTime, endDateTime);
+	setTask(status, taskDesc, startDateTime, endDateTime);
 }
 
 //bool TaskTimed::operator<(TaskTimed taskTimed) {

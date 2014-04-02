@@ -1,7 +1,7 @@
 //DateTime.h
-//v 1.3
-//removed useless functions of getSystemDate and getSystemTime
-//added setCurrDateTime
+//v 1.4
+//removed guessYear (the dateTimeParser already had a function that did that job)
+//added an overload to the constructor
 
 #ifndef DATETIME_H
 #define DATETIME_H
@@ -17,22 +17,16 @@ private:
 	QDate _date;
 	QTime _time;
 
-	//int guessMonth(int day);
-	QDate guessYear(int day, int month);
-
 public:
 	DateTime();
-	
+	DateTime(QDate, QTime);
+
 	//returns false if date is invalid
 	bool setDate(int day, int month, int year);
 	//returns false if time is invalid
 	bool setTime(int hour, int min);
 	bool setDate(QDate);
 	bool setTime(QTime);
-
-	//further setDate and setTime functionality:
-	//can convert "noon", "midnight", "today", "sunday"
-
 
 	QDate getDate();
 	QTime getTime();

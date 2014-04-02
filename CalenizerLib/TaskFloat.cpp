@@ -1,12 +1,13 @@
-// taskDealine.cpp
-// v1.1
-// added operator <
+// TaskFloat.cpp
+// v1.2
+// removed setTaskType, moved tasktype-setting to the constructor
 #include <string>
 #include <sstream>
 #include <iostream>
 #include "taskFloat.h"
 #include <iomanip>
 
+const std::string TaskFloat::TASK_FLOAT = "FLOAT";
 const std::string TaskFloat::STATUS_TRUE = "true";
 const std::string TaskFloat::STATUS_FALSE = "false";
 
@@ -18,20 +19,17 @@ TaskFloat::TaskFloat(TaskType taskType, bool status, std::string taskDesc) {
 }
 */
 
+TaskFloat::TaskFloat() {
+	_completeStatus = false;
+	_taskType = TASK_FLOAT;
+}
+
 TaskFloat::~TaskFloat(){
 }
 
-TaskFloat::TaskFloat() {
-}
-
-void TaskFloat::setTask(std::string taskType, bool status, std::string taskDesc) {
-	setTaskType(taskType);
+void TaskFloat::setTask(bool status, std::string taskDesc) {
 	setCompleteStatus(status);
 	setTaskDesc(taskDesc);
-}
-
-void TaskFloat::setTaskType(std::string taskType) {
-	_taskType = taskType;
 }
 
 void TaskFloat::setCompleteStatus(bool status) {
@@ -97,5 +95,5 @@ void TaskFloat::stringToTask(std::string content) {
 		status = false;
 	}
 
-	setTask(taskType, status, taskDesc);
+	setTask(status, taskDesc);
 }

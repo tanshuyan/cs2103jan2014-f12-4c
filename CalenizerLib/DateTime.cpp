@@ -1,20 +1,14 @@
 //DateTime.cpp
-//v 1.3
+//v 1.4
 #include "DateTime.h"
 
 DateTime::DateTime(){
 }
 
-QDate DateTime::guessYear(int day, int month){
-	QDate testDate;
-	int year = (testDate.currentDate()).year();
-	testDate.setDate(year, month, day);
-	for (int i=1; !testDate.isValid() && i<=4; i++){
-		testDate.setDate(year+i, month, day);
-	}
-	return testDate;
+DateTime::DateTime(QDate date, QTime time){
+	_date = date;
+	_time = time;
 }
-
 
 bool DateTime::setDate(int day, int month, int year){
 	return _date.setDate(year, month, day);
