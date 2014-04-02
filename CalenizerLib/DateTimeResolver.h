@@ -1,7 +1,6 @@
 //DateTimeResolver.h
-//Beta 1.0
-//totally untested
-//changed the class to accomodate analysedData
+//Beta 1.1
+//still untested
 #include "DateTime.h"
 #include <QDateTime>
 #include "Task.h"
