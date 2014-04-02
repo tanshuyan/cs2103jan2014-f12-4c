@@ -1,5 +1,6 @@
 // History.cpp
-// v1.0
+// v1.1
+// changed 
 #include "History.h"
 
 const std::string History::TASK_DEADLINE = "DEADLINE";
@@ -18,21 +19,22 @@ void History::saveHistory(std::vector<Task*> &taskList){
 		if((*iter)->getTaskType() == TASK_FLOAT) { // create a new floating task
 			std::string temp;
 			TaskFloat* newFloatPtr = new TaskFloat;
-			temp = (*iter)->taskToString();
+			temp = (*iter)->taskDetailsToString();
+			std::istringstream input(temp);
 			newFloatPtr->stringToTask(temp);
 			_currHistory.push_back(newFloatPtr);
 		
 		} else if ((*iter)->getTaskType() == TASK_DEADLINE) { // create a new deadline task	
 			std::string temp;
 			TaskDeadline* newDeadlinePtr = new TaskDeadline;
-			temp = (*iter)->taskToString();
+			temp = (*iter)->taskDetailsToString();
 			newDeadlinePtr->stringToTask(temp);
 			_currHistory.push_back(newDeadlinePtr);
 
 		} else if ((*iter)->getTaskType() == TASK_TIMED) { // create a new deadline task
 			std::string temp;
 			TaskTimed* newTimedPtr = new TaskTimed;
-			temp = (*iter)->taskToString();
+			temp = (*iter)->taskDetailsToString();
 			newTimedPtr->stringToTask(temp);
 			_currHistory.push_back(newTimedPtr);
 		}

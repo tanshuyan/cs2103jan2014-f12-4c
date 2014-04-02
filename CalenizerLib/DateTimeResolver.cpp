@@ -139,7 +139,6 @@ void DateTimeResolver::completeAdd(QDate &startDate, QTime &startTime, QDate &en
 			startTime = _dayEnd;
 			return;
 		}
-		assert(false);
 		return;
 	}
 	//Single end date/time
@@ -154,7 +153,6 @@ void DateTimeResolver::completeAdd(QDate &startDate, QTime &startTime, QDate &en
 			startTime = _dayEnd;
 			return;
 		}
-		assert(false);
 		return;
 	}
 
@@ -227,7 +225,7 @@ bool DateTimeResolver::checkDateOrderIsValid(QDate startDate, QTime startTime, Q
 		end.setTime(startTime);
 		assert(end.isValid());
 
-		if(start >= end){
+		if(start > end){
 			return false;
 		}
 	}

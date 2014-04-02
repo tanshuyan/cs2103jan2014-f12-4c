@@ -1,7 +1,8 @@
 //Parser.cpp
 //IN PROGRESS
-//v 2.7
+//v 2.8
 //editted the display string to view, exit to quit
+//defaulted view to view all
 
 
 #include "Parser.h"
@@ -137,10 +138,12 @@ AnalysedData Parser::searchCMD(std::string userInput) {
 AnalysedData Parser::displayCMD(std::string userInput) {
 	AnalysedData analysedData;
 	analysedData.setCommand(CMD_DISPLAY);
-	if(userInput == DISPLAY_COMPLETE || userInput == DISPLAY_ALL || userInput == DISPLAY_INCOMPLETE || userInput == DISPLAY_TODAY) {
+	if(userInput.empty()) {
+		analysedData.setDisplayType(DISPLAY_ALL);
+	} else if(userInput == DISPLAY_COMPLETE || userInput == DISPLAY_ALL || userInput == DISPLAY_INCOMPLETE || userInput == DISPLAY_TODAY) {
 		analysedData.setDisplayType(userInput);
 	} else {
-		analysedData.setDisplayType(CMD_INVALID);
+		analysedData.setCommand(CMD_INVALID); // sets to invalid command if the remaining user input is invalid
 	}
 	return analysedData;
 }
