@@ -9,7 +9,17 @@
 #include <QtCore/qglobal.h>
 
 static const unsigned char qt_resource_data[] = {
+<<<<<<< local
+<<<<<<< local
+  // C:/Users/Monika/Downloads/cs2103jan2014-f12-4c-46fc8ebbfaa1/cs2103jan2014-f12-4c-46fc8ebbfaa1/CalenizerGUI/Resources/HwaChong.jpg
+=======
+=======
+>>>>>>> other
   // C:/Users/Desmond/Desktop/QTCalenizer/CalenizerGUI/Resources/HwaChong.jpg
+<<<<<<< local
+>>>>>>> other
+=======
+>>>>>>> other
   0x0,0x0,0xe6,0x52,
   0xff,
   0xd8,0xff,0xe0,0x0,0x10,0x4a,0x46,0x49,0x46,0x0,0x1,0x2,0x1,0x0,0x48,0x0,
