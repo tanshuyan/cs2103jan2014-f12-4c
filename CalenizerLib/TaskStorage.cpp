@@ -41,7 +41,7 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 		if (taskType == TASK_DEADLINE){
 			std::string taskContent;
 			std::string content;
-			taskContent += taskType + "\n";
+			//taskContent += taskType + "\n";
 			for(int i = 1; i <= 3 ; i++) { // deadline task has 3 more attributes
 			std::getline(_fileInput,content);
 			taskContent += content + "\n";
@@ -53,7 +53,7 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 		} else if (taskType == TASK_FLOAT){
 			std::string taskContent;
 			std::string content; 
-			taskContent += taskType + "\n";
+			//taskContent += taskType + "\n";
 			for(int i = 1; i <= 2 ; i++) { // floating task has 2 more attributes
 			std::getline(_fileInput,content);
 			taskContent  += content + "\n";
@@ -65,7 +65,7 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 		} else if (taskType == TASK_TIMED){
 			std::string taskContent;
 			std::string content;
-			taskContent += taskType + "\n";
+			//taskContent += taskType + "\n";
 			for(int i = 1; i <= 4 ; i++) { // timed task has 4 more attributes
 			std::getline(_fileInput,content);
 			taskContent += content + "\n";

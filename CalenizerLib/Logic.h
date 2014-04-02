@@ -18,7 +18,7 @@
 #include "History.h"
 #include "UIDisplay.h"
 #include "AnalysedData.h"
-#include "Parser.h"
+#include "LogicParser.h"
 #include "DisplayOutput.h"
 #include "Logger.h"
 #include "DateTime.h"
@@ -35,7 +35,7 @@ private:
 	TaskFilter _filter;
 	History _History;
 	TaskStorage _userStorage;
-	Parser _parser;
+	LogicParser _parser;
 	AnalysedData _currentDisplayType;
 	DateTimeResolver _dateTimeResolver;
 	TaskEditor _taskEditor;

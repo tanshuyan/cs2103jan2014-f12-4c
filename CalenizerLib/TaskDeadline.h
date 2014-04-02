@@ -3,6 +3,7 @@
 // removed setTaskType, moved tasktype-setting to the constructor
 // v1.3
 // Shifted tasktype string to public so it may be scoped by other classes
+// added taskDetailsToString
 #pragma once
 #ifndef TASKDEADLINE_H
 #define TASKDEADLINE_H
@@ -45,6 +46,7 @@ public:
 	std::string statusToString();
 	bool getCompleteStatus() const ;
 	std::string outputToString();
+	std::string taskDetailsToString();
 
 	// for storage
 	std::string taskToString();
