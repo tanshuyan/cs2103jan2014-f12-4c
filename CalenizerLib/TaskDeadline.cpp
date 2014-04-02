@@ -1,6 +1,7 @@
 // TaskDeadline.cpp
 // v1.2
 // removed setTaskType, moved tasktype-setting to the constructor
+// added taskDetailsToString
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -76,67 +77,23 @@ DateTime TaskDeadline::getDeadline() const {
 	return _deadline;
 }
 
-/*
-std::string TaskDeadline::toStandardDateTime(){
-	std::ostringstream output;
-
-	std::ostringstream temp;
-
-	// Add Day
-	temp.fill('0');
-	temp.width(2);
-	temp << _deadline.getDate().getDay();
-	output << temp;
-	output << "/";
-
-	// Add Month
-	temp.str("");
-	temp.clear();
-	temp.fill('0');
-	temp.width(2);
-	temp << _deadline.getDate().getMonth();
-	output << temp;
-	output << "/";
-
-	// Add Year
-	temp.str("");
-	temp.clear();
-	temp.fill('0');
-	temp.width(2);
-	temp << _deadline.getDate().getYear();
-	output << temp;
-
-	output << " ";
-
-	// Add Hour
-	temp.str("");
-	temp.clear();
-	temp.fill('0');
-	temp.width(2);
-	temp << _deadline.getTime().getHour();
-	output << temp;
-	output << ":";
-
-	// Add Min
-	temp.str("");
-	temp.clear();
-	temp.fill('0');
-	temp.width(2);
-	temp << _deadline.getTime().getMin();
-	output << temp;
-
-	return output.str();
-}
-*/
-
 std::string TaskDeadline::outputToString() {
 	std::ostringstream output;
 	output << getTaskType() << "<>"; 
 	output << getTaskDesc() << "<>";
-	output << _deadline.dataToString() << "<>";
+	output << _deadline.dateToString(true) << " " << _deadline.timeToString() << "<>";
 	output << statusToString() << std::endl;
 	return output.str();
 }
+
+std::string TaskDeadline::taskDetailsToString() {
+	std::ostringstream output;
+	output << getTaskDesc() << std::endl;
+	output << dateTimeToString() << std::endl;
+	output << statusToString() << std::endl;
+	return output.str();
+}
+
 
 std::string TaskDeadline::taskToString() {
 	std::ostringstream output;
@@ -149,14 +106,12 @@ std::string TaskDeadline::taskToString() {
 
 void TaskDeadline::stringToTask(std::string content) {
 	std::istringstream input(content);
-	std::string taskType;
 	std::string taskDesc;
 	std::string dateTime;
 	DateTime deadline;
 	std::string statusString;
 	bool status;
-	
-	std::getline(input, taskType);
+
 	std::getline(input, taskDesc);
 	std::getline(input, dateTime);
 	input >> statusString;

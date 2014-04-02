@@ -1,4 +1,6 @@
-// v 1.0
+// Logger.h
+// v 1.1
+// added different warning levels
 
 #ifndef LOGGER_H
 #define LOGGER_H
@@ -11,6 +13,10 @@ class Logger {
 private:
 	std::vector<std::string> _logContent;
 	Logger();
+	static const std::string LOG_WARNING;
+	static const std::string LOG_ERROR;
+	static const std::string LOG_INFORMATION;
+
 
 public:
 	static Logger& getInstance() {

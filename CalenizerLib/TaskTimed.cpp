@@ -1,6 +1,7 @@
 // TaskTimed.cpp
-// v1.2
+// v1.3
 // removed setTaskType, moved tasktype-setting to the constructor
+// added taskDetailsToString
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -87,11 +88,18 @@ std::string TaskTimed::outputToString() {
 	std::ostringstream output;
 	output << getTaskType() << "<>"; 
 	output << getTaskDesc() << "<>";
-	output << _startDateTime.dataToString() << " to " << _endDateTime.dataToString() << "<>";
+	output << _startDateTime.dateToString(true) << " " << _startDateTime.timeToString() << " to " << _endDateTime.dateToString(true) << " " << _endDateTime.timeToString() << "<>";
 	output << statusToString() << std::endl;
 	return output.str();
 }
 
+std::string TaskTimed::taskDetailsToString() {
+	std::ostringstream output;
+	output << getTaskDesc() << std::endl;
+	output << dateTimeToString() << std::endl;
+	output << statusToString() << std::endl;
+	return output.str();
+}
 
 
 std::string TaskTimed::taskToString() {
@@ -105,7 +113,6 @@ std::string TaskTimed::taskToString() {
 
 void TaskTimed::stringToTask(std::string content) {
 	std::istringstream input(content);
-	std::string taskType;
 	std::string taskDesc;
 	std::string dateTime;
 	std::string endDate;
@@ -114,7 +121,6 @@ void TaskTimed::stringToTask(std::string content) {
 	std::string statusString;
 	bool status = false;
 
-	std::getline(input, taskType);
 	std::getline(input, taskDesc);
 	std::getline(input, dateTime);
 	std::getline(input, endDate);
