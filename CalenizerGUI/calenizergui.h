@@ -60,6 +60,11 @@ private:
 
 	static const std::string STATUS_COMPLETE;
 	static const std::string STATUS_INCOMPLETE;
+<<<<<<< local
+	static const std::string STATUS_OVERDUE;
+	static const std::string STATUS_ONGOING;
+=======
+>>>>>>> other
 
 	static const std::string CMD_DISPLAY_TODAY;
 
