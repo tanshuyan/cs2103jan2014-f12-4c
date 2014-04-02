@@ -1,6 +1,8 @@
 // TaskDeadline.h
 // v1.2
 // removed setTaskType, moved tasktype-setting to the constructor
+// v1.3
+// Shifted tasktype string to public so it may be scoped by other classes
 #pragma once
 #ifndef TASKDEADLINE_H
 #define TASKDEADLINE_H
@@ -17,11 +19,11 @@ private:
 	DateTime _deadline;
 	std::string _taskDesc;
 	bool _completeStatus;
-	static const std::string TASK_DEADLINE;
 	static const std::string STATUS_FALSE;
 	static const std::string STATUS_TRUE;
 
 public:
+	static const std::string TASK_DEADLINE;
 	TaskDeadline();
 	TaskDeadline(bool, std::string, DateTime);
 	~TaskDeadline();
