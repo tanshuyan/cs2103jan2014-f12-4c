@@ -1,6 +1,8 @@
 // TaskTimed.h
 // v1.2
 // removed setTaskType, moved tasktype-setting to the constructor
+// v1.3
+// Shifted tasktype string to public so it may be scoped by other classes
 #pragma once
 #ifndef TASKTIMED_H
 #define TASKTIMED_H
@@ -18,11 +20,11 @@ private:
 	bool _completeStatus;
 	DateTime _startDateTime;
 	DateTime _endDateTime;
-	static const std::string TASK_TIMED;
 	static const std::string STATUS_FALSE;
 	static const std::string STATUS_TRUE;
 
 public:
+	static const std::string TASK_TIMED;
 	TaskTimed();
 	//TaskTimed(bool, std::string, DateTime, DateTime);
 	~TaskTimed();
