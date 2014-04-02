@@ -1,105 +1,93 @@
 //TaskEditor.cpp
-//Beta 1.0
-//totally untested
+//Beta 1.1
+//Lots of code fixes because I suck
+//Still untested
 #include "TaskEditor.h"
 
-const std::string TASK_FLOAT = "FLOAT";
-const std::string TASK_DEADLINE = "DEADLINE";
-const std::string TASK_TIMED = "TIMED";
-
-void TaskEditor::edit(Task* task, AnalysedData &analysedData){
+void TaskEditor::edit(Task* &task, AnalysedData &analysedData){
 	std::string taskDesc = analysedData.getTaskDesc();
 	QDate startDate = analysedData.getStartDate();
 	QTime startTime = analysedData.getStartTime();
 	QDate endDate = analysedData.getEndDate();
 	QTime endTime = analysedData.getEndTime();
 	
-	if(task->getTaskType() == TASK_FLOAT){
+	if(task->getTaskType() == TaskFloat::TASK_FLOAT){
 		editFloat(task, taskDesc, startDate, startTime, endDate, endTime);
 	}
-	if(task->getTaskType() == TASK_DEADLINE){
+	if(task->getTaskType() == TaskDeadline::TASK_DEADLINE){
 		editDeadline(task, taskDesc, startDate, startTime, endDate, endTime);
 	}
-	if(task->getTaskType() == TASK_TIMED){
+	if(task->getTaskType() == TaskTimed::TASK_TIMED){
 		editTimed(task, taskDesc, startDate, startTime, endDate, endTime);
 	}
-	assert(false);
 	return;
 }
 
-void TaskEditor::editFloat(Task* task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
-	QString desc(taskDesc.c_str());
-	//updates desc only if field is not empty
-	if(!desc.trimmed().isEmpty()){
-		task->setTaskDesc(desc.trimmed().toStdString());
-	}
+void TaskEditor::editFloat(Task* &task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
+	//Updates desc if field is not empty
+	setDesc(task, taskDesc);
 	//Only desc to change
 	if(startDate.isNull() && startTime.isNull() && endDate.isNull() && endTime.isNull()){
 		return;
 	}
 	//Only start date/time
 	if(startDate.isValid() && startTime.isValid() && endDate.isNull() && endTime.isNull()){
-		convertToDeadline(task, startDate, startTime);
+		upgradeToDeadline(task, startDate, startTime);
 		return;
 	}
 	//Only end date/time
 	if(startDate.isNull() && startTime.isNull() && endDate.isValid() && endTime.isValid()){
-		convertToDeadline(task, endDate, endTime);
+		upgradeToDeadline(task, endDate, endTime);
 		return;
 	}
 	//Both start date/time and end date/time
 	if(startDate.isValid() && startTime.isValid() && endDate.isValid() && endTime.isValid()){
-		convertToTimed(task, startDate, startTime, endDate, endTime);
+		upgradeToTimed(task, startDate, startTime, endDate, endTime);
 		return;
 	}
 	assert(false);
 	return;
 }
 
-void TaskEditor::editDeadline(Task* task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
-	QString desc(taskDesc.c_str());
-	//updates desc only if field is not empty
-	if(!desc.trimmed().isEmpty()){
-		task->setTaskDesc(desc.trimmed().toStdString());
-	}
-
+void TaskEditor::editDeadline(Task* &task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
+	//Updates desc if field is not empty
+	setDesc(task, taskDesc);
 	//Only desc to change
 	if(startDate.isNull() && startTime.isNull() && endDate.isNull() && endTime.isNull()){
 		return;
 	}
-	//Only start date to change
+	//Only date to change
 	if(startDate.isValid() && startTime.isNull() && endDate.isNull() && endTime.isNull()){
-		setStartDate(task, startDate);
+		setEndDate(task, startDate);
 		return;
 	}
-	//Only start time to change
-	if(startDate.isNull() && startTime.isValid() && endDate.isNull() && endTime.isNull()){
-		setStartTime(task, startTime);
-		return;
-	}
-	//Only end date to change
 	if(startDate.isNull() && startTime.isNull() && endDate.isValid() && endTime.isNull()){
 		setEndDate(task, endDate);
 		return;
 	}
-	//Only end time to change
+	//Only time to change
+	if(startDate.isNull() && startTime.isValid() && endDate.isNull() && endTime.isNull()){
+		setEndTime(task, startTime);
+		return;
+	}
 	if(startDate.isNull() && startTime.isNull() && endDate.isNull() && endTime.isValid()){
 		setEndTime(task, endTime);
 		return;
 	}
-	//Only start date/time
+	//Both date/time to change
 	if(startDate.isValid() && startTime.isValid() && endDate.isNull() && endTime.isNull()){
-		convertToDeadline(task, startDate, startTime);
+		setEndDate(task, startDate);
+		setEndTime(task, startTime);
 		return;
 	}
-	//Only end date/time
 	if(startDate.isNull() && startTime.isNull() && endDate.isValid() && endTime.isValid()){
-		convertToDeadline(task, endDate, endTime);
+		setEndDate(task, endDate);
+		setEndTime(task, endTime);
 		return;
 	}
-	//Both start date/time and end date/time
+	//Both start date/time and end date/time (upgrade to timed task)
 	if(startDate.isValid() && startTime.isValid() && endDate.isValid() && endTime.isValid()){
-		convertToTimed(task, startDate, startTime, endDate, endTime);
+		upgradeToTimed(task, startDate, startTime, endDate, endTime);
 		return;
 	}
 	assert(false);
@@ -107,11 +95,8 @@ void TaskEditor::editDeadline(Task* task, std::string taskDesc, QDate startDate,
 }
 
 void TaskEditor::editTimed(Task* task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
-	QString desc(taskDesc.c_str());
-	//updates desc only if field is not empty
-	if(!desc.trimmed().isEmpty()){
-		task->setTaskDesc(desc.trimmed().toStdString());
-	}
+	//Updates desc if field is not empty
+	setDesc(task, taskDesc);
 	//updates date/time fields only if they are valid
 	if(startDate.isValid()){
 		setStartDate(task, startDate);
@@ -124,6 +109,15 @@ void TaskEditor::editTimed(Task* task, std::string taskDesc, QDate startDate, QT
 	}
 	if(endTime.isValid()){
 		setEndTime(task, endTime);
+	}
+	return;
+}
+
+void TaskEditor::setDesc(Task* task, std::string taskDesc){
+	QString desc(taskDesc.c_str());
+	//updates desc only if field is not empty
+	if(!desc.trimmed().isEmpty()){
+		task->setTaskDesc(desc.trimmed().toStdString());
 	}
 	return;
 }
@@ -156,24 +150,23 @@ void TaskEditor::setEndTime(Task* task, QTime endTime){
 	return;
 }
 
-void TaskEditor::convertToDeadline(Task* task, QDate date, QTime time){
-	task->setTaskType(TASK_DEADLINE);
-	DateTime deadline;
-	deadline.setDate(date);
-	deadline.setTime(time);
-	task->setDeadline(deadline);
+void TaskEditor::upgradeToDeadline(Task* &task, QDate date, QTime time){
+	DateTime deadline(date, time);
+	std::string desc = task->getTaskDesc();
+	bool status = task->getCompleteStatus();
+	delete task;
+	task = new TaskDeadline;
+	task->setTask(status,desc,deadline);
 	return;
 }
 
-void TaskEditor::convertToTimed(Task* task, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
-	task->setTaskType(TASK_TIMED);
-	DateTime start;
-	start.setDate(startDate);
-	start.setTime(startTime);
-	DateTime deadline;
-	deadline.setDate(endDate);
-	deadline.setTime(endTime);
-	task->setStartDate(start);
-	task->setDeadline(deadline);
+void TaskEditor::upgradeToTimed(Task* &task, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
+	DateTime start(startDate, startTime);
+	DateTime deadline(endDate, endTime);
+	std::string desc = task->getTaskDesc();
+	bool status = task->getCompleteStatus();
+	delete task;
+	task = new TaskTimed;
+	task->setTask(status,desc,start,deadline);
 	return;
 }

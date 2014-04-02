@@ -1,14 +1,7 @@
 //DateTimeResolver.cpp
-//Beta 1.0
-//totally untested
-//changed the class to accomodate analysedData
-
+//Beta 1.1
+//still untested
 #include "DateTimeResolver.h"
-
-const std::string TASK_FLOAT = "FLOAT";
-const std::string TASK_DEADLINE = "DEADLINE";
-const std::string TASK_TIMED = "TIMED";
-
 
 DateTimeResolver::DateTimeResolver(){
 	_dayStart.setHMS(0,0,0);
@@ -19,7 +12,7 @@ bool DateTimeResolver::resolveAdd(AnalysedData &analysedData) {
 	QTime startTime = analysedData.getStartTime();
 	QDate endDate = analysedData.getEndDate();
 	QTime endTime = analysedData.getEndTime();
-	completeAdd(startDate, startTime, endDate, endTime);
+	completeAdd(startDate, startTime, endDate, endTime);	
 	analysedData.setStartDate(startDate);
 	analysedData.setStartTime(startTime);
 	analysedData.setEndDate(endDate);
@@ -41,18 +34,19 @@ bool DateTimeResolver::resolveEdit(const Task* task, AnalysedData &analysedData)
 	analysedData.setDateTimeUnlabelled(dateTimeIsUnlabelled);
 	return checkDateOrderIsValid(startDate, startTime, endDate, endTime);
 }
+
 void DateTimeResolver::completeEdit(const Task* task, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled){
 	//User input contains only desc
 	if(startDate.isNull() && startTime.isNull() && endDate.isNull() && endTime.isNull()){
 		return;
 	}
 
-	if(task->getTaskType() == TASK_FLOAT){
+	if(task->getTaskType() == TaskFloat::TASK_FLOAT){
 		completeAdd(startDate, startTime, endDate, endTime);
 		return;
 	}
 
-	if(task->getTaskType() == TASK_DEADLINE){
+	if(task->getTaskType() == TaskDeadline::TASK_DEADLINE){
 		//only start date/time
 		if((startDate.isValid()||startTime.isValid()) && endDate.isNull() && endTime.isNull()){
 			//If only start date/time is specified, it will be used to directly edit the deadline's end date/time
@@ -90,7 +84,7 @@ void DateTimeResolver::completeEdit(const Task* task, QDate &startDate, QTime &s
 		return;
 	}
 
-	if(task->getTaskType() == TASK_TIMED){
+	if(task->getTaskType() == TaskTimed::TASK_TIMED){
 		if(dateTimeIsUnlabelled){
 			if (startDate.isNull()){
 				startDate = task->getStartDate().getDate();
