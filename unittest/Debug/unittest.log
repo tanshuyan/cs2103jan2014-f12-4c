@@ -1,3 +1,6 @@
+<<<<<<< local
+﻿Build started 4/2/2014 11:08:49 PM.
+=======
 ﻿Build started 4/2/2014 10:30:45 PM.
      1>Project "C:\Users\Desmond\Desktop\QTCalenizer\unittest\unittest.vcxproj" on node 2 (Build target(s)).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.CppCommon.targets(172,5): warning MSB8017: A circular dependency has been detected while executing custom build commands for item "GeneratedFiles\Debug\main.moc". This may cause incremental build to work incorrectly.
@@ -10,7 +13,12 @@
          C:\Users\Desmond\Desktop\QTCalenizer\Win32\Debug\CalenizerLib.lib
          unittest.vcxproj -> C:\Users\Desmond\Desktop\QTCalenizer\Win32\Debug\unittest.exe
      1>Done Building Project "C:\Users\Desmond\Desktop\QTCalenizer\unittest\unittest.vcxproj" (Build target(s)).
+>>>>>>> other
 
 Build succeeded.
 
+<<<<<<< local
+Time Elapsed 00:00:00.01
+=======
 Time Elapsed 00:00:02.51
+>>>>>>> other

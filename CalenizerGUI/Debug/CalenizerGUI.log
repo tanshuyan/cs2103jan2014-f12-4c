@@ -1,26 +1,60 @@
+<<<<<<< local
+﻿Build started 4/2/2014 11:14:04 PM.
+     1>Project "C:\Users\Monika\Downloads\cs2103jan2014-f12-4c-9f949e87f028\cs2103jan2014-f12-4c-9f949e87f028\CalenizerGUI\CalenizerGUI.vcxproj" on node 2 (Build target(s)).
+=======
 ﻿Build started 4/2/2014 10:30:13 PM.
      1>Project "C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\CalenizerGUI.vcxproj" on node 3 (Rebuild target(s)).
+>>>>>>> other
      1>CustomBuild:
+<<<<<<< local
+=======
          Moc'ing calenizergui.h...
          Uic'ing calenizergui.ui...
+>>>>>>> other
          Rcc'ing calenizergui.qrc...
        ClCompile:
+<<<<<<< local
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\CalenizerLib /I.\GeneratedFiles /I. /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include /I.\GeneratedFiles\Debug /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtCore /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtGui /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtWidgets /Zi /nologo /W1 /WX- /Od /Oy- /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t- /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt GeneratedFiles\Debug\moc_calenizergui.cpp calenizergui.cpp main.cpp
+=======
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\CalenizerLib /I.\GeneratedFiles /I. /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include /I.\GeneratedFiles\Debug /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtCore /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtGui /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtWidgets /Zi /nologo /W1 /WX- /Od /Oy- /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t- /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt calenizergui.cpp GeneratedFiles\Debug\moc_calenizergui.cpp main.cpp
          calenizergui.cpp
+>>>>>>> other
          moc_calenizergui.cpp
+<<<<<<< local
+         calenizergui.cpp
+=======
+>>>>>>> other
          main.cpp
          Generating Code...
+<<<<<<< local
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\CalenizerLib /I.\GeneratedFiles /I. /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include /I.\GeneratedFiles\Debug /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtCore /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtGui /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtWidgets /Zi /nologo /W1 /WX- /Od /Oy- /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t- /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt GeneratedFiles\qrc_calenizergui.cpp
+=======
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I..\CalenizerLib /I.\GeneratedFiles /I. /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include /I.\GeneratedFiles\Debug /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtCore /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtGui /IC:\Qt\Qt5.2.1\5.2.1\msvc2012\include\QtWidgets /Zi /nologo /W1 /WX- /Od /Oy- /D UNICODE /D WIN32 /D WIN64 /D QT_DLL /D QT_CORE_LIB /D QT_GUI_LIB /D QT_WIDGETS_LIB /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t- /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt GeneratedFiles\qrc_calenizergui.cpp
+>>>>>>> other
          qrc_calenizergui.cpp
        Link:
+<<<<<<< local
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Monika\Downloads\cs2103jan2014-f12-4c-9f949e87f028\cs2103jan2014-f12-4c-9f949e87f028\Win32\Debug\CalenizerGUI.exe" /NOLOGO /LIBPATH:C:\Qt\Qt5.2.1\5.2.1\msvc2012\lib qtmaind.lib Qt5Cored.lib Qt5Guid.lib Qt5Widgetsd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Monika\Downloads\cs2103jan2014-f12-4c-9f949e87f028\cs2103jan2014-f12-4c-9f949e87f028\Win32\Debug\CalenizerGUI.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Monika\Downloads\cs2103jan2014-f12-4c-9f949e87f028\cs2103jan2014-f12-4c-9f949e87f028\Win32\Debug\CalenizerGUI.lib" /MACHINE:X86 /SAFESEH Debug\calenizergui.obj
+=======
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Desmond\Desktop\QTCalenizer\Win32\Debug\CalenizerGUI.exe" /NOLOGO /LIBPATH:C:\Qt\Qt5.2.1\5.2.1\msvc2012\lib qtmaind.lib Qt5Cored.lib Qt5Guid.lib Qt5Widgetsd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Desmond\Desktop\QTCalenizer\Win32\Debug\CalenizerGUI.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Desmond\Desktop\QTCalenizer\Win32\Debug\CalenizerGUI.lib" /MACHINE:X86 /SAFESEH Debug\calenizergui.obj
+>>>>>>> other
          Debug\moc_calenizergui.obj
          Debug\qrc_calenizergui.obj
          Debug\main.obj
+<<<<<<< local
+         "C:\Users\Monika\Downloads\cs2103jan2014-f12-4c-9f949e87f028\cs2103jan2014-f12-4c-9f949e87f028\Win32\Debug\CalenizerLib.lib"
+         CalenizerGUI.vcxproj -> C:\Users\Monika\Downloads\cs2103jan2014-f12-4c-9f949e87f028\cs2103jan2014-f12-4c-9f949e87f028\Win32\Debug\CalenizerGUI.exe
+     1>Done Building Project "C:\Users\Monika\Downloads\cs2103jan2014-f12-4c-9f949e87f028\cs2103jan2014-f12-4c-9f949e87f028\CalenizerGUI\CalenizerGUI.vcxproj" (Build target(s)).
+=======
          C:\Users\Desmond\Desktop\QTCalenizer\Win32\Debug\CalenizerLib.lib
          CalenizerGUI.vcxproj -> C:\Users\Desmond\Desktop\QTCalenizer\Win32\Debug\CalenizerGUI.exe
      1>Done Building Project "C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\CalenizerGUI.vcxproj" (Rebuild target(s)).
+>>>>>>> other
 
 Build succeeded.
 
+<<<<<<< local
+Time Elapsed 00:00:07.75
+=======
 Time Elapsed 00:00:07.46
+>>>>>>> other
