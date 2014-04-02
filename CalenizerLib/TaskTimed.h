@@ -1,6 +1,6 @@
 // TaskTimed.h
-// v1.1
-// added operator <
+// v1.2
+// removed setTaskType, moved tasktype-setting to the constructor
 #pragma once
 #ifndef TASKTIMED_H
 #define TASKTIMED_H
@@ -10,7 +10,6 @@
 #include "task.h"
 #include "DateTime.h"
 
-
 class TaskTimed: public Task {
 private:
 
@@ -19,22 +18,22 @@ private:
 	bool _completeStatus;
 	DateTime _startDateTime;
 	DateTime _endDateTime;
+	static const std::string TASK_TIMED;
 	static const std::string STATUS_FALSE;
 	static const std::string STATUS_TRUE;
 
 public:
 	TaskTimed();
-	//TaskTimed(std::string, bool, std::string, DateTime, DateTime);
+	//TaskTimed(bool, std::string, DateTime, DateTime);
 	~TaskTimed();
 
-	void setTask(std::string, bool, std::string, DateTime, DateTime);
-	void setTask(std::string, bool, std::string) {return;}
-	void setTask(std::string, bool, std::string, DateTime) {return;}
+	void setTask(bool, std::string, DateTime, DateTime);
+	void setTask(bool, std::string) {return;}
+	void setTask(bool, std::string, DateTime) {return;}
 	void setCompleteStatus(bool);
 	void setTaskDesc(std::string);
 	void setDeadline(DateTime);
 	void setStartDate(DateTime);
-	void setTaskType(std::string);
 	
 	DateTime getDeadline() const ;
 	DateTime getStartDate() const ;
