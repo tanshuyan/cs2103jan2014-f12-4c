@@ -1,6 +1,7 @@
 // TaskFloat.cpp
 // v1.2
 // removed setTaskType, moved tasktype-setting to the constructor
+// added taskDetailsToString
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -68,6 +69,12 @@ std::string TaskFloat::outputToString() {
 	return output.str();
 }
 
+std::string TaskFloat::taskDetailsToString() {
+	std::ostringstream output;
+	output << getTaskDesc() << std::endl;
+	output << statusToString() << std::endl;
+	return output.str();
+}
 
 std::string TaskFloat::taskToString() {
 	std::ostringstream output;
@@ -79,13 +86,11 @@ std::string TaskFloat::taskToString() {
 
 void TaskFloat::stringToTask(std::string content) {
 	std::istringstream input(content);
-	std::string taskType;
 	std::string dump;
 	std::string taskDesc;
 	std::string statusString; 
 	bool status;
 	
-	std::getline(input, taskType);
 	std::getline(input, taskDesc);
 	input >> statusString;
 	if (statusString == STATUS_TRUE){

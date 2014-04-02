@@ -1,10 +1,12 @@
 // AnalysedData.cpp
-// v1.0
-// this is an object between the interaction of Logic and Parser
+// v1.1
+// Added == operator for unit test purposes
 
 #include "AnalysedData.h"
 
 AnalysedData::AnalysedData() {
+	_taskIndex = -1;
+	_dateTimeIsUnlabelled = true;
 }
 
 
@@ -86,4 +88,44 @@ QDate AnalysedData::getEndDate() {
 
 std::vector<int> AnalysedData::getIndexVector() {
 	return _index;
+}
+
+bool AnalysedData::operator==(AnalysedData other){
+	if(other.getTaskDesc() != _taskDesc){
+		return false;
+	}
+	if(other.getCommand() != _command){
+		return false;
+	}
+	if(other.getDisplayType() != _displayType){
+		return false;
+	}
+	if(other.getStartDate() != _startDate){
+		return false;
+	}
+	if(other.getIndex() != _taskIndex){
+		return false;
+	}
+	if(other.getStartTime() != _startTime){
+		return false;
+	}
+	if(other.getEndTime() != _endTime){
+		return false;
+	}
+	if(other.getStartDate() != _startDate){
+		return false;
+	}
+	if(other.getStartDate() != _startDate){
+		return false;
+	}
+	if(other.getEndDate() != _endDate){
+		return false;
+	}
+	if(other.getIndexVector() != _index){
+		return false;
+	}
+	if(other.getDateTimeUnlabelled() != _dateTimeIsUnlabelled){
+		return false;
+	}
+	return true;
 }
