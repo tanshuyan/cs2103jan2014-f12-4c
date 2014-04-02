@@ -5,14 +5,14 @@
 #include "DisplayOutput.h"
 #include <iostream>
 
-const std::string DisplayOutput:: _programName = "Calenzier";	
+const std::string DisplayOutput:: _programName = "Calenizer";	
 
 DisplayOutput::DisplayOutput() {
 }
 
 void DisplayOutput::displayTasks(std::vector<Task*> displayList){
 	int counter = 1;
-
+	_displayList.clear();
 	for(std::vector<Task*>::iterator iter = displayList.begin(); iter != displayList.end();){
 		//Numbering
 		std::stringstream output;
@@ -39,6 +39,23 @@ void DisplayOutput::setFeedBack(std::vector<int> feedback) {
 		}
 	}
 	_feedback = output.str();
+}
+
+void DisplayOutput::setDisplayStatus(bool displayStatus) {
+	_displayStatus = displayStatus;
+}
+
+void DisplayOutput::setDisplayListStatus(std::vector<std::string> displayListStatus) {
+	_displayListStatus.clear();
+	_displayListStatus = displayListStatus;
+}
+
+std::vector<std::string> DisplayOutput::getDisplayListStatus() {
+	return _displayListStatus;
+}
+
+bool DisplayOutput::getDisplayStatus() {
+	return _displayStatus;
 }
 
 std::string DisplayOutput::getFeedBack() {

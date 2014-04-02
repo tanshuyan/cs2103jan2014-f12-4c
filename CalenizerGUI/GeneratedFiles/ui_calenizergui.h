@@ -43,57 +43,75 @@ public:
     {
         if (CalenizerGUIClass->objectName().isEmpty())
             CalenizerGUIClass->setObjectName(QStringLiteral("CalenizerGUIClass"));
-        CalenizerGUIClass->resize(600, 400);
+        CalenizerGUIClass->resize(859, 483);
         centralWidget = new QWidget(CalenizerGUIClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(20, 40, 101, 16));
+        label->setGeometry(QRect(690, 40, 151, 101));
         QFont font;
         font.setFamily(QStringLiteral("Malgun Gothic"));
-        font.setPointSize(9);
+        font.setPointSize(12);
         font.setBold(true);
         font.setWeight(75);
         label->setFont(font);
+        label->setLayoutDirection(Qt::RightToLeft);
         lineEdit = new QLineEdit(centralWidget);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
-        lineEdit->setGeometry(QRect(120, 40, 461, 20));
+        lineEdit->setGeometry(QRect(20, 40, 651, 20));
         QFont font1;
         font1.setFamily(QStringLiteral("Malgun Gothic"));
         lineEdit->setFont(font1);
         textEdit = new QTextEdit(centralWidget);
         textEdit->setObjectName(QStringLiteral("textEdit"));
-        textEdit->setGeometry(QRect(10, 290, 571, 51));
+        textEdit->setGeometry(QRect(690, 170, 151, 251));
         textEdit->setFont(font1);
+        textEdit->setFocusPolicy(Qt::NoFocus);
+        textEdit->setContextMenuPolicy(Qt::NoContextMenu);
+        textEdit->setInputMethodHints(Qt::ImhNone);
+        textEdit->setFrameShape(QFrame::NoFrame);
+        textEdit->setFrameShadow(QFrame::Plain);
+        textEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        textEdit->setReadOnly(true);
+        textEdit->setTextInteractionFlags(Qt::NoTextInteraction);
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
-        label_2->setGeometry(QRect(210, 10, 181, 16));
+        label_2->setGeometry(QRect(550, 0, 131, 31));
         QFont font2;
         font2.setFamily(QStringLiteral("Malgun Gothic"));
         font2.setPointSize(10);
         label_2->setFont(font2);
         tableWidget = new QTableWidget(centralWidget);
-        if (tableWidget->columnCount() < 2)
-            tableWidget->setColumnCount(2);
-        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(0, __qtablewidgetitem);
-        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
-        tableWidget->setHorizontalHeaderItem(1, __qtablewidgetitem1);
         tableWidget->setObjectName(QStringLiteral("tableWidget"));
-        tableWidget->setGeometry(QRect(10, 70, 581, 201));
+        tableWidget->setGeometry(QRect(20, 70, 650, 350));
         QFont font3;
         font3.setFamily(QStringLiteral("Malgun Gothic"));
+        font3.setPointSize(10);
         font3.setBold(false);
         font3.setWeight(50);
         tableWidget->setFont(font3);
-        tableWidget->setFrameShape(QFrame::NoFrame);
-        tableWidget->setFrameShadow(QFrame::Sunken);
+        tableWidget->setFocusPolicy(Qt::NoFocus);
+        tableWidget->setFrameShape(QFrame::StyledPanel);
+        tableWidget->setFrameShadow(QFrame::Raised);
+        tableWidget->setLineWidth(5);
+        tableWidget->setMidLineWidth(3);
+        tableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        tableWidget->setTabKeyNavigation(false);
+        tableWidget->setProperty("showDropIndicator", QVariant(false));
+        tableWidget->setDragDropOverwriteMode(false);
+        tableWidget->setSelectionMode(QAbstractItemView::NoSelection);
+        tableWidget->setTextElideMode(Qt::ElideNone);
+        tableWidget->setSortingEnabled(true);
+        tableWidget->setCornerButtonEnabled(false);
         tableWidget->setRowCount(0);
-        tableWidget->setColumnCount(2);
+        tableWidget->setColumnCount(0);
+        tableWidget->verticalHeader()->setProperty("showSortIndicator", QVariant(true));
         CalenizerGUIClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(CalenizerGUIClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 21));
+        menuBar->setGeometry(QRect(0, 0, 859, 21));
         CalenizerGUIClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(CalenizerGUIClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -101,6 +119,7 @@ public:
         statusBar = new QStatusBar(CalenizerGUIClass);
         statusBar->setObjectName(QStringLiteral("statusBar"));
         CalenizerGUIClass->setStatusBar(statusBar);
+        QWidget::setTabOrder(tableWidget, lineEdit);
 
         retranslateUi(CalenizerGUIClass);
         QObject::connect(lineEdit, SIGNAL(returnPressed()), textEdit, SLOT(copy()));
@@ -113,11 +132,13 @@ public:
     {
         CalenizerGUIClass->setWindowTitle(QApplication::translate("CalenizerGUIClass", "CalenizerGUI", 0));
         label->setText(QApplication::translate("CalenizerGUIClass", "Enter command:", 0));
-        label_2->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p align=\"center\"><span style=\" font-size:10pt; font-weight:600; color:#ffffff;\">Welcome to Calenizer!</span></p></body></html>", 0));
-        QTableWidgetItem *___qtablewidgetitem = tableWidget->horizontalHeaderItem(0);
-        ___qtablewidgetitem->setText(QApplication::translate("CalenizerGUIClass", "Task Description", 0));
-        QTableWidgetItem *___qtablewidgetitem1 = tableWidget->horizontalHeaderItem(1);
-        ___qtablewidgetitem1->setText(QApplication::translate("CalenizerGUIClass", "Duration", 0));
+        label_2->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p align=\"center\"><span style=\" font-size:20pt; font-weight:600; color:#000000;\">Calenizer</span></p></body></html>", 0));
+#ifndef QT_NO_TOOLTIP
+        tableWidget->setToolTip(QString());
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        tableWidget->setStatusTip(QString());
+#endif // QT_NO_STATUSTIP
     } // retranslateUi
 
 };

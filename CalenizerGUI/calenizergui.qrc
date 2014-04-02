@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="CalenizerGUI">
+    <qresource prefix="/CalenizerGUI">
+        <file>Resources/HwaChong.jpg</file>
     </qresource>
 </RCC>
