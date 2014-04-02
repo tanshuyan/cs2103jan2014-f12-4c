@@ -1,12 +1,11 @@
 //NLParser.cpp
-//v 2.7
-//Deleted some unused code
-//added ability to recognise "lasting from"
-//v 2.8
+//v 2.9
+//Ability to recognise quotation marks
 
 #include "NLParser.h"
 //rmb to remove later
 #include <iostream>
+QRegExp NLParser::RX_QUOTES("\"(.+)\"");
 QRegExp NLParser::RX_FROM_UNTIL("\\b(?:starting|start|lasting|from(?!\\s+from)|begin|beginning)\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_UNTIL_FROM("\\b(?:ending|end|until|till|til|to)\\b(.+)\\b(?:starting|start|from(?!\\s+from)|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_ON_UNTIL("\\b(?:at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by))|by(?!\\s+(on|at|by)))\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
@@ -20,17 +19,25 @@ QRegExp NLParser::RX_TODAY(DateTimeParser::RX_DAYWORDS.pattern()+"\\b(.*)", Qt::
 NLParser::NLParser(){
 }
 
-void NLParser::parseDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled){
-	parseMarkedDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlablled);
-	//
-	parseTodayWords(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlablled);
-	
+void NLParser::parseDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled){
+	QString desc = extractDesc(descString);
+	extractMarkedDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled);
+	extractTodayWords(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled);
+	if(!desc.isEmpty){
+		descString = desc;
+	}
 	return;
 }
-void NLParser::parseMarkedDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled){
+
+QString NLParser::extractDesc(QString &descString){
+	RX_QUOTES.indexIn(descString);
+	return RX_QUOTES.cap(1);
+}
+
+void NLParser::extractMarkedDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled){
 	QDate nullDate;
 	QTime nullTime;
-	dateTimeIsUnlablled = true;
+	dateTimeIsUnlabelled = true;
 
 	//search for "from... until..." format
 	int pos = -1;
@@ -49,7 +56,7 @@ void NLParser::parseMarkedDateTime(QString &descString, QDate &startDate, QTime 
 	if (fromStringIsValid && untilStringIsValid){
 		descString.truncate(RX_FROM_UNTIL.pos());
 		descString = descString.trimmed();
-		dateTimeIsUnlablled = false;
+		dateTimeIsUnlabelled = false;
 		return;
 	}
 
@@ -60,7 +67,7 @@ void NLParser::parseMarkedDateTime(QString &descString, QDate &startDate, QTime 
 	if (fromStringIsValid && untilStringIsValid){
 		descString.truncate(RX_UNTIL_FROM.pos());
 		descString = descString.trimmed();
-		dateTimeIsUnlablled = false;
+		dateTimeIsUnlabelled = false;
 		return;
 	}
 
@@ -71,7 +78,7 @@ void NLParser::parseMarkedDateTime(QString &descString, QDate &startDate, QTime 
 	if (fromStringIsValid && untilStringIsValid){
 		descString.truncate(RX_ON_UNTIL.pos());
 		descString = descString.trimmed();
-		dateTimeIsUnlablled = false;
+		dateTimeIsUnlabelled = false;
 		return;
 	}
 
@@ -92,7 +99,7 @@ void NLParser::parseMarkedDateTime(QString &descString, QDate &startDate, QTime 
 		descString = descString.trimmed();
 		endDate = nullDate;
 		endTime = nullTime;
-		dateTimeIsUnlablled = false;
+		dateTimeIsUnlabelled = false;
 		return;
 	}
 
@@ -104,7 +111,7 @@ void NLParser::parseMarkedDateTime(QString &descString, QDate &startDate, QTime 
 		descString = descString.trimmed();
 		startDate = nullDate;
 		startTime = nullTime;
-		dateTimeIsUnlablled = false;
+		dateTimeIsUnlabelled = false;
 		return;
 	}
 
@@ -127,10 +134,10 @@ void NLParser::parseMarkedDateTime(QString &descString, QDate &startDate, QTime 
 	return;
 }
 
-void NLParser::parseTodayWords(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled){
+void NLParser::extractTodayWords(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled){
 	QDate foundDate;
 	QTime foundTime;
-	//if(dateTimeIsUnlablled && startDate.isNull()){
+	//if(dateTimeIsUnlabelled && startDate.isNull()){
 	if(startDate.isNull()){
 		//exit if not found
 		if (RX_TODAY.indexIn(descString) == -1){
@@ -157,7 +164,7 @@ void NLParser::parseTodayWords(QString &descString, QDate &startDate, QTime &sta
 			}
 			descString.truncate(RX_TODAY.pos());
 			if (RX_FROM.pos() != -1){
-				dateTimeIsUnlablled = false;
+				dateTimeIsUnlabelled = false;
 			}
 		}
 	}
