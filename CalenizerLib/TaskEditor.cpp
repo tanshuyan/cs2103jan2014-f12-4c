@@ -4,7 +4,7 @@
 //Still untested
 #include "TaskEditor.h"
 
-void TaskEditor::edit(Task* task, AnalysedData &analysedData){
+void TaskEditor::edit(Task* &task, AnalysedData &analysedData){
 	std::string taskDesc = analysedData.getTaskDesc();
 	QDate startDate = analysedData.getStartDate();
 	QTime startTime = analysedData.getStartTime();
@@ -23,7 +23,7 @@ void TaskEditor::edit(Task* task, AnalysedData &analysedData){
 	return;
 }
 
-void TaskEditor::editFloat(Task* task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
+void TaskEditor::editFloat(Task* &task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
 	//Updates desc if field is not empty
 	setDesc(task, taskDesc);
 	//Only desc to change
@@ -49,7 +49,7 @@ void TaskEditor::editFloat(Task* task, std::string taskDesc, QDate startDate, QT
 	return;
 }
 
-void TaskEditor::editDeadline(Task* task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
+void TaskEditor::editDeadline(Task* &task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
 	//Updates desc if field is not empty
 	setDesc(task, taskDesc);
 	//Only desc to change
@@ -150,7 +150,7 @@ void TaskEditor::setEndTime(Task* task, QTime endTime){
 	return;
 }
 
-void TaskEditor::upgradeToDeadline(Task* task, QDate date, QTime time){
+void TaskEditor::upgradeToDeadline(Task* &task, QDate date, QTime time){
 	DateTime deadline(date, time);
 	std::string desc = task->getTaskDesc();
 	bool status = task->getCompleteStatus();
@@ -160,7 +160,7 @@ void TaskEditor::upgradeToDeadline(Task* task, QDate date, QTime time){
 	return;
 }
 
-void TaskEditor::upgradeToTimed(Task* task, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
+void TaskEditor::upgradeToTimed(Task* &task, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
 	DateTime start(startDate, startTime);
 	DateTime deadline(endDate, endTime);
 	std::string desc = task->getTaskDesc();
