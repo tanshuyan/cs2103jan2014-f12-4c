@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnalysedData.cpp" />
+    <ClCompile Include="calenizerlib.cpp" />
     <ClCompile Include="Comparator.cpp" />
     <ClCompile Include="DateTime.cpp" />
     <ClCompile Include="DateTimeParser.cpp" />
@@ -85,6 +86,7 @@
     <ClCompile Include="History.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Logic.cpp" />
+    <ClCompile Include="LogicParser.cpp" />
     <ClCompile Include="MultipleIndexParser.cpp" />
     <ClCompile Include="NLParser.cpp" />
     <ClCompile Include="Parser.cpp" />
@@ -106,6 +108,7 @@
     <ClInclude Include="History.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Logic.h" />
+    <ClInclude Include="LogicParser.h" />
     <ClInclude Include="MultipleIndexParser.h" />
     <ClInclude Include="NLParser.h" />
     <ClInclude Include="Parser.h" />
