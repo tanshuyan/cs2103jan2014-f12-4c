@@ -1,23 +1,24 @@
 //DateTimeParser.cpp
-//v 2.6
+//v 2.8
+//A lot of bug fixes
 #include "DateTimeParser.h"
 
 QRegExp DateTimeParser::rxEmpty("(^\\s*$)");
 
-QRegExp DateTimeParser::rxHourMinAP("(?:at|on|by)?(?:\\s*)(\\d{1,2})(?:\\s*)(?::?)(?:\\s*)(\\d{2})(?:\\s*)(am|pm)",Qt::CaseInsensitive);
-QRegExp DateTimeParser::rxHourAP("(?:at|on|by)?(?:\\s*)(\\d{1,2})(?:\\s*)(am|pm)",Qt::CaseInsensitive);
-QRegExp DateTimeParser::rxHourColMin("(?:at|on|by)?(?:\\s*)(\\d{1,2})(?:\\s*)(?::)(?:\\s*)(\\d{2})",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxHourMinAP("(?:at|on|by)?\\s*(\\d{1,2})\\s*(?::?)\\s*(\\d{2})\\s*(am|pm)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxHourAP("(?:at|on|by)?\\s*(\\d{1,2})\\s*(am|pm)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxHourColMin("(?:at|on|by)?\\s*(\\d{1,2})\\s*(?::)\\s*(\\d{2})",Qt::CaseInsensitive);
 
-QRegExp DateTimeParser::rxDashesSlashes("(?:at|on|by)?(?:\\s*)(\\d{1,2})(?:/|-|.)(\\d{1,2})(?:/|-|.)?(\\d{1,4})?",Qt::CaseInsensitive);
-QRegExp DateTimeParser::rxShortWordMonth("(?:at|on|by)?(?:\\s*)(?:the)?(?:\\s*)(\\d{1,2})(?:st|nd|rd|th)?(?:\\s*)(?:of)?(?:\\s*)(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)(?:\\s*)(\\d{1,4})?",Qt::CaseInsensitive);
-QRegExp DateTimeParser::rxLongWordMonth("(?:at|on|by)?(?:\\s*)(?:the)?(?:\\s*)(\\d{1,2})(?:st|nd|rd|th)?(?:\\s*)(?:of)?(?:\\s*)(january|february|march|april|may|june|july|august|september|october|november|december)(?:\\s*)(\\d{1,4})?",Qt::CaseInsensitive);
-QRegExp DateTimeParser::rxShortWeekDays("(?:on|by)?(?:\\s*)(?:the|this)?(?:\\s*)(?:next|coming)?(?:\\s*)(sun|mon|tue|wed|thu|fri|sat)\\b",Qt::CaseInsensitive);
-QRegExp DateTimeParser::rxLongWeekDays("(?:on|by)?(?:\\s*)(?:the|this)?(?:\\s*)(?:next|coming)?(?:\\s*)(sunday|monday|tuesday|wednesday|thursday|friday|saturday)",Qt::CaseInsensitive);
-QRegExp DateTimeParser::rxToday("(?:by)?(?:\\s*)(today|tdy|td)",Qt::CaseInsensitive);
-QRegExp DateTimeParser::rxTomorrow("(?:by)?(?:\\s*)(tomorrow|tommorrow|tommorow|tmr)",Qt::CaseInsensitive);
-QRegExp DateTimeParser::rxYesterday("(?:since)?(?:\\s*)(yesterday|ystd)",Qt::CaseInsensitive);
-QRegExp DateTimeParser::rxDayAfter("(?:by)?(?:\\s*)(the)?(?:\\s*)(day)(?:\\s*)(after)(?:\\s*)(tomorrow|tommorrow|tommorow|tmr)",Qt::CaseInsensitive);
-QRegExp DateTimeParser::rxNextWeek("(?:by)?(?:\\s*)(next|nxt)(?:\\s*)(week|wk)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxDashesSlashes("(?:at|on|by)?\\s*(\\d{1,2})(?:/|-)(\\d{1,2})(?:/|-)?(\\d{1,4})?",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxShortWordMonth("(?:at|on|by)?\\s*(?:the)?\\s*(\\d{1,2})(?:st|nd|rd|th)?\\s*(?:of)?\\s*(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\\b\\s*(\\d{1,4})?",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxLongWordMonth("(?:at|on|by)?\\s*(?:the)?\\s*(\\d{1,2})(?:st|nd|rd|th)?\\s*(?:of)?\\s*(january|february|march|april|may|june|july|august|september|october|november|december)\\b\\s*(\\d{1,4})?",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxShortWeekDays("(?:on|by)?\\s*(?:the|this)?\\s*(?:next|coming)?\\s*(sun|mon|tue|wed|thu|fri|sat)\\b",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxLongWeekDays("(?:on|by)?\\s*(?:the|this)?\\s*(?:next|coming)?\\s*(sunday|monday|tuesday|wednesday|thursday|friday|saturday)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxToday("(?:by)?\\s*(today|tdy|td)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxTomorrow("(?:by)?\\s*(tomorrow|tommorrow|tommorow|tmr)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxYesterday("(?:since)?\\s*(yesterday|ystd)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxDayAfter("(?:by)?\\s*(the)?\\s*(day)\\s*(after)\\s*(tomorrow|tommorrow|tommorow|tmr)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxNextWeek("(?:by)?\\s*(next|nxt)\\s*(week|wk)",Qt::CaseInsensitive);
 
 QRegExp DateTimeParser::RX_DAYWORDS("(("+rxToday.pattern()+")|("+rxTomorrow.pattern()+")|("+rxYesterday.pattern()+")|("+rxYesterday.pattern()+")|("+rxDayAfter.pattern()+")|("+rxNextWeek.pattern()+")|("+rxShortWeekDays.pattern()+")|("+rxLongWeekDays.pattern()+"))",Qt::CaseInsensitive);
 
@@ -84,11 +85,11 @@ bool DateTimeParser::extractTime(QString &input, QTime &time){
 bool DateTimeParser::extractDate(QString &input, QDate &date){
 	int pos;
 
-	//check for DashesSlashes format (31/1/2014, 31-1-2014)
-	pos = rxDashesSlashes.indexIn(input);
+	//check for full month format (3rd december)
+	pos = rxLongWordMonth.indexIn(input);
 	if(pos != -1){
-		input.remove(pos, rxDashesSlashes.matchedLength());
-		return parseDashesSlashes(date);
+		input.remove(pos, rxLongWordMonth.matchedLength());
+		return parseLongWordMonth(date);
 	}
 
 	//check for abbreviated month format (3rd dec)
@@ -98,11 +99,12 @@ bool DateTimeParser::extractDate(QString &input, QDate &date){
 		return parseShortWordMonth(date);
 	}
 
-	//check for full month format (3rd december)
-	pos = rxLongWordMonth.indexIn(input);
+	
+	//check for DashesSlashes format (31/1/2014, 31-1-2014)
+	pos = rxDashesSlashes.indexIn(input);
 	if(pos != -1){
-		input.remove(pos, rxLongWordMonth.matchedLength());
-		return parseLongWordMonth(date);
+		input.remove(pos, rxDashesSlashes.matchedLength());
+		return parseDashesSlashes(date);
 	}
 
 	//check for short week format (sun, mon)

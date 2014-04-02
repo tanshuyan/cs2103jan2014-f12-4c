@@ -1,19 +1,16 @@
 //NLParser.cpp
-//v 2.5
-//Reworked algorithm to fix bugs pertaining to "Today/Tomorrow/..." (i.e. "event tomorrow from 6pm until 7pm lalala")
-//v 2.6
-//Fix bugs pertaining to "The day after tomorrow the day after tomorrow"
-//Fixed: correct labelling for datTimeisUnlabelled tags
-
-// take note of startDate conversion to endDate for Deadline Tasks
+//v 2.7
+//Deleted some unused code
+//added ability to recognise "lasting from"
+//v 2.8
 
 #include "NLParser.h"
 //rmb to remove later
 #include <iostream>
-QRegExp NLParser::RX_FROM_UNTIL("\\b(?:starting|start|from(?!\\s+from)|begin|beginning)\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
+QRegExp NLParser::RX_FROM_UNTIL("\\b(?:starting|start|lasting|from(?!\\s+from)|begin|beginning)\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_UNTIL_FROM("\\b(?:ending|end|until|till|til|to)\\b(.+)\\b(?:starting|start|from(?!\\s+from)|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_ON_UNTIL("\\b(?:at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by))|by(?!\\s+(on|at|by)))\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
-QRegExp NLParser::RX_START("\\b(?:starting|starting from|from(?!\\s+from)|start|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
+QRegExp NLParser::RX_START("\\b(?:starting|start|lasting|from(?!\\s+from)|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_FROM("^(?:\\s*)(?:from)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_END("\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_ON_AT_BY("\\b(?:at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by))|by(?!\\s+(on|at|by)))\\b(.+)", Qt::CaseInsensitive);

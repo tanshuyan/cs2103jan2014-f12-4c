@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_CalenizerGUI_t {
-    QByteArrayData data[3];
-    char stringdata[41];
+    QByteArrayData data[6];
+    char stringdata[57];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -30,11 +30,14 @@ struct qt_meta_stringdata_CalenizerGUI_t {
 static const qt_meta_stringdata_CalenizerGUI_t qt_meta_stringdata_CalenizerGUI = {
     {
 QT_MOC_LITERAL(0, 0, 12),
-QT_MOC_LITERAL(1, 13, 25),
-QT_MOC_LITERAL(2, 39, 0)
+QT_MOC_LITERAL(1, 13, 3),
+QT_MOC_LITERAL(2, 17, 0),
+QT_MOC_LITERAL(3, 18, 13),
+QT_MOC_LITERAL(4, 32, 10),
+QT_MOC_LITERAL(5, 43, 12)
     },
-    "CalenizerGUI\0on_lineEdit_returnPressed\0"
-    "\0"
+    "CalenizerGUI\0run\0\0checkAlphabet\0"
+    "resetInput\0todayDisplay\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -44,7 +47,7 @@ static const uint qt_meta_data_CalenizerGUI[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -52,9 +55,15 @@ static const uint qt_meta_data_CalenizerGUI[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   19,    2, 0x0a,
+       1,    0,   34,    2, 0x08,
+       3,    0,   35,    2, 0x08,
+       4,    0,   36,    2, 0x08,
+       5,    0,   37,    2, 0x08,
 
  // slots: parameters
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -65,7 +74,10 @@ void CalenizerGUI::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
     if (_c == QMetaObject::InvokeMetaMethod) {
         CalenizerGUI *_t = static_cast<CalenizerGUI *>(_o);
         switch (_id) {
-        case 0: _t->on_lineEdit_returnPressed(); break;
+        case 0: _t->run(); break;
+        case 1: _t->checkAlphabet(); break;
+        case 2: _t->resetInput(); break;
+        case 3: _t->todayDisplay(); break;
         default: ;
         }
     }
@@ -97,13 +109,13 @@ int CalenizerGUI::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 1)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 1;
+        _id -= 4;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 1)
+        if (_id < 4)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 1;
+        _id -= 4;
     }
     return _id;
 }

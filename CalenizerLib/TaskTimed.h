@@ -1,5 +1,6 @@
 // TaskTimed.h
-// v1.0
+// v1.1
+// added operator <
 #pragma once
 #ifndef TASKTIMED_H
 #define TASKTIMED_H
@@ -35,22 +36,20 @@ public:
 	void setStartDate(DateTime);
 	void setTaskType(std::string);
 	
-	DateTime getDeadline();
-	DateTime getStartDate();
+	DateTime getDeadline() const ;
+	DateTime getStartDate() const ;
 
-	std::string getTaskDesc();
-	std::string getTaskType();
+	std::string getTaskDesc() const ;
+	std::string getTaskType() const ;
 	std::string dateTimeToString();
 	std::string statusToString();
-	bool getCompleteStatus();
+	bool getCompleteStatus() const ;
 	std::string outputToString();
 
 	// for storage
 	std::string taskToString();
 	void stringToTask(std::string);
-	
-
+	//bool operator<(TaskTimed);
 };
-
 #endif
 
