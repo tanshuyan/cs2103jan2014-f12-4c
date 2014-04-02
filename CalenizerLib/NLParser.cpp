@@ -23,7 +23,7 @@ void NLParser::parseDateTime(QString &descString, QDate &startDate, QTime &start
 	QString desc = extractDesc(descString);
 	extractMarkedDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled);
 	extractTodayWords(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled);
-	if(!desc.isEmpty){
+	if(!desc.isEmpty()){
 		descString = desc;
 	}
 	return;
