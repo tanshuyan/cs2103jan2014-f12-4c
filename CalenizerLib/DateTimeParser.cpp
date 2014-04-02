@@ -9,10 +9,10 @@ QRegExp DateTimeParser::rxHourMinAP("(?:at|on|by)?\\s*(\\d{1,2})\\s*(?::?)\\s*(\
 QRegExp DateTimeParser::rxHourAP("(?:at|on|by)?\\s*(\\d{1,2})\\s*(am|pm)",Qt::CaseInsensitive);
 QRegExp DateTimeParser::rxHourColMin("(?:at|on|by)?\\s*(\\d{1,2})\\s*(?::)\\s*(\\d{2})",Qt::CaseInsensitive);
 
-QRegExp DateTimeParser::rxDashesSlashes("(?:at|on|by)?\\s*(\\d{1,2})(?:/|-)(\\d{1,2})(?:/|-)?(\\d{1,4})?",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxDashesSlashes("(?:at|on|by)?\\s*(\\d{1,2})(?:/|-|\.)(\\d{1,2})(?:/|-|\.)?(\\d{1,4})?",Qt::CaseInsensitive);
 QRegExp DateTimeParser::rxShortWordMonth("(?:at|on|by)?\\s*(?:the)?\\s*(\\d{1,2})(?:st|nd|rd|th)?\\s*(?:of)?\\s*(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\\b\\s*(\\d{1,4})?",Qt::CaseInsensitive);
 QRegExp DateTimeParser::rxLongWordMonth("(?:at|on|by)?\\s*(?:the)?\\s*(\\d{1,2})(?:st|nd|rd|th)?\\s*(?:of)?\\s*(january|february|march|april|may|june|july|august|september|october|november|december)\\b\\s*(\\d{1,4})?",Qt::CaseInsensitive);
-QRegExp DateTimeParser::rxShortWeekDays("(?:on|by)?\\s*(?:the|this)?\\s*(?:next|coming)?\\s*(sun|mon|tue|wed|thu|fri|sat)\\b",Qt::CaseInsensitive);
+QRegExp DateTimeParser::rxShortWeekDays("(?:on|by)?\\s*(?:the|this)?\\s*(?:next|coming)?\\s*(sun|mon|tue|tues|wed|thu|thur|thurs|fri|sat)\\b",Qt::CaseInsensitive);
 QRegExp DateTimeParser::rxLongWeekDays("(?:on|by)?\\s*(?:the|this)?\\s*(?:next|coming)?\\s*(sunday|monday|tuesday|wednesday|thursday|friday|saturday)",Qt::CaseInsensitive);
 QRegExp DateTimeParser::rxToday("(?:by)?\\s*(today|tdy|td)",Qt::CaseInsensitive);
 QRegExp DateTimeParser::rxTomorrow("(?:by)?\\s*(tomorrow|tommorrow|tommorow|tmr)",Qt::CaseInsensitive);

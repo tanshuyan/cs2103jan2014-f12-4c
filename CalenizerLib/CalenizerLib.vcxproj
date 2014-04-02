@@ -80,6 +80,7 @@
     <ClCompile Include="Comparator.cpp" />
     <ClCompile Include="DateTime.cpp" />
     <ClCompile Include="DateTimeParser.cpp" />
+    <ClCompile Include="DateTimeResolver.cpp" />
     <ClCompile Include="DisplayOutput.cpp" />
     <ClCompile Include="History.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -87,8 +88,8 @@
     <ClCompile Include="MultipleIndexParser.cpp" />
     <ClCompile Include="NLParser.cpp" />
     <ClCompile Include="Parser.cpp" />
-    <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskDeadline.cpp" />
+    <ClCompile Include="TaskEditor.cpp" />
     <ClCompile Include="TaskFilter.cpp" />
     <ClCompile Include="TaskFloat.cpp" />
     <ClCompile Include="TaskStorage.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="Comparator.h" />
     <ClInclude Include="DateTime.h" />
     <ClInclude Include="DateTimeParser.h" />
+    <ClInclude Include="DateTimeResolver.h" />
     <ClInclude Include="DisplayOutput.h" />
     <ClInclude Include="History.h" />
     <ClInclude Include="Logger.h" />
@@ -109,6 +111,7 @@
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskDeadline.h" />
+    <ClInclude Include="TaskEditor.h" />
     <ClInclude Include="TaskFilter.h" />
     <ClInclude Include="TaskFloat.h" />
     <ClInclude Include="TaskStorage.h" />
@@ -120,7 +123,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties UicDir=".\GeneratedFiles" MocDir=".\GeneratedFiles\$(ConfigurationName)" MocOptions="" RccDir=".\GeneratedFiles" lupdateOnBuild="0" lupdateOptions="" lreleaseOptions="" Qt5Version_x0020_Win32="5.2.1" />
+      <UserProperties UicDir=".\GeneratedFiles" MocDir=".\GeneratedFiles\$(ConfigurationName)" MocOptions="" RccDir=".\GeneratedFiles" lupdateOnBuild="0" lupdateOptions="" lreleaseOptions="" Qt5Version_x0020_Win32="msvc2012" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

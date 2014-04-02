@@ -1,18 +1,19 @@
-// taskDeadline.cpp
-// v1.1
-// added operator <
-
+// TaskDeadline.cpp
+// v1.2
+// removed setTaskType, moved tasktype-setting to the constructor
 #include <string>
 #include <sstream>
 #include <iostream>
 #include "taskDeadline.h"
 #include "DateTime.h"
 
+const std::string TaskDeadline::TASK_DEADLINE = "DEADLINE";
 const std::string TaskDeadline::STATUS_TRUE = "true";
 const std::string TaskDeadline::STATUS_FALSE = "false";
 
 TaskDeadline::TaskDeadline() {
 	_completeStatus = false;
+	_taskType = TASK_DEADLINE;
 }
 /*
 TaskDeadline::TaskDeadline(TaskType taskType, bool status, std::string taskDesc, DateTime deadline) {
@@ -25,15 +26,10 @@ TaskDeadline::TaskDeadline(TaskType taskType, bool status, std::string taskDesc,
 TaskDeadline::~TaskDeadline(){
 }
 
-void TaskDeadline::setTask(std::string taskType, bool status, std::string taskDesc, DateTime deadline) {
-	setTaskType(taskType);
+void TaskDeadline::setTask(bool status, std::string taskDesc, DateTime deadline) {
 	setCompleteStatus(status);
 	setTaskDesc(taskDesc);
 	setDeadline(deadline);
-}
-
-void TaskDeadline::setTaskType(std::string taskType) {
-	_taskType = taskType;
 }
 
 void TaskDeadline::setCompleteStatus(bool status) {
@@ -172,7 +168,7 @@ void TaskDeadline::stringToTask(std::string content) {
 	}
 	deadline.dataFromString(dateTime);
 
-	setTask(taskType, status, taskDesc, deadline);
+	setTask(status, taskDesc, deadline);
 }
 
 //bool TaskDeadline::operator<(TaskDeadline taskDeadline) {

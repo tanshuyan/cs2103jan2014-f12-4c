@@ -1,6 +1,6 @@
-// task.h
-// v1.1
-// added operator <
+// Task.h
+// v1.2
+// removed setTaskType, moved tasktype-setting to the constructor
 #pragma once
 #ifndef TASK_H
 #define TASK_H
@@ -20,10 +20,9 @@ public:
 	//Task();
 	//~Task();
 
-	virtual void setTaskType(std::string) {return;}
-	virtual void setTask(std::string, bool, std::string) {return;}
-	virtual void setTask(std::string, bool, std::string, DateTime) {return;}
-	virtual void setTask(std::string, bool, std::string, DateTime, DateTime) {return;}
+	virtual void setTask(bool, std::string) {return;}
+	virtual void setTask(bool, std::string, DateTime) {return;}
+	virtual void setTask(bool, std::string, DateTime, DateTime) {return;}
 	virtual void setCompleteStatus(bool) {return;}
 	virtual void setTaskDesc(std::string) {return;}
 	virtual void setDeadline(DateTime) {return;}
@@ -31,6 +30,7 @@ public:
 	
 	virtual DateTime getDeadline() const {return DateTime::DateTime();}
 	virtual DateTime getStartDate() const {return DateTime::DateTime();}  
+
 	virtual std::string dateTimeToString() {return "";}
 	virtual std::string statusToString() {return "";}
 	virtual std::string getTaskDesc() const {return "";}

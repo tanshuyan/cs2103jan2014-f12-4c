@@ -23,6 +23,8 @@
 #include "Logger.h"
 #include "DateTime.h"
 #include "Comparator.h"
+#include "DateTimeResolver.h"
+#include "TaskEditor.h"
 
 class Logic {
 private:
@@ -35,6 +37,8 @@ private:
 	TaskStorage _userStorage;
 	Parser _parser;
 	AnalysedData _currentDisplayType;
+	DateTimeResolver _dateTimeResolver;
+	TaskEditor _taskEditor;
 
 	static const std::string TASK_TIMED;
 	static const std::string TASK_DEADLINE;

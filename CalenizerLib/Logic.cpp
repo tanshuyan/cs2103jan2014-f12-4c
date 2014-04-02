@@ -84,7 +84,11 @@ DisplayOutput Logic::executeUserInput(std::string userInput) {
 	analysedData = _parser.parse(userInput);
 
 	if(analysedData.getCommand() == CMD_ADD) {
+		if(!(_dateTimeResolver.resolveAdd(analysedData))) {
+			displayOutput.setFeedBack("input order of start and end date is wrong\n");
+		} else {
 		addTask(analysedData, displayOutput);
+		}
 		displayTask(_currentDisplayType, displayOutput);
 	}
 
