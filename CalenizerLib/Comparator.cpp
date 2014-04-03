@@ -4,56 +4,66 @@
 // added new sortbyenddate comparator
 #include "Comparator.h"
 
-const std::string TASK_FLOAT = "FLOAT";
-const std::string TASK_TIMED = "TIMED";
-const std::string TASK_DEADLINE = "DEADLINE";
-
-bool Comparator::sortByCompleteness(const Task* a, const Task* b) {
-	return (a->getCompleteStatus() == false && b->getCompleteStatus());
+bool Comparator::sortByStartDate(const Task* a, const Task* b) {
+	DateTime A;
+	DateTime B;
+	if(a->getTaskType() == TaskDeadline::TASK_DEADLINE) {
+		A = a->getDeadline();
+	} else{
+		A = a->getStartDate();
+	}
+	if(b->getTaskType() == TaskDeadline::TASK_DEADLINE) {
+		B = b->getDeadline();
+	} else{
+		B = b->getStartDate();
+	}
+	return (A<B);
 }
 
 bool Comparator::sortByEndDate(const Task* a, const Task* b) {
-
-	if(a->getTaskType() != TASK_FLOAT && b->getTaskType() != TASK_FLOAT) {
-		return (a->getDeadline() < b->getDeadline());
-	}
-
-	if(a->getTaskType() == TASK_FLOAT) {
-		return (1 < 0);
-	}
-	
-	return (1>0);
+	return (a->getDeadline() < b->getDeadline());
 }
 
-bool Comparator::sortByDate(const Task* a, const Task* b) {
-	if(a->getTaskType() == b->getTaskType()) {
-		if(a->getTaskType() == TASK_TIMED) { 
-			// a and b are timed tasks
-			return (a->getStartDate() < b->getStartDate()); 
-		}
-		if(a->getTaskType() == TASK_DEADLINE) { 
-			// a and b are deadline tasks
-			return (a->getDeadline() < b->getDeadline());
-		}
+bool Comparator::sortByCompleteness(const Task* a, const Task* b) {
+	int A;
+	int B;
+	if(a->getCompleteStatus()){
+		A = 1;
+	} else{
+		A = 0;
 	}
-	if(a->getTaskType() == TASK_TIMED && b->getTaskType() == TASK_DEADLINE) {
-		return (a->getStartDate() < b->getDeadline());
+	if(b->getCompleteStatus()){
+		B = 1;
+	} else{
+		B = 0;
 	}
-	if(a->getTaskType() == TASK_DEADLINE && b->getTaskType() == TASK_TIMED) { 
-		return (a->getDeadline() < b->getStartDate());
-	}
-	if(a->getTaskType() == TASK_FLOAT) { 
-		// a is float, at the bottom
-		return (1<0);
-	}
-	// a and b are float, dont swap
-	return (1>0);
+	return (A<B);
 }
 
-bool Comparator::matchTask(const Task* a, const Task* b) {
-	return ((a->getTaskType() == b->getTaskType()) &&
-			(a->getTaskDesc() == b->getTaskDesc()) && 
-			(a->getCompleteStatus() == b->getCompleteStatus()) &&
-			(a->getDeadline() == b->getDeadline()) &&
-			(a->getStartDate() == b->getStartDate()));
+bool Comparator::sortByTaskType(const Task* a, const Task* b) {
+	int A;
+	int B;
+	if(a->getTaskType() == TaskTimed::TASK_TIMED){
+		A = 0;
+	} else if(a->getTaskType() == TaskDeadline::TASK_DEADLINE){
+		A = 1;
+	} else{
+		A = 2;
+	}
+	if(b->getTaskType() == TaskTimed::TASK_TIMED){
+		B = 0;
+	} else if(a->getTaskType() == TaskDeadline::TASK_DEADLINE){
+		B = 1;
+	} else{
+		B = 2;
+	}
+	return (A<B);
 }
+
+//bool Comparator::matchTask(const Task* a, const Task* b) {
+//	return ((a->getTaskType() == b->getTaskType()) &&
+//			(a->getTaskDesc() == b->getTaskDesc()) && 
+//			(a->getCompleteStatus() == b->getCompleteStatus()) &&
+//			(a->getDeadline() == b->getDeadline()) &&
+//			(a->getStartDate() == b->getStartDate()));
+//}
