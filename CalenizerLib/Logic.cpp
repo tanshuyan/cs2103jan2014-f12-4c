@@ -433,49 +433,27 @@ void Logic::orderSortedList(std::vector<Task*> &sortedTaskList, std::vector<Task
 }
 */
 
+//This could be a new class? sorter or something
 void Logic::sortTaskList() {
-	/*
-	std::vector<Task*> sortedList;
-	std::vector<Task*> sortedTaskList;
-	std::vector<Task*> timedList;	
-	std::vector<Task*> deadlineList;
-	std::vector<Task*> floatList;
-	
-	std::vector<Task*>::iterator iter;
-	// this splits the displayList into the different types of tasks
-	for(iter = _taskList.begin(); iter!= _taskList.end(); iter++) {
-		if((*iter)->getTaskType() == TASK_FLOAT) {
-			floatList.push_back(*iter);
-		} 
-		if((*iter)->getTaskType() == TASK_DEADLINE) {
-			deadlineList.push_back(*iter);
-		}
-		if((*iter)->getTaskType() == TASK_TIMED) {
-			timedList.push_back(*iter);
+
+	std::sort(_taskList.begin(), _taskList.end(), Comparator::sortByTaskType);
+	//Everything from bottomCutoff onwards are floating tasks
+	std::vector<Task*>::iterator bottomCutoff;
+	for(bottomCutoff = _taskList.begin(); bottomCutoff != _taskList.end(); bottomCutoff++){
+		if((*bottomCutoff)->getTaskType == TaskFloat::TASK_FLOAT){
+			break;
 		}
 	}
-
-	if(!timedList.empty()) {
-		std::sort(timedList.begin(), timedList.end(), Comparator::sortTimedTask);
-	}
-	if(!deadlineList.empty()) {
-		std::sort(deadlineList.begin(), deadlineList.end(), Comparator::sortDeadlineTask);
-	}
-	//merges back the display list into a sorted tasklist
-	mergeSortedList(sortedList, timedList, deadlineList, floatList);
-	orderSortedList(sortedTaskList, sortedList); 
-	_taskList = sortedTaskList;
-	*/
-
-	std::sort(_taskList.begin(), _taskList.end(), Comparator::sortByEndDate);
+	std::sort(_taskList.begin(), bottomCutoff, Comparator::sortByEndDate);
 	DateTime currentDateTime;
 	currentDateTime.setCurrDateTime();
-	std::vector<Task*>::iterator iter = _taskList.begin();
+	//Everything before topCutoff are overdue tasks
+	std::vector<Task*>::iterator topCutoff = _taskList.begin();
 	// find the tasklist vector for the first task which is not overdue
-	while((*iter)->getDeadline() < currentDateTime) {
-		iter++;
+	while(topCutoff != _taskList.end() && (*topCutoff)->getDeadline() < currentDateTime) {
+		topCutoff++;
 	}
-	//std::sort(iter, _taskList.end(), Comparator::sortByDate);
+	std::sort(topCutoff, bottomCutoff, Comparator::sortByStartDate);
 	std::sort(_taskList.begin(), _taskList.end(), Comparator::sortByCompleteness);
 }
 
