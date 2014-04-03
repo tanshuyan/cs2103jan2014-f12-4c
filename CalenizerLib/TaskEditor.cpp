@@ -1,7 +1,6 @@
 //TaskEditor.cpp
-//Beta 1.1
-//Lots of code fixes because I suck
-//Still untested
+//v 1.2
+//Bug fixes
 #include "TaskEditor.h"
 
 void TaskEditor::edit(Task* &task, AnalysedData &analysedData){
@@ -125,14 +124,14 @@ void TaskEditor::setDesc(Task* task, std::string taskDesc){
 void TaskEditor::setStartDate(Task* task, QDate startDate){
 	DateTime start(task->getStartDate());
 	start.setDate(startDate);
-	task->setDeadline(start);
+	task->setStartDate(start);
 	return;
 }
 
 void TaskEditor::setStartTime(Task* task, QTime startTime){
 	DateTime start(task->getStartDate());
 	start.setTime(startTime);
-	task->setDeadline(start);
+	task->setStartDate(start);
 	return;
 }
 

@@ -1,7 +1,5 @@
 //TaskEditor.h
-//Beta 1.1
-//Lots of code fixes because I suck
-//Still untested
+//v 1.2
 #include "DateTime.h"
 #include <QDateTime>
 #include "Task.h"
