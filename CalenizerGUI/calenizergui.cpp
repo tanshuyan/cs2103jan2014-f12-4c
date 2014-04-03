@@ -16,13 +16,38 @@ const std::string CalenizerGUI::STATUS_FALSE= "false\n";
 
 const std::string CalenizerGUI::STATUS_COMPLETE = "complete";
 const std::string CalenizerGUI::STATUS_INCOMPLETE = "incomplete";
+const std::string CalenizerGUI::STATUS_OVERDUE = "overdue";
+const std::string CalenizerGUI::STATUS_ONGOING = "ongoing";
 
 const std::string CalenizerGUI::CMD_DISPLAY_TODAY = "display today";
 
 CalenizerGUI::CalenizerGUI(QWidget *parent)
 	: QMainWindow(parent)
 {
-	ui.setupUi(this);;
+	ui.setupUi(this);
+	ui.label->setStyleSheet ("border-style: outset;"
+							"border-width: 2px;"
+							"border-radius: 10px;"
+							"border-color: white;"
+							"padding: 2px;"
+							"background-color: white");
+	ui.textEdit->setStyleSheet ("border-style: outset;"
+								"border-width: 2px;"
+								"border-radius: 10px;"
+								"border-color: white;"
+								"padding: 5px;");
+	ui.lineEdit->setStyleSheet ("border-style: outset;"
+								"border-width: 2px;"
+								"border-radius: 10px;"
+								"border-color: white;"
+								"padding: 2px;"
+								"background-color: white");
+	ui.label->setAlignment(Qt::AlignCenter);
+	setStyleSheet("background-color: #DEB887;");
+
+	QDateTime dateTime = QDateTime::currentDateTime();
+	QString dateTimeString = dateTime.toString("dd MMMM yyyy\nhh:mm");
+	ui.label->setText(dateTimeString);
 	initialiseTable(ui.tableWidget);
 	initialiseConnections();
 	initialiseTableStyle();
@@ -41,9 +66,9 @@ CalenizerGUI::~CalenizerGUI()
 void CalenizerGUI::initialiseTableStyle(){
 	
 	//defensive coding
-	if(palette !=NULL){
-		delete palette;
-	}
+	//if(palette !=NULL){
+		//delete palette;
+	//}
 
 	palette = new QPalette();
 	palette->setColor(QPalette::WindowText,Qt::black);
@@ -53,8 +78,9 @@ void CalenizerGUI::initialiseTableStyle(){
 	ui.lineEdit->setPalette(*palette);
 
 	ui.tableWidget->setStyleSheet("color: black;" 
-								  "gridline-color: gray;"
+								  "gridline-color: white;"
 								  "background-color: white;");
+	ui.tableWidget->setShowGrid(false);
 
 	ui.textEdit->setTextColor(Qt::blue);
 	//QLineEdit *line = new QLineEdit();
@@ -86,17 +112,6 @@ void CalenizerGUI::getFeedback(DisplayOutput displayoutput)
 	ui.textEdit->append(QString::fromStdString(displayoutput.getFeedBack()));
 }
 
-std::string CalenizerGUI::setStatus(std::string status)
-{
-		std::string taskStatus;
-		if(status == STATUS_TRUE){
-			taskStatus = STATUS_COMPLETE;
-		} else {
-			taskStatus = STATUS_INCOMPLETE;
-		}
-		return taskStatus;
-}
-
 void CalenizerGUI::getTask(DisplayOutput displayoutput, int row){
 
 		std::string initialString = displayoutput.getDisplay().at(row);
@@ -109,16 +124,13 @@ void CalenizerGUI::getTask(DisplayOutput displayoutput, int row){
 		int lastIndex = initialString.find("<>", startIndex);
 
 		std::string duration;
-		std::string status;
 		if(lastIndex != initialString.npos){
 			duration = initialString.substr(pos+2,lastIndex-(pos+2));
-			status = initialString.substr(lastIndex+2);
 		} else {
 			duration = "";
-			status = initialString.substr(startIndex+1);
 		}
 
-		status = setStatus(status);
+		std::string status = displayoutput.getDisplayListStatus().at(row);
 
 		QTableWidgetItem *taskDesc = new QTableWidgetItem(QString::fromStdString(desc));
 		QTableWidgetItem *taskDuration = new QTableWidgetItem(QString::fromStdString(duration));
@@ -129,14 +141,21 @@ void CalenizerGUI::getTask(DisplayOutput displayoutput, int row){
 		ui.tableWidget->setItem(row, 2, taskStatus);
 		
 		if(status == STATUS_COMPLETE) {
-				taskDesc->setBackgroundColor(QColor(167,255,169));
-				taskDuration->setBackgroundColor(QColor(167,255,169));
-				taskStatus->setBackgroundColor(QColor(167,255,169));
+			taskDesc->setBackgroundColor(Qt::lightGray);
+				taskDuration->setBackgroundColor(Qt::lightGray);
+				taskStatus->setBackgroundColor(Qt::lightGray);
 		}
-		if(status == STATUS_INCOMPLETE) {
-				taskDesc->setBackgroundColor(QColor(255,221,221));
-				taskDuration->setBackgroundColor(QColor(255,221,221));
-				taskStatus->setBackgroundColor(QColor(255,221,221));
+		
+		if(status == STATUS_OVERDUE) {
+				taskDesc->setBackgroundColor(QColor(255,100,100));
+				taskDuration->setBackgroundColor(QColor(255,100,100));
+				taskStatus->setBackgroundColor(QColor(255,100,100));
+		}
+
+		if(status == STATUS_ONGOING) {
+				taskDesc->setBackgroundColor(Qt::yellow);
+				taskDuration->setBackgroundColor(Qt::yellow);
+				taskStatus->setBackgroundColor(Qt::yellow);
 		}
 }
 
@@ -157,7 +176,11 @@ void CalenizerGUI::run()
 
 	for(int row=0; row<displayoutput.getDisplay().size(); row++){
 		getTask(displayoutput,row);
-	}
+	}	
+
+	QDateTime dateTime = QDateTime::currentDateTime();
+	QString dateTimeString = dateTime.toString("dd MMMM yyyy\nhh:mm");
+	ui.label->setText(dateTimeString);
 
 	ui.lineEdit->clear();
 }
@@ -206,9 +229,9 @@ void CalenizerGUI::setColumnWidth(QTableWidget *table) {
 	table->setColumnCount(3);
 	table->setHorizontalHeaderLabels(tableHeader);
 
-	table->setColumnWidth(TASK_DESC, 200);
-	table->setColumnWidth(TASK_DURATION, 200);
-	table->setColumnWidth(TASK_STATUS,200);
+	table->setColumnWidth(TASK_DESC, 250);
+	table->setColumnWidth(TASK_DURATION, 300);
+	table->setColumnWidth(TASK_STATUS,150);
 }
 
 void CalenizerGUI::initialiseTable(QTableWidget *table) {
