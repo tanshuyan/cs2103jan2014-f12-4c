@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>750</x>
-      <y>40</y>
+      <y>0</y>
       <width>151</width>
-      <height>101</height>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
@@ -35,7 +35,7 @@
      <enum>Qt::RightToLeft</enum>
     </property>
     <property name="text">
-     <string>Enter command:</string>
+     <string>a</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit">
@@ -57,7 +57,7 @@
     <property name="geometry">
      <rect>
       <x>750</x>
-      <y>170</y>
+      <y>70</y>
       <width>151</width>
       <height>251</height>
      </rect>
@@ -98,7 +98,7 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>550</x>
+      <x>20</x>
       <y>0</y>
       <width>131</width>
       <height>31</height>
@@ -174,7 +174,7 @@
      <enum>Qt::ElideNone</enum>
     </property>
     <property name="sortingEnabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="cornerButtonEnabled">
      <bool>false</bool>
