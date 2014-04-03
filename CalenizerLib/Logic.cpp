@@ -295,7 +295,7 @@ void Logic::deleteTask(AnalysedData analysedData, DisplayOutput& displayOutput){
 	if(!invalidIndex.empty()) { // invalid tasks inputted
 		displayOutput.setFeedBack(invalidIndex);
 	} else {
-		displayOutput.setFeedBack(_actionMsg.deleteFeedback());
+		displayOutput.setFeedBack(_actionMsg.deleteFeedback("lalalaIWANTTOSLEEPALREADY"));
 	}
 
 	sortTaskList();
@@ -322,7 +322,7 @@ void Logic::setComplete(AnalysedData analysedData, DisplayOutput& displayOutput)
 	if(!invalidIndex.empty()) { // invalid tasks inputted
 		displayOutput.setFeedBack(invalidIndex);
 	} else {
-		displayOutput.setFeedBack(_actionMsg.completeSuccessFeedback());
+		displayOutput.setFeedBack(_actionMsg.completeSuccessFeedback("lalalaIWANTTOSLEEPALREADY"));
 	}
 
 	sortTaskList();
@@ -348,7 +348,7 @@ void Logic::setIncomplete(AnalysedData analysedData, DisplayOutput& displayOutpu
 	if(!invalidIndex.empty()) { // invalid tasks inputted
 		displayOutput.setFeedBack(invalidIndex);
 	} else {
-		displayOutput.setFeedBack(_actionMsg.incompleteSuccessFeedback());
+		displayOutput.setFeedBack(_actionMsg.incompleteSuccessFeedback("lalalaIWANTTOSLEEPALREADY"));
 	}
 
 	sortTaskList();
@@ -440,7 +440,7 @@ void Logic::sortTaskList() {
 	//Everything from bottomCutoff onwards are floating tasks
 	std::vector<Task*>::iterator bottomCutoff;
 	for(bottomCutoff = _taskList.begin(); bottomCutoff != _taskList.end(); bottomCutoff++){
-		if((*bottomCutoff)->getTaskType == TaskFloat::TASK_FLOAT){
+		if((*bottomCutoff)->getTaskType() == TaskFloat::TASK_FLOAT){
 			break;
 		}
 	}
