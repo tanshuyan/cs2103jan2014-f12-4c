@@ -1,6 +1,6 @@
 // History.cpp
 // v1.1
-// changed 
+// changed the function for deep copies to taskDetailsToString()
 #include "History.h"
 
 const std::string History::TASK_DEADLINE = "DEADLINE";

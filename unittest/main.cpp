@@ -106,6 +106,10 @@ private:
 					system("PAUSE");
 				}
 
+				void testNLParser_1() {
+					NLParser parser;
+					system("PAUSE");
+				}
 				// Unit Test END
 
 };

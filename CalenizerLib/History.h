@@ -1,5 +1,6 @@
 //History.h
-// v1.0
+// v1.1
+// changed the function for deep copies to taskDetailsToString()
 #pragma once
 #ifndef HISTORY_H
 #define HISTORY_H

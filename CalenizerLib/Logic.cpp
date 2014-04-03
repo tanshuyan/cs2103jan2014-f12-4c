@@ -467,7 +467,15 @@ void Logic::sortTaskList() {
 	_taskList = sortedTaskList;
 	*/
 
-	std::sort(_taskList.begin(), _taskList.end(), Comparator::sortByDate);
+	std::sort(_taskList.begin(), _taskList.end(), Comparator::sortByEndDate);
+	DateTime currentDateTime;
+	currentDateTime.setCurrDateTime();
+	std::vector<Task*>::iterator iter = _taskList.begin();
+	// find the tasklist vector for the first task which is not overdue
+	while((*iter)->getDeadline() < currentDateTime) {
+		iter++;
+	}
+	//std::sort(iter, _taskList.end(), Comparator::sortByDate);
 	std::sort(_taskList.begin(), _taskList.end(), Comparator::sortByCompleteness);
 }
 

@@ -1,4 +1,6 @@
-// v 1.0
+// v 1.1 
+// revamped sorting algo
+// added new sortbyenddate comparator
 
 #ifndef COMPARATOR_H
 #define COMPARATOR_H
@@ -16,8 +18,7 @@ private:
 public:
 	Comparator();
 
-	static bool sortTimedTask(const Task*, const Task*);
-	static bool sortDeadlineTask(const Task*, const Task*);
+	static bool sortByEndDate(const Task*, const Task*);
 	static bool sortByDate(const Task*, const Task*);
 	static bool sortByCompleteness(const Task*, const Task*);
 	static bool matchTask(const Task*, const Task*);
