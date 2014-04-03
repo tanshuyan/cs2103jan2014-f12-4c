@@ -1,6 +1,7 @@
 // TaskStorage.cpp
-// v1.1
+// v1.2
 // remove useless functions
+// changed to task pointers
 #include <string>
 #include <iostream>
 #include <vector>
@@ -47,7 +48,7 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 			taskContent += content + "\n";
 			}
 
-			TaskDeadline *newTask = new TaskDeadline;
+			Task* newTask = new TaskDeadline;
 			newTask->stringToTask(taskContent);
 			taskList.push_back(newTask);
 		} else if (taskType == TASK_FLOAT){
@@ -59,7 +60,7 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 			taskContent  += content + "\n";
 			}
 
-			TaskFloat *newTaskFloat = new TaskFloat;
+			Task* newTaskFloat = new TaskFloat;
 			newTaskFloat->stringToTask(taskContent);
 			taskList.push_back(newTaskFloat);
 		} else if (taskType == TASK_TIMED){
@@ -71,7 +72,7 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 			taskContent += content + "\n";
 			}
 
-			TaskTimed *newTaskTimed = new TaskTimed;
+			Task* newTaskTimed = new TaskTimed;
 			newTaskTimed->stringToTask(taskContent);
 			taskList.push_back(newTaskTimed);
 		}

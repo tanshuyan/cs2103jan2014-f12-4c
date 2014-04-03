@@ -1,6 +1,8 @@
 // History.cpp
-// v1.1
+// v1.2
 // changed the function for deep copies to taskDetailsToString()
+// fixed a bug in undo, deep copies
+// modularise functions
 #include "History.h"
 
 const std::string History::TASK_DEADLINE = "DEADLINE";
@@ -15,30 +17,7 @@ void History::saveHistory(std::vector<Task*> &taskList){
 
 	// to create a deep copy of the vector <Task*> 
 	_currHistory.clear();
-	for(std::vector<Task*>::iterator iter = taskList.begin(); iter != taskList.end(); iter++) {
-		if((*iter)->getTaskType() == TASK_FLOAT) { // create a new floating task
-			std::string temp;
-			TaskFloat* newFloatPtr = new TaskFloat;
-			temp = (*iter)->taskDetailsToString();
-			std::istringstream input(temp);
-			newFloatPtr->stringToTask(temp);
-			_currHistory.push_back(newFloatPtr);
-		
-		} else if ((*iter)->getTaskType() == TASK_DEADLINE) { // create a new deadline task	
-			std::string temp;
-			TaskDeadline* newDeadlinePtr = new TaskDeadline;
-			temp = (*iter)->taskDetailsToString();
-			newDeadlinePtr->stringToTask(temp);
-			_currHistory.push_back(newDeadlinePtr);
-
-		} else if ((*iter)->getTaskType() == TASK_TIMED) { // create a new deadline task
-			std::string temp;
-			TaskTimed* newTimedPtr = new TaskTimed;
-			temp = (*iter)->taskDetailsToString();
-			newTimedPtr->stringToTask(temp);
-			_currHistory.push_back(newTimedPtr);
-		}
-	}
+	createDeepCopy(taskList, _currHistory);
 	_prevHistorys.push(_currHistory);
 	clearRedo();
 }
@@ -54,15 +33,47 @@ void History::clearRedo(){
 	}
 }
 
+void History::createDeepCopy(std::vector<Task*> &taskList, std::vector<Task*> &copyList) {
+
+		for(std::vector<Task*>::iterator iter = taskList.begin(); iter != taskList.end(); iter++) {
+		if((*iter)->getTaskType() == TASK_FLOAT) { // create a new floating task
+			std::string temp;
+			Task* newFloatPtr = new TaskFloat;
+			temp = (*iter)->taskDetailsToString();
+			newFloatPtr->stringToTask(temp);
+			copyList.push_back(newFloatPtr);
+		
+		} else if ((*iter)->getTaskType() == TASK_DEADLINE) { // create a new deadline task	
+			std::string temp;
+			Task* newDeadlinePtr = new TaskDeadline;
+			temp = (*iter)->taskDetailsToString();
+			newDeadlinePtr->stringToTask(temp);
+			copyList.push_back(newDeadlinePtr);
+
+		} else if ((*iter)->getTaskType() == TASK_TIMED) { // create a new deadline task
+			std::string temp;
+			Task* newTimedPtr = new TaskTimed;
+			temp = (*iter)->taskDetailsToString();
+			newTimedPtr->stringToTask(temp);
+			copyList.push_back(newTimedPtr);
+		}
+	}
+}
+
 bool History::undo(std::vector<Task*> &taskList){
-	if(_prevHistorys.size()-1 == 0){
+	if(_prevHistorys.size() == 1){
 		return false;
 	}
 	
 	_nextHistorys.push(_prevHistorys.top()); // the _currHistory and top of _prevHistory are the same because of the nature of saveHistory 
 	_prevHistorys.pop();
 	_currHistory = _prevHistorys.top(); 
-	taskList = _currHistory;
+	std::vector<Task*>::iterator iter;
+	for(iter = taskList.begin(); iter != taskList.end(); iter++) {
+		delete (*iter);
+	}
+	taskList.clear();
+	createDeepCopy(_currHistory, taskList);
 	return true;
 }
 
@@ -74,6 +85,11 @@ bool History::redo(std::vector<Task*> &taskList){
 	_prevHistorys.push(_nextHistorys.top());
 	_currHistory = _nextHistorys.top();
 	_nextHistorys.pop();
-	taskList = _currHistory;
+	std::vector<Task*>::iterator iter;
+	for(iter = taskList.begin(); iter != taskList.end(); iter++) {
+		delete (*iter);
+	}
+	taskList.clear();
+	createDeepCopy(_currHistory, taskList);
 	return true;
 }
