@@ -110,6 +110,19 @@ private:
 					NLParser parser;
 					system("PAUSE");
 				}
+
+                void testFeedback(){
+                    DisplayOutput display;
+                    std::string command;
+                    Logic test;
+                    display = test.executeUserInput("add mary had a little lamb");
+                    //display.displayToUser(display.getFeedBack());
+
+                    std::string expected = "added to Calenzier: \"mary had a little lamb\"";
+                    QVERIFY(display.getFeedBack() == expected);
+                    system("PAUSE");
+                }
+
 				// Unit Test END
 
 };
