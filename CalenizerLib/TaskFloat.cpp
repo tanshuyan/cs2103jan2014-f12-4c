@@ -2,23 +2,12 @@
 // v1.2
 // removed setTaskType, moved tasktype-setting to the constructor
 // added taskDetailsToString
-#include <string>
-#include <sstream>
 #include <iostream>
 #include "taskFloat.h"
-#include <iomanip>
 
 const std::string TaskFloat::TASK_FLOAT = "FLOAT";
 const std::string TaskFloat::STATUS_TRUE = "true";
 const std::string TaskFloat::STATUS_FALSE = "false";
-
-/*
-TaskFloat::TaskFloat(TaskType taskType, bool status, std::string taskDesc) {
-	setTaskType(taskType);
-	setCompleteStatus(status);
-	setTaskDesc(taskDesc);
-}
-*/
 
 TaskFloat::TaskFloat() {
 	_completeStatus = false;

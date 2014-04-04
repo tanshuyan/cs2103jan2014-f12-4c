@@ -2,18 +2,11 @@
 // v1.2
 // remove useless functions
 // changed to task pointers
-#include <string>
 #include <iostream>
-#include <vector>
-#include <sstream>
-#include <fstream>
 #include "TaskStorage.h"
 
 const std::string TaskStorage:: _defaultFileName = "CalenizerStorage.txt";	
 const std::string TaskStorage::DELIMITER_SPACE = " ";
-const std::string TaskStorage::TASK_DEADLINE = "DEADLINE";
-const std::string TaskStorage::TASK_TIMED = "TIMED";
-const std::string TaskStorage::TASK_FLOAT = "FLOAT";
 
 TaskStorage::TaskStorage() {
 	_fileName = _defaultFileName;
@@ -35,11 +28,11 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 
 	std::string taskType;
 	while(std::getline(_fileInput,taskType)) {
-		while((taskType != TASK_FLOAT) && (taskType != TASK_DEADLINE) && (taskType != TASK_TIMED)) {
+		while((taskType != TaskFloat::TASK_FLOAT) && (taskType != TaskDeadline::TASK_DEADLINE) && (taskType != TaskTimed::TASK_TIMED)) {
 			std::getline(_fileInput, taskType);
 		}
 
-		if (taskType == TASK_DEADLINE){
+		if (taskType == TaskDeadline::TASK_DEADLINE){
 			std::string taskContent;
 			std::string content;
 			//taskContent += taskType + "\n";
@@ -51,7 +44,7 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 			Task* newTask = new TaskDeadline;
 			newTask->stringToTask(taskContent);
 			taskList.push_back(newTask);
-		} else if (taskType == TASK_FLOAT){
+		} else if (taskType == TaskFloat::TASK_FLOAT){
 			std::string taskContent;
 			std::string content; 
 			//taskContent += taskType + "\n";
@@ -63,7 +56,7 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 			Task* newTaskFloat = new TaskFloat;
 			newTaskFloat->stringToTask(taskContent);
 			taskList.push_back(newTaskFloat);
-		} else if (taskType == TASK_TIMED){
+		} else if (taskType == TaskTimed::TASK_TIMED){
 			std::string taskContent;
 			std::string content;
 			//taskContent += taskType + "\n";

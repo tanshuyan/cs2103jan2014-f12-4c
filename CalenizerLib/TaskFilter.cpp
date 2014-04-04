@@ -6,13 +6,6 @@
 #include <algorithm>
 #include <assert.h>
 
-const std::string TASK_FLOAT = "FLOAT";
-const std::string TASK_TIMED = "TIMED";
-const std::string TASK_DEADLINE = "DEADLINE";
-const std::string STATUS_OVERDUE = "overdue"; // incomplete and date overdue
-const std::string STATUS_ONGOING = "ongoing"; // incomplete and scheduled for today
-const std::string STATUS_COMPLETE = "complete"; // completed
-const std::string STATUS_INCOMPLETE = "incomplete"; // incompleted
 
 TaskFilter::TaskFilter(){
 }
@@ -20,33 +13,33 @@ TaskFilter::TaskFilter(){
 
 std::string TaskFilter::markTask(const Task* taskToBeMarked, DateTime currentDateTime) {
 	if(taskToBeMarked->getCompleteStatus() == true) {
-		return STATUS_COMPLETE;
+		return DisplayOutput::STATUS_COMPLETE;
 	}
 
-	if(taskToBeMarked->getTaskType() == TASK_FLOAT) {
-		return STATUS_INCOMPLETE;
+	if(taskToBeMarked->getTaskType() == TaskFloat::TASK_FLOAT) {
+		return DisplayOutput::STATUS_INCOMPLETE;
 	}
 
-	if(taskToBeMarked->getTaskType() == TASK_DEADLINE) {
+	if(taskToBeMarked->getTaskType() == TaskDeadline::TASK_DEADLINE) {
 		if(taskToBeMarked->getDeadline() < currentDateTime) {
-			return STATUS_OVERDUE;
+			return DisplayOutput::STATUS_OVERDUE;
 		}
 
 		if( (taskToBeMarked->getDeadline().getDate() == currentDateTime.getDate()) && (taskToBeMarked->getDeadline().getTime() > currentDateTime.getTime()) ) {
-			return STATUS_ONGOING;
+			return DisplayOutput::STATUS_ONGOING;
 		}
-		return STATUS_INCOMPLETE;
+		return DisplayOutput::STATUS_INCOMPLETE;
 	}
 
-	if(taskToBeMarked->getTaskType() == TASK_TIMED) {
+	if(taskToBeMarked->getTaskType() == TaskTimed::TASK_TIMED) {
 		if(taskToBeMarked->getDeadline() < currentDateTime) {
-			return STATUS_OVERDUE;
+			return DisplayOutput::STATUS_OVERDUE;
 		}
 		// enddatetime is larger than current date time
 		if(taskToBeMarked->getStartDate() < currentDateTime) {
-			return STATUS_ONGOING;
+			return DisplayOutput::STATUS_ONGOING;
 		}
-		return STATUS_INCOMPLETE;
+		return DisplayOutput::STATUS_INCOMPLETE;
 	}
 
 	assert(false);
@@ -71,7 +64,7 @@ std::string TaskFilter::toUpper(std::string string) {
 
 bool TaskFilter::isTaskType(std::string searchTerm) {
 	searchTerm = toUpper(searchTerm);
-	if(searchTerm == TASK_FLOAT || searchTerm == TASK_DEADLINE || searchTerm == TASK_TIMED) {
+	if(searchTerm == TaskFloat::TASK_FLOAT || searchTerm == TaskDeadline::TASK_DEADLINE || searchTerm == TaskTimed::TASK_TIMED) {
 		return true;
 	} else {
 		return false;
@@ -146,14 +139,14 @@ bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displa
 
 	for(std::vector<Task*>::iterator iter = taskList.begin(); iter != taskList.end(); iter++){
 		// for deadline tasks, display those with deadline = today's date
-		if((*iter)->getTaskType() == TASK_DEADLINE) {
+		if((*iter)->getTaskType() == TaskDeadline::TASK_DEADLINE) {
 			if((*iter)->getDeadline().getDate().operator==(currentDate)) {
 				displayList.push_back(*iter);
 				displayIndexList.push_back(iter);
 			}
 		}
 		// for timed tasks, display those that are ongoing 	
-		if((*iter)->getTaskType() == TASK_TIMED) {
+		if((*iter)->getTaskType() == TaskTimed::TASK_TIMED) {
 			if((*iter)->getStartDate().getDate().operator<=(currentDate) && (*iter)->getDeadline().getDate().operator>=(currentDate)) {
 				displayList.push_back(*iter);
 				displayIndexList.push_back(iter);

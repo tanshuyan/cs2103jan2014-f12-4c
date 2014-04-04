@@ -99,5 +99,27 @@ public:
 	std::string displayTodayFeedback();
 	std::string displayAllFeedback();
 
+	static const std::string CMD_ADD;
+	static const std::string CMD_EDIT;
+	static const std::string CMD_DELETE;
+	static const std::string CMD_DISPLAY;
+	static const std::string CMD_EXIT;
+	static const std::string CMD_SEARCH;
+	static const std::string CMD_COMPLETE;
+	static const std::string CMD_INCOMPLETE;
+	static const std::string CMD_UNDO;
+	static const std::string CMD_REDO;
+	static const std::string CMD_INVALID;
+
+	static const std::string DISPLAY_ALL;
+	static const std::string DISPLAY_COMPLETE;
+	static const std::string DISPLAY_INCOMPLETE;
+	static const std::string DISPLAY_TODAY;
+
+	static const std::string STATUS_OVERDUE;
+	static const std::string STATUS_ONGOING;
+	static const std::string STATUS_COMPLETE;
+	static const std::string STATUS_INCOMPLETE;
+
 };
 #endif

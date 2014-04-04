@@ -5,11 +5,6 @@
 // modularise functions
 #include "History.h"
 
-const std::string History::TASK_DEADLINE = "DEADLINE";
-const std::string History::TASK_TIMED = "TIMED";
-const std::string History::TASK_FLOAT = "FLOAT";
-
-
 History::History(){
 }
 
@@ -36,21 +31,21 @@ void History::clearRedo(){
 void History::createDeepCopy(std::vector<Task*> &taskList, std::vector<Task*> &copyList) {
 
 		for(std::vector<Task*>::iterator iter = taskList.begin(); iter != taskList.end(); iter++) {
-		if((*iter)->getTaskType() == TASK_FLOAT) { // create a new floating task
+		if((*iter)->getTaskType() == TaskFloat::TASK_FLOAT) { // create a new floating task
 			std::string temp;
 			Task* newFloatPtr = new TaskFloat;
 			temp = (*iter)->taskDetailsToString();
 			newFloatPtr->stringToTask(temp);
 			copyList.push_back(newFloatPtr);
 		
-		} else if ((*iter)->getTaskType() == TASK_DEADLINE) { // create a new deadline task	
+		} else if ((*iter)->getTaskType() == TaskDeadline::TASK_DEADLINE) { // create a new deadline task	
 			std::string temp;
 			Task* newDeadlinePtr = new TaskDeadline;
 			temp = (*iter)->taskDetailsToString();
 			newDeadlinePtr->stringToTask(temp);
 			copyList.push_back(newDeadlinePtr);
 
-		} else if ((*iter)->getTaskType() == TASK_TIMED) { // create a new deadline task
+		} else if ((*iter)->getTaskType() == TaskTimed::TASK_TIMED) { // create a new deadline task
 			std::string temp;
 			Task* newTimedPtr = new TaskTimed;
 			temp = (*iter)->taskDetailsToString();
