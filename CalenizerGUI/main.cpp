@@ -3,8 +3,6 @@
 #include <QtWidgets/QApplication>
 #include "Windows.h"
 #include <QTimer>
-#include <QSplashScreen>
-
 #include <QtCore>
 #include <QApplication>
 #include <QPixmap>
