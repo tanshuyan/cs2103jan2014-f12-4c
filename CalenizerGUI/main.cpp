@@ -12,7 +12,6 @@
 #include <QThread>
 #include <QDesktopWidget>
 #include <QPainter>
- 
 
 int main(int argc, char *argv[])
 {
