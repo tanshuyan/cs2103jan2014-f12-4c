@@ -26,9 +26,9 @@ private slots:
 	void run();
 	void checkAlphabet();
 	void resetInput();
-	void todayDisplay(); 
+	void displayAll(); 
 	//void updateDateTime();
-	void initialiseTimeDate();
+	void updateView();
 
 private:
 	Ui::CalenizerGUIClass ui;
@@ -62,7 +62,7 @@ private:
 	static const QString VIEW_MSG;
 	static const QString QUIT_MSG;
 	static const std::string EMPTY_STRING;
-	static const std::string CMD_DISPLAY_TODAY;
+	static const std::string CMD_DISPLAY_ALL;
 
 	static const std::string STATUS_TRUE;
 	static const std::string STATUS_FALSE;

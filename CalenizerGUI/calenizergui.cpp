@@ -21,7 +21,7 @@ const std::string CalenizerGUI::STATUS_INCOMPLETE = "Incomplete";
 const std::string CalenizerGUI::STATUS_OVERDUE = "Overdue";
 const std::string CalenizerGUI::STATUS_ONGOING = "Ongoing";
 
-const std::string CalenizerGUI::CMD_DISPLAY_TODAY = "view today";
+const std::string CalenizerGUI::CMD_DISPLAY_ALL = "view";
 
 CalenizerGUI::CalenizerGUI(QWidget *parent)
 	: QMainWindow(parent)
@@ -30,9 +30,9 @@ CalenizerGUI::CalenizerGUI(QWidget *parent)
 
 	initialiseTable(ui.tableWidget);
 	initialiseConnections();
-	todayDisplay();
+	displayAll();
 	initialiseTableStyle();
-	initialiseTimeDate();
+	updateView();
 	initialiseShortcuts();
 	_g_current_row = 0;	
 }
@@ -42,10 +42,12 @@ CalenizerGUI::~CalenizerGUI()
 
 }
 
-void CalenizerGUI::initialiseTimeDate(){
+void CalenizerGUI::updateView(){
 	QDateTime dateTime = QDateTime::currentDateTime();
 	QString dateTimeString = dateTime.toString("dd MMMM yyyy\nhh:mm");
 	ui.label->setText(dateTimeString);
+	//displayAll();
+
 }
 
 void CalenizerGUI:: initialiseConnections() {
@@ -53,9 +55,9 @@ void CalenizerGUI:: initialiseConnections() {
 	connect(ui.lineEdit, SIGNAL(Qt::Key_Escape), this, SLOT(resetInput()));
 	connect(ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(run()));
 	
-	//QTimer *timer = new QTimer(this);
-	//connect(timer, SIGNAL(timeout()), this, SLOT(initialiseDateTime()));
-	//timer->start(1);
+	QTimer *timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(updateView()));
+	timer->start(1);
 }
 
 void CalenizerGUI::initialiseShortcuts(){
@@ -65,9 +67,9 @@ void CalenizerGUI::initialiseShortcuts(){
 void CalenizerGUI::initialiseTableStyle(){
 	
 	//defensive coding
-	//if(palette !=NULL){
-		//delete palette;
-	//}
+	if(palette !=NULL){
+		delete palette;
+	}
 
 	palette = new QPalette();
 	palette->setColor(QPalette::WindowText,Qt::black);
@@ -190,8 +192,8 @@ void CalenizerGUI::run()
 	ui.lineEdit->clear();
 }
 
-void CalenizerGUI::todayDisplay() {
-	DisplayOutput displayoutput= _g_logic.executeUserInput(CMD_DISPLAY_TODAY);
+void CalenizerGUI::displayAll() {
+	DisplayOutput displayoutput= _g_logic.executeUserInput(CMD_DISPLAY_ALL);
 	getFeedback(displayoutput);
 
 	ui.tableWidget->setRowCount(displayoutput.getDisplay().size());
@@ -204,7 +206,7 @@ void CalenizerGUI::todayDisplay() {
 void CalenizerGUI::checkAlphabet() {
 
 	std::string text = ui.lineEdit->text().toStdString();
-
+	
 	if(text == EMPTY_STRING) {
 	} else {
 		if(text.at(0) == 'a' && text.length() <= 4) {

@@ -13,7 +13,7 @@
 class DisplayOutput{
 
 private:
-	
+	std::string intToString(int userInput);
 	static const std::string MSG_WELCOME;
 	static const std::string MSG_USERPROMPT;
 
@@ -43,7 +43,9 @@ private:
 	static const std::string MSG_SEARCH_FAILURE;
 
 	static const std::string MSG_COMPLETE_SUCCESS;
+	static const std::string MSG_COMPLETE_MULTIPLE_SUCCESS;
 	static const std::string MSG_INCOMPLETE_SUCCESS;
+	static const std::string MSG_INCOMPLETE_MULTIPLE_SUCCESS;
 
 	static const std::string MSG_DISPLAYCOM;
 	static const std::string MSG_DISPLAYINCOM;
@@ -78,7 +80,7 @@ public:
 	std::string editFeedback(std::string);
 	std::string addFeedback(std::string);
 	std::string deleteFeedback(std::string);
-	std::string deleteMultipleFeedback();
+	std::string deleteMultipleFeedback(int);
 	std::string undoSuccessFeedback();
 	std::string undoFailureFeedback();
 	std::string redoSuccessFeedback();
@@ -86,7 +88,9 @@ public:
 	std::string searchSuccessFeedback(std::string);
 	std::string searchFailureFeedback(std::string);
 	std::string completeSuccessFeedback(std::string);
+	std::string completeMultipleSuccessFeedback(int);
 	std::string incompleteSuccessFeedback(std::string);
+	std::string incompleteMultipleSuccessFeedback(int);
 
 	std::string notFoundFeedback(std::string);
 	std::string invalidFeedback();
