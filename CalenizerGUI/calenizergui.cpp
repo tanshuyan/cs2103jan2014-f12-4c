@@ -10,57 +10,56 @@ const QString CalenizerGUI::INCOMPLETE_MSG = "incomplete";
 const QString CalenizerGUI::REDO_MSG = "redo";
 const QString CalenizerGUI::UNDO_MSG = "undo";
 const QString CalenizerGUI::VIEW_MSG= "view";
+const QString CalenizerGUI::QUIT_MSG= "quit";
+const std::string CalenizerGUI::EMPTY_STRING = "";
 
 const std::string CalenizerGUI::STATUS_TRUE= "true\n";
 const std::string CalenizerGUI::STATUS_FALSE= "false\n";
 
-const std::string CalenizerGUI::STATUS_COMPLETE = "complete";
-const std::string CalenizerGUI::STATUS_INCOMPLETE = "incomplete";
-const std::string CalenizerGUI::STATUS_OVERDUE = "overdue";
-const std::string CalenizerGUI::STATUS_ONGOING = "ongoing";
+const std::string CalenizerGUI::STATUS_COMPLETE = "Complete";
+const std::string CalenizerGUI::STATUS_INCOMPLETE = "Incomplete";
+const std::string CalenizerGUI::STATUS_OVERDUE = "Overdue";
+const std::string CalenizerGUI::STATUS_ONGOING = "Ongoing";
 
-const std::string CalenizerGUI::CMD_DISPLAY_TODAY = "display today";
+const std::string CalenizerGUI::CMD_DISPLAY_TODAY = "view today";
 
 CalenizerGUI::CalenizerGUI(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
-	ui.label->setStyleSheet ("border-style: outset;"
-							"border-width: 2px;"
-							"border-radius: 10px;"
-							"border-color: white;"
-							"padding: 2px;"
-							"background-color: white");
-	ui.textEdit->setStyleSheet ("border-style: outset;"
-								"border-width: 2px;"
-								"border-radius: 10px;"
-								"border-color: white;"
-								"padding: 5px;");
-	ui.lineEdit->setStyleSheet ("border-style: outset;"
-								"border-width: 2px;"
-								"border-radius: 10px;"
-								"border-color: white;"
-								"padding: 2px;"
-								"background-color: white");
-	ui.label->setAlignment(Qt::AlignCenter);
-	setStyleSheet("background-color: #DEB887;");
 
-	QDateTime dateTime = QDateTime::currentDateTime();
-	QString dateTimeString = dateTime.toString("dd MMMM yyyy\nhh:mm");
-	ui.label->setText(dateTimeString);
 	initialiseTable(ui.tableWidget);
 	initialiseConnections();
-	initialiseTableStyle();
-	//initialiseTableSize();
-	
-	new QShortcut(Qt::Key_Escape, this, SLOT(resetInput()));
-	_g_current_row = 0;
 	todayDisplay();
+	initialiseTableStyle();
+	initialiseTimeDate();
+	initialiseShortcuts();
+	_g_current_row = 0;	
 }
 
 CalenizerGUI::~CalenizerGUI()
 {
+
+}
+
+void CalenizerGUI::initialiseTimeDate(){
+	QDateTime dateTime = QDateTime::currentDateTime();
+	QString dateTimeString = dateTime.toString("dd MMMM yyyy\nhh:mm");
+	ui.label->setText(dateTimeString);
+}
+
+void CalenizerGUI:: initialiseConnections() {
+	connect(ui.lineEdit, SIGNAL(textEdited(QString)), this, SLOT(checkAlphabet()));
+	connect(ui.lineEdit, SIGNAL(Qt::Key_Escape), this, SLOT(resetInput()));
+	connect(ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(run()));
 	
+	//QTimer *timer = new QTimer(this);
+	//connect(timer, SIGNAL(timeout()), this, SLOT(initialiseDateTime()));
+	//timer->start(1);
+}
+
+void CalenizerGUI::initialiseShortcuts(){
+	new QShortcut(Qt::Key_Escape, this, SLOT(resetInput()));
 }
 
 void CalenizerGUI::initialiseTableStyle(){
@@ -82,31 +81,45 @@ void CalenizerGUI::initialiseTableStyle(){
 								  "background-color: white;");
 	ui.tableWidget->setShowGrid(false);
 
-	ui.textEdit->setTextColor(Qt::blue);
-	//QLineEdit *line = new QLineEdit();
+	ui.textEdit->setTextColor(Qt::black);
+
+	ui.label->setStyleSheet (//"border-style: outset;"
+							//"border-width: 2px;"
+							//"border-radius: 10px;"
+							"border-color: white;"
+							"padding: 2px;"
+							//"background-color: white"
+							);
+
+	ui.textEdit->setStyleSheet ("border-style: outset;"
+								"border-width: 2px;"
+								"border-radius: 10px;"
+								"border-color: white;"
+								"padding: 5px;");
+
+	ui.lineEdit->setStyleSheet ("border-style: outset;"
+								"border-width: 2px;"
+								"border-radius: 10px;"
+								"border-color: white;"
+								"padding: 2px;"
+								"background-color: white");
+
+	ui.calendarWidget->setStyleSheet("color: black");
+
+	ui.label->setAlignment(Qt::AlignCenter);
+
+	setStyleSheet("background-color:#EEF5F8;");
 }
 
 //this function not used for now - old code
+/*
 void CalenizerGUI::initialiseTableSize(){
 	ui.tableWidget->setColumnWidth(0,  200);
 	ui.tableWidget->setColumnWidth(1,  255);
 	ui.tableWidget->setColumnWidth(2,  100);
 }
-/*
-void CalenizerGUI::displayTasks(std::vector<Task*>* displayList){
-	std::stringstream output;
-	int counter = 1;
-
-	for(std::vector<Task*>::iterator iter = displayList->begin(); iter != displayList->end();){
-		//Numbering
-		output << counter << ". ";
-		counter++;
-		output << (*iter)->outputToString();
-		iter++;
-	}
-	ui.tableWidget->setItem(0,_g_current_row, new QTableWidgetItem(QString::fromStdString(output.str())));
-}
 */
+
 void CalenizerGUI::getFeedback(DisplayOutput displayoutput)
 {
 	ui.textEdit->append(QString::fromStdString(displayoutput.getFeedBack()));
@@ -141,28 +154,22 @@ void CalenizerGUI::getTask(DisplayOutput displayoutput, int row){
 		ui.tableWidget->setItem(row, 2, taskStatus);
 		
 		if(status == STATUS_COMPLETE) {
-			taskDesc->setBackgroundColor(Qt::lightGray);
-				taskDuration->setBackgroundColor(Qt::lightGray);
-				taskStatus->setBackgroundColor(Qt::lightGray);
+			taskDesc->setBackgroundColor(QColor(235,227,205));
+				taskDuration->setBackgroundColor(QColor(235,227,205));
+				taskStatus->setBackgroundColor(QColor(235,227,205));
 		}
 		
 		if(status == STATUS_OVERDUE) {
-				taskDesc->setBackgroundColor(QColor(255,100,100));
-				taskDuration->setBackgroundColor(QColor(255,100,100));
-				taskStatus->setBackgroundColor(QColor(255,100,100));
+				taskDesc->setBackgroundColor(QColor(255,181,194));
+				taskDuration->setBackgroundColor(QColor(255,181,194));
+				taskStatus->setBackgroundColor(QColor(255,181,194));
 		}
 
 		if(status == STATUS_ONGOING) {
-				taskDesc->setBackgroundColor(Qt::yellow);
-				taskDuration->setBackgroundColor(Qt::yellow);
-				taskStatus->setBackgroundColor(Qt::yellow);
+				taskDesc->setBackgroundColor(QColor(230,240,147));
+				taskDuration->setBackgroundColor(QColor(230,240,147));
+				taskStatus->setBackgroundColor(QColor(230,240,147));
 		}
-}
-
-void CalenizerGUI:: initialiseConnections() {
-	connect(ui.lineEdit, SIGNAL(textEdited(QString)), this, SLOT(checkAlphabet()));
-	connect(ui.lineEdit, SIGNAL(Qt::Key_Escape), this, SLOT(resetInput()));
-	connect(ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(run()));
 }
 
 void CalenizerGUI::run()
@@ -197,26 +204,33 @@ void CalenizerGUI::todayDisplay() {
 }
 
 void CalenizerGUI::checkAlphabet() {
+
 	std::string text = ui.lineEdit->text().toStdString();
-	if(text.at(0) == 'a' && text.length() <= 4) {
-		ui.lineEdit->setText(ADD_MSG + " ");
-	} else if (text.at(0) == 'c' && text.length() <= 9) {
-		ui.lineEdit->setText(COMPLETE_MSG + " ");
-	} else if (text.at(0) == 'd' && text.length() <= 7) {
-		ui.lineEdit->setText(DELETE_MSG + " ");
-	} else if (text.at(0) == 'e' && text.length() <= 5) {
-		ui.lineEdit->setText(EDIT_MSG + " ");
-	} else if (text.at(0) == 'i' && text.length() <= 11) {
-		ui.lineEdit->setText(INCOMPLETE_MSG + " ");
-	} else if (text.at(0) == 'r') {
-		ui.lineEdit->setText(REDO_MSG);
-	} else if (text.at(0) == 's' && text.length() <= 7) {
-		ui.lineEdit->setText(SEARCH_MSG + " ");
-	} else if (text.at(0) == 'u') {
-		ui.lineEdit->setText(UNDO_MSG + " ");
-	} else if (text.at(0) == 'v' && text.length() <= 5) {
-		ui.lineEdit->setText(VIEW_MSG + " ");
-	} 
+
+	if(text == EMPTY_STRING) {
+	} else {
+		if(text.at(0) == 'a' && text.length() <= 4) {
+			ui.lineEdit->setText(ADD_MSG + " ");
+		} else if (text.at(0) == 'c' && text.length() <= 9) {
+			ui.lineEdit->setText(COMPLETE_MSG + " ");
+		} else if (text.at(0) == 'd' && text.length() <= 7) {
+			ui.lineEdit->setText(DELETE_MSG + " ");
+		} else if (text.at(0) == 'e' && text.length() <= 5) {
+			ui.lineEdit->setText(EDIT_MSG + " ");
+		} else if (text.at(0) == 'i' && text.length() <= 11) {
+			ui.lineEdit->setText(INCOMPLETE_MSG + " ");
+		} else if (text.at(0) == 'r') {
+			ui.lineEdit->setText(REDO_MSG);
+		} else if (text.at(0) == 's' && text.length() <= 7) {
+			ui.lineEdit->setText(SEARCH_MSG + " ");
+		} else if (text.at(0) == 'u') {
+			ui.lineEdit->setText(UNDO_MSG + " ");
+		} else if (text.at(0) == 'v' && text.length() <= 5) {
+			ui.lineEdit->setText(VIEW_MSG + " ");
+		} else if (text.at(0) == 'q' && text.length() <= 5) {
+			ui.lineEdit->setText(QUIT_MSG + " ");
+		}
+	}
 }
 
 void CalenizerGUI::resetInput(){
@@ -229,9 +243,9 @@ void CalenizerGUI::setColumnWidth(QTableWidget *table) {
 	table->setColumnCount(3);
 	table->setHorizontalHeaderLabels(tableHeader);
 
-	table->setColumnWidth(TASK_DESC, 250);
+	table->setColumnWidth(TASK_DESC, 270);
 	table->setColumnWidth(TASK_DURATION, 300);
-	table->setColumnWidth(TASK_STATUS,150);
+	table->setColumnWidth(TASK_STATUS,125);
 }
 
 void CalenizerGUI::initialiseTable(QTableWidget *table) {
@@ -244,4 +258,5 @@ void CalenizerGUI::fixColumnWidth(QTableWidget *table) {
 	for(unsigned int col = 0 ; col < 3; col++) {
 		table->horizontalHeader()->setSectionResizeMode(col, QHeaderView::Fixed);
 	}
+
 }
