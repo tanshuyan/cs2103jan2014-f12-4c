@@ -21,10 +21,6 @@ private:
 	std::stack<std::vector<Task*>> _prevHistorys;
 	std::stack<std::vector<Task*>> _nextHistorys;
 
-	static const std::string TASK_TIMED;
-	static const std::string TASK_DEADLINE;
-	static const std::string TASK_FLOAT;
-
 public:
 	History();
 

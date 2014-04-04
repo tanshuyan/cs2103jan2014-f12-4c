@@ -4,25 +4,7 @@
 //editted the display string to view, exit to quit
 //defaulted view to view all
 
-
 #include "Parser.h"
-
-const std::string Parser::CMD_ADD = "add";
-const std::string Parser::CMD_EDIT = "edit";
-const std::string Parser::CMD_DELETE = "delete";
-const std::string Parser::CMD_DISPLAY = "view";
-const std::string Parser::CMD_EXIT = "quit";
-const std::string Parser::CMD_SEARCH = "search";
-const std::string Parser::CMD_COMPLETE = "complete";
-const std::string Parser::CMD_INCOMPLETE = "incomplete";
-const std::string Parser::CMD_UNDO = "undo";
-const std::string Parser::CMD_REDO = "redo";
-const std::string Parser::CMD_INVALID = "invalid";
-
-const std::string Parser::DISPLAY_ALL = "all";
-const std::string Parser::DISPLAY_COMPLETE = "complete";
-const std::string Parser::DISPLAY_INCOMPLETE = "incomplete";
-const std::string Parser::DISPLAY_TODAY = "today";
 
 Parser::Parser() {
 }
@@ -75,13 +57,13 @@ AnalysedData Parser::parse(std::string userInput) {
 	}
 	case EXIT: {
 		AnalysedData analysedData;
-		analysedData.setCommand(CMD_EXIT);
+		analysedData.setCommand(DisplayOutput::CMD_EXIT);
 		return analysedData;
 		break;
 	}
 	case INVALID: {
 		AnalysedData analysedData;
-		analysedData.setCommand(CMD_INVALID);
+		analysedData.setCommand(DisplayOutput::CMD_INVALID);
 		return analysedData;
 		break;
 	}
@@ -91,25 +73,25 @@ AnalysedData Parser::parse(std::string userInput) {
 
 
 Parser::COMMAND_TYPE Parser::getCommand(std::string command) {
-	if(command == CMD_ADD) {
+	if(command == DisplayOutput::CMD_ADD) {
 		return COMMAND_TYPE::ADD;
-	} else if ((command==CMD_DELETE)) {
+	} else if ((command== DisplayOutput::CMD_DELETE)) {
 		return COMMAND_TYPE::DELETE;
-	} else if ((command== CMD_DISPLAY)) {
+	} else if ((command == DisplayOutput::CMD_DISPLAY)) {
 		return COMMAND_TYPE::DISPLAY;
-	} else if ((command== CMD_EXIT)) {
+	} else if ((command == DisplayOutput::CMD_EXIT)) {
 		return COMMAND_TYPE::EXIT;
-	} else if ((command== CMD_SEARCH)) {
+	} else if ((command == DisplayOutput::CMD_SEARCH)) {
 		return COMMAND_TYPE::SEARCH;
-	} else if ((command== CMD_EDIT)) {
+	} else if ((command == DisplayOutput::CMD_EDIT)) {
 		return COMMAND_TYPE::EDIT;
-	} else if ((command== CMD_COMPLETE)) {
+	} else if ((command == DisplayOutput::CMD_COMPLETE)) {
 		return COMMAND_TYPE::COMPLETE;
-	} else if ((command == CMD_INCOMPLETE)) {
+	} else if ((command == DisplayOutput::CMD_INCOMPLETE)) {
 		return COMMAND_TYPE::INCOMPLETE;
-	} else if ((command == CMD_UNDO)) {
+	} else if ((command == DisplayOutput::CMD_UNDO)) {
 		return COMMAND_TYPE::UNDO;
-	} else if ((command == CMD_REDO)) {
+	} else if ((command == DisplayOutput::CMD_REDO)) {
 		return COMMAND_TYPE::REDO;
 	} else {
 		return COMMAND_TYPE::INVALID;
@@ -118,39 +100,39 @@ Parser::COMMAND_TYPE Parser::getCommand(std::string command) {
 
 AnalysedData Parser::undoCMD() {
 	AnalysedData analysedData;
-	analysedData.setCommand(CMD_UNDO);
+	analysedData.setCommand(DisplayOutput::CMD_UNDO);
 	return analysedData;
 }
 
 AnalysedData Parser::redoCMD() {
 	AnalysedData analysedData;
-	analysedData.setCommand(CMD_REDO);
+	analysedData.setCommand(DisplayOutput::CMD_REDO);
 	return analysedData;
 }
 
 AnalysedData Parser::searchCMD(std::string userInput) {
 	AnalysedData analysedData;
-	analysedData.setCommand(CMD_SEARCH);
+	analysedData.setCommand(DisplayOutput::CMD_SEARCH);
 	analysedData.setDisplayType(userInput);
 	return analysedData;
 }
 
 AnalysedData Parser::displayCMD(std::string userInput) {
 	AnalysedData analysedData;
-	analysedData.setCommand(CMD_DISPLAY);
+	analysedData.setCommand(DisplayOutput::CMD_DISPLAY);
 	if(userInput.empty()) {
-		analysedData.setDisplayType(DISPLAY_ALL);
-	} else if(userInput == DISPLAY_COMPLETE || userInput == DISPLAY_ALL || userInput == DISPLAY_INCOMPLETE || userInput == DISPLAY_TODAY) {
+		analysedData.setDisplayType(DisplayOutput::DISPLAY_ALL);
+	} else if(userInput == DisplayOutput::DISPLAY_COMPLETE || userInput == DisplayOutput::DISPLAY_ALL || userInput == DisplayOutput::DISPLAY_INCOMPLETE || userInput == DisplayOutput::DISPLAY_TODAY) {
 		analysedData.setDisplayType(userInput);
 	} else {
-		analysedData.setCommand(CMD_INVALID); // sets to invalid command if the remaining user input is invalid
+		analysedData.setCommand(DisplayOutput::CMD_INVALID); // sets to invalid command if the remaining user input is invalid
 	}
 	return analysedData;
 }
 
 AnalysedData Parser::incompleteCMD(std::string userInput) {
 	AnalysedData analysedData;
-	analysedData.setCommand(CMD_INCOMPLETE);
+	analysedData.setCommand(DisplayOutput::CMD_INCOMPLETE);
 	_index = _multipleIndexParser.parseMultipleIndex(userInput);
 	analysedData.setIndexVector(_index);
 	return analysedData;
@@ -158,7 +140,7 @@ AnalysedData Parser::incompleteCMD(std::string userInput) {
 
 AnalysedData Parser::completeCMD(std::string userInput) {
 	AnalysedData analysedData;
-	analysedData.setCommand(CMD_COMPLETE);
+	analysedData.setCommand(DisplayOutput::CMD_COMPLETE);
 	_index = _multipleIndexParser.parseMultipleIndex(userInput);
 	analysedData.setIndexVector(_index);
 	return analysedData;
@@ -166,7 +148,7 @@ AnalysedData Parser::completeCMD(std::string userInput) {
 
 AnalysedData Parser::deleteCMD(std::string userInput) {
 	AnalysedData analysedData;
-	analysedData.setCommand(CMD_DELETE);
+	analysedData.setCommand(DisplayOutput::CMD_DELETE);
 	_index = _multipleIndexParser.parseMultipleIndex(userInput);
 	analysedData.setIndexVector(_index);
 	return analysedData;
@@ -192,7 +174,7 @@ AnalysedData Parser::editCMD(std::string userInput) {
 	//catch the error for invalid time and invalid date here, thrown by nlParser, thrown by DateTimeParser
 	descString = descString.trimmed();
 
-	analysedData.setCommand(CMD_EDIT);
+	analysedData.setCommand(DisplayOutput::CMD_EDIT);
 	analysedData.setIndex(index);
 	analysedData.setTaskDesc(descString.toStdString());
 	analysedData.setStartDate(startDate);
@@ -228,7 +210,7 @@ AnalysedData Parser::addCMD(std::string userInput) {
 	_nlParser.guessContextualTime(descString, startTime);
 	descString = descString.trimmed();
 
-	analysedData.setCommand(CMD_ADD);
+	analysedData.setCommand(DisplayOutput::CMD_ADD);
 	analysedData.setTaskDesc(descString.toStdString());
 	analysedData.setStartDate(startDate);
 	analysedData.setStartTime(startTime);

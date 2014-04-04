@@ -111,6 +111,28 @@ const std::string DisplayOutput::MSG_INVALID_DATE = "invalid date";
 const std::string DisplayOutput::MSG_NOT_FOUND ="\"%s\" not found in %s";
 const std::string DisplayOutput::MSG_EMPTY_FILE = "%s is empty";
 
+const std::string DisplayOutput::CMD_ADD = "add";
+const std::string DisplayOutput::CMD_EDIT = "edit";
+const std::string DisplayOutput::CMD_DELETE = "delete";
+const std::string DisplayOutput::CMD_DISPLAY = "view";
+const std::string DisplayOutput::CMD_EXIT = "quit";
+const std::string DisplayOutput::CMD_SEARCH = "search";
+const std::string DisplayOutput::CMD_COMPLETE = "complete";
+const std::string DisplayOutput::CMD_INCOMPLETE = "incomplete";
+const std::string DisplayOutput::CMD_UNDO = "undo";
+const std::string DisplayOutput::CMD_REDO = "redo";
+const std::string DisplayOutput::CMD_INVALID = "invalid";
+
+const std::string DisplayOutput::DISPLAY_ALL = "all";
+const std::string DisplayOutput::DISPLAY_COMPLETE = "complete";
+const std::string DisplayOutput::DISPLAY_INCOMPLETE = "incomplete";
+const std::string DisplayOutput::DISPLAY_TODAY = "today";
+
+const std::string DisplayOutput::STATUS_OVERDUE = "Overdue"; 
+const std::string DisplayOutput::STATUS_ONGOING = "Ongoing"; 
+const std::string DisplayOutput::STATUS_COMPLETE = "Complete"; 
+const std::string DisplayOutput::STATUS_INCOMPLETE = "Incomplete";
+
 std::string DisplayOutput::emptyFeedback() {
 	sprintf_s(buffer, MSG_EMPTY_FILE.c_str(), _programName.c_str());
 	return buffer;

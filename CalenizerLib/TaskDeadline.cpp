@@ -2,11 +2,8 @@
 // v1.2
 // removed setTaskType, moved tasktype-setting to the constructor
 // added taskDetailsToString
-#include <string>
-#include <sstream>
 #include <iostream>
-#include "taskDeadline.h"
-#include "DateTime.h"
+#include "TaskDeadline.h"
 
 const std::string TaskDeadline::TASK_DEADLINE = "DEADLINE";
 const std::string TaskDeadline::STATUS_TRUE = "true";
@@ -16,14 +13,7 @@ TaskDeadline::TaskDeadline() {
 	_completeStatus = false;
 	_taskType = TASK_DEADLINE;
 }
-/*
-TaskDeadline::TaskDeadline(TaskType taskType, bool status, std::string taskDesc, DateTime deadline) {
-	setTaskType(taskType);
-	setCompleteStatus(status);
-	setTaskDesc(taskDesc);
-	setDeadline(deadline);
-}
-*/
+
 TaskDeadline::~TaskDeadline(){
 }
 
@@ -125,7 +115,3 @@ void TaskDeadline::stringToTask(std::string content) {
 
 	setTask(status, taskDesc, deadline);
 }
-
-//bool TaskDeadline::operator<(TaskDeadline taskDeadline) {
-	//return (_deadline < taskDeadline.getDeadline());
-//}

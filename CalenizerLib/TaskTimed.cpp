@@ -2,11 +2,8 @@
 // v1.3
 // removed setTaskType, moved tasktype-setting to the constructor
 // added taskDetailsToString
-#include <string>
-#include <sstream>
 #include <iostream>
 #include "TaskTimed.h"
-#include "DateTime.h"
 
 const std::string TaskTimed::TASK_TIMED = "TIMED";
 const std::string TaskTimed::STATUS_TRUE = "true";
@@ -136,7 +133,3 @@ void TaskTimed::stringToTask(std::string content) {
 
 	setTask(status, taskDesc, startDateTime, endDateTime);
 }
-
-//bool TaskTimed::operator<(TaskTimed taskTimed) {
-	//return (_startDateTime < taskTimed.getStartDate());
-//}

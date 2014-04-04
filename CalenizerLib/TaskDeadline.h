@@ -51,7 +51,6 @@ public:
 	// for storage
 	std::string taskToString();
 	void stringToTask(std::string);
-	//bool operator<(TaskDeadline);
 };
 
 #endif
