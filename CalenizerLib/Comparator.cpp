@@ -52,7 +52,7 @@ bool Comparator::sortByTaskType(const Task* a, const Task* b) {
 	}
 	if(b->getTaskType() == TaskTimed::TASK_TIMED){
 		B = 0;
-	} else if(a->getTaskType() == TaskDeadline::TASK_DEADLINE){
+	} else if(b->getTaskType() == TaskDeadline::TASK_DEADLINE){
 		B = 1;
 	} else{
 		B = 2;
