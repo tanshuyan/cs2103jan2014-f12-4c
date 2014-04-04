@@ -153,6 +153,18 @@ bool Logic::isValidIndex(int index) {
 
 void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	int index = analysedData.getIndex();
+	std::string taskDesc = analysedData.getTaskDesc();
+	QDate startDate = analysedData.getStartDate();
+	QDate endDate = analysedData.getEndDate();
+	QTime startTime = analysedData.getStartTime();
+	QTime endTime = analysedData.getEndTime();
+	DateTime startDateTime;
+	startDateTime.setDate(startDate);
+	startDateTime.setTime(startTime);
+	
+	DateTime endDateTime;
+	endDateTime.setDate(endDate);
+	endDateTime.setTime(endTime);
 
 	if(!isValidIndex(index)) {
 		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
@@ -161,19 +173,15 @@ void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 
 	std::vector<Task*>::iterator taskToEdit = indexToIterator(index);
 
-	if(!_dateTimeResolver.resolveEdit(*taskToEdit, analysedData)) {
-		displayOutput.setFeedBack("input order of start and end date is wrong\n");
+	if((*taskToEdit)->getTaskType() == TASK_FLOAT) {
+		if(!taskDesc.empty()) {
+		(*taskToEdit)->setTaskDesc(taskDesc);
+		}
+		sortTaskList();
+		_userStorage.writeFile(_taskList);
+		_History.saveHistory(_taskList);
+		displayOutput.setFeedBack(_actionMsg.editFeedback(taskDesc));
 		return;
-	} 
-		
-	_taskEditor.edit(*taskToEdit, analysedData);
-
-	sortTaskList();
-	_userStorage.writeFile(_taskList);
-	_History.saveHistory(_taskList);
-	displayOutput.setFeedBack(_actionMsg.editFeedback(analysedData.getTaskDesc()));
-	return;
-/*		return;
 	}
 
 	if((*taskToEdit)->getTaskType() == TASK_DEADLINE) {
@@ -211,15 +219,10 @@ void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	}
 
 	assert(false);
-	*/
+	return;
 }
 
 void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
-	if(!(_dateTimeResolver.resolveAdd(analysedData))) {
-		displayOutput.setFeedBack("input order of start and end date is wrong\n");
-		return;
-	} 
-
 	std::string taskDesc = analysedData.getTaskDesc();
 	QDate startDate = analysedData.getStartDate();
 	QDate endDate = analysedData.getEndDate();
@@ -235,7 +238,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	
 	if(startDate.isNull() && endDate.isNull() && startTime.isNull() && endTime.isNull()) { // floating task
 		TaskFloat* newFloatPtr = new TaskFloat;
-		newFloatPtr->setTask(false, taskDesc);
+		newFloatPtr->setTask(TASK_FLOAT, false, taskDesc);
 		_taskList.push_back(newFloatPtr);
 		sortTaskList();
 		_userStorage.writeFile(_taskList);
@@ -246,7 +249,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 
 	if((startDate.isNull() && startTime.isNull())) {
 		TaskDeadline* newDeadlinePtr = new TaskDeadline;
-		newDeadlinePtr->setTask(false, taskDesc, endDateTime);
+		newDeadlinePtr->setTask(TASK_DEADLINE, false, taskDesc, endDateTime);
 		_taskList.push_back(newDeadlinePtr);
 		sortTaskList();
 		_userStorage.writeFile(_taskList);
@@ -257,7 +260,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 
 	if((endDate.isNull() && endTime.isNull())) {
 		TaskDeadline* newDeadlinePtr = new TaskDeadline;
-		newDeadlinePtr->setTask(false, taskDesc, startDateTime);
+		newDeadlinePtr->setTask(TASK_DEADLINE, false, taskDesc, startDateTime);
 		_taskList.push_back(newDeadlinePtr);
 		sortTaskList();
 		_userStorage.writeFile(_taskList);
@@ -267,7 +270,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	}
 
 	TaskTimed* newTimedPtr = new TaskTimed;
-	newTimedPtr->setTask(false, taskDesc, startDateTime, endDateTime);
+	newTimedPtr->setTask(TASK_TIMED, false, taskDesc, startDateTime, endDateTime);
 	_taskList.push_back(newTimedPtr);
 	sortTaskList();
 	_userStorage.writeFile(_taskList);
@@ -281,21 +284,36 @@ void Logic::deleteTask(AnalysedData analysedData, DisplayOutput& displayOutput){
 	std::vector<int> index;
 	index = analysedData.getIndexVector();
 	std::vector<int> invalidIndex;
+
+	std::vector<std::string> removedContents;
+	//std::string taskDesc;
+
 	for(unsigned int i = index.size(); i > 0; i--) {
 		taskIndex = index[i-1];
 		if(isValidIndex(taskIndex)) {
+			std::string taskDesc = analysedData.getTaskDesc();
 			std::vector<Task*>::iterator taskToDelete = indexToIterator(taskIndex);
+
+			removedContents.push_back( (*taskToDelete)->getTaskDesc() );
+
 			delete *taskToDelete;
 			_taskList.erase(taskToDelete);
 		} else {
 			invalidIndex.push_back(taskIndex);
+			displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
 		}
 	}
 	
 	if(!invalidIndex.empty()) { // invalid tasks inputted
-		displayOutput.setFeedBack(invalidIndex);
+		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
 	} else {
-		displayOutput.setFeedBack(_actionMsg.deleteFeedback("lalalaIWANTTOSLEEPALREADY"));
+		
+		for(unsigned int i = 0; i < removedContents.size(); i++)
+		{
+			std::string taskDesc= removedContents[i];
+			displayOutput.setFeedBack(_actionMsg.deleteFeedback(taskDesc));
+			removedContents.pop_back();
+		}
 	}
 
 	sortTaskList();
@@ -320,9 +338,15 @@ void Logic::setComplete(AnalysedData analysedData, DisplayOutput& displayOutput)
 	}
 	
 	if(!invalidIndex.empty()) { // invalid tasks inputted
-		displayOutput.setFeedBack(invalidIndex);
+		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
 	} else {
-		displayOutput.setFeedBack(_actionMsg.completeSuccessFeedback("lalalaIWANTTOSLEEPALREADY"));
+			for(unsigned int i = index.size(); i > 0; i--){
+				taskIndex = index[i-1];
+				std::vector<Task*>::iterator taskToComplete = indexToIterator(taskIndex);
+				std::string taskDesc= (*taskToComplete)->getTaskDesc();
+				//analysedData.getTaskDesc();
+				displayOutput.setFeedBack(_actionMsg.completeSuccessFeedback(taskDesc));
+			}
 	}
 
 	sortTaskList();
@@ -342,13 +366,19 @@ void Logic::setIncomplete(AnalysedData analysedData, DisplayOutput& displayOutpu
 			(*taskToIncomplete)->setCompleteStatus(false);
 		} else {
 			invalidIndex.push_back(taskIndex);
+			displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
 		}
 	}
 	
 	if(!invalidIndex.empty()) { // invalid tasks inputted
-		displayOutput.setFeedBack(invalidIndex);
+		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
 	} else {
-		displayOutput.setFeedBack(_actionMsg.incompleteSuccessFeedback("lalalaIWANTTOSLEEPALREADY"));
+			for(unsigned int i = index.size(); i > 0; i--){
+				taskIndex = index[i-1];
+				std::vector<Task*>::iterator taskToComplete = indexToIterator(taskIndex);
+				std::string taskDesc= (*taskToComplete)->getTaskDesc();
+				displayOutput.setFeedBack(_actionMsg.incompleteSuccessFeedback(taskDesc));
+			}	
 	}
 
 	sortTaskList();
@@ -433,27 +463,41 @@ void Logic::orderSortedList(std::vector<Task*> &sortedTaskList, std::vector<Task
 }
 */
 
-//This could be a new class? sorter or something
 void Logic::sortTaskList() {
-
-	std::sort(_taskList.begin(), _taskList.end(), Comparator::sortByTaskType);
-	//Everything from bottomCutoff onwards are floating tasks
-	std::vector<Task*>::iterator bottomCutoff;
-	for(bottomCutoff = _taskList.begin(); bottomCutoff != _taskList.end(); bottomCutoff++){
-		if((*bottomCutoff)->getTaskType() == TaskFloat::TASK_FLOAT){
-			break;
+	/*
+	std::vector<Task*> sortedList;
+	std::vector<Task*> sortedTaskList;
+	std::vector<Task*> timedList;	
+	std::vector<Task*> deadlineList;
+	std::vector<Task*> floatList;
+	
+	std::vector<Task*>::iterator iter;
+	// this splits the displayList into the different types of tasks
+	for(iter = _taskList.begin(); iter!= _taskList.end(); iter++) {
+		if((*iter)->getTaskType() == TASK_FLOAT) {
+			floatList.push_back(*iter);
+		} 
+		if((*iter)->getTaskType() == TASK_DEADLINE) {
+			deadlineList.push_back(*iter);
+		}
+		if((*iter)->getTaskType() == TASK_TIMED) {
+			timedList.push_back(*iter);
 		}
 	}
-	std::sort(_taskList.begin(), bottomCutoff, Comparator::sortByEndDate);
-	DateTime currentDateTime;
-	currentDateTime.setCurrDateTime();
-	//Everything before topCutoff are overdue tasks
-	std::vector<Task*>::iterator topCutoff = _taskList.begin();
-	// find the tasklist vector for the first task which is not overdue
-	while(topCutoff != _taskList.end() && (*topCutoff)->getDeadline() < currentDateTime) {
-		topCutoff++;
+
+	if(!timedList.empty()) {
+		std::sort(timedList.begin(), timedList.end(), Comparator::sortTimedTask);
 	}
-	std::sort(topCutoff, bottomCutoff, Comparator::sortByStartDate);
+	if(!deadlineList.empty()) {
+		std::sort(deadlineList.begin(), deadlineList.end(), Comparator::sortDeadlineTask);
+	}
+	//merges back the display list into a sorted tasklist
+	mergeSortedList(sortedList, timedList, deadlineList, floatList);
+	orderSortedList(sortedTaskList, sortedList); 
+	_taskList = sortedTaskList;
+	*/
+
+	std::sort(_taskList.begin(), _taskList.end(), Comparator::sortByDate);
 	std::sort(_taskList.begin(), _taskList.end(), Comparator::sortByCompleteness);
 }
 
@@ -465,18 +509,22 @@ void Logic::displayTask(AnalysedData analysedData, DisplayOutput& displayOutput)
 
 		if(analysedData.getDisplayType() == DISPLAY_COMPLETE) { // display completed task
 			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, true, displayListStatus);
+			//displayOutput.setFeedBack(_actionMsg.displayCompleteFeedback());
 		}
 			
 		if(analysedData.getDisplayType() == DISPLAY_INCOMPLETE) { // display incompleted task
 			_displayStatus = _filter.search(_taskList, _displayList,_displayIndexList, false, displayListStatus);
+			//displayOutput.setFeedBack(_actionMsg.displayIncompleteFeedback());
 		}
 
 		if(analysedData.getDisplayType() == DISPLAY_ALL) {
 			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, displayListStatus);
+			//displayOutput.setFeedBack(_actionMsg.displayAllFeedback());
 		}
 
 		if(analysedData.getDisplayType() == DISPLAY_TODAY) {
 			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, QDate::currentDate(), displayListStatus);
+			//displayOutput.setFeedBack(_actionMsg.displayTodayFeedback());
 		}
 	}
 
