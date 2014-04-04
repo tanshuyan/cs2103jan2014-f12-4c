@@ -7,6 +7,53 @@
 
 const std::string DisplayOutput:: _programName = "Calenizer";	
 
+const std::string DisplayOutput::MSG_ADD_SUCCESS ="added to %s: \"%s\"";
+const std::string DisplayOutput::MSG_EDIT_SUCCESS ="%s updated";
+const std::string DisplayOutput::MSG_DELETE_SUCCESS ="deleted from %s: \"%s\"";
+const std::string DisplayOutput::MSG_UNDO_SUCCESS ="latest change to %s undone";
+const std::string DisplayOutput::MSG_UNDO_FAILURE ="Nothing to undone in %s";
+const std::string DisplayOutput::MSG_REDO_SUCCESS ="latest undo to %s reverted";
+const std::string DisplayOutput::MSG_REDO_FAILURE ="Nothing to redo in %s";
+const std::string DisplayOutput::MSG_SEARCH_SUCCESS ="search term \"%s\" found in %s";
+const std::string DisplayOutput::MSG_SEARCH_FAILURE ="search term \"%s\" not found in %s";
+const std::string DisplayOutput::MSG_COMPLETE_SUCCESS ="\"%s\" marked as complete";
+const std::string DisplayOutput::MSG_INCOMPLETE_SUCCESS ="\"%s\" marked as incomplete";
+
+const std::string DisplayOutput::MSG_DISPLAYCOM = "completed tasks in %s shown";
+const std::string DisplayOutput::MSG_DISPLAYINCOM = "incompleted tasks in %s shown";
+const std::string DisplayOutput::MSG_DISPLAYTODAY = "today tasks in %s shown";
+const std::string DisplayOutput::MSG_DISPLAYALL = "all tasks in %s shown";
+
+const std::string DisplayOutput::MSG_INVALID_CMD = "invalid command";
+const std::string DisplayOutput::MSG_INVALID_INDEX = "invalid index";
+const std::string DisplayOutput::MSG_INVALID_TIME = "invalid time";
+const std::string DisplayOutput::MSG_INVALID_DATE = "invalid date";
+
+const std::string DisplayOutput::MSG_NOT_FOUND ="\"%s\" not found in %s";
+const std::string DisplayOutput::MSG_EMPTY_FILE = "%s is empty";
+
+const std::string DisplayOutput::CMD_ADD = "add";
+const std::string DisplayOutput::CMD_EDIT = "edit";
+const std::string DisplayOutput::CMD_DELETE = "delete";
+const std::string DisplayOutput::CMD_DISPLAY = "view";
+const std::string DisplayOutput::CMD_EXIT = "quit";
+const std::string DisplayOutput::CMD_SEARCH = "search";
+const std::string DisplayOutput::CMD_COMPLETE = "complete";
+const std::string DisplayOutput::CMD_INCOMPLETE = "incomplete";
+const std::string DisplayOutput::CMD_UNDO = "undo";
+const std::string DisplayOutput::CMD_REDO = "redo";
+const std::string DisplayOutput::CMD_INVALID = "invalid";
+
+const std::string DisplayOutput::DISPLAY_ALL = "all";
+const std::string DisplayOutput::DISPLAY_COMPLETE = "complete";
+const std::string DisplayOutput::DISPLAY_INCOMPLETE = "incomplete";
+const std::string DisplayOutput::DISPLAY_TODAY = "today";
+
+const std::string DisplayOutput::STATUS_OVERDUE = "Overdue"; 
+const std::string DisplayOutput::STATUS_ONGOING = "Ongoing"; 
+const std::string DisplayOutput::STATUS_COMPLETE = "Complete"; 
+const std::string DisplayOutput::STATUS_INCOMPLETE = "Incomplete";
+
 DisplayOutput::DisplayOutput() {
 }
 
@@ -85,53 +132,6 @@ std::string DisplayOutput::promptMsg(){
 	sprintf_s(buffer, MSG_USERPROMPT.c_str(), _programName.c_str());
 	return buffer;
 }
-
-const std::string DisplayOutput::MSG_ADD_SUCCESS ="added to %s: \"%s\"";
-const std::string DisplayOutput::MSG_EDIT_SUCCESS ="%s updated";
-const std::string DisplayOutput::MSG_DELETE_SUCCESS ="deleted from %s: \"%s\"";
-const std::string DisplayOutput::MSG_UNDO_SUCCESS ="latest change to %s undone";
-const std::string DisplayOutput::MSG_UNDO_FAILURE ="Nothing to undone in %s";
-const std::string DisplayOutput::MSG_REDO_SUCCESS ="latest undo to %s reverted";
-const std::string DisplayOutput::MSG_REDO_FAILURE ="Nothing to redo in %s";
-const std::string DisplayOutput::MSG_SEARCH_SUCCESS ="search term \"%s\" found in %s";
-const std::string DisplayOutput::MSG_SEARCH_FAILURE ="search term \"%s\" not found in %s";
-const std::string DisplayOutput::MSG_COMPLETE_SUCCESS ="\"%s\" marked as complete";
-const std::string DisplayOutput::MSG_INCOMPLETE_SUCCESS ="\"%s\" marked as incomplete";
-
-const std::string DisplayOutput::MSG_DISPLAYCOM = "completed tasks in %s shown";
-const std::string DisplayOutput::MSG_DISPLAYINCOM = "incompleted tasks in %s shown";
-const std::string DisplayOutput::MSG_DISPLAYTODAY = "today tasks in %s shown";
-const std::string DisplayOutput::MSG_DISPLAYALL = "all tasks in %s shown";
-
-const std::string DisplayOutput::MSG_INVALID_CMD = "invalid command";
-const std::string DisplayOutput::MSG_INVALID_INDEX = "invalid index";
-const std::string DisplayOutput::MSG_INVALID_TIME = "invalid time";
-const std::string DisplayOutput::MSG_INVALID_DATE = "invalid date";
-
-const std::string DisplayOutput::MSG_NOT_FOUND ="\"%s\" not found in %s";
-const std::string DisplayOutput::MSG_EMPTY_FILE = "%s is empty";
-
-const std::string DisplayOutput::CMD_ADD = "add";
-const std::string DisplayOutput::CMD_EDIT = "edit";
-const std::string DisplayOutput::CMD_DELETE = "delete";
-const std::string DisplayOutput::CMD_DISPLAY = "view";
-const std::string DisplayOutput::CMD_EXIT = "quit";
-const std::string DisplayOutput::CMD_SEARCH = "search";
-const std::string DisplayOutput::CMD_COMPLETE = "complete";
-const std::string DisplayOutput::CMD_INCOMPLETE = "incomplete";
-const std::string DisplayOutput::CMD_UNDO = "undo";
-const std::string DisplayOutput::CMD_REDO = "redo";
-const std::string DisplayOutput::CMD_INVALID = "invalid";
-
-const std::string DisplayOutput::DISPLAY_ALL = "all";
-const std::string DisplayOutput::DISPLAY_COMPLETE = "complete";
-const std::string DisplayOutput::DISPLAY_INCOMPLETE = "incomplete";
-const std::string DisplayOutput::DISPLAY_TODAY = "today";
-
-const std::string DisplayOutput::STATUS_OVERDUE = "Overdue"; 
-const std::string DisplayOutput::STATUS_ONGOING = "Ongoing"; 
-const std::string DisplayOutput::STATUS_COMPLETE = "Complete"; 
-const std::string DisplayOutput::STATUS_INCOMPLETE = "Incomplete";
 
 std::string DisplayOutput::emptyFeedback() {
 	sprintf_s(buffer, MSG_EMPTY_FILE.c_str(), _programName.c_str());
