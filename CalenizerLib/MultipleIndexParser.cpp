@@ -42,9 +42,10 @@ std::vector<int> MultipleIndexParser::parseMultipleIndex(std::string userInput) 
 		descString.remove(pos, RX_INDEX.matchedLength());
 		pos = RX_INDEX.indexIn(descString, pos);
 	}
-
-	std::sort(_index.begin(), _index.end()); // sorts the valid index by ascending order
-	_index.erase(std::unique(_index.begin(), _index.end()), _index.end()); // create a unique vector
+	
+	std::sort(_index.begin(), _index.end()); 
+	// create a unique vector
+	_index.erase(std::unique(_index.begin(), _index.end()), _index.end()); 
 
 	return _index;
 }

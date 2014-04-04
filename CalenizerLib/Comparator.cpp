@@ -59,11 +59,3 @@ bool Comparator::sortByTaskType(const Task* a, const Task* b) {
 	}
 	return (A<B);
 }
-
-//bool Comparator::matchTask(const Task* a, const Task* b) {
-//	return ((a->getTaskType() == b->getTaskType()) &&
-//			(a->getTaskDesc() == b->getTaskDesc()) && 
-//			(a->getCompleteStatus() == b->getCompleteStatus()) &&
-//			(a->getDeadline() == b->getDeadline()) &&
-//			(a->getStartDate() == b->getStartDate()));
-//}

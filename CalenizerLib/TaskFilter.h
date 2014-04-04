@@ -12,8 +12,11 @@
 #include <sstream>
 #include <vector>
 #include "Task.h"
+#include "TaskDeadline.h"
+#include "TaskFloat.h"
+#include "TaskTimed.h"
 #include "DateTime.h"
-#include "Comparator.h"
+#include "DisplayOutput.h"
 
 class TaskFilter {
 private:

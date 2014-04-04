@@ -77,7 +77,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnalysedData.cpp" />
-    <ClCompile Include="calenizerlib.cpp" />
     <ClCompile Include="Comparator.cpp" />
     <ClCompile Include="DateTime.cpp" />
     <ClCompile Include="DateTimeParser.cpp" />
