@@ -8,6 +8,7 @@
 #ifndef TASKTIMED_H
 #define TASKTIMED_H
 
+#include <iostream>
 #include <string>
 #include <sstream>
 #include "Task.h"

@@ -7,7 +7,7 @@
 #pragma once
 #ifndef TASKDEADLINE_H
 #define TASKDEADLINE_H
-
+#include <iostream>
 #include <string>
 #include <sstream>
 #include "task.h"
@@ -26,7 +26,6 @@ private:
 public:
 	static const std::string TASK_DEADLINE;
 	TaskDeadline();
-	TaskDeadline(bool, std::string, DateTime);
 	~TaskDeadline();
 
 	void setTask(bool, std::string, DateTime);

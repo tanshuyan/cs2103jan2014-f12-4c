@@ -2,7 +2,7 @@
 // v1.0
 
 #include "MultipleIndexParser.h"
-#include <algorithm>
+
 
 QRegExp MultipleIndexParser::RX_TO("(\\d+)\\s*(?:to|-|until|til)\\s*(\\d+)", Qt::CaseInsensitive);
 

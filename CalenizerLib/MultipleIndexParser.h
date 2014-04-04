@@ -7,7 +7,7 @@
 #include <string>
 #include <QRegExp>
 #include <vector>
-
+#include <algorithm>
 //All functions return false if any error occurs
 class MultipleIndexParser{
 private:

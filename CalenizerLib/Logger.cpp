@@ -2,22 +2,29 @@
 // v 1.1
 // added different warning levels
 
-#include <iostream>
-#include <string>
-#include <fstream>
 #include "Logger.h"
 
-const std::string LOG_FILENAME = "log.log";
-const std::string LOG_WARNING = "WARNING";
-const std::string LOG_ERROR = "ERROR";
-const std::string LOG_INFORMATION = "INFORMATION";
-
+const std::string Logger::LOG_FILENAME = "log.log";
+const std::string Logger::LOG_WARNING = "WARNING";
+const std::string Logger::LOG_ERROR = "ERROR";
+const std::string Logger::LOG_INFORMATION = "INFORMATION";
 
 Logger::Logger() {
 }
 
-void Logger::addLog(std::string newLog) {
-	_logContent.push_back(newLog);
+void Logger::addWarningLog(std::string newLog) {
+	std::string log = LOG_WARNING + " " + newLog;
+	_logContent.push_back(log);
+}
+
+void Logger::addErrorLog(std::string newLog) {
+	std::string log = LOG_ERROR + " " + newLog;
+	_logContent.push_back(log);
+}
+
+void Logger::addInfoLog(std::string newLog) {
+	std::string log = LOG_INFORMATION + " " + newLog;
+	_logContent.push_back(log);
 }
 
 void Logger::saveLog() {

@@ -61,12 +61,12 @@ std::string DateTime::dayToString(){
 	return output.toStdString();
 }
 
-
 std::string DateTime::timeToString(){
 	QString format="h:mm ap";
 	QString output=_time.toString(format);
 	return output.toStdString();
 }
+
 std::string DateTime::dataToString(){
 	std::string dateString = _date.toString("dd/MM/yyyy").toStdString();
 	std::string timeString = _time.toString("hh:mm").toStdString();

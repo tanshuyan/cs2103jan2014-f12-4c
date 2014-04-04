@@ -33,28 +33,18 @@ private:
 
 public:
 	Parser();
-
-	COMMAND_TYPE getCommand(std::string);
 	
 	AnalysedData parse(std::string);
-
-	AnalysedData editCMD(std::string);
-	AnalysedData addCMD(std::string);
-	
-	//Able to delete multiple indexes 
-	AnalysedData deleteCMD(std::string);
-	AnalysedData completeCMD(std::string);
-	AnalysedData incompleteCMD(std::string);
-	
-	//checks if user input is complete, incomplete, today, tmr, this week, next week, this month, specific date)
-	//additional functionailty if you can code: display from specific day1 to specific day2
-	AnalysedData displayCMD(std::string);
-	
-	//supports multiple search terms (search for A and B and C)
-	AnalysedData searchCMD(std::string);
+	COMMAND_TYPE getCommand(std::string);
 	
 	AnalysedData undoCMD();
-	AnalysedData redoCMD();
-
+	AnalysedData redoCMD();	
+	AnalysedData searchCMD(std::string);
+	AnalysedData displayCMD(std::string);
+	AnalysedData incompleteCMD(std::string);
+	AnalysedData completeCMD(std::string);
+	AnalysedData deleteCMD(std::string);
+	AnalysedData editCMD(std::string);
+	AnalysedData addCMD(std::string);
 };
 #endif

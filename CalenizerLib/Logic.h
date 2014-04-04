@@ -9,6 +9,8 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <assert.h>
+#include <algorithm>
 #include "Task.h"
 #include "TaskDeadline.h"
 #include "TaskFloat.h"
@@ -50,13 +52,12 @@ private:
 	void setIncomplete(AnalysedData, DisplayOutput&);
 	// displayTask can only display the complete, incomplete, all and today
 	void displayTask(AnalysedData, DisplayOutput&);
-	void searchTasks(AnalysedData, DisplayOutput&);
 	void undo(DisplayOutput&);
 	void redo(DisplayOutput&);
 
 	std::vector<Task*>::iterator indexToIterator(int index);
-	void generateDisplayListIndex();
 	bool isValidIndex(int);
+	void generateDisplayListIndex();
 	void loadFileContent();
 	void sortTaskList();
 public:

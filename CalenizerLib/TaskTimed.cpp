@@ -2,7 +2,7 @@
 // v1.3
 // removed setTaskType, moved tasktype-setting to the constructor
 // added taskDetailsToString
-#include <iostream>
+
 #include "TaskTimed.h"
 
 const std::string TaskTimed::TASK_TIMED = "TIMED";
@@ -45,14 +45,6 @@ void TaskTimed::setStartDate(DateTime startDate) {
 	_startDateTime = startDate;
 }
 
-std::string TaskTimed::getTaskType() const {
-	return _taskType;
-}
-
-bool TaskTimed::getCompleteStatus() const {
-	return _completeStatus;
-}
-
 DateTime TaskTimed::getDeadline() const {
 	return _endDateTime;
 }
@@ -63,6 +55,10 @@ DateTime TaskTimed::getStartDate() const {
 
 std::string TaskTimed::getTaskDesc() const {
 	return _taskDesc;
+}
+
+std::string TaskTimed::getTaskType() const {
+	return _taskType;
 }
 
 std::string TaskTimed::dateTimeToString() {
@@ -80,6 +76,9 @@ std::string TaskTimed::statusToString() {
 	}
 }
 
+bool TaskTimed::getCompleteStatus() const {
+	return _completeStatus;
+}
 
 std::string TaskTimed::outputToString() {
 	std::ostringstream output;
@@ -97,7 +96,6 @@ std::string TaskTimed::taskDetailsToString() {
 	output << statusToString() << std::endl;
 	return output.str();
 }
-
 
 std::string TaskTimed::taskToString() {
 	std::ostringstream output;
@@ -130,6 +128,5 @@ void TaskTimed::stringToTask(std::string content) {
 	}
 	startDateTime.dataFromString(dateTime);
 	endDateTime.dataFromString(endDate);
-
 	setTask(status, taskDesc, startDateTime, endDateTime);
 }

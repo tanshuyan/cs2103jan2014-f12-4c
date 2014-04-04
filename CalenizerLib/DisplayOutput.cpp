@@ -3,7 +3,6 @@
 // main interaction with GUI and logic
 
 #include "DisplayOutput.h"
-#include <iostream>
 
 const std::string DisplayOutput:: _programName = "Calenizer";	
 
@@ -104,10 +103,6 @@ std::vector<std::string> DisplayOutput::getDisplayListStatus() {
 	return _displayListStatus;
 }
 
-bool DisplayOutput::getDisplayStatus() {
-	return _displayStatus;
-}
-
 std::string DisplayOutput::getFeedBack() {
 	return _feedback;
 }
@@ -116,14 +111,8 @@ std::vector<std::string> DisplayOutput::getDisplay() {
 	return _displayList;
 }
 
-
-void DisplayOutput::displayToUser(std::string output) {
-	std::cout << output;
-
-	//no newline after "command: "
-	if(output != MSG_USERPROMPT){
-		std::cout << std::endl;
-	}
+bool DisplayOutput::getDisplayStatus() {
+	return _displayStatus;
 }
 
 std::string DisplayOutput::welcomeMsg(){
@@ -134,6 +123,15 @@ std::string DisplayOutput::welcomeMsg(){
 std::string DisplayOutput::promptMsg(){
 	sprintf_s(buffer, MSG_USERPROMPT.c_str(), _programName.c_str());
 	return buffer;
+}
+
+void DisplayOutput::displayToUser(std::string output) {
+	std::cout << output;
+
+	//no newline after "command: "
+	if(output != MSG_USERPROMPT){
+		std::cout << std::endl;
+	}
 }
 
 std::string DisplayOutput::emptyFeedback() {

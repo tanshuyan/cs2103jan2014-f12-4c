@@ -11,7 +11,6 @@
 #include <string>
 #include <QRegExp>
 
-
 class DateTime{
 private:
 	QDate _date;

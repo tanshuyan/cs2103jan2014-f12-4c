@@ -2,11 +2,10 @@
 // v1.2
 // remove useless functions
 // changed to task pointers
-#include <iostream>
+
 #include "TaskStorage.h"
 
 const std::string TaskStorage:: _defaultFileName = "CalenizerStorage.txt";	
-const std::string TaskStorage::DELIMITER_SPACE = " ";
 
 TaskStorage::TaskStorage() {
 	_fileName = _defaultFileName;

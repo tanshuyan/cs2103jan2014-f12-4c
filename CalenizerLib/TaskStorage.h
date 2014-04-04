@@ -5,6 +5,7 @@
 #ifndef TASKSTORAGE_H
 #define TASKSTORAGE_H
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <sstream>
@@ -21,7 +22,6 @@ private:
 	std::ifstream _fileInput;
 	std::ofstream _fileOutput;
 
-	static const std::string DELIMITER_SPACE;
 public:
 	TaskStorage();
 	~TaskStorage();
