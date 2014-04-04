@@ -116,7 +116,7 @@ private:
 				*/
  
 
-                void testFeedback(){
+                /*void testFeedback(){
                     DisplayOutput display;
                     std::string command;
                     Logic test;
@@ -127,12 +127,12 @@ private:
                     QVERIFY(display.getFeedBack() == expected);
                     system("PAUSE");
                 }
-
+				*/
 				// Unit Test END
 
 					// System testing
 				//systemTest_1 tests the adding of tasks
-				/*void systemTest_1() {
+				void systemTest_1() {
 					Logic logic;
 					DisplayOutput displayOutput1;
 					DisplayOutput displayOutput2;
@@ -155,7 +155,7 @@ private:
 					QVERIFY(output[0] == expectedOutput3);
 					system("PAUSE");
 				}
-				*/
+				
 
 				// systemTest_2 tests the sequence of undo and redo
 				/*void systemTest_2() {

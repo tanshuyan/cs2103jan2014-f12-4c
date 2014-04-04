@@ -113,7 +113,6 @@ std::vector<std::string> DisplayOutput::getDisplay() {
 	return _displayList;
 }
 
-
 void DisplayOutput::displayToUser(std::string output) {
 	std::cout << output;
 
