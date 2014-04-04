@@ -32,7 +32,7 @@ QT_MOC_LITERAL(0, 0, 8),
 QT_MOC_LITERAL(1, 9, 12),
 QT_MOC_LITERAL(2, 22, 0)
     },
-    "TaskTest\0testFeedback\0\0"
+    "TaskTest\0systemTest_1\0\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -63,7 +63,7 @@ void TaskTest::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
     if (_c == QMetaObject::InvokeMetaMethod) {
         TaskTest *_t = static_cast<TaskTest *>(_o);
         switch (_id) {
-        case 0: _t->testFeedback(); break;
+        case 0: _t->systemTest_1(); break;
         default: ;
         }
     }
