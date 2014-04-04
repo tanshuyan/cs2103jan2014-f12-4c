@@ -11,7 +11,6 @@
 class AnalysedData{
 
 private:
-	// attributes for the task to be created
 	std::string _taskDesc;
 	std::string _command;
 	std::string _displayType;

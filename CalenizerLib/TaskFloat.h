@@ -8,6 +8,7 @@
 #ifndef TaskFloat_H
 #define TaskFloat_H
 
+#include <iostream>
 #include <string>
 #include <sstream>
 #include "task.h"

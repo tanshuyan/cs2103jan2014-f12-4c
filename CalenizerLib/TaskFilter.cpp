@@ -3,72 +3,8 @@
 // added search float == display float tasks also
 // added marking functions
 #include "TaskFilter.h"
-#include <algorithm>
-#include <assert.h>
-
 
 TaskFilter::TaskFilter(){
-}
-
-
-std::string TaskFilter::markTask(const Task* taskToBeMarked, DateTime currentDateTime) {
-	if(taskToBeMarked->getCompleteStatus() == true) {
-		return DisplayOutput::STATUS_COMPLETE;
-	}
-
-	if(taskToBeMarked->getTaskType() == TaskFloat::TASK_FLOAT) {
-		return DisplayOutput::STATUS_INCOMPLETE;
-	}
-
-	if(taskToBeMarked->getTaskType() == TaskDeadline::TASK_DEADLINE) {
-		if(taskToBeMarked->getDeadline() < currentDateTime) {
-			return DisplayOutput::STATUS_OVERDUE;
-		}
-
-		if( (taskToBeMarked->getDeadline().getDate() == currentDateTime.getDate()) && (taskToBeMarked->getDeadline().getTime() > currentDateTime.getTime()) ) {
-			return DisplayOutput::STATUS_ONGOING;
-		}
-		return DisplayOutput::STATUS_INCOMPLETE;
-	}
-
-	if(taskToBeMarked->getTaskType() == TaskTimed::TASK_TIMED) {
-		if(taskToBeMarked->getDeadline() < currentDateTime) {
-			return DisplayOutput::STATUS_OVERDUE;
-		}
-		// enddatetime is larger than current date time
-		if(taskToBeMarked->getStartDate() < currentDateTime) {
-			return DisplayOutput::STATUS_ONGOING;
-		}
-		return DisplayOutput::STATUS_INCOMPLETE;
-	}
-
-	assert(false);
-}
-
-void TaskFilter::markDisplayList(std::vector<Task*> &displayList, std::vector<std::string> &displayListStatus) {
-	std::vector<Task*>::iterator iter;
-	DateTime currentDateTime;
-	currentDateTime.setCurrDateTime();
-	//marks all the tasks in the display list
-	for(iter = displayList.begin(); iter!=displayList.end(); iter++) {
-		displayListStatus.push_back(markTask(*iter, currentDateTime));
-	}
-}
-
-std::string TaskFilter::toUpper(std::string string) {
-	for(int i = 0; i < (int) string.size(); i++) {
-		string[i] = toupper(string[i]);
-	}
-	return string;
-}
-
-bool TaskFilter::isTaskType(std::string searchTerm) {
-	searchTerm = toUpper(searchTerm);
-	if(searchTerm == TaskFloat::TASK_FLOAT || searchTerm == TaskDeadline::TASK_DEADLINE || searchTerm == TaskTimed::TASK_TIMED) {
-		return true;
-	} else {
-		return false;
-	}
 }
 
 bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, bool status, std::vector<std::string> &displayListStatus){
@@ -159,4 +95,62 @@ bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displa
 	}
 	markDisplayList(displayList, displayListStatus);
 	return true;
+}
+
+bool TaskFilter::isTaskType(std::string searchTerm) {
+	searchTerm = toUpper(searchTerm);
+	if(searchTerm == TaskFloat::TASK_FLOAT || searchTerm == TaskDeadline::TASK_DEADLINE || searchTerm == TaskTimed::TASK_TIMED) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+std::string TaskFilter::toUpper(std::string string) {
+	for(int i = 0; i < (int) string.size(); i++) {
+		string[i] = toupper(string[i]);
+	}
+	return string;
+}
+
+std::string TaskFilter::markTask(const Task* taskToBeMarked, DateTime currentDateTime) {
+	if(taskToBeMarked->getCompleteStatus() == true) {
+		return DisplayOutput::STATUS_COMPLETE;
+	}
+
+	if(taskToBeMarked->getTaskType() == TaskFloat::TASK_FLOAT) {
+		return DisplayOutput::STATUS_INCOMPLETE;
+	}
+
+	if(taskToBeMarked->getTaskType() == TaskDeadline::TASK_DEADLINE) {
+		if(taskToBeMarked->getDeadline() < currentDateTime) {
+			return DisplayOutput::STATUS_OVERDUE;
+		}
+
+		if( (taskToBeMarked->getDeadline().getDate() == currentDateTime.getDate()) && (taskToBeMarked->getDeadline().getTime() > currentDateTime.getTime()) ) {
+			return DisplayOutput::STATUS_ONGOING;
+		}
+		return DisplayOutput::STATUS_INCOMPLETE;
+	}
+
+	if(taskToBeMarked->getTaskType() == TaskTimed::TASK_TIMED) {
+		if(taskToBeMarked->getDeadline() < currentDateTime) {
+			return DisplayOutput::STATUS_OVERDUE;
+		}
+		if(taskToBeMarked->getStartDate() < currentDateTime) {
+			return DisplayOutput::STATUS_ONGOING;
+		}
+		return DisplayOutput::STATUS_INCOMPLETE;
+	}
+
+	assert(false);
+}
+
+void TaskFilter::markDisplayList(std::vector<Task*> &displayList, std::vector<std::string> &displayListStatus) {
+	std::vector<Task*>::iterator iter;
+	DateTime currentDateTime;
+	currentDateTime.setCurrDateTime();
+	for(iter = displayList.begin(); iter!=displayList.end(); iter++) {
+		displayListStatus.push_back(markTask(*iter, currentDateTime));
+	}
 }

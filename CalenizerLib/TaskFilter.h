@@ -8,6 +8,8 @@
 #ifndef TASKFILTER_H
 #define TASKFILTER_H
 
+#include <algorithm>
+#include <assert.h>
 #include <string>
 #include <sstream>
 #include <vector>

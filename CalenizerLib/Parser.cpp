@@ -67,10 +67,15 @@ AnalysedData Parser::parse(std::string userInput) {
 		return analysedData;
 		break;
 	}
-	} // end switch block
+	default: {
+		AnalysedData analysedData;
+		analysedData.setCommand(DisplayOutput::CMD_INVALID);
+		return analysedData;
+		break;
+	}
+	}
 
 }
-
 
 Parser::COMMAND_TYPE Parser::getCommand(std::string command) {
 	if(command == DisplayOutput::CMD_ADD) {
@@ -125,7 +130,7 @@ AnalysedData Parser::displayCMD(std::string userInput) {
 	} else if(userInput == DisplayOutput::DISPLAY_COMPLETE || userInput == DisplayOutput::DISPLAY_ALL || userInput == DisplayOutput::DISPLAY_INCOMPLETE || userInput == DisplayOutput::DISPLAY_TODAY) {
 		analysedData.setDisplayType(userInput);
 	} else {
-		analysedData.setCommand(DisplayOutput::CMD_INVALID); // sets to invalid command if the remaining user input is invalid
+		analysedData.setCommand(DisplayOutput::CMD_INVALID);
 	}
 	return analysedData;
 }
@@ -154,8 +159,6 @@ AnalysedData Parser::deleteCMD(std::string userInput) {
 	return analysedData;
 }
 
-// from here onward, there is a need to rework and user regex for better parser
-// Reworked!
 AnalysedData Parser::editCMD(std::string userInput) {
 	AnalysedData analysedData;
 	std::istringstream inputStream(userInput);

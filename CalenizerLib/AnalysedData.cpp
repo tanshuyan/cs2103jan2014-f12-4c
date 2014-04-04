@@ -9,13 +9,16 @@ AnalysedData::AnalysedData() {
 	_dateTimeIsUnlabelled = true;
 }
 
-
 void AnalysedData::setDateTimeUnlabelled(bool status) {
 	_dateTimeIsUnlabelled = status;
 }
 
 void AnalysedData::setIndex(int index) {
 	_taskIndex = index;
+}
+
+void AnalysedData::setDisplayType(std::string displayType) {
+	_displayType = displayType;
 }
 
 void AnalysedData::setCommand(std::string command) {
@@ -46,20 +49,16 @@ void AnalysedData::setIndexVector(std::vector<int> index) {
 	_index = index;
 }
 
-void AnalysedData::setDisplayType(std::string displayType) {
-	_displayType = displayType;
-}
-
 bool AnalysedData::getDateTimeUnlabelled() {
 	return _dateTimeIsUnlabelled;
 }
 
-std::string AnalysedData::getDisplayType() {
-	return _displayType;
-}
-
 int AnalysedData::getIndex() {
 	return _taskIndex;
+}
+
+std::string AnalysedData::getDisplayType() {
+	return _displayType;
 }
 
 std::string AnalysedData::getCommand() {

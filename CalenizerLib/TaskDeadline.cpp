@@ -2,7 +2,7 @@
 // v1.2
 // removed setTaskType, moved tasktype-setting to the constructor
 // added taskDetailsToString
-#include <iostream>
+
 #include "TaskDeadline.h"
 
 const std::string TaskDeadline::TASK_DEADLINE = "DEADLINE";
@@ -39,16 +39,20 @@ void TaskDeadline::setDeadline(DateTime deadline) {
 	_deadline = deadline;
 }
 
-std::string TaskDeadline::getTaskType() const {
-	return _taskType;
-}
-
-bool TaskDeadline::getCompleteStatus() const {
-	return _completeStatus;
+DateTime TaskDeadline::getDeadline() const {
+	return _deadline;
 }
 
 std::string TaskDeadline::getTaskDesc() const {
 	return _taskDesc;
+}
+
+std::string TaskDeadline::getTaskType() const {
+	return _taskType;
+}
+
+std::string TaskDeadline::dateTimeToString() {
+	return _deadline.dataToString();
 }
 
 std::string TaskDeadline::statusToString() {
@@ -59,12 +63,8 @@ std::string TaskDeadline::statusToString() {
 	}
 }
 
-std::string TaskDeadline::dateTimeToString() {
-	return _deadline.dataToString();
-}
-
-DateTime TaskDeadline::getDeadline() const {
-	return _deadline;
+bool TaskDeadline::getCompleteStatus() const {
+	return _completeStatus;
 }
 
 std::string TaskDeadline::outputToString() {
@@ -83,7 +83,6 @@ std::string TaskDeadline::taskDetailsToString() {
 	output << statusToString() << std::endl;
 	return output.str();
 }
-
 
 std::string TaskDeadline::taskToString() {
 	std::ostringstream output;
@@ -112,6 +111,5 @@ void TaskDeadline::stringToTask(std::string content) {
 		status = false;
 	}
 	deadline.dataFromString(dateTime);
-
 	setTask(status, taskDesc, deadline);
 }
