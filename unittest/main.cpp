@@ -116,23 +116,23 @@ private:
 				*/
  
 
-                void testFeedback(){
-                    DisplayOutput display;
-                    std::string command;
-                    Logic test;
-                    display = test.executeUserInput("add mary had a little lamb");
-                    //display.displayToUser(display.getFeedBack());
+                //void testFeedback(){
+                //    DisplayOutput display;
+                //    std::string command;
+                //    Logic test;
+                //    display = test.executeUserInput("add mary had a little lamb");
+                //    //display.displayToUser(display.getFeedBack());
 
-                    std::string expected = "added to Calenzier: \"mary had a little lamb\"";
-                    QVERIFY(display.getFeedBack() == expected);
-                    system("PAUSE");
-                }
+                //    std::string expected = "added to Calenzier: \"mary had a little lamb\"";
+                //    QVERIFY(display.getFeedBack() == expected);
+                //    system("PAUSE");
+                //}
 
 				// Unit Test END
 
 					// System testing
 				//systemTest_1 tests the adding of tasks
-				/*void systemTest_1() {
+				void systemTest_1() {
 					Logic logic;
 					DisplayOutput displayOutput1;
 					DisplayOutput displayOutput2;
@@ -141,21 +141,21 @@ private:
 					std::string testFloat = "add do cs diagram";
 					std::string testDeadline = "add do homework on 23 dec 10pm";
 					std::string testTimed = "add finish homework from 22 dec to 25 dec 10pm";
-				//	displayOutput1 = logic.executeUserInput(testFloat);
+					displayOutput1 = logic.executeUserInput(testFloat);
 					displayOutput2 = logic.executeUserInput(testDeadline);
 					displayOutput3 = logic.executeUserInput(testTimed);
-				//	output = displayOutput1.getDisplay();
-				//	std::string expectedOutput1 = "1. FLOAT<>do cs diagram<>false\n";
-				//	QVERIFY(output[0] == expectedOutput1);
+					output = displayOutput1.getDisplay();
+					std::string expectedOutput1 = "1. FLOAT<>do cs diagram<>false\n";
+					QVERIFY(output[0] == expectedOutput1);
 					output = displayOutput2.getDisplay();
 					std::string expectedOutput2 = "1. DEADLINE<>do homework<>23 Dec 2014 10:00 pm<>false\n";
 			 		QVERIFY(output[0] == expectedOutput2);
 					output = displayOutput3.getDisplay();
-					std::string expectedOutput3 = "1. TIMED<>finish homework<>22 Dec 2014 10:00 pm to 25 Dec 2014 10:00 pm<>false\n";
-					QVERIFY(output[0] == expectedOutput3);
+					std::string expectedOutput3 = "2. TIMED<>finish homework<>22 Dec 2014 10:00 pm to 25 Dec 2014 10:00 pm<>false\n";
+					QVERIFY(output[1] == expectedOutput3);
 					system("PAUSE");
 				}
-				*/
+				
 
 				// systemTest_2 tests the sequence of undo and redo
 				/*void systemTest_2() {

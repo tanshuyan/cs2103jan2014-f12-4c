@@ -221,7 +221,7 @@ bool DateTimeParser::parseDashesSlashes(QDate &date){
 	int month = rxDashesSlashes.cap(2).toInt();
 	//Get Years
 	int year = rxDashesSlashes.cap(3).toInt();
-
+	autoCompleteYear(rxDashesSlashes.cap(3).size(), year);
 	if(rxDashesSlashes.pos(3) == -1){
 		year = guessYear(day, month);
 	}
@@ -236,7 +236,7 @@ bool DateTimeParser::parseShortWordMonth(QDate &date){
 	int month = QDate::fromString(rxShortWordMonth.cap(2), "MMM").month();
 	//Get Years
 	int year = rxShortWordMonth.cap(3).toInt();
-	
+	autoCompleteYear(rxShortWordMonth.cap(3).size(), year);
 	if (rxShortWordMonth.pos(3) == -1){
 		year = guessYear(day, month);
 	}
@@ -251,7 +251,7 @@ bool DateTimeParser::parseLongWordMonth(QDate &date){
 	int month = QDate::fromString(rxLongWordMonth.cap(2), "MMMM").month();
 	//Get Years
 	int year = rxLongWordMonth.cap(3).toInt();
-	
+	autoCompleteYear(rxLongWordMonth.cap(3).size(), year);
 	if (rxLongWordMonth.pos(3) == -1){
 		year = guessYear(day, month);
 	}
@@ -342,4 +342,11 @@ int DateTimeParser::guessYear(int &day, int &month){
 	}
 
 	return currYear+1;
+}
+
+void DateTimeParser::autoCompleteYear(int size, int &year){
+	if(size == 2 || size == 1){
+		year+2000;
+	}
+	return;
 }

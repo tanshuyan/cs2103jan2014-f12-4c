@@ -78,5 +78,6 @@ public:
 	//Changes 29 Feb to 28 Feb if upcoming Feb has no 29th.
 	int guessYear(int &day, int &month);
 
+	void autoCompleteYear(int size, int &year);
 };
 #endif

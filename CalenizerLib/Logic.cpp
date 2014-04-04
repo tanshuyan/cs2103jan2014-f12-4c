@@ -9,6 +9,8 @@
 
 Logic::Logic() {
 	loadFileContent();
+	_currentDisplayType.setCommand(DisplayOutput::CMD_DISPLAY);
+	_currentDisplayType.setDisplayType(DisplayOutput::DISPLAY_ALL);
 }
 
 Logic::~Logic() {
@@ -344,7 +346,7 @@ void Logic::sortTaskList() {
 	//Everything before topCutoff are overdue tasks
 	std::vector<Task*>::iterator topCutoff = _taskList.begin();
 	// find the tasklist vector for the first task which is not overdue
-		for(topCutoff = _taskList.begin(); topCutoff != _taskList.end(); topCutoff++){
+	for(topCutoff = _taskList.begin(); topCutoff != _taskList.end(); topCutoff++){
 		if((*topCutoff)->getDeadline() < currentDateTime){
 			break;
 		}
