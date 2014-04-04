@@ -12,6 +12,8 @@
 #include "TaskTimed.h"
 #include "Parser.h"
 #include "NLParser.h"
+#include "DisplayOutput.h"
+#include "Logic.h"
 #include <cstdlib>
 
 class TaskTest : public QObject {
