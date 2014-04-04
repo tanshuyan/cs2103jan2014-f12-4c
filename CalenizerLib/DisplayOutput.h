@@ -31,6 +31,7 @@ private:
 	static const std::string MSG_ADD_SUCCESS;
 	static const std::string MSG_EDIT_SUCCESS;
 	static const std::string MSG_DELETE_SUCCESS;
+	static const std::string MSG_DELETE_MULTIPLE_SUCCESS;
 
 	static const std::string MSG_UNDO_SUCCESS;
 	static const std::string MSG_UNDO_FAILURE;
@@ -76,15 +77,16 @@ public:
 	std::string emptyFeedback();
 	std::string editFeedback(std::string);
 	std::string addFeedback(std::string);
-	std::string deleteFeedback();
+	std::string deleteFeedback(std::string);
+	std::string deleteMultipleFeedback();
 	std::string undoSuccessFeedback();
 	std::string undoFailureFeedback();
 	std::string redoSuccessFeedback();
 	std::string redoFailureFeedback();
 	std::string searchSuccessFeedback(std::string);
 	std::string searchFailureFeedback(std::string);
-	std::string completeSuccessFeedback();
-	std::string incompleteSuccessFeedback();
+	std::string completeSuccessFeedback(std::string);
+	std::string incompleteSuccessFeedback(std::string);
 
 	std::string notFoundFeedback(std::string);
 	std::string invalidFeedback();

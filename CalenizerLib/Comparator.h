@@ -18,9 +18,9 @@ private:
 public:
 	Comparator();
 
+	static bool sortByStartDate(const Task*, const Task*);
 	static bool sortByEndDate(const Task*, const Task*);
-	static bool sortByDate(const Task*, const Task*);
 	static bool sortByCompleteness(const Task*, const Task*);
-	static bool matchTask(const Task*, const Task*);
+	static bool sortByTaskType(const Task*, const Task*);
 };
 #endif

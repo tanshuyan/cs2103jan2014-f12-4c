@@ -5,6 +5,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QShortcut>
 #include <QCursor>
+#include <QTimer>
 #include <iostream>
 #include "ui_calenizergui.h"
 #include "DisplayOutput.h"
@@ -25,25 +26,30 @@ private slots:
 	void run();
 	void checkAlphabet();
 	void resetInput();
-	void todayDisplay();
+	void todayDisplay(); 
+	//void updateDateTime();
+	void initialiseTimeDate();
 
 private:
 	Ui::CalenizerGUIClass ui;
 
 	void initialiseTableStyle();
 	void initialiseTableSize();
+	
+	void initialiseShortcuts();
+	void initialiseConnections();
 	void initialiseTable(QTableWidget *table);
 	void setColumnWidth(QTableWidget *table);
 	void fixColumnWidth(QTableWidget *table);
+	void getFeedback(DisplayOutput);
+	void getTask(DisplayOutput, int);
+	std::string setStatus(std::string);
 
 	QPalette* palette;
 	//QLineEdit* line;
 
 	int _g_current_row;
 	Logic _g_logic;
-
-	void setTableTask();
-	void CalenizerGUI::initialiseShortcuts();
 
 	static const QString ADD_MSG;
 	static const QString DELETE_MSG;
@@ -54,22 +60,16 @@ private:
 	static const QString UNDO_MSG;
 	static const QString REDO_MSG;
 	static const QString VIEW_MSG;
+	static const QString QUIT_MSG;
+	static const std::string EMPTY_STRING;
+	static const std::string CMD_DISPLAY_TODAY;
 
 	static const std::string STATUS_TRUE;
 	static const std::string STATUS_FALSE;
-
 	static const std::string STATUS_COMPLETE;
 	static const std::string STATUS_INCOMPLETE;
 	static const std::string STATUS_OVERDUE;
 	static const std::string STATUS_ONGOING;
-
-	static const std::string CMD_DISPLAY_TODAY;
-
-	void getFeedback(DisplayOutput);
-	void getTask(DisplayOutput, int);
-	std::string setStatus(std::string);
-
-	void initialiseConnections();
 
 	static enum ColumnHeader {
 		TASK_DESC, 

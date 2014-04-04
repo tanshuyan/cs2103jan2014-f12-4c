@@ -1,10 +1,10 @@
 //DateTimeResolver.h
-//Beta 1.1
-//still untested
+//v 1.2
+//BUG FIXESSSSS
 #include "DateTime.h"
 #include <QDateTime>
 #include "Task.h"
-#include "taskDeadline.h"
+#include "TaskDeadline.h"
 #include "TaskFloat.h"
 #include "TaskTimed.h"
 #include "AnalysedData.h"
@@ -26,6 +26,7 @@ private:
 	void setNearestValidDay(QDate &dateToSet, QTime eventTime, QDate &currDate = QDate::currentDate(), QTime &currTime = QTime::currentTime());
 	//If there both start and end date/times are present, it checks that they are in the valid order
 	bool checkDateOrderIsValid(QDate startDate, QTime startTime, QDate endDate, QTime endTime);
+	bool checkDateOrderIsValid(QDate startDate, QTime startTime, QDate endDate, QTime endTime, const Task* task);
 
 public:
 	DateTimeResolver();
