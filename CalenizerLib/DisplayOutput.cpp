@@ -10,6 +10,7 @@ const std::string DisplayOutput:: _programName = "Calenizer";
 const std::string DisplayOutput::MSG_ADD_SUCCESS ="added to %s: \"%s\"";
 const std::string DisplayOutput::MSG_EDIT_SUCCESS ="%s updated";
 const std::string DisplayOutput::MSG_DELETE_SUCCESS ="deleted from %s: \"%s\"";
+const std::string DisplayOutput::MSG_DELETE_MULTIPLE_SUCCESS ="deleted from %s: %s tasks";
 const std::string DisplayOutput::MSG_UNDO_SUCCESS ="latest change to %s undone";
 const std::string DisplayOutput::MSG_UNDO_FAILURE ="Nothing to undone in %s";
 const std::string DisplayOutput::MSG_REDO_SUCCESS ="latest undo to %s reverted";
@@ -17,7 +18,9 @@ const std::string DisplayOutput::MSG_REDO_FAILURE ="Nothing to redo in %s";
 const std::string DisplayOutput::MSG_SEARCH_SUCCESS ="search term \"%s\" found in %s";
 const std::string DisplayOutput::MSG_SEARCH_FAILURE ="search term \"%s\" not found in %s";
 const std::string DisplayOutput::MSG_COMPLETE_SUCCESS ="\"%s\" marked as complete";
+const std::string DisplayOutput::MSG_COMPLETE_MULTIPLE_SUCCESS ="%s tasks marked as complete";
 const std::string DisplayOutput::MSG_INCOMPLETE_SUCCESS ="\"%s\" marked as incomplete";
+const std::string DisplayOutput::MSG_INCOMPLETE_MULTIPLE_SUCCESS ="%s tasks marked as incomplete";
 
 const std::string DisplayOutput::MSG_DISPLAYCOM = "completed tasks in %s shown";
 const std::string DisplayOutput::MSG_DISPLAYINCOM = "incompleted tasks in %s shown";
@@ -143,6 +146,18 @@ std::string DisplayOutput::deleteFeedback(std::string userInput) {
 	return buffer;
 }
 
+std::string DisplayOutput::deleteMultipleFeedback(int userInput) {
+	std::string numofTasks= intToString(userInput);
+	sprintf_s(buffer, MSG_DELETE_MULTIPLE_SUCCESS.c_str(), _programName.c_str(), numofTasks.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::intToString(int userInput){
+  std::stringstream ss;
+   ss << userInput;
+   return ss.str();
+}
+
 std::string DisplayOutput::addFeedback(std::string userInput) {
 	sprintf_s(buffer, MSG_ADD_SUCCESS.c_str(), _programName.c_str(), userInput.c_str());
 	return buffer;
@@ -208,8 +223,20 @@ std::string DisplayOutput::completeSuccessFeedback(std::string userInput){
 	return buffer;
 }
 
+std::string DisplayOutput::completeMultipleSuccessFeedback(int userInput) {
+	std::string numofTasks= intToString(userInput);
+	sprintf_s(buffer, MSG_COMPLETE_MULTIPLE_SUCCESS.c_str(), numofTasks.c_str());
+	return buffer;
+}
+
 std::string DisplayOutput::incompleteSuccessFeedback(std::string userInput){
 	sprintf_s(buffer,  MSG_INCOMPLETE_SUCCESS.c_str(), userInput.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::incompleteMultipleSuccessFeedback(int userInput) {
+	std::string numofTasks= intToString(userInput);
+	sprintf_s(buffer, MSG_INCOMPLETE_MULTIPLE_SUCCESS.c_str(), numofTasks.c_str());
 	return buffer;
 }
 

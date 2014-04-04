@@ -48,6 +48,24 @@ DisplayOutput Logic::executeUserInput(std::string userInput) {
 
 	if(analysedData.getCommand() == DisplayOutput::CMD_DISPLAY) {
 		displayTask(analysedData, displayOutput);
+
+		if(analysedData.getDisplayType() == DisplayOutput::DISPLAY_COMPLETE) { // display completed task
+			displayOutput.setFeedBack(_actionMsg.displayCompleteFeedback());
+		}
+			
+		if(analysedData.getDisplayType() == DisplayOutput::DISPLAY_INCOMPLETE) { // display incompleted task
+			displayOutput.setFeedBack(_actionMsg.displayIncompleteFeedback());
+		}
+
+		if(analysedData.getDisplayType() == DisplayOutput::DISPLAY_ALL) {
+			displayOutput.setFeedBack(_actionMsg.displayAllFeedback());
+		}
+
+		if(analysedData.getDisplayType() == DisplayOutput::DISPLAY_TODAY) {
+			displayOutput.setFeedBack(_actionMsg.displayTodayFeedback());
+		}
+
+		//displayOutput.setFeedBack(_actionMsg.displayAllFeedback());
 	}
 
 	if(analysedData.getCommand() == DisplayOutput::CMD_SEARCH) {
@@ -191,15 +209,17 @@ void Logic::deleteTask(AnalysedData analysedData, DisplayOutput& displayOutput){
 	index = analysedData.getIndexVector();
 	std::vector<int> invalidIndex;
 
-	std::vector<std::string> removedContents;
+	int removedIndexCount = 0;
+	//std::vector<std::string> removedContents;
+	std::string removedContent;
 
 	for(unsigned int i = index.size(); i > 0; i--) {
 		taskIndex = index[i-1];
 		if(isValidIndex(taskIndex)) {
 			std::vector<Task*>::iterator taskToDelete = indexToIterator(taskIndex);
-
-			removedContents.push_back( (*taskToDelete)->getTaskDesc() );
-
+			removedContent  = (*taskToDelete)->getTaskDesc();
+			//removedContents.push_back( (*taskToDelete)->getTaskDesc() );
+			removedIndexCount++;
 			delete *taskToDelete;
 			_taskList.erase(taskToDelete);
 		} else {
@@ -210,11 +230,13 @@ void Logic::deleteTask(AnalysedData analysedData, DisplayOutput& displayOutput){
 	if(!invalidIndex.empty()) {
 		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
 	} else {
-		while( removedContents.size() != 0)
-		{
-			std::string taskDesc= removedContents[0];
-			displayOutput.setFeedBack(_actionMsg.deleteFeedback(taskDesc));
-			removedContents.pop_back();
+		if ( removedIndexCount == 1){
+				//std::string taskDesc= removedContent;
+				displayOutput.setFeedBack(_actionMsg.deleteFeedback(removedContent));
+				//removedContents.pop_back();
+		}
+		else {
+			displayOutput.setFeedBack(_actionMsg.deleteMultipleFeedback(removedIndexCount));
 		}
 	}
 
@@ -229,15 +251,17 @@ void Logic::setComplete(AnalysedData analysedData, DisplayOutput& displayOutput)
 	std::vector<int> index;
 	index = analysedData.getIndexVector();
 	std::vector<int> invalidIndex;
-
-	std::vector<std::string> taskCompleted;
+	std::string taskCompleted;
+	int completeIndexCount = 0;
+	//std::vector<std::string> taskCompleted;
 
 	for(unsigned int i = index.size(); i > 0; i--) {
 		taskIndex = index[i-1];
 		if(isValidIndex(taskIndex)) {
 			std::vector<Task*>::iterator taskToComplete = indexToIterator(taskIndex);
 			(*taskToComplete)->setCompleteStatus(true);
-			taskCompleted.push_back( (*taskToComplete)->getTaskDesc() );
+			taskCompleted = (*taskToComplete)->getTaskDesc();
+			completeIndexCount++;
 		} else {
 			invalidIndex.push_back(taskIndex);
 		}
@@ -246,13 +270,14 @@ void Logic::setComplete(AnalysedData analysedData, DisplayOutput& displayOutput)
 	if(!invalidIndex.empty()) { 
 		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
 	} else {
-		while( taskCompleted.size() != 0)
-		{
-			std::string taskDesc= taskCompleted[0];
-			displayOutput.setFeedBack(_actionMsg.completeSuccessFeedback(taskDesc));
-			taskCompleted.pop_back();
-		}
-
+			if ( completeIndexCount == 1){
+				//std::string taskDesc= removedContent;
+				displayOutput.setFeedBack(_actionMsg.completeSuccessFeedback(taskCompleted));
+				//removedContents.pop_back();
+			}
+			else {
+				displayOutput.setFeedBack(_actionMsg.completeMultipleSuccessFeedback(completeIndexCount));
+			}
 	}
 
 	sortTaskList();
@@ -265,15 +290,17 @@ void Logic::setIncomplete(AnalysedData analysedData, DisplayOutput& displayOutpu
 	std::vector<int> index;
 	index = analysedData.getIndexVector();
 	std::vector<int> invalidIndex;
-
-	std::vector<std::string> taskIncompleted;
+	std::string taskIncompleted;
+	int incompleteIndexCount = 0;
+	//std::vector<std::string> taskIncompleted;
 
 	for(unsigned int i = index.size(); i > 0; i--) {
 		taskIndex = index[i-1];
 		if(isValidIndex(taskIndex)) {
 			std::vector<Task*>::iterator taskToIncomplete = indexToIterator(taskIndex);
 			(*taskToIncomplete)->setCompleteStatus(false);
-			taskIncompleted.push_back( (*taskToIncomplete)->getTaskDesc() );
+			taskIncompleted= (*taskToIncomplete)->getTaskDesc();
+			incompleteIndexCount++;
 		} else {
 			invalidIndex.push_back(taskIndex);
 		}
@@ -282,13 +309,14 @@ void Logic::setIncomplete(AnalysedData analysedData, DisplayOutput& displayOutpu
 	if(!invalidIndex.empty()) {
 		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
 	} else {
-		while( taskIncompleted.size() != 0)
-		{
-			std::string taskDesc= taskIncompleted[0];
-			displayOutput.setFeedBack(_actionMsg.incompleteSuccessFeedback(taskDesc));
-			taskIncompleted.pop_back();
-		}
-
+			if ( incompleteIndexCount == 1){
+				//std::string taskDesc= removedContent;
+				displayOutput.setFeedBack(_actionMsg.incompleteSuccessFeedback(taskIncompleted));
+				//removedContents.pop_back();
+			}
+			else {
+				displayOutput.setFeedBack(_actionMsg.incompleteMultipleSuccessFeedback(incompleteIndexCount));
+			}
 	}
 
 	sortTaskList();
