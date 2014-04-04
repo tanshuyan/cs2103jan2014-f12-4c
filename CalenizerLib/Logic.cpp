@@ -63,6 +63,8 @@ const std::string Logic::CMD_INVALID = "invalid";
 
 Logic::Logic() {
 	loadFileContent();
+	_currentDisplayType.setDisplayType(DISPLAY_ALL);
+	_currentDisplayType.setCommand(CMD_DISPLAY);
 }
 
 Logic::~Logic() {
@@ -475,7 +477,7 @@ void Logic::sortTaskList() {
 	while((*iter)->getDeadline() < currentDateTime) {
 		iter++;
 	}
-	//std::sort(iter, _taskList.end(), Comparator::sortByDate);
+	std::sort(iter, _taskList.end(), Comparator::sortByDate);
 	std::sort(_taskList.begin(), _taskList.end(), Comparator::sortByCompleteness);
 }
 
