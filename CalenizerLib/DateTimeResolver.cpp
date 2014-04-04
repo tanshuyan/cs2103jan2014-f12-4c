@@ -1,6 +1,6 @@
 //DateTimeResolver.cpp
-//Beta 1.1
-//still untested
+//v 1.2
+//BUG FIXESSSSS
 #include "DateTimeResolver.h"
 
 DateTimeResolver::DateTimeResolver(){
@@ -32,7 +32,7 @@ bool DateTimeResolver::resolveEdit(const Task* task, AnalysedData &analysedData)
 	analysedData.setEndDate(endDate);
 	analysedData.setEndTime(endTime);
 	analysedData.setDateTimeUnlabelled(dateTimeIsUnlabelled);
-	return checkDateOrderIsValid(startDate, startTime, endDate, endTime);
+	return checkDateOrderIsValid(startDate, startTime, endDate, endTime, task);
 }
 
 void DateTimeResolver::completeEdit(const Task* task, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled){
@@ -221,13 +221,46 @@ bool DateTimeResolver::checkDateOrderIsValid(QDate startDate, QTime startTime, Q
 		start.setTime(startTime);
 		assert(start.isValid());
 		QDateTime end;
-		end.setDate(startDate);
-		end.setTime(startTime);
+		end.setDate(endDate);
+		end.setTime(endTime);
 		assert(end.isValid());
 
 		if(start > end){
 			return false;
 		}
 	}
+	return true;
+}
+
+bool DateTimeResolver::checkDateOrderIsValid(QDate startDate, QTime startTime, QDate endDate, QTime endTime, const Task* task){
+	if(task->getTaskType() == TaskTimed::TASK_TIMED){
+		if(startDate.isNull()){
+			startDate = task->getStartDate().getDate();
+		}
+		if(startTime.isNull()){
+			startTime = task->getStartDate().getTime();
+		}
+		if(endDate.isNull()){
+			endDate = task->getDeadline().getDate();
+		}
+		if(endTime.isNull()){
+			endTime = task->getDeadline().getTime();
+		}
+	}
+	if(startDate.isValid() && endDate.isValid()){
+		QDateTime start;
+		start.setDate(startDate);
+		start.setTime(startTime);
+		assert(start.isValid());
+		QDateTime end;
+		end.setDate(endDate);
+		end.setTime(endTime);
+		assert(end.isValid());
+
+		if(start > end){
+			return false;
+		}
+	}
+
 	return true;
 }

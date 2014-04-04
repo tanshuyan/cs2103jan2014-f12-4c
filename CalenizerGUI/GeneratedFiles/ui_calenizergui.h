@@ -48,7 +48,7 @@ public:
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(750, 40, 151, 101));
+        label->setGeometry(QRect(750, 0, 151, 61));
         QFont font;
         font.setFamily(QStringLiteral("Malgun Gothic"));
         font.setPointSize(12);
@@ -64,7 +64,7 @@ public:
         lineEdit->setFont(font1);
         textEdit = new QTextEdit(centralWidget);
         textEdit->setObjectName(QStringLiteral("textEdit"));
-        textEdit->setGeometry(QRect(750, 170, 151, 251));
+        textEdit->setGeometry(QRect(750, 70, 151, 251));
         textEdit->setFont(font1);
         textEdit->setFocusPolicy(Qt::NoFocus);
         textEdit->setContextMenuPolicy(Qt::NoContextMenu);
@@ -77,7 +77,7 @@ public:
         textEdit->setTextInteractionFlags(Qt::NoTextInteraction);
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
-        label_2->setGeometry(QRect(550, 0, 131, 31));
+        label_2->setGeometry(QRect(20, 0, 131, 31));
         QFont font2;
         font2.setFamily(QStringLiteral("Malgun Gothic"));
         font2.setPointSize(10);
@@ -103,7 +103,7 @@ public:
         tableWidget->setDragDropOverwriteMode(false);
         tableWidget->setSelectionMode(QAbstractItemView::NoSelection);
         tableWidget->setTextElideMode(Qt::ElideNone);
-        tableWidget->setSortingEnabled(true);
+        tableWidget->setSortingEnabled(false);
         tableWidget->setCornerButtonEnabled(false);
         tableWidget->setRowCount(0);
         tableWidget->setColumnCount(0);
@@ -131,7 +131,7 @@ public:
     void retranslateUi(QMainWindow *CalenizerGUIClass)
     {
         CalenizerGUIClass->setWindowTitle(QApplication::translate("CalenizerGUIClass", "CalenizerGUI", 0));
-        label->setText(QApplication::translate("CalenizerGUIClass", "Enter command:", 0));
+        label->setText(QApplication::translate("CalenizerGUIClass", "a", 0));
         label_2->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p align=\"center\"><span style=\" font-size:20pt; font-weight:600; color:#000000;\">Calenizer</span></p></body></html>", 0));
 #ifndef QT_NO_TOOLTIP
         tableWidget->setToolTip(QString());

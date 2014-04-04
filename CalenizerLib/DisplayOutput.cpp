@@ -88,15 +88,15 @@ std::string DisplayOutput::promptMsg(){
 
 const std::string DisplayOutput::MSG_ADD_SUCCESS ="added to %s: \"%s\"";
 const std::string DisplayOutput::MSG_EDIT_SUCCESS ="%s updated";
-const std::string DisplayOutput::MSG_DELETE_SUCCESS ="task deleted from %s";
+const std::string DisplayOutput::MSG_DELETE_SUCCESS ="deleted from %s: \"%s\"";
 const std::string DisplayOutput::MSG_UNDO_SUCCESS ="latest change to %s undone";
 const std::string DisplayOutput::MSG_UNDO_FAILURE ="Nothing to undone in %s";
 const std::string DisplayOutput::MSG_REDO_SUCCESS ="latest undo to %s reverted";
 const std::string DisplayOutput::MSG_REDO_FAILURE ="Nothing to redo in %s";
-const std::string DisplayOutput::MSG_SEARCH_SUCCESS ="search term %s found in %s";
-const std::string DisplayOutput::MSG_SEARCH_FAILURE ="search term %s not found in %s";
-const std::string DisplayOutput::MSG_COMPLETE_SUCCESS ="task marked as complete";
-const std::string DisplayOutput::MSG_INCOMPLETE_SUCCESS ="task marked as incomplete";
+const std::string DisplayOutput::MSG_SEARCH_SUCCESS ="search term \"%s\" found in %s";
+const std::string DisplayOutput::MSG_SEARCH_FAILURE ="search term \"%s\" not found in %s";
+const std::string DisplayOutput::MSG_COMPLETE_SUCCESS ="\"%s\" marked as complete";
+const std::string DisplayOutput::MSG_INCOMPLETE_SUCCESS ="\"%s\" marked as incomplete";
 
 const std::string DisplayOutput::MSG_DISPLAYCOM = "completed tasks in %s shown";
 const std::string DisplayOutput::MSG_DISPLAYINCOM = "incompleted tasks in %s shown";
@@ -116,8 +116,8 @@ std::string DisplayOutput::emptyFeedback() {
 	return buffer;
 }
 
-std::string DisplayOutput::deleteFeedback() {
-	sprintf_s(buffer, MSG_DELETE_SUCCESS.c_str(), _programName.c_str());
+std::string DisplayOutput::deleteFeedback(std::string userInput) {
+	sprintf_s(buffer, MSG_DELETE_SUCCESS.c_str(), _programName.c_str(), userInput.c_str());
 	return buffer;
 }
 
@@ -181,13 +181,13 @@ std::string DisplayOutput::invalidDateFeedback(){
 	return buffer;
 }
 
-std::string DisplayOutput::completeSuccessFeedback(){
-	sprintf_s(buffer,  MSG_COMPLETE_SUCCESS.c_str());
+std::string DisplayOutput::completeSuccessFeedback(std::string userInput){
+	sprintf_s(buffer,  MSG_COMPLETE_SUCCESS.c_str(), userInput.c_str());
 	return buffer;
 }
 
-std::string DisplayOutput::incompleteSuccessFeedback(){
-	sprintf_s(buffer,  MSG_INCOMPLETE_SUCCESS.c_str());
+std::string DisplayOutput::incompleteSuccessFeedback(std::string userInput){
+	sprintf_s(buffer,  MSG_INCOMPLETE_SUCCESS.c_str(), userInput.c_str());
 	return buffer;
 }
 
