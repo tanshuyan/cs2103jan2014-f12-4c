@@ -26,7 +26,6 @@ private:
 public:
 	static const std::string TASK_FLOAT;
 	TaskFloat();
-	//TaskFloat(TaskType, bool, std::string);
 	~TaskFloat();
 	
 	void setTask(bool, std::string);
@@ -50,7 +49,6 @@ public:
 	// for storage
 	std::string taskToString();
 	void stringToTask(std::string);
-	//bool operator<(TaskFloat) {return false;}
 };
 
 #endif

@@ -10,7 +10,7 @@
 
 #include <string>
 #include <sstream>
-#include "task.h"
+#include "Task.h"
 #include "DateTime.h"
 
 class TaskTimed: public Task {
@@ -27,7 +27,6 @@ private:
 public:
 	static const std::string TASK_TIMED;
 	TaskTimed();
-	//TaskTimed(bool, std::string, DateTime, DateTime);
 	~TaskTimed();
 
 	void setTask(bool, std::string, DateTime, DateTime);
@@ -52,7 +51,6 @@ public:
 	// for storage
 	std::string taskToString();
 	void stringToTask(std::string);
-	//bool operator<(TaskTimed);
 };
 #endif
 

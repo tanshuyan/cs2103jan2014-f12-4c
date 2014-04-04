@@ -82,9 +82,6 @@
     <ClCompile Include="TaskEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="calenizerlib.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="LogicParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

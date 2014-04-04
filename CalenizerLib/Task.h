@@ -41,7 +41,6 @@ public:
 	virtual std::string outputToString() {return "";}
 	virtual std::string taskToString() {return "";}
 	virtual void stringToTask(std::string) {return;}
-	//virtual bool operator<(Task) {return false;}
 };
 
 #endif
