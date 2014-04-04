@@ -16,10 +16,10 @@ const std::string CalenizerGUI::EMPTY_STRING = "";
 const std::string CalenizerGUI::STATUS_TRUE= "true\n";
 const std::string CalenizerGUI::STATUS_FALSE= "false\n";
 
-const std::string CalenizerGUI::STATUS_COMPLETE = "complete";
-const std::string CalenizerGUI::STATUS_INCOMPLETE = "incomplete";
-const std::string CalenizerGUI::STATUS_OVERDUE = "overdue";
-const std::string CalenizerGUI::STATUS_ONGOING = "ongoing";
+const std::string CalenizerGUI::STATUS_COMPLETE = "Complete";
+const std::string CalenizerGUI::STATUS_INCOMPLETE = "Incomplete";
+const std::string CalenizerGUI::STATUS_OVERDUE = "Overdue";
+const std::string CalenizerGUI::STATUS_ONGOING = "Ongoing";
 
 const std::string CalenizerGUI::CMD_DISPLAY_TODAY = "view today";
 
