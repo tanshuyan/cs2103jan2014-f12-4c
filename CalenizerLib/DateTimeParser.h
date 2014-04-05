@@ -60,7 +60,6 @@ private:
 	bool parseDayAfter(QDate &date);
 	bool parseNextWeek(QDate &date);
 	
-
 public:
 	DateTimeParser();
 	static QRegExp RX_DAYWORDS;

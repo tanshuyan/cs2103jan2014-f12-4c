@@ -15,7 +15,6 @@
 
 class TaskDeadline: public Task {
 private:
-
 	std::string _taskType;
 	DateTime _deadline;
 	std::string _taskDesc;
@@ -47,7 +46,6 @@ public:
 	std::string outputToString();
 	std::string taskDetailsToString();
 
-	// for storage
 	std::string taskToString();
 	void stringToTask(std::string);
 };

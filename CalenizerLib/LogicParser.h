@@ -10,9 +10,9 @@
 #include <string>
 
 class LogicParser {
-
 private:
 	Parser _parser;
+
 public:
 	LogicParser();
 	AnalysedData parse(std::string);

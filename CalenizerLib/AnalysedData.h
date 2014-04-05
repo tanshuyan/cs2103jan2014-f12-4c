@@ -9,7 +9,6 @@
 #include <string>
 
 class AnalysedData{
-
 private:
 	std::string _taskDesc;
 	std::string _command;
