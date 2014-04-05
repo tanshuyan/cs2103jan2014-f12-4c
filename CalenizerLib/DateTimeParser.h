@@ -1,6 +1,6 @@
 //DateTimeParser.h
-//v 2.8
-
+//v 3.0
+//Added ablity to parse "July 4th" format
 #ifndef DATETIMEPARSER_H
 #define DATETIMEPARSER_H
 
@@ -24,8 +24,10 @@ private:
 
 	static QRegExp rxDashesSlashes;
 	static QRegExp rxWeekDays;
-	static QRegExp rxShortWordMonth;
-	static QRegExp rxLongWordMonth;
+	static QRegExp rxDayShortWordMonth;
+	static QRegExp rxDayLongWordMonth;
+	static QRegExp rxShortWordMonthDay;
+	static QRegExp rxLongWordMonthDay;
 	static QRegExp rxShortWeekDays;
 	static QRegExp rxLongWeekDays;
 	static QRegExp rxToday;
@@ -50,16 +52,19 @@ private:
 
 	//any combination of DD or D, MM or M, YY or YYYY, in that order (e.g. 31/1/2014, 1-12-14), year is optional
 	bool parseDashesSlashes(QDate &date);
-	bool parseShortWordMonth(QDate &date);
-	bool parseLongWordMonth(QDate &date);
-	bool parseShortWeekDays(QDate &date);
-	bool parseLongWeekDays(QDate &date);
+	bool parseDayShortWordMonth(QDate &date);
+	bool parseDayLongWordMonth(QDate &date);
+	bool parseShortWordMonthDay(QDate &date);
+	bool parseLongWordMonthDay(QDate &date);
+	bool parseShortWeekDays(QDate &date, int &dayOfWeek);
+	bool parseLongWeekDays(QDate &date, int &dayOfWeek);
 	bool parseToday(QDate &date);
 	bool parseTomorrow(QDate &date);
 	bool parseYesterday(QDate &date);
 	bool parseDayAfter(QDate &date);
-	bool parseNextWeek(QDate &date);
+	bool parseNextWeek(QDate &date, int &dayOfWeek);
 	
+
 public:
 	DateTimeParser();
 	static QRegExp RX_DAYWORDS;
@@ -67,11 +72,13 @@ public:
 	//sets date or time to null if no valid date or time is found respectively
 	//Post: returns false if string is suspected to be part of desc, and date and time will be set to null
 	bool parseString(QString input, QDate &outputDate, QTime &outputTime);
+	//Overloaded function that records the day of the week as well. Used for strings marked as end dates.
+	bool parseString(QString input, QDate &outputDate, QTime &outputTime, int &dayOfWeek);
 
 	//Post: returns false if an invalid time found
 	bool extractTime(QString &input, QTime &time);
 	//Post: returns false if an invalid date is found
-	bool extractDate(QString &input, QDate &date);
+	bool extractDate(QString &input, QDate &date, int &dayOfWeek);
 
 	//Post: returns a year that assumes the day and month are upcoming dates
 	//Changes 29 Feb to 28 Feb if upcoming Feb has no 29th.

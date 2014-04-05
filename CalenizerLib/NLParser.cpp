@@ -1,10 +1,8 @@
 //NLParser.cpp
-//v 2.9
-//Ability to recognise quotation marks
+//v 3.0
+//Ability to read dates and times at the end of the string not marked by keywords
 
 #include "NLParser.h"
-//rmb to remove later
-#include <iostream>
 QRegExp NLParser::RX_QUOTES("\"(.+)\"");
 QRegExp NLParser::RX_FROM_UNTIL("\\b(?:starting|start|lasting|from(?!\\s+from)|begin|beginning)\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_UNTIL_FROM("\\b(?:ending|end|until|till|til|to)\\b(.+)\\b(?:starting|start|from(?!\\s+from)|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
@@ -13,7 +11,9 @@ QRegExp NLParser::RX_START("\\b(?:starting|start|lasting|from(?!\\s+from)|begin|
 QRegExp NLParser::RX_FROM("^(?:\\s*)(?:from)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_END("\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_ON_AT_BY("\\b(?:at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by))|by(?!\\s+(on|at|by)))\\b(.+)", Qt::CaseInsensitive);
+QRegExp NLParser::RX_BARE_MONTHS("(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLParser::RX_TODAY(DateTimeParser::RX_DAYWORDS.pattern()+"\\b(.*)", Qt::CaseInsensitive);
+QRegExp NLParser::RX_BARE_DATETIME("\\b\\d\\b(.+)", Qt::CaseInsensitive);
 
 
 NLParser::NLParser(){
@@ -22,7 +22,10 @@ NLParser::NLParser(){
 void NLParser::parseDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled){
 	QString desc = extractDesc(descString);
 	extractMarkedDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled);
-	extractTodayWords(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled);
+	extractWordedDates(descString, startDate, startTime);
+	extractUnmarkedDateTime(descString, startDate, startTime, endDate, endTime);
+	guessContextualTime(descString, startTime);
+
 	if(!desc.isEmpty()){
 		descString = desc;
 	}
@@ -30,147 +33,53 @@ void NLParser::parseDateTime(QString &descString, QDate &startDate, QTime &start
 }
 
 QString NLParser::extractDesc(QString &descString){
-	RX_QUOTES.indexIn(descString);
-	return RX_QUOTES.cap(1);
+	//Takes out the greatest par of the desc in "quotes"
+	return _nlFunctions.extractQuotedDesc(descString);
 }
 
 void NLParser::extractMarkedDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled){
-	QDate nullDate;
-	QTime nullTime;
 	dateTimeIsUnlabelled = true;
 
 	//search for "from... until..." format
-	int pos = -1;
-	bool fromStringIsValid = false;
-	bool untilStringIsValid = false;
-	do{
-		pos = RX_FROM_UNTIL.indexIn(descString, pos+1);
-		QString fromString = RX_FROM_UNTIL.cap(1);
-		if (RX_FROM.indexIn(RX_FROM_UNTIL.cap(1)) != -1){
-			fromString = RX_FROM.cap(1);
-		}
-		fromStringIsValid = _dateTimeParser.parseString(fromString, startDate, startTime);
-		untilStringIsValid = _dateTimeParser.parseString(RX_FROM_UNTIL.cap(2), endDate, endTime);
-	}while (!(fromStringIsValid && untilStringIsValid) && pos != -1);
-
-	if (fromStringIsValid && untilStringIsValid){
-		descString.truncate(RX_FROM_UNTIL.pos());
-		descString = descString.trimmed();
-		dateTimeIsUnlabelled = false;
+	if(_nlFunctions.searchFromUntil(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled)){
 		return;
 	}
-
 	//search for "until... from..." format
-	RX_UNTIL_FROM.lastIndexIn(descString);
-	fromStringIsValid = _dateTimeParser.parseString(RX_UNTIL_FROM.cap(1), startDate, startTime);
-	untilStringIsValid = _dateTimeParser.parseString(RX_UNTIL_FROM.cap(2), endDate, endTime);
-	if (fromStringIsValid && untilStringIsValid){
-		descString.truncate(RX_UNTIL_FROM.pos());
-		descString = descString.trimmed();
-		dateTimeIsUnlabelled = false;
+	if(_nlFunctions.searchUntilFrom(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled)){
 		return;
 	}
-
 	//search for "on... until..." format
-	RX_ON_UNTIL.lastIndexIn(descString);
-	fromStringIsValid = _dateTimeParser.parseString(RX_ON_UNTIL.cap(2), startDate, startTime);
-	untilStringIsValid = _dateTimeParser.parseString(RX_ON_UNTIL.cap(1), endDate, endTime);
-	if (fromStringIsValid && untilStringIsValid){
-		descString.truncate(RX_ON_UNTIL.pos());
-		descString = descString.trimmed();
-		dateTimeIsUnlabelled = false;
+	if(_nlFunctions.searchOnUntil(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled)){
 		return;
 	}
-
 	//search for "start..." format
-	pos = -1;
-	fromStringIsValid = false;
-	do{
-		pos = RX_START.indexIn(descString, pos+1);
-		QString fromString = RX_START.cap(1);
-		if (RX_FROM.indexIn(RX_START.cap(1)) != -1){
-			fromString = RX_FROM.cap(1);
-		}
-		fromStringIsValid = _dateTimeParser.parseString(fromString, startDate, startTime);
-	}while (!fromStringIsValid && pos != -1);
-	
-	if (fromStringIsValid){
-		descString.truncate(RX_START.pos());
-		descString = descString.trimmed();
-		endDate = nullDate;
-		endTime = nullTime;
-		dateTimeIsUnlabelled = false;
+	if(_nlFunctions.searchFrom(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled)){
 		return;
 	}
-
 	//search for "end..." format
-	RX_END.lastIndexIn(descString);
-	untilStringIsValid = _dateTimeParser.parseString(RX_END.cap(1), endDate, endTime);
-	if (untilStringIsValid){
-		descString.truncate(RX_END.pos());
-		descString = descString.trimmed();
-		startDate = nullDate;
-		startTime = nullTime;
-		dateTimeIsUnlabelled = false;
+	if(_nlFunctions.searchUntil(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled)){
 		return;
 	}
-
 	//search for "at... on..." format
-	pos = -1;
-	bool stringIsValid = false;
-	do{
-		pos = RX_ON_AT_BY.indexIn(descString, pos+1);
-		stringIsValid = _dateTimeParser.parseString(RX_ON_AT_BY.cap(1), startDate, startTime);
-	}while (!stringIsValid && pos != -1);
-
-	if (stringIsValid){
-		descString.truncate(RX_ON_AT_BY.pos());
-		descString = descString.trimmed();
-		endDate = nullDate;
-		endTime = nullTime;
+	if(_nlFunctions.searchOn(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled)){
 		return;
 	}
 
 	return;
 }
 
-void NLParser::extractTodayWords(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled){
-	QDate foundDate;
-	QTime foundTime;
-	//if(dateTimeIsUnlabelled && startDate.isNull()){
+void NLParser::extractWordedDates(QString &descString, QDate &startDate, QTime &startTime){
 	if(startDate.isNull()){
-		//exit if not found
-		if (RX_TODAY.indexIn(descString) == -1){
-			return;
-		}
-		//check: if foundStartDate is found and string is empty (use parseDateTime)(accept extra time i.e. decription today 7pm at 6pm){
-		int pos = -1;
-		bool stringIsValid = false;
-		do{
-			pos = RX_TODAY.indexIn(descString, pos+1);
-			QString todayString = RX_TODAY.cap(0);
-			//May need to remove this
-			if (RX_FROM.indexIn(RX_TODAY.cap(1)) != -1){
-				todayString = RX_FROM.cap(0);
-			}
-			//
-			stringIsValid = _dateTimeParser.parseString(todayString, foundDate, foundTime);
-		}while (!stringIsValid && pos != -1);
-	
-		if (stringIsValid){
-			startDate = foundDate;
-			if (startTime.isNull()){
-				startTime = foundTime;
-			}
-			descString.truncate(RX_TODAY.pos());
-			if (RX_FROM.pos() != -1){
-				dateTimeIsUnlabelled = false;
-			}
-		}
+		//Search for "Today" "Tomorrow" words that are untagged with keywords
+		(_nlFunctions.searchTodayWords(descString, startDate, startTime));
 	}
 	return;
 }
 
+void NLParser::extractUnmarkedDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime){
+	_nlFunctions.searchUnmarkedDateTime(descString, startDate, startTime);
+	return;
+}
 
 void NLParser::guessContextualTime(QString descString, QTime &startTime){
 	if (startTime.isNull()){
