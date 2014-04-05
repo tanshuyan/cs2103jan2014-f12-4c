@@ -50,7 +50,6 @@ private:
 	void deleteTask(AnalysedData, DisplayOutput&);
 	void setComplete(AnalysedData, DisplayOutput&);
 	void setIncomplete(AnalysedData, DisplayOutput&);
-	// displayTask can only display the complete, incomplete, all and today
 	void displayTask(AnalysedData, DisplayOutput&);
 	void undo(DisplayOutput&);
 	void redo(DisplayOutput&);
@@ -60,6 +59,7 @@ private:
 	void generateDisplayListIndex();
 	void loadFileContent();
 	void sortTaskList();
+
 public:
 	Logic();
 	~Logic();

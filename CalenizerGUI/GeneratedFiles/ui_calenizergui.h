@@ -65,7 +65,7 @@ public:
         label->setLayoutDirection(Qt::RightToLeft);
         lineEdit = new QLineEdit(centralWidget);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
-        lineEdit->setGeometry(QRect(20, 40, 711, 31));
+        lineEdit->setGeometry(QRect(20, 40, 711, 35));
         QFont font1;
         font1.setFamily(QStringLiteral("Malgun Gothic"));
         lineEdit->setFont(font1);
@@ -84,7 +84,7 @@ public:
         textEdit->setTextInteractionFlags(Qt::NoTextInteraction);
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
-        label_2->setGeometry(QRect(600, 0, 131, 31));
+        label_2->setGeometry(QRect(600, -10, 131, 31));
         QFont font2;
         font2.setFamily(QStringLiteral("Malgun Gothic"));
         font2.setPointSize(10);

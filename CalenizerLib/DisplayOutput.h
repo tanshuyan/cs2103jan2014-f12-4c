@@ -12,7 +12,6 @@
 #include "Task.h"
 
 class DisplayOutput{
-
 private:
 	std::string intToString(int userInput);
 	static const std::string MSG_WELCOME;

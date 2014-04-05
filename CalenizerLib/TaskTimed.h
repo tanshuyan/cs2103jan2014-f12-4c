@@ -16,7 +16,6 @@
 
 class TaskTimed: public Task {
 private:
-
 	std::string _taskType;
 	std::string _taskDesc;
 	bool _completeStatus;
@@ -49,7 +48,6 @@ public:
 	std::string outputToString();
 	std::string taskDetailsToString();
 
-	// for storage
 	std::string taskToString();
 	void stringToTask(std::string);
 };

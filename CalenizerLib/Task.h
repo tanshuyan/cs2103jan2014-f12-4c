@@ -9,18 +9,11 @@
 #include <string>
 #include <sstream>
 #include "DateTime.h"
-/*
-enum TaskType {
-		DEADLINE, FLOAT, TIMED
-};
-*/
+
 class Task {
 private:
-	
-public:
-	//Task();
-	//~Task();
 
+public:
 	virtual void setTask(bool, std::string) {return;}
 	virtual void setTask(bool, std::string, DateTime) {return;}
 	virtual void setTask(bool, std::string, DateTime, DateTime) {return;}

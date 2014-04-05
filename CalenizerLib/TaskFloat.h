@@ -16,13 +16,11 @@
 
 class TaskFloat: public Task {
 private:
-
 	std::string _taskType;
 	std::string _taskDesc;
 	bool _completeStatus;
 	static const std::string STATUS_FALSE;
 	static const std::string STATUS_TRUE;
-
 
 public:
 	static const std::string TASK_FLOAT;
@@ -47,7 +45,7 @@ public:
 	bool getCompleteStatus() const ;
 	std::string outputToString();
 	std::string taskDetailsToString();
-	// for storage
+
 	std::string taskToString();
 	void stringToTask(std::string);
 };
