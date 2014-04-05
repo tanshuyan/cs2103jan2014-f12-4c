@@ -1,0 +1,40 @@
+FLOAT
+shuyan 12dec
+false
+TIMED
+shuayn
+02/04/2014 22:00
+02/04/2014 23:59
+true
+TIMED
+SHUYAN
+02/04/2014 00:00
+03/04/2014 23:59
+true
+TIMED
+shuyannnnnnnnnnnnnnnnn 10pm
+02/04/2014 22:00
+03/04/2014 22:00
+true
+TIMED
+shuyan
+02/04/2014 22:00
+03/04/2014 22:00
+true
+TIMED
+shuyannnnnn 12 dec 10pm
+02/04/2014 22:00
+13/12/2014 
+true
+DEADLINE
+shuyan
+12/12/2014 23:59
+true
+TIMED
+shynnnnnn
+13/12/2014 22:00
+12/12/2014 22:00
+true
+FLOAT
+shuyan today to tmr 10p
+true
