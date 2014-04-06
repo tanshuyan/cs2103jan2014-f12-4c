@@ -15,7 +15,7 @@ private:
 
 public:
 	LogicParser();
-	AnalysedData parse(std::string);
+	AnalysedData parse(std::string, std::vector<Task*> _displayList);
 
 };
 #endif

@@ -61,9 +61,6 @@
     <ClCompile Include="DateTimeParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NLParser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MultipleIndexParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -85,7 +82,13 @@
     <ClCompile Include="LogicParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NLFunctions.cpp">
+    <ClCompile Include="NLPDateParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NLPDateFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NLPSentenceParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -129,9 +132,6 @@
     <ClInclude Include="DateTimeParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NLParser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MultipleIndexParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -156,7 +156,13 @@
     <ClInclude Include="Exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NLFunctions.h">
+    <ClInclude Include="NLPSentenceParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NLPDateParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NLPDateFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

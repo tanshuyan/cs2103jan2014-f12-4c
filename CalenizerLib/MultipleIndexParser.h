@@ -17,6 +17,6 @@ private:
 
 public:
 	MultipleIndexParser();
-	std::vector<int> parseMultipleIndex(std::string);
+	std::vector<int> parseMultipleIndex(QString);
 };
 #endif
