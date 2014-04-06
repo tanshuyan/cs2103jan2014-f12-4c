@@ -1,6 +1,6 @@
 //DateTimeResolver.h
-//v 1.2
-//BUG FIXESSSSS
+//v 1.3
+//Added setEndToDayOfWeek function for ability to parse subsequent days of the week
 #include "DateTime.h"
 #include <QDateTime>
 #include "Task.h"
@@ -19,11 +19,12 @@ private:
 	QTime _dayEnd;
 
 	//Completes the date and time fields the user left blank for the case of Edit
-	void completeEdit(const Task* task, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled);
+	void completeEdit(const Task* task, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool dateTimeIsUnlabelled);
 	//Completes the date and time fields the user left blank for the case of Add
 	void completeAdd(QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime);
 	//Given a reference 'curr' date & time, it guesses the event date given the upcoming event time
 	void setNearestValidDay(QDate &dateToSet, QTime eventTime, QDate &currDate = QDate::currentDate(), QTime &currTime = QTime::currentTime());
+	void setEndToDayOfWeek(QDate startDate, QDate &endDate, int dayOfWeek);
 	//If there both start and end date/times are present, it checks that they are in the valid order
 	bool checkDateOrderIsValid(QDate startDate, QTime startTime, QDate endDate, QTime endTime);
 	bool checkDateOrderIsValid(QDate startDate, QTime startTime, QDate endDate, QTime endTime, const Task* task);

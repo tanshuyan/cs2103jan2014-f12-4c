@@ -1,6 +1,6 @@
 //NLFunctions.h
 //v 3.0
-
+//Added ability to parse "until [weekday]" properly
 #ifndef NLFUNCTIONS_H
 #define NLFUNCTIONS_H
 

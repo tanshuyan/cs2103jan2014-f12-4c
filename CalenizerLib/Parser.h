@@ -2,7 +2,8 @@
 //IN PROGRESS
 //v 2.8
 // updated parser to accomodate new architecture
-
+//v 3.0
+//edited some code bits to add ability to properly parse subsequent days of the week
 #ifndef PARSER_H
 #define PARSER_H
 

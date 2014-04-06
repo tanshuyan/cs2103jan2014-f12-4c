@@ -1,6 +1,7 @@
 //DateTimeParser.cpp
 //v 3.0
 //Added ablity to parse "July 4th" format
+//Added ability to parse "until [weekday]" properly
 #include "DateTimeParser.h"
 
 QRegExp DateTimeParser::rxEmpty("(^\\s*$)");
@@ -35,39 +36,11 @@ QRegExp DateTimeParser::RX_DAYWORDS("(("+rxToday.pattern()
 DateTimeParser::DateTimeParser(){
 }
 
-bool DateTimeParser::parseString(QString input, QDate &outputDate, QTime &outputTime){
-	QDate nullDate;
-	QTime nullTime;
-	outputDate = nullDate;
-	outputTime = nullTime;
-	int dummy;
-	//if the input string is empty, or only contains white spaces, the keyword is assumed to be part of the description
-	if (rxEmpty.exactMatch(input)){
-		return false;
-	}
-	bool isInvalidTime = !extractTime(input, outputTime);
-	if (isInvalidTime){
-		throw (10);
-	}
-	bool isInvalidDate = !extractDate(input, outputDate, dummy);
-	if (isInvalidDate){
-		throw (20);
-	}
-	bool isTaskDesc = !input.trimmed().isEmpty();
-	if (isTaskDesc){
-		outputDate = nullDate;
-		outputTime = nullTime;
-		return false;
-	}
-	return true;
-}
-
 bool DateTimeParser::parseString(QString input, QDate &outputDate, QTime &outputTime, int &dayOfWeek){
 	QDate nullDate;
 	QTime nullTime;
 	outputDate = nullDate;
 	outputTime = nullTime;
-
 	//if the input string is empty, or only contains white spaces, the keyword is assumed to be part of the description
 	if (rxEmpty.exactMatch(input)){
 		return false;
@@ -89,10 +62,13 @@ bool DateTimeParser::parseString(QString input, QDate &outputDate, QTime &output
 	return true;
 }
 
+bool DateTimeParser::parseString(QString input, QDate &outputDate, QTime &outputTime){
+	int dummy;
+	return parseString(input, outputDate, outputTime, dummy);
+}
 
 bool DateTimeParser::extractTime(QString &input, QTime &time){
 	int pos;
-
 	//check for HourMinAP format (1000 AM)
 	pos = rxHourMinAP.indexIn(input);
 	if(pos != -1){
@@ -192,10 +168,14 @@ bool DateTimeParser::extractDate(QString &input, QDate &date, int &dayOfWeek){
 	return true;
 }
 
+bool DateTimeParser::extractDate(QString &input, QDate &date){
+	int dummy;
+	return extractDate(input, date, dummy);
+}
+
 //Time Parsers
 
 bool DateTimeParser::parseHourMinAP(QTime &time){
-	
 	//Get hours
 	int hour = rxHourMinAP.cap(1).toInt();
 	//Get minutes
@@ -215,10 +195,8 @@ bool DateTimeParser::parseHourMinAP(QTime &time){
 }
 
 bool DateTimeParser::parseHourAP(QTime &time){
-	
 	//Get hours
 	int hour = rxHourAP.cap(1).toInt();
-	
 	if(hour > 12 || hour < 1){
 		return false;
 	}
@@ -233,7 +211,6 @@ bool DateTimeParser::parseHourAP(QTime &time){
 }
 
 bool DateTimeParser::parseHourColMin(QTime &time){
-	
 	//Get hours
 	int hour = rxHourColMin.cap(1).toInt();
 	//Get minutes
@@ -259,7 +236,6 @@ bool DateTimeParser::parseDashesSlashes(QDate &date){
 	if(rxDashesSlashes.pos(3) == -1){
 		year = guessYear(day, month);
 	}
-
 	return date.setDate(year, month, day);
 }
 
@@ -274,7 +250,6 @@ bool DateTimeParser::parseDayShortWordMonth(QDate &date){
 	if (rxDayShortWordMonth.pos(3) == -1){
 		year = guessYear(day, month);
 	}
-
 	return date.setDate(year, month, day);
 }
 
@@ -289,7 +264,6 @@ bool DateTimeParser::parseDayLongWordMonth(QDate &date){
 	if (rxDayLongWordMonth.pos(3) == -1){
 		year = guessYear(day, month);
 	}
-
 	return date.setDate(year, month, day);
 }
 
@@ -304,7 +278,6 @@ bool DateTimeParser::parseShortWordMonthDay(QDate &date){
 	if (rxShortWordMonthDay.pos(3) == -1){
 		year = guessYear(day, month);
 	}
-
 	return date.setDate(year, month, day);
 }
 
@@ -319,7 +292,6 @@ bool DateTimeParser::parseLongWordMonthDay(QDate &date){
 	if (rxLongWordMonthDay.pos(3) == -1){
 		year = guessYear(day, month);
 	}
-
 	return date.setDate(year, month, day);
 }
 
@@ -329,6 +301,7 @@ bool DateTimeParser::parseShortWeekDays(QDate &date, int &dayOfWeek){
 	for(i=1; i<=7; ++i){
 		testDate = testDate.addDays(1);
 		if(testDate.toString("ddd").toLower() == rxShortWeekDays.cap(1).toLower()){
+			dayOfWeek = dayOFWeekToInt(rxShortWeekDays.cap(1));
 			dayOfWeek = i;
 			date = testDate;
 			return true;
@@ -343,7 +316,7 @@ bool DateTimeParser::parseLongWeekDays(QDate &date, int &dayOfWeek){
 	for(i=1; i<=7; ++i){
 		testDate = testDate.addDays(1);
 		if(testDate.toString("dddd").toLower() == rxLongWeekDays.cap(1).toLower()){
-			dayOfWeek = i;
+			dayOfWeek = dayOFWeekToInt(rxLongWeekDays.cap(1));
 			date = testDate;
 			return true;
 		}
@@ -402,7 +375,6 @@ int DateTimeParser::guessYear(int &day, int &month){
 	if(testDate.isValid() && testDate.operator>=(testDate.currentDate())){
 		return currYear;
 	}
-
 	return currYear+1;
 }
 
@@ -411,4 +383,13 @@ void DateTimeParser::autoCompleteYear(int size, int &year){
 		year+=2000;
 	}
 	return;
+}
+
+int DateTimeParser::dayOFWeekToInt(QString dayOfWeek){
+	for(int i=1; i<8; i++){
+		if(QDate::longDayName(i).toLower() == dayOfWeek.toLower()){
+			return i;
+		}
+	}
+	return -1;
 }

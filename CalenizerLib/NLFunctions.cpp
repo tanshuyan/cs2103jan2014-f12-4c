@@ -1,6 +1,6 @@
 //NLFunctions.cpp
 //v 3.0
-
+//Added ability to parse "until [weekday]" properly
 #include "NLFunctions.h"
 QRegExp NLFunctions::RX_QUOTES("\"(.+)\"");
 QRegExp NLFunctions::RX_FROM_UNTIL("\\b(?:starting|start|lasting|from(?!\\s+from)|begin|beginning)\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);

@@ -1,6 +1,7 @@
 //DateTimeParser.h
 //v 3.0
 //Added ablity to parse "July 4th" format
+//Added ability to parse "until [weekday]" properly
 #ifndef DATETIMEPARSER_H
 #define DATETIMEPARSER_H
 
@@ -64,26 +65,28 @@ private:
 	bool parseDayAfter(QDate &date);
 	bool parseNextWeek(QDate &date, int &dayOfWeek);
 	
+	//Post: returns a year that assumes the day and month are upcoming dates. Changes 29 Feb to 28 Feb if upcoming Feb has no 29th.
+	int guessYear(int &day, int &month);
+	void autoCompleteYear(int size, int &year);
+	int dayOFWeekToInt(QString dayOfWeek);
 
 public:
 	DateTimeParser();
 	static QRegExp RX_DAYWORDS;
 	
-	//sets date or time to null if no valid date or time is found respectively
+	//Sets date or time to null if no valid date or time is found respectively. Used primarily for end dates.
 	//Post: returns false if string is suspected to be part of desc, and date and time will be set to null
-	bool parseString(QString input, QDate &outputDate, QTime &outputTime);
-	//Overloaded function that records the day of the week as well. Used for strings marked as end dates.
+	//Records the day of the week as well. Mon is 1, Sun is 7, "Next Week" is 0, and "No indicated day" is -1. 
 	bool parseString(QString input, QDate &outputDate, QTime &outputTime, int &dayOfWeek);
-
+	//Overloaded function that does not require dayOfWeek field. Used primarily for start dates.
+	bool parseString(QString input, QDate &outputDate, QTime &outputTime);
 	//Post: returns false if an invalid time found
 	bool extractTime(QString &input, QTime &time);
 	//Post: returns false if an invalid date is found
 	bool extractDate(QString &input, QDate &date, int &dayOfWeek);
+	//Overloaded function that does not require dayOfWeek field
+	bool extractDate(QString &input, QDate &date);
 
-	//Post: returns a year that assumes the day and month are upcoming dates
-	//Changes 29 Feb to 28 Feb if upcoming Feb has no 29th.
-	int guessYear(int &day, int &month);
 
-	void autoCompleteYear(int size, int &year);
 };
 #endif

@@ -1,12 +1,12 @@
 // AnalysedData.cpp
-// v1.1
-// Added == operator for unit test purposes
-
+// v1.2
+// Added dayOfWeek field and getter+setter functions
 #include "AnalysedData.h"
 
 AnalysedData::AnalysedData() {
 	_taskIndex = -1;
 	_dateTimeIsUnlabelled = true;
+	_dayOfWeek = -1;
 }
 
 void AnalysedData::setDateTimeUnlabelled(bool status) {
@@ -49,6 +49,10 @@ void AnalysedData::setIndexVector(std::vector<int> index) {
 	_index = index;
 }
 
+void AnalysedData::setDayOfWeek(int dayOfWeek) {
+	_dayOfWeek = dayOfWeek;
+}
+
 bool AnalysedData::getDateTimeUnlabelled() {
 	return _dateTimeIsUnlabelled;
 }
@@ -87,6 +91,10 @@ QDate AnalysedData::getEndDate() {
 
 std::vector<int> AnalysedData::getIndexVector() {
 	return _index;
+}
+
+int AnalysedData::getDayOfWeek() {
+	return _dayOfWeek;
 }
 
 bool AnalysedData::operator==(AnalysedData other){
