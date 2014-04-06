@@ -1,7 +1,6 @@
 //DateTimeResolver.cpp
-//v 1.3
-//Added stuff see datetimeparser
-//BUG FIXESSSSS
+//v 1.4
+//copypasta bug fix
 #include "DateTimeResolver.h"
 
 DateTimeResolver::DateTimeResolver(){
@@ -156,9 +155,9 @@ void DateTimeResolver::completeAdd(QDate &startDate, QTime &startTime, QDate &en
 			setNearestValidDay(endDate, endTime);
 			return;
 		}
-		//Lacks start time
-		if(startTime.isNull()){
-			startTime = _dayEnd;
+		//Lacks end time
+		if(endTime.isNull()){
+			endTime = _dayEnd;
 			return;
 		}
 		return;
