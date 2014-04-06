@@ -1,6 +1,6 @@
 //NLFunctions.cpp
-//v 3.0
-//Added ability to parse "until [weekday]" properly
+//v 3.1
+//Some changes to RX_ON_AT_BY enable "at 1" recognition
 #include "NLFunctions.h"
 QRegExp NLFunctions::RX_QUOTES("\"(.+)\"");
 QRegExp NLFunctions::RX_FROM_UNTIL("\\b(?:starting|start|lasting|from(?!\\s+from)|begin|beginning)\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
@@ -9,7 +9,7 @@ QRegExp NLFunctions::RX_ON_UNTIL("\\b(?:at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by)
 QRegExp NLFunctions::RX_START("\\b(?:starting|start|lasting|from(?!\\s+from)|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLFunctions::RX_FROM("^(?:\\s*)(?:from)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLFunctions::RX_END("\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
-QRegExp NLFunctions::RX_ON_AT_BY("\\b(?:at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by))|by(?!\\s+(on|at|by)))\\b(.+)", Qt::CaseInsensitive);
+QRegExp NLFunctions::RX_ON_AT_BY("\\b(at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by))|by(?!\\s+(on|at|by)))\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLFunctions::RX_TODAY_WORDS(DateTimeParser::RX_DAYWORDS.pattern()+"\\b(.*)", Qt::CaseInsensitive);
 QRegExp NLFunctions::RX_UNMARKED_DATETIME("\\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|\\d)(.+)", Qt::CaseInsensitive);
 
@@ -121,7 +121,7 @@ bool NLFunctions::searchOn(QString &descString, QDate &startDate, QTime &startTi
 	bool stringIsValid;
 	do{
 		pos = RX_ON_AT_BY.indexIn(descString, pos+1);
-		stringIsValid = _dateTimeParser.parseString(RX_ON_AT_BY.cap(1), startDate, startTime);
+		stringIsValid = _dateTimeParser.parseString(RX_ON_AT_BY.cap(0), startDate, startTime);
 	}while (!stringIsValid && pos != -1);
 
 	if (stringIsValid){

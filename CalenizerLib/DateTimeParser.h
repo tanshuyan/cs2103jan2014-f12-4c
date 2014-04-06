@@ -1,7 +1,7 @@
 //DateTimeParser.h
-//v 3.0
-//Added ablity to parse "July 4th" format
-//Added ability to parse "until [weekday]" properly
+//v 3.1
+//some refactoring
+//Added ability to parse "at 1"
 #ifndef DATETIMEPARSER_H
 #define DATETIMEPARSER_H
 
@@ -16,26 +16,25 @@ private:
 	QDate _date;
 	QTime _time;
 	
-	static QRegExp rxEmpty;
+	static QRegExp RX_EMPTY;
 
-	static QRegExp rxHourMinAP;
-	static QRegExp rxHourAP;
-	static QRegExp rxHourColMin;
-	static QRegExp rxAtHourMin;
+	static QRegExp RX_HOUR_MIN_AP;
+	static QRegExp RX_HOUR_AP;
+	static QRegExp RX_HOUR_COL_MIN;
+	static QRegExp RX_AT_HOUR;
 
-	static QRegExp rxDashesSlashes;
-	static QRegExp rxWeekDays;
-	static QRegExp rxDayShortWordMonth;
-	static QRegExp rxDayLongWordMonth;
-	static QRegExp rxShortWordMonthDay;
-	static QRegExp rxLongWordMonthDay;
-	static QRegExp rxShortWeekDays;
-	static QRegExp rxLongWeekDays;
-	static QRegExp rxToday;
-	static QRegExp rxTomorrow;
-	static QRegExp rxYesterday;
-	static QRegExp rxDayAfter;
-	static QRegExp rxNextWeek;
+	static QRegExp RX_DASHES_SLASHES;
+	static QRegExp RX_DAY_SHORT_MONTH;
+	static QRegExp RX_DAY_LONG_MONTH;
+	static QRegExp RX_SHORT_MONTH_DAY;
+	static QRegExp RX_LONG_MONTH_DAY;
+	static QRegExp RX_SHORT_WEEK_DAYS;
+	static QRegExp RX_LONG_WEEK_DAYS;
+	static QRegExp RX_TODAY;
+	static QRegExp RX_TOMORROW;
+	static QRegExp RX_YESTERDAY;
+	static QRegExp RX_DAY_AFTER;
+	static QRegExp RX_NEXT_WEEK;
 
 	//Parsing functions for all supported time formats
 	//Posts: return true if valid time is found
@@ -46,7 +45,8 @@ private:
 	bool parseHourAP(QTime &time);
 	//e.g. 10:00, 10 : 00				(24:00 not accepted)
 	bool parseHourColMin(QTime &time);
-
+	//e.g. at 10
+	bool parseAtHour(QTime &time);
 
 	//parsing functions for all supported date formats
 	//Posts: return true if valid date is found
