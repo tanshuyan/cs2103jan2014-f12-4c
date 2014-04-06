@@ -19,18 +19,6 @@ private:
 	DateTimeParser _dateTimeParser;
 	NLFunctions _nlFunctions;
 
-	static QRegExp RX_QUOTES;
-	static QRegExp RX_FROM_UNTIL;
-	static QRegExp RX_UNTIL_FROM;
-	static QRegExp RX_ON_UNTIL;
-	static QRegExp RX_START;
-	static QRegExp RX_END;
-	static QRegExp RX_ON_AT_BY;
-	static QRegExp RX_FROM;
-	static QRegExp RX_BARE_MONTHS;
-	static QRegExp RX_BARE_DATETIME;
-	static QRegExp RX_TODAY;
-
 	QString extractDesc(QString &descString);
 	//Extracts dates and times marked by keywords such as "Starting", "From" or "On" and removes them from the descString
 	void extractMarkedDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled, int &dayOfWeek);

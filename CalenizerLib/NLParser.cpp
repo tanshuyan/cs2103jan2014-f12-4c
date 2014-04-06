@@ -4,18 +4,6 @@
 //Added ability to parse "until [weekday]" properly
 
 #include "NLParser.h"
-QRegExp NLParser::RX_QUOTES("\"(.+)\"");
-QRegExp NLParser::RX_FROM_UNTIL("\\b(?:starting|start|lasting|from(?!\\s+from)|begin|beginning)\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
-QRegExp NLParser::RX_UNTIL_FROM("\\b(?:ending|end|until|till|til|to)\\b(.+)\\b(?:starting|start|from(?!\\s+from)|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
-QRegExp NLParser::RX_ON_UNTIL("\\b(?:at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by))|by(?!\\s+(on|at|by)))\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
-QRegExp NLParser::RX_START("\\b(?:starting|start|lasting|from(?!\\s+from)|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
-QRegExp NLParser::RX_FROM("^(?:\\s*)(?:from)\\b(.+)", Qt::CaseInsensitive);
-QRegExp NLParser::RX_END("\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
-QRegExp NLParser::RX_ON_AT_BY("\\b(?:at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by))|by(?!\\s+(on|at|by)))\\b(.+)", Qt::CaseInsensitive);
-QRegExp NLParser::RX_BARE_MONTHS("(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\\b(.+)", Qt::CaseInsensitive);
-QRegExp NLParser::RX_TODAY(DateTimeParser::RX_DAYWORDS.pattern()+"\\b(.*)", Qt::CaseInsensitive);
-QRegExp NLParser::RX_BARE_DATETIME("\\b\\d\\b(.+)", Qt::CaseInsensitive);
-
 
 NLParser::NLParser(){
 }
@@ -65,7 +53,6 @@ void NLParser::extractMarkedDateTime(QString &descString, QDate &startDate, QTim
 	if(_nlFunctions.searchOn(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled)){
 		return;
 	}
-
 	return;
 }
 
