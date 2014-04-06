@@ -1,8 +1,7 @@
 //Parser.cpp
 //IN PROGRESS
-//v 2.8
-//editted the display string to view, exit to quit
-//defaulted view to view all
+//v 3.0
+//edited some code bits to add ability to properly parse subsequent days of the week
 
 #include "Parser.h"
 
@@ -172,8 +171,9 @@ AnalysedData Parser::editCMD(std::string userInput) {
 	QDate endDate;
 	QTime endTime;
 	bool dateTimeIsUnlabelled;
+	int dayOfWeek = -1;
 
-	_nlParser.parseDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled);
+	_nlParser.parseDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek);
 	//catch the error for invalid time and invalid date here, thrown by nlParser, thrown by DateTimeParser
 	descString = descString.trimmed();
 
@@ -185,6 +185,7 @@ AnalysedData Parser::editCMD(std::string userInput) {
 	analysedData.setEndDate(endDate);
 	analysedData.setEndTime(endTime);
 	analysedData.setDateTimeUnlabelled(dateTimeIsUnlabelled);
+	analysedData.setDayOfWeek(dayOfWeek);
 	return analysedData;
 }
 
@@ -197,8 +198,9 @@ AnalysedData Parser::addCMD(std::string userInput) {
 	QDate endDate;
 	QTime endTime;
 	bool dateTimeIsUnlabelled;
+	int dayOfWeek = -1;
 //	try{
-	_nlParser.parseDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled);
+	_nlParser.parseDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek);
 /*	}
 	catch(int e){
 		if (e == 10){
@@ -210,7 +212,6 @@ AnalysedData Parser::addCMD(std::string userInput) {
 	return analysedData;
 	}*/
 	
-	_nlParser.guessContextualTime(descString, startTime);
 	descString = descString.trimmed();
 
 	analysedData.setCommand(DisplayOutput::CMD_ADD);
@@ -220,6 +221,7 @@ AnalysedData Parser::addCMD(std::string userInput) {
 	analysedData.setEndDate(endDate);
 	analysedData.setEndTime(endTime);
 	analysedData.setDateTimeUnlabelled(dateTimeIsUnlabelled);
+	analysedData.setDayOfWeek(dayOfWeek);
 	return analysedData;
 }
 

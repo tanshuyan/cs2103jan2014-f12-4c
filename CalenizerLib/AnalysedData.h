@@ -1,6 +1,6 @@
 //AnalysedData.h
-// v1.1
-// Added == operator for unit test purposes
+// v1.2
+// Added dayOfWeek field
 #ifndef ANALYSEDDATA_H
 #define ANALYSEDDATA_H
 
@@ -20,6 +20,7 @@ private:
 	QDate _endDate;
 	std::vector<int> _index;
 	bool _dateTimeIsUnlabelled;
+	int _dayOfWeek;
 
 public:
 	AnalysedData();
@@ -34,6 +35,7 @@ public:
 	void setEndDate(QDate);
 	void setStartDate(QDate);
 	void setIndexVector(std::vector<int>);
+	void setDayOfWeek(int);
 
 	bool getDateTimeUnlabelled();
 	int getIndex();
@@ -45,6 +47,7 @@ public:
 	QDate getStartDate();
 	QDate getEndDate();
 	std::vector<int> getIndexVector();
+	int getDayOfWeek();
 
 	bool operator==(AnalysedData other);
 

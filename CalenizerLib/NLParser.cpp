@@ -1,6 +1,7 @@
 //NLParser.cpp
 //v 3.0
 //Ability to read dates and times at the end of the string not marked by keywords
+//Added ability to parse "until [weekday]" properly
 
 #include "NLParser.h"
 QRegExp NLParser::RX_QUOTES("\"(.+)\"");
@@ -19,9 +20,9 @@ QRegExp NLParser::RX_BARE_DATETIME("\\b\\d\\b(.+)", Qt::CaseInsensitive);
 NLParser::NLParser(){
 }
 
-void NLParser::parseDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled){
+void NLParser::parseDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled, int &dayOfWeek){
 	QString desc = extractDesc(descString);
-	extractMarkedDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled);
+	extractMarkedDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek);
 	extractWordedDates(descString, startDate, startTime);
 	extractUnmarkedDateTime(descString, startDate, startTime, endDate, endTime);
 	guessContextualTime(descString, startTime);
@@ -37,19 +38,19 @@ QString NLParser::extractDesc(QString &descString){
 	return _nlFunctions.extractQuotedDesc(descString);
 }
 
-void NLParser::extractMarkedDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled){
+void NLParser::extractMarkedDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled, int &dayOfWeek){
 	dateTimeIsUnlabelled = true;
-
+	dayOfWeek = -1;
 	//search for "from... until..." format
-	if(_nlFunctions.searchFromUntil(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled)){
+	if(_nlFunctions.searchFromUntil(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek)){
 		return;
 	}
 	//search for "until... from..." format
-	if(_nlFunctions.searchUntilFrom(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled)){
+	if(_nlFunctions.searchUntilFrom(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek)){
 		return;
 	}
 	//search for "on... until..." format
-	if(_nlFunctions.searchOnUntil(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled)){
+	if(_nlFunctions.searchOnUntil(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek)){
 		return;
 	}
 	//search for "start..." format
@@ -57,7 +58,7 @@ void NLParser::extractMarkedDateTime(QString &descString, QDate &startDate, QTim
 		return;
 	}
 	//search for "end..." format
-	if(_nlFunctions.searchUntil(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled)){
+	if(_nlFunctions.searchUntil(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek)){
 		return;
 	}
 	//search for "at... on..." format
