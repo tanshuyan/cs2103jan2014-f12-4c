@@ -21,7 +21,7 @@ Logic::~Logic() {
 DisplayOutput Logic::executeUserInput(std::string userInput) {
 	AnalysedData analysedData;
 	DisplayOutput displayOutput;
-	analysedData = _parser.parse(userInput);
+	analysedData = _parser.parse(userInput, _displayList);
 
 	if(analysedData.getCommand() == DisplayOutput::CMD_ADD) {
 		addTask(analysedData, displayOutput);
@@ -403,7 +403,7 @@ void Logic::sortTaskList() {
 	DateTime currentDateTime;
 	currentDateTime.setCurrDateTime();
 	//Everything before topCutoff are overdue tasks
-	std::vector<Task*>::iterator topCutoff = _taskList.begin();
+	std::vector<Task*>::iterator topCutoff;
 	// find the tasklist vector for the first task which is not overdue
 	for(topCutoff = _taskList.begin(); topCutoff != _taskList.end(); topCutoff++){
 		if((*topCutoff)->getDeadline() < currentDateTime){

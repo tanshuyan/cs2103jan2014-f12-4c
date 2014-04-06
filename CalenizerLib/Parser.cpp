@@ -8,7 +8,7 @@
 Parser::Parser() {
 }
 
-AnalysedData Parser::parse(std::string userInput) {
+AnalysedData Parser::parse(std::string userInput, std::vector<Task*> _displayList) {
 	std::istringstream input(userInput);
 	std::string command;
 	std::string dummy;
@@ -23,7 +23,7 @@ AnalysedData Parser::parse(std::string userInput) {
 		break;
 	}
 	case DELETE: {
-		return deleteCMD(commandLine);
+		return deleteCMD(commandLine, _displayList);
 		break;
 	}
 	case EDIT: {
@@ -39,11 +39,11 @@ AnalysedData Parser::parse(std::string userInput) {
 		break;
 	}
 	case COMPLETE: {
-		return completeCMD(commandLine);
+		return completeCMD(commandLine, _displayList);
 		break;
 	}
 	case INCOMPLETE: {
-		return incompleteCMD(commandLine);
+		return incompleteCMD(commandLine, _displayList);
 		break;
 	}
 	case UNDO: {
@@ -134,26 +134,26 @@ AnalysedData Parser::displayCMD(std::string userInput) {
 	return analysedData;
 }
 
-AnalysedData Parser::incompleteCMD(std::string userInput) {
+AnalysedData Parser::incompleteCMD(std::string userInput, std::vector<Task*> _displayList) {
 	AnalysedData analysedData;
 	analysedData.setCommand(DisplayOutput::CMD_INCOMPLETE);
-	_index = _multipleIndexParser.parseMultipleIndex(userInput);
+	_index = _nlpSentenceParser.parseSentence(userInput.c_str(), _displayList);
 	analysedData.setIndexVector(_index);
 	return analysedData;
 }
 
-AnalysedData Parser::completeCMD(std::string userInput) {
+AnalysedData Parser::completeCMD(std::string userInput, std::vector<Task*> _displayList) {
 	AnalysedData analysedData;
 	analysedData.setCommand(DisplayOutput::CMD_COMPLETE);
-	_index = _multipleIndexParser.parseMultipleIndex(userInput);
+	_index = _nlpSentenceParser.parseSentence(userInput.c_str(), _displayList);
 	analysedData.setIndexVector(_index);
 	return analysedData;
 }
 
-AnalysedData Parser::deleteCMD(std::string userInput) {
+AnalysedData Parser::deleteCMD(std::string userInput, std::vector<Task*> _displayList) {
 	AnalysedData analysedData;
 	analysedData.setCommand(DisplayOutput::CMD_DELETE);
-	_index = _multipleIndexParser.parseMultipleIndex(userInput);
+	_index = _nlpSentenceParser.parseSentence(userInput.c_str(), _displayList);
 	analysedData.setIndexVector(_index);
 	return analysedData;
 }
@@ -173,7 +173,7 @@ AnalysedData Parser::editCMD(std::string userInput) {
 	bool dateTimeIsUnlabelled;
 	int dayOfWeek = -1;
 
-	_nlParser.parseDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek);
+	_nlpDateParser.parseDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek);
 	//catch the error for invalid time and invalid date here, thrown by nlParser, thrown by DateTimeParser
 	descString = descString.trimmed();
 
@@ -200,7 +200,7 @@ AnalysedData Parser::addCMD(std::string userInput) {
 	bool dateTimeIsUnlabelled;
 	int dayOfWeek = -1;
 //	try{
-	_nlParser.parseDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek);
+	_nlpDateParser.parseDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek);
 /*	}
 	catch(int e){
 		if (e == 10){

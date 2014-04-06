@@ -12,8 +12,7 @@ QRegExp MultipleIndexParser::RX_INDEX("(\\d+)");
 MultipleIndexParser::MultipleIndexParser() {
 }
 
-std::vector<int> MultipleIndexParser::parseMultipleIndex(std::string userInput) {
-	QString descString(userInput.c_str());
+std::vector<int> MultipleIndexParser::parseMultipleIndex(QString descString) {
 	_index.clear();
 	int pos = 0; 
 	pos = RX_TO.indexIn(descString, pos);

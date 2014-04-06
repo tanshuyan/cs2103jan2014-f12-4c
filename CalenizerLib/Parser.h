@@ -16,8 +16,8 @@
 #include <vector>
 #include <algorithm>
 #include <QRegExp>
-#include "NLParser.h"
-#include "MultipleIndexParser.h"
+#include "NLPDateParser.h"
+#include "NLPSentenceParser.h"
 #include "AnalysedData.h"
 #include "DisplayOutput.h"
 
@@ -25,8 +25,8 @@ class Parser{
 private:
 	DateTimeParser _dateTimeParser;
 	std::vector<int> _index;
-	NLParser _nlParser;
-	MultipleIndexParser _multipleIndexParser;
+	NLPDateParser _nlpDateParser;
+	NLPSentenceParser _nlpSentenceParser;
 
 	enum COMMAND_TYPE {
 		ADD, DELETE, SEARCH, EDIT, COMPLETE, INCOMPLETE, UNDO, REDO, DISPLAY, EXIT, INVALID
@@ -35,16 +35,16 @@ private:
 public:
 	Parser();
 	
-	AnalysedData parse(std::string);
+	AnalysedData parse(std::string, std::vector<Task*> _displayList);
 	COMMAND_TYPE getCommand(std::string);
 	
 	AnalysedData undoCMD();
 	AnalysedData redoCMD();	
 	AnalysedData searchCMD(std::string);
 	AnalysedData displayCMD(std::string);
-	AnalysedData incompleteCMD(std::string);
-	AnalysedData completeCMD(std::string);
-	AnalysedData deleteCMD(std::string);
+	AnalysedData incompleteCMD(std::string, std::vector<Task*> _taskList);
+	AnalysedData completeCMD(std::string, std::vector<Task*> _taskList);
+	AnalysedData deleteCMD(std::string, std::vector<Task*> _taskList);
 	AnalysedData editCMD(std::string);
 	AnalysedData addCMD(std::string);
 };
