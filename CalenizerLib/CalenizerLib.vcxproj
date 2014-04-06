@@ -87,6 +87,7 @@
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="LogicParser.cpp" />
     <ClCompile Include="MultipleIndexParser.cpp" />
+    <ClCompile Include="NLFunctions.cpp" />
     <ClCompile Include="NLParser.cpp" />
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="TaskDeadline.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="Logic.h" />
     <ClInclude Include="LogicParser.h" />
     <ClInclude Include="MultipleIndexParser.h" />
+    <ClInclude Include="NLFunctions.h" />
     <ClInclude Include="NLParser.h" />
     <ClInclude Include="Parser.h" />
     <ClInclude Include="Task.h" />

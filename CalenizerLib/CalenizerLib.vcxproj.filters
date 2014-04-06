@@ -85,6 +85,9 @@
     <ClCompile Include="LogicParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NLFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Task.h">
@@ -151,6 +154,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NLFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
