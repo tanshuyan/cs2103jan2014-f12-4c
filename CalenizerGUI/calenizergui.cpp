@@ -104,6 +104,7 @@ void CalenizerGUI::initialiseTableStyle(){
 								"background-color: white");
 
 	ui.calendarWidget->setStyleSheet("color: black");
+	ui.calendarWidget->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
 
 	ui.label->setAlignment(Qt::AlignCenter);
 
