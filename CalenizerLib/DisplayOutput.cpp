@@ -6,33 +6,33 @@
 
 const std::string DisplayOutput:: _programName = "Calenizer";	
 
-const std::string DisplayOutput::MSG_ADD_SUCCESS ="added to %s: \"%s\"";
-const std::string DisplayOutput::MSG_EDIT_SUCCESS ="%s updated";
-const std::string DisplayOutput::MSG_DELETE_SUCCESS ="deleted from %s: \"%s\"";
-const std::string DisplayOutput::MSG_DELETE_MULTIPLE_SUCCESS ="deleted from %s: %s tasks";
-const std::string DisplayOutput::MSG_UNDO_SUCCESS ="latest change to %s undone";
-const std::string DisplayOutput::MSG_UNDO_FAILURE ="Nothing to undone in %s";
-const std::string DisplayOutput::MSG_REDO_SUCCESS ="latest undo to %s reverted";
-const std::string DisplayOutput::MSG_REDO_FAILURE ="Nothing to redo in %s";
-const std::string DisplayOutput::MSG_SEARCH_SUCCESS ="search term \"%s\" found in %s";
-const std::string DisplayOutput::MSG_SEARCH_FAILURE ="invalid search term: \"%s\" not found in %s";
-const std::string DisplayOutput::MSG_COMPLETE_SUCCESS ="\"%s\" marked as complete";
-const std::string DisplayOutput::MSG_COMPLETE_MULTIPLE_SUCCESS ="%s tasks marked as complete";
-const std::string DisplayOutput::MSG_INCOMPLETE_SUCCESS ="\"%s\" marked as incomplete";
-const std::string DisplayOutput::MSG_INCOMPLETE_MULTIPLE_SUCCESS ="%s tasks marked as incomplete";
+const std::string DisplayOutput::MSG_ADD_SUCCESS ="Added to %s: \"%s\"\n";
+const std::string DisplayOutput::MSG_EDIT_SUCCESS ="%s updated\n";
+const std::string DisplayOutput::MSG_DELETE_SUCCESS ="Deleted from %s: \"%s\"\n";
+const std::string DisplayOutput::MSG_DELETE_MULTIPLE_SUCCESS ="Deleted from %s: %s tasks\n";
+const std::string DisplayOutput::MSG_UNDO_SUCCESS ="Latest change to %s undone\n";
+const std::string DisplayOutput::MSG_UNDO_FAILURE ="Nothing to undo in %s\n";
+const std::string DisplayOutput::MSG_REDO_SUCCESS ="Latest undo to %s reverted\n";
+const std::string DisplayOutput::MSG_REDO_FAILURE ="Nothing to redo in %s\n";
+const std::string DisplayOutput::MSG_SEARCH_SUCCESS ="Search term \"%s\" found in %s\n";
+const std::string DisplayOutput::MSG_SEARCH_FAILURE ="Invalid search term: \"%s\" not found in %s\n";
+const std::string DisplayOutput::MSG_COMPLETE_SUCCESS ="\"%s\" marked as complete\n";
+const std::string DisplayOutput::MSG_COMPLETE_MULTIPLE_SUCCESS ="%s tasks marked as complete\n";
+const std::string DisplayOutput::MSG_INCOMPLETE_SUCCESS ="\"%s\" marked as incomplete\n";
+const std::string DisplayOutput::MSG_INCOMPLETE_MULTIPLE_SUCCESS ="%s tasks marked as incomplete\n";
 
-const std::string DisplayOutput::MSG_DISPLAYCOM = "completed tasks in %s shown";
-const std::string DisplayOutput::MSG_DISPLAYINCOM = "incompleted tasks in %s shown";
-const std::string DisplayOutput::MSG_DISPLAYTODAY = "today tasks in %s shown";
-const std::string DisplayOutput::MSG_DISPLAYALL = "all tasks in %s shown";
+const std::string DisplayOutput::MSG_DISPLAYCOM = "Completed tasks in %s shown\n";
+const std::string DisplayOutput::MSG_DISPLAYINCOM = "Incompleted tasks in %s shown\n";
+const std::string DisplayOutput::MSG_DISPLAYTODAY = "Today tasks in %s shown\n";
+const std::string DisplayOutput::MSG_DISPLAYALL = "All tasks in %s shown\n";
 
-const std::string DisplayOutput::MSG_INVALID_CMD = "invalid command";
-const std::string DisplayOutput::MSG_INVALID_INDEX = "invalid index";
-const std::string DisplayOutput::MSG_INVALID_TIME = "invalid time";
-const std::string DisplayOutput::MSG_INVALID_DATE = "invalid date";
+const std::string DisplayOutput::MSG_INVALID_CMD = "Invalid command\n";
+const std::string DisplayOutput::MSG_INVALID_INDEX = "Invalid index\n";
+const std::string DisplayOutput::MSG_INVALID_TIME = "Invalid time\n";
+const std::string DisplayOutput::MSG_INVALID_DATE = "Invalid date\n";
 
-const std::string DisplayOutput::MSG_NOT_FOUND ="\"%s\" not found in %s";
-const std::string DisplayOutput::MSG_EMPTY_FILE = "%s is empty";
+const std::string DisplayOutput::MSG_NOT_FOUND ="\"%s\" not found in %s\n";
+const std::string DisplayOutput::MSG_EMPTY_FILE = "%s is empty\n";
 
 const std::string DisplayOutput::CMD_ADD = "add";
 const std::string DisplayOutput::CMD_EDIT = "edit";
@@ -264,4 +264,4 @@ std::string DisplayOutput::displayAllFeedback(){
 }
 
 const std::string DisplayOutput::MSG_WELCOME = "Welcome to %s. At your service.";
-const std::string DisplayOutput::MSG_USERPROMPT= "what would you like %s to do? Give your command: ";
+const std::string DisplayOutput::MSG_USERPROMPT= "What would you like %s to do? Give your command: ";

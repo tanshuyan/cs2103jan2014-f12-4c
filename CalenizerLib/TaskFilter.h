@@ -42,7 +42,7 @@ public:
 	bool isTaskType(std::string);
 	std::string toUpper(std::string);
 	std::string markTask(const Task* taskToBeMarked, DateTime currentDateTime);
-	void markDisplayList(std::vector<Task*> &displayList, std::vector<std::string> &displayListStatus);
+	void markDisplayList(const std::vector<Task*>& displayList, std::vector<std::string>& displayListStatus);
 };
 
 #endif

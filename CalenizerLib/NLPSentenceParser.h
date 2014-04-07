@@ -22,11 +22,11 @@ private:
 	static QRegExp RX_EXACT;
 
 	bool search(QString inputString, QRegExp &rx);
-	std::vector<int> parseAll(std::vector<Task*> _displayList);
-	std::vector<int> parseSearchTerm(std::vector<Task*> _displayList, QRegExp &rx);
+	std::vector<int> parseAll(const std::vector<Task*> &_displayList);
+	std::vector<int> parseSearchTerm(const std::vector<Task*> &_displayList, QRegExp &rx);
 	
 public:
 	NLPSentenceParser();
-	std::vector<int> parseSentence(QString inputString, std::vector<Task*> _displayList);
+	std::vector<int> parseSentence(QString inputString, const std::vector<Task*> &_displayList);
 };
 #endif

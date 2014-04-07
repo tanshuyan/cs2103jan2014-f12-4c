@@ -142,12 +142,12 @@ std::string TaskFilter::markTask(const Task* taskToBeMarked, DateTime currentDat
 		}
 		return DisplayOutput::STATUS_INCOMPLETE;
 	}
-
 	assert(false);
+	return DisplayOutput::STATUS_INCOMPLETE;
 }
 
-void TaskFilter::markDisplayList(std::vector<Task*> &displayList, std::vector<std::string> &displayListStatus) {
-	std::vector<Task*>::iterator iter;
+void TaskFilter::markDisplayList(const std::vector<Task*> &displayList, std::vector<std::string> &displayListStatus) {
+	std::vector<Task*>::const_iterator iter;
 	DateTime currentDateTime;
 	currentDateTime.setCurrDateTime();
 	for(iter = displayList.begin(); iter!=displayList.end(); iter++) {

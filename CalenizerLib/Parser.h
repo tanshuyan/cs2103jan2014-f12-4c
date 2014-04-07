@@ -35,16 +35,16 @@ private:
 public:
 	Parser();
 	
-	AnalysedData parse(std::string, std::vector<Task*> _displayList);
+	AnalysedData parse(std::string, const std::vector<Task*> &_displayList);
 	COMMAND_TYPE getCommand(std::string);
 	
 	AnalysedData undoCMD();
 	AnalysedData redoCMD();	
 	AnalysedData searchCMD(std::string);
 	AnalysedData displayCMD(std::string);
-	AnalysedData incompleteCMD(std::string, std::vector<Task*> _taskList);
-	AnalysedData completeCMD(std::string, std::vector<Task*> _taskList);
-	AnalysedData deleteCMD(std::string, std::vector<Task*> _taskList);
+	AnalysedData incompleteCMD(std::string, const std::vector<Task*> &_taskList);
+	AnalysedData completeCMD(std::string, const std::vector<Task*> &_taskList);
+	AnalysedData deleteCMD(std::string, const std::vector<Task*> &_taskList);
 	AnalysedData editCMD(std::string);
 	AnalysedData addCMD(std::string);
 };

@@ -27,6 +27,7 @@
 #include "Comparator.h"
 #include "DateTimeResolver.h"
 #include "TaskEditor.h"
+#include "Exception.h"
 
 class Logic {
 private:
