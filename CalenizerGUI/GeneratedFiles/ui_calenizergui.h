@@ -37,7 +37,7 @@ public:
     QLabel *label_2;
     QTableWidget *tableWidget;
     QCalendarWidget *calendarWidget;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QHBoxLayout *horizontalLayout;
     QLabel *label_3;
     QLabel *label_8;
@@ -124,16 +124,17 @@ public:
         calendarWidget = new QCalendarWidget(centralWidget);
         calendarWidget->setObjectName(QStringLiteral("calendarWidget"));
         calendarWidget->setGeometry(QRect(750, 70, 221, 141));
+        calendarWidget->setFocusPolicy(Qt::NoFocus);
         calendarWidget->setAutoFillBackground(true);
-        widget = new QWidget(centralWidget);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(25, 80, 708, 19));
-        horizontalLayout = new QHBoxLayout(widget);
+        layoutWidget = new QWidget(centralWidget);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        layoutWidget->setGeometry(QRect(25, 80, 708, 19));
+        horizontalLayout = new QHBoxLayout(layoutWidget);
         horizontalLayout->setSpacing(30);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        label_3 = new QLabel(widget);
+        label_3 = new QLabel(layoutWidget);
         label_3->setObjectName(QStringLiteral("label_3"));
         QFont font4;
         font4.setFamily(QStringLiteral("Malgun Gothic"));
@@ -143,12 +144,13 @@ public:
 
         horizontalLayout->addWidget(label_3);
 
-        label_8 = new QLabel(widget);
+        label_8 = new QLabel(layoutWidget);
         label_8->setObjectName(QStringLiteral("label_8"));
+        label_8->setFont(font1);
 
         horizontalLayout->addWidget(label_8);
 
-        label_7 = new QLabel(widget);
+        label_7 = new QLabel(layoutWidget);
         label_7->setObjectName(QStringLiteral("label_7"));
         QFont font5;
         font5.setFamily(QStringLiteral("Malgun Gothic"));
@@ -157,41 +159,45 @@ public:
 
         horizontalLayout->addWidget(label_7);
 
-        label_9 = new QLabel(widget);
+        label_9 = new QLabel(layoutWidget);
         label_9->setObjectName(QStringLiteral("label_9"));
+        label_9->setFont(font4);
 
         horizontalLayout->addWidget(label_9);
 
-        label_6 = new QLabel(widget);
+        label_6 = new QLabel(layoutWidget);
         label_6->setObjectName(QStringLiteral("label_6"));
         label_6->setFont(font1);
 
         horizontalLayout->addWidget(label_6);
 
-        label_10 = new QLabel(widget);
+        label_10 = new QLabel(layoutWidget);
         label_10->setObjectName(QStringLiteral("label_10"));
+        label_10->setFont(font1);
 
         horizontalLayout->addWidget(label_10);
 
-        label_5 = new QLabel(widget);
+        label_5 = new QLabel(layoutWidget);
         label_5->setObjectName(QStringLiteral("label_5"));
         label_5->setFont(font1);
 
         horizontalLayout->addWidget(label_5);
 
-        label_11 = new QLabel(widget);
+        label_11 = new QLabel(layoutWidget);
         label_11->setObjectName(QStringLiteral("label_11"));
+        label_11->setFont(font1);
 
         horizontalLayout->addWidget(label_11);
 
-        label_4 = new QLabel(widget);
+        label_4 = new QLabel(layoutWidget);
         label_4->setObjectName(QStringLiteral("label_4"));
         label_4->setFont(font1);
 
         horizontalLayout->addWidget(label_4);
 
-        label_12 = new QLabel(widget);
+        label_12 = new QLabel(layoutWidget);
         label_12->setObjectName(QStringLiteral("label_12"));
+        label_12->setFont(font1);
 
         horizontalLayout->addWidget(label_12);
 
@@ -223,16 +229,16 @@ public:
 #ifndef QT_NO_STATUSTIP
         tableWidget->setStatusTip(QString());
 #endif // QT_NO_STATUSTIP
-        label_3->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; color:#ff0000;\">a</span><span style=\" font-size:10pt;\">]dd</span></p></body></html>", 0));
-        label_8->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; color:#ff0000;\">c</span><span style=\" font-size:10pt;\">]omplete</span></p></body></html>", 0));
-        label_7->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; color:#ff0000;\">d</span><span style=\" font-size:10pt;\">]elete</span></p></body></html>", 0));
-        label_9->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; color:#ff0000;\">e</span><span style=\" font-size:10pt;\">]dit</span></p></body></html>", 0));
-        label_6->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; color:#ff0000;\">i</span><span style=\" font-size:10pt;\">]ncomplete</span></p></body></html>", 0));
-        label_10->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; color:#ff0000;\">r</span><span style=\" font-size:10pt;\">]edo</span></p></body></html>", 0));
-        label_5->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; color:#ff0000;\">s</span><span style=\" font-size:10pt;\">]earch</span></p></body></html>", 0));
-        label_11->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; color:#ff0000;\">u</span><span style=\" font-size:10pt;\">]ndo</span></p></body></html>", 0));
-        label_4->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; color:#ff0000;\">v</span><span style=\" font-size:10pt;\">]iew</span></p></body></html>", 0));
-        label_12->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; color:#ff0000;\">q</span><span style=\" font-size:10pt;\">]uit</span></p></body></html>", 0));
+        label_3->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">a</span><span style=\" font-size:10pt;\">]dd</span></p></body></html>", 0));
+        label_8->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">c</span><span style=\" font-size:10pt;\">]omplete</span></p></body></html>", 0));
+        label_7->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">d</span><span style=\" font-size:10pt;\">]elete</span></p></body></html>", 0));
+        label_9->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">e</span><span style=\" font-size:10pt;\">]dit</span></p></body></html>", 0));
+        label_6->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">i</span><span style=\" font-size:10pt;\">]ncomplete</span></p></body></html>", 0));
+        label_10->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">r</span><span style=\" font-size:10pt;\">]edo</span></p></body></html>", 0));
+        label_5->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">s</span><span style=\" font-size:10pt;\">]earch</span></p></body></html>", 0));
+        label_11->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">u</span><span style=\" font-size:10pt;\">]ndo</span></p></body></html>", 0));
+        label_4->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">v</span><span style=\" font-size:10pt;\">]iew</span></p></body></html>", 0));
+        label_12->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">q</span><span style=\" font-size:10pt;\">]uit</span></p></body></html>", 0));
     } // retranslateUi
 
 };
