@@ -93,8 +93,8 @@ void CalenizerGUI::initialiseTableStyle(){
 	ui.textEdit->setStyleSheet ("border-style: outset;"
 								"border-width: 2px;"
 								"border-radius: 10px;"
-								"border-color: white;"
-								"padding: 5px;");
+								"border-color: white;");
+								//"padding: 5px;");
 
 	ui.lineEdit->setStyleSheet ("border-style: outset;"
 								"border-width: 2px;"
@@ -110,15 +110,6 @@ void CalenizerGUI::initialiseTableStyle(){
 
 	setStyleSheet("background-color:#EEF5F8;");
 }
-
-//this function not used for now - old code
-/*
-void CalenizerGUI::initialiseTableSize(){
-	ui.tableWidget->setColumnWidth(0,  200);
-	ui.tableWidget->setColumnWidth(1,  255);
-	ui.tableWidget->setColumnWidth(2,  100);
-}
-*/
 
 void CalenizerGUI::getFeedback(DisplayOutput displayoutput){
 	QString str = QString::fromStdString(displayoutput.getFeedBack());
@@ -193,6 +184,7 @@ void CalenizerGUI::run(){
 
 	for(int row=0; row<displayoutput.getDisplay().size(); row++){
 		getTask(displayoutput,row);
+		ui.tableWidget->verticalHeader()->setSectionResizeMode(row, QHeaderView::Fixed);
 	}	
 
 	QDateTime dateTime = QDateTime::currentDateTime();
@@ -210,6 +202,7 @@ void CalenizerGUI::displayAll() {
 
 	for(int row=0; row<displayoutput.getDisplay().size(); row++){
 		getTask(displayoutput,row);
+		ui.tableWidget->verticalHeader()->setSectionResizeMode(row, QHeaderView::Fixed);
 	}
 }
 
@@ -253,14 +246,19 @@ void CalenizerGUI::setColumnWidth(QTableWidget *table) {
 	table->setColumnCount(3);
 	table->setHorizontalHeaderLabels(tableHeader);
 
-	table->setColumnWidth(TASK_DESC, 270);
+	table->setColumnWidth(TASK_DESC, 280);
 	table->setColumnWidth(TASK_DURATION, 300);
-	table->setColumnWidth(TASK_STATUS,125);
+	table->setColumnWidth(TASK_STATUS,90);
+	table->horizontalHeader()->setStretchLastSection(true);
 }
 
 void CalenizerGUI::initialiseTable(QTableWidget *table) {
 	setColumnWidth(table);
 	fixColumnWidth(table);
+	table->horizontalHeaderItem(0)->setTextAlignment(Qt::AlignLeft);
+	table->horizontalHeaderItem(1)->setTextAlignment(Qt::AlignLeft);
+	table->horizontalHeaderItem(2)->setTextAlignment(Qt::AlignLeft);
+	ui.tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 }
 
 void CalenizerGUI::fixColumnWidth(QTableWidget *table) {
