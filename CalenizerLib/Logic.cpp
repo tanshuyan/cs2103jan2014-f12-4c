@@ -21,8 +21,13 @@ Logic::~Logic() {
 DisplayOutput Logic::executeUserInput(std::string userInput) {
 	AnalysedData analysedData;
 	DisplayOutput displayOutput;
-	analysedData = _parser.parse(userInput, _displayList);
-
+	try{
+		analysedData = _parser.parse(userInput, _displayList);
+	}
+	catch(InvalidDateTimeException &e){
+		displayOutput.setFeedBack(e.what());
+		displayTask(_currentDisplayType, displayOutput);
+	}
 	if(analysedData.getCommand() == DisplayOutput::CMD_ADD) {
 		addTask(analysedData, displayOutput);
 		displayTask(_currentDisplayType, displayOutput);

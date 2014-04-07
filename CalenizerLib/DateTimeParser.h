@@ -10,6 +10,7 @@
 #include <string>
 #include <QRegExp>
 #include "DateTime.h"
+#include "Exception.h"
 
 class DateTimeParser{
 private:
