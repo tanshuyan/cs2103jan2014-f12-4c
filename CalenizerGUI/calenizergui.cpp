@@ -21,7 +21,7 @@ const std::string CalenizerGUI::STATUS_INCOMPLETE = "Incomplete";
 const std::string CalenizerGUI::STATUS_OVERDUE = "Overdue";
 const std::string CalenizerGUI::STATUS_ONGOING = "Ongoing";
 
-const std::string CalenizerGUI::CMD_DISPLAY_TODAY = "view today";
+const std::string CalenizerGUI::CMD_DISPLAY_ALL = "view all";
 
 CalenizerGUI::CalenizerGUI(QWidget *parent)
 	: QMainWindow(parent)
@@ -30,9 +30,8 @@ CalenizerGUI::CalenizerGUI(QWidget *parent)
 
 	initialiseTable(ui.tableWidget);
 	initialiseConnections();
-	todayDisplay();
+	displayAll();
 	initialiseTableStyle();
-	initialiseTimeDate();
 	initialiseShortcuts();
 	_g_current_row = 0;	
 }
@@ -42,7 +41,7 @@ CalenizerGUI::~CalenizerGUI()
 
 }
 
-void CalenizerGUI::initialiseTimeDate(){
+void CalenizerGUI::updateDateTime(){
 	QDateTime dateTime = QDateTime::currentDateTime();
 	QString dateTimeString = dateTime.toString("dd MMMM yyyy\nhh:mm");
 	ui.label->setText(dateTimeString);
@@ -53,9 +52,9 @@ void CalenizerGUI:: initialiseConnections() {
 	connect(ui.lineEdit, SIGNAL(Qt::Key_Escape), this, SLOT(resetInput()));
 	connect(ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(run()));
 	
-	//QTimer *timer = new QTimer(this);
-	//connect(timer, SIGNAL(timeout()), this, SLOT(initialiseDateTime()));
-	//timer->start(1);
+	QTimer *timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(updateDateTime()));
+	timer->start(1);
 }
 
 void CalenizerGUI::initialiseShortcuts(){
@@ -105,6 +104,7 @@ void CalenizerGUI::initialiseTableStyle(){
 								"background-color: white");
 
 	ui.calendarWidget->setStyleSheet("color: black");
+	ui.calendarWidget->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
 
 	ui.label->setAlignment(Qt::AlignCenter);
 
@@ -120,9 +120,20 @@ void CalenizerGUI::initialiseTableSize(){
 }
 */
 
-void CalenizerGUI::getFeedback(DisplayOutput displayoutput)
-{
-	ui.textEdit->append(QString::fromStdString(displayoutput.getFeedBack()));
+void CalenizerGUI::getFeedback(DisplayOutput displayoutput){
+	QString str = QString::fromStdString(displayoutput.getFeedBack());
+	if (checkWord(str)) {
+		ui.textEdit->setTextColor( QColor( "red" ) );
+	}
+	else {
+		ui.textEdit->setTextColor( QColor( "black" ) );
+	}
+
+	ui.textEdit->append(str);
+}
+
+bool CalenizerGUI:: checkWord(QString input){
+	return (input.contains("invalid", Qt::CaseInsensitive));
 }
 
 void CalenizerGUI::getTask(DisplayOutput displayoutput, int row){
@@ -172,8 +183,7 @@ void CalenizerGUI::getTask(DisplayOutput displayoutput, int row){
 		}
 }
 
-void CalenizerGUI::run()
-{
+void CalenizerGUI::run(){
 	std::string userInput = ui.lineEdit->text().toStdString();
 
 	DisplayOutput displayoutput= _g_logic.executeUserInput(userInput);
@@ -192,8 +202,8 @@ void CalenizerGUI::run()
 	ui.lineEdit->clear();
 }
 
-void CalenizerGUI::todayDisplay() {
-	DisplayOutput displayoutput= _g_logic.executeUserInput(CMD_DISPLAY_TODAY);
+void CalenizerGUI::displayAll() {
+	DisplayOutput displayoutput= _g_logic.executeUserInput(CMD_DISPLAY_ALL);
 	getFeedback(displayoutput);
 
 	ui.tableWidget->setRowCount(displayoutput.getDisplay().size());
