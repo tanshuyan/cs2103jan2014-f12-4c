@@ -49,5 +49,4 @@ public:
 	std::string taskToString();
 	void stringToTask(std::string);
 };
-
 #endif

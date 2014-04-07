@@ -19,7 +19,7 @@
 #include "NLPDateParser.h"
 #include "NLPSentenceParser.h"
 #include "AnalysedData.h"
-#include "DisplayOutput.h"
+#include "Message.h"
 
 class Parser{
 private:

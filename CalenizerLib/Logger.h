@@ -10,6 +10,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+
 class Logger {
 
 private:
@@ -30,6 +31,5 @@ public:
 	void addErrorLog(std::string);
 	void addInfoLog(std::string);
 	void saveLog();
-
 };
 #endif

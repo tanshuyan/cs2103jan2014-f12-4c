@@ -11,8 +11,6 @@
 #include "DateTime.h"
 
 class Task {
-private:
-
 public:
 	virtual void setTask(bool, std::string) {return;}
 	virtual void setTask(bool, std::string, DateTime) {return;}
