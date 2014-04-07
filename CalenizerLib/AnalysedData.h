@@ -50,6 +50,5 @@ public:
 	int getDayOfWeek();
 
 	bool operator==(AnalysedData other);
-
 };
 #endif

@@ -87,7 +87,5 @@ public:
 	bool extractDate(QString &input, QDate &date, int &dayOfWeek);
 	//Overloaded function that does not require dayOfWeek field
 	bool extractDate(QString &input, QDate &date);
-
-
 };
 #endif

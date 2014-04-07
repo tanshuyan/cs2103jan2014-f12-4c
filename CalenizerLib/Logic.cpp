@@ -1,15 +1,16 @@
 // Logic.cpp
-// v2.1
+// v2.3
 // changed display string to view, exit string to quit
 // added the msg feedback for search
 // added sort function
+// refactored some code
 
 #include "Logic.h"
 
 Logic::Logic() {
 	loadFileContent();
-	_currentDisplayType.setCommand(DisplayOutput::CMD_DISPLAY);
-	_currentDisplayType.setDisplayType(DisplayOutput::DISPLAY_ALL);
+	_currentDisplayType.setCommand(Message::CMD_DISPLAY);
+	_currentDisplayType.setDisplayType(Message::DISPLAY_ALL);
 }
 
 Logic::~Logic() {
@@ -23,49 +24,53 @@ DisplayOutput Logic::executeUserInput(std::string userInput) {
 	DisplayOutput displayOutput;
 	try{
 		analysedData = _parser.parse(userInput, _displayList);
+		executeCommand(analysedData, displayOutput);
 	}
 	catch(InvalidDateTimeException &e){
 		displayOutput.setFeedBack(e.what());
 		displayTask(_currentDisplayType, displayOutput);
 	}
-	if(analysedData.getCommand() == DisplayOutput::CMD_ADD) {
+	
+	return displayOutput;
+}
+
+void Logic::executeCommand(AnalysedData& analysedData, DisplayOutput& displayOutput) {
+		if(analysedData.getCommand() == Message::CMD_ADD) {
 		addTask(analysedData, displayOutput);
 		displayTask(_currentDisplayType, displayOutput);
 	}
 
-	if(analysedData.getCommand() == DisplayOutput::CMD_DELETE) {
+	if(analysedData.getCommand() == Message::CMD_DELETE) {
 		deleteTask(analysedData, displayOutput);
 		displayTask(_currentDisplayType, displayOutput);
 	}
 
-	if(analysedData.getCommand() == DisplayOutput::CMD_EDIT) {
+	if(analysedData.getCommand() == Message::CMD_EDIT) {
 		editTask(analysedData, displayOutput);
 		displayTask(_currentDisplayType, displayOutput);
 	}
 
-	if(analysedData.getCommand() == DisplayOutput::CMD_DISPLAY) {
+	if(analysedData.getCommand() == Message::CMD_DISPLAY) {
 		displayTask(analysedData, displayOutput);
 
-		if(analysedData.getDisplayType() == DisplayOutput::DISPLAY_COMPLETE) { // display completed task
+		if(analysedData.getDisplayType() == Message::DISPLAY_COMPLETE) {
 			displayOutput.setFeedBack(_actionMsg.displayCompleteFeedback());
 		}
 			
-		if(analysedData.getDisplayType() == DisplayOutput::DISPLAY_INCOMPLETE) { // display incompleted task
+		if(analysedData.getDisplayType() == Message::DISPLAY_INCOMPLETE) {
 			displayOutput.setFeedBack(_actionMsg.displayIncompleteFeedback());
 		}
 
-		if(analysedData.getDisplayType() == DisplayOutput::DISPLAY_ALL) {
+		if(analysedData.getDisplayType() == Message::DISPLAY_ALL) {
 			displayOutput.setFeedBack(_actionMsg.displayAllFeedback());
 		}
 
-		if(analysedData.getDisplayType() == DisplayOutput::DISPLAY_TODAY) {
+		if(analysedData.getDisplayType() == Message::DISPLAY_TODAY) {
 			displayOutput.setFeedBack(_actionMsg.displayTodayFeedback());
 		}
-
-		//displayOutput.setFeedBack(_actionMsg.displayAllFeedback());
 	}
 
-	if(analysedData.getCommand() == DisplayOutput::CMD_SEARCH) {
+	if(analysedData.getCommand() == Message::CMD_SEARCH) {
 		displayTask(analysedData, displayOutput);
 		if(displayOutput.getDisplayStatus()) {
 			displayOutput.setFeedBack(_actionMsg.searchSuccessFeedback(analysedData.getDisplayType()));
@@ -74,36 +79,34 @@ DisplayOutput Logic::executeUserInput(std::string userInput) {
 		}
 	}
 
-	if(analysedData.getCommand() == DisplayOutput::CMD_COMPLETE) {
+	if(analysedData.getCommand() == Message::CMD_COMPLETE) {
 		setComplete(analysedData, displayOutput);
 		displayTask(_currentDisplayType, displayOutput);
 	}
 
-	if(analysedData.getCommand() == DisplayOutput::CMD_INCOMPLETE) {
+	if(analysedData.getCommand() == Message::CMD_INCOMPLETE) {
 		setIncomplete(analysedData, displayOutput);
 		displayTask(_currentDisplayType, displayOutput);
 	}
 
-	if(analysedData.getCommand() == DisplayOutput::CMD_UNDO) {
+	if(analysedData.getCommand() == Message::CMD_UNDO) {
 		undo(displayOutput);
 		displayTask(_currentDisplayType, displayOutput);
 	}
 
-	if(analysedData.getCommand() == DisplayOutput::CMD_REDO) {
+	if(analysedData.getCommand() == Message::CMD_REDO) {
 		redo(displayOutput);
 		displayTask(_currentDisplayType, displayOutput);
 	}
 
-	if(analysedData.getCommand() == DisplayOutput::CMD_EXIT) {
-		displayOutput.setFeedBack(DisplayOutput::CMD_EXIT);
+	if(analysedData.getCommand() == Message::CMD_EXIT) {
+		displayOutput.setFeedBack(Message::CMD_EXIT);
 	}
 
-	if(analysedData.getCommand() == DisplayOutput::CMD_INVALID) {
+	if(analysedData.getCommand() == Message::CMD_INVALID) {
 		displayOutput.setFeedBack(_actionMsg.invalidFeedback());
 		displayTask(_currentDisplayType, displayOutput);
 	}
-
-	return displayOutput;
 }
 
 void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
@@ -317,26 +320,26 @@ void Logic::displayTask(AnalysedData analysedData, DisplayOutput& displayOutput)
 	std::vector<std::string> displayListStatus;
 	_displayList.clear();
 	_displayIndexList.clear();
-	if(analysedData.getCommand() == DisplayOutput::CMD_DISPLAY) {
+	if(analysedData.getCommand() == Message::CMD_DISPLAY) {
 
-		if(analysedData.getDisplayType() == DisplayOutput::DISPLAY_COMPLETE) { // display completed task
+		if(analysedData.getDisplayType() == Message::DISPLAY_COMPLETE) { // display completed task
 			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, true, displayListStatus);
 		}
 			
-		if(analysedData.getDisplayType() == DisplayOutput::DISPLAY_INCOMPLETE) { // display incompleted task
+		if(analysedData.getDisplayType() == Message::DISPLAY_INCOMPLETE) { // display incompleted task
 			_displayStatus = _filter.search(_taskList, _displayList,_displayIndexList, false, displayListStatus);
 		}
 
-		if(analysedData.getDisplayType() == DisplayOutput::DISPLAY_ALL) {
+		if(analysedData.getDisplayType() == Message::DISPLAY_ALL) {
 			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, displayListStatus);
 		}
 
-		if(analysedData.getDisplayType() == DisplayOutput::DISPLAY_TODAY) {
+		if(analysedData.getDisplayType() == Message::DISPLAY_TODAY) {
 			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, QDate::currentDate(), displayListStatus);
 		}
 	}
 
-	if(analysedData.getCommand() == DisplayOutput::CMD_SEARCH) {
+	if(analysedData.getCommand() == Message::CMD_SEARCH) {
 		_displayStatus = _filter.search(_taskList, _displayList,  _displayIndexList, analysedData.getDisplayType(), displayListStatus);
 	}
 

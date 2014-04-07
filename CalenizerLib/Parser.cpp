@@ -56,19 +56,19 @@ AnalysedData Parser::parse(std::string userInput, const std::vector<Task*> &_dis
 	}
 	case EXIT: {
 		AnalysedData analysedData;
-		analysedData.setCommand(DisplayOutput::CMD_EXIT);
+		analysedData.setCommand(Message::CMD_EXIT);
 		return analysedData;
 		break;
 	}
 	case INVALID: {
 		AnalysedData analysedData;
-		analysedData.setCommand(DisplayOutput::CMD_INVALID);
+		analysedData.setCommand(Message::CMD_INVALID);
 		return analysedData;
 		break;
 	}
 	default: {
 		AnalysedData analysedData;
-		analysedData.setCommand(DisplayOutput::CMD_INVALID);
+		analysedData.setCommand(Message::CMD_INVALID);
 		return analysedData;
 		break;
 	}
@@ -77,25 +77,25 @@ AnalysedData Parser::parse(std::string userInput, const std::vector<Task*> &_dis
 }
 
 Parser::COMMAND_TYPE Parser::getCommand(std::string command) {
-	if(command == DisplayOutput::CMD_ADD) {
+	if(command == Message::CMD_ADD) {
 		return COMMAND_TYPE::ADD;
-	} else if ((command== DisplayOutput::CMD_DELETE)) {
+	} else if ((command== Message::CMD_DELETE)) {
 		return COMMAND_TYPE::DELETE;
-	} else if ((command == DisplayOutput::CMD_DISPLAY)) {
+	} else if ((command == Message::CMD_DISPLAY)) {
 		return COMMAND_TYPE::DISPLAY;
-	} else if ((command == DisplayOutput::CMD_EXIT)) {
+	} else if ((command == Message::CMD_EXIT)) {
 		return COMMAND_TYPE::EXIT;
-	} else if ((command == DisplayOutput::CMD_SEARCH)) {
+	} else if ((command == Message::CMD_SEARCH)) {
 		return COMMAND_TYPE::SEARCH;
-	} else if ((command == DisplayOutput::CMD_EDIT)) {
+	} else if ((command == Message::CMD_EDIT)) {
 		return COMMAND_TYPE::EDIT;
-	} else if ((command == DisplayOutput::CMD_COMPLETE)) {
+	} else if ((command == Message::CMD_COMPLETE)) {
 		return COMMAND_TYPE::COMPLETE;
-	} else if ((command == DisplayOutput::CMD_INCOMPLETE)) {
+	} else if ((command == Message::CMD_INCOMPLETE)) {
 		return COMMAND_TYPE::INCOMPLETE;
-	} else if ((command == DisplayOutput::CMD_UNDO)) {
+	} else if ((command == Message::CMD_UNDO)) {
 		return COMMAND_TYPE::UNDO;
-	} else if ((command == DisplayOutput::CMD_REDO)) {
+	} else if ((command == Message::CMD_REDO)) {
 		return COMMAND_TYPE::REDO;
 	} else {
 		return COMMAND_TYPE::INVALID;
@@ -104,39 +104,39 @@ Parser::COMMAND_TYPE Parser::getCommand(std::string command) {
 
 AnalysedData Parser::undoCMD() {
 	AnalysedData analysedData;
-	analysedData.setCommand(DisplayOutput::CMD_UNDO);
+	analysedData.setCommand(Message::CMD_UNDO);
 	return analysedData;
 }
 
 AnalysedData Parser::redoCMD() {
 	AnalysedData analysedData;
-	analysedData.setCommand(DisplayOutput::CMD_REDO);
+	analysedData.setCommand(Message::CMD_REDO);
 	return analysedData;
 }
 
 AnalysedData Parser::searchCMD(std::string userInput) {
 	AnalysedData analysedData;
-	analysedData.setCommand(DisplayOutput::CMD_SEARCH);
+	analysedData.setCommand(Message::CMD_SEARCH);
 	analysedData.setDisplayType(userInput);
 	return analysedData;
 }
 
 AnalysedData Parser::displayCMD(std::string userInput) {
 	AnalysedData analysedData;
-	analysedData.setCommand(DisplayOutput::CMD_DISPLAY);
+	analysedData.setCommand(Message::CMD_DISPLAY);
 	if(userInput.empty()) {
-		analysedData.setDisplayType(DisplayOutput::DISPLAY_ALL);
-	} else if(userInput == DisplayOutput::DISPLAY_COMPLETE || userInput == DisplayOutput::DISPLAY_ALL || userInput == DisplayOutput::DISPLAY_INCOMPLETE || userInput == DisplayOutput::DISPLAY_TODAY) {
+		analysedData.setDisplayType(Message::DISPLAY_ALL);
+	} else if(userInput == Message::DISPLAY_COMPLETE || userInput == Message::DISPLAY_ALL || userInput == Message::DISPLAY_INCOMPLETE || userInput == Message::DISPLAY_TODAY) {
 		analysedData.setDisplayType(userInput);
 	} else {
-		analysedData.setCommand(DisplayOutput::CMD_INVALID);
+		analysedData.setCommand(Message::CMD_INVALID);
 	}
 	return analysedData;
 }
 
 AnalysedData Parser::incompleteCMD(std::string userInput, const std::vector<Task*> &_displayList) {
 	AnalysedData analysedData;
-	analysedData.setCommand(DisplayOutput::CMD_INCOMPLETE);
+	analysedData.setCommand(Message::CMD_INCOMPLETE);
 	_index = _nlpSentenceParser.parseSentence(userInput.c_str(), _displayList);
 	analysedData.setIndexVector(_index);
 	return analysedData;
@@ -144,7 +144,7 @@ AnalysedData Parser::incompleteCMD(std::string userInput, const std::vector<Task
 
 AnalysedData Parser::completeCMD(std::string userInput, const std::vector<Task*> &_displayList) {
 	AnalysedData analysedData;
-	analysedData.setCommand(DisplayOutput::CMD_COMPLETE);
+	analysedData.setCommand(Message::CMD_COMPLETE);
 	_index = _nlpSentenceParser.parseSentence(userInput.c_str(), _displayList);
 	analysedData.setIndexVector(_index);
 	return analysedData;
@@ -152,7 +152,7 @@ AnalysedData Parser::completeCMD(std::string userInput, const std::vector<Task*>
 
 AnalysedData Parser::deleteCMD(std::string userInput, const std::vector<Task*> &_displayList) {
 	AnalysedData analysedData;
-	analysedData.setCommand(DisplayOutput::CMD_DELETE);
+	analysedData.setCommand(Message::CMD_DELETE);
 	_index = _nlpSentenceParser.parseSentence(userInput.c_str(), _displayList);
 	analysedData.setIndexVector(_index);
 	return analysedData;
@@ -176,7 +176,7 @@ AnalysedData Parser::editCMD(std::string userInput) {
 	_nlpDateParser.parseDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek);
 	descString = descString.trimmed();
 
-	analysedData.setCommand(DisplayOutput::CMD_EDIT);
+	analysedData.setCommand(Message::CMD_EDIT);
 	analysedData.setIndex(index);
 	analysedData.setTaskDesc(descString.toStdString());
 	analysedData.setStartDate(startDate);
@@ -202,7 +202,7 @@ AnalysedData Parser::addCMD(std::string userInput) {
 	_nlpDateParser.parseDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek);	
 	descString = descString.trimmed();
 
-	analysedData.setCommand(DisplayOutput::CMD_ADD);
+	analysedData.setCommand(Message::CMD_ADD);
 	analysedData.setTaskDesc(descString.toStdString());
 	analysedData.setStartDate(startDate);
 	analysedData.setStartTime(startTime);
