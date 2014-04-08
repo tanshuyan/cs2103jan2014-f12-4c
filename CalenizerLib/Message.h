@@ -35,9 +35,13 @@ public:
 	static const std::string MSG_INVALID_INDEX;
 	static const std::string MSG_INVALID_TIME;
 	static const std::string MSG_INVALID_DATE;
+	static const std::string MSG_INVALID_DATETIME;
 
 	static const std::string MSG_NOT_FOUND;
 	static const std::string MSG_EMPTY_FILE;
+	static const std::string MSG_LOAD_FILE;
+
+	static const std::string MSG_UNABLE_TO_CONVERT;
 	
 	static const std::string CMD_ADD;
 	static const std::string CMD_EDIT;

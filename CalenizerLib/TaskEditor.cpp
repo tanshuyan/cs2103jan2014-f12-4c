@@ -44,6 +44,11 @@ void TaskEditor::editFloat(Task* &task, std::string taskDesc, QDate startDate, Q
 		upgradeToTimed(task, startDate, startTime, endDate, endTime);
 		return;
 	}
+
+	Logger& logTaskEditor = Logger::getInstance();
+	DisplayOutput actionMsg;
+	logTaskEditor.addErrorLog(actionMsg.unableToConvertFeedback());
+	logTaskEditor.saveLog();
 	assert(false);
 	return;
 }
@@ -89,6 +94,11 @@ void TaskEditor::editDeadline(Task* &task, std::string taskDesc, QDate startDate
 		upgradeToTimed(task, startDate, startTime, endDate, endTime);
 		return;
 	}
+
+	Logger& logTaskEditor = Logger::getInstance();
+	DisplayOutput actionMsg;
+	logTaskEditor.addErrorLog(actionMsg.unableToConvertFeedback());
+	logTaskEditor.saveLog();
 	assert(false);
 	return;
 }

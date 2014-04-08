@@ -70,7 +70,7 @@ AnalysedData Parser::parse(std::string userInput, const std::vector<Task*> &_dis
 		AnalysedData analysedData;
 		analysedData.setCommand(Message::CMD_INVALID);
 		return analysedData;
-		break;
+		break; 
 	}
 	}
 
@@ -187,7 +187,6 @@ AnalysedData Parser::editCMD(std::string userInput) {
 	analysedData.setDayOfWeek(dayOfWeek);
 	return analysedData;
 }
-
 
 AnalysedData Parser::addCMD(std::string userInput) {
 	AnalysedData analysedData;

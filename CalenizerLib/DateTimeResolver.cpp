@@ -7,6 +7,7 @@ DateTimeResolver::DateTimeResolver(){
 	_dayStart.setHMS(0,0,0);
 	_dayEnd.setHMS(23,59,0);
 }
+
 bool DateTimeResolver::resolveAdd(AnalysedData &analysedData) {
 	QDate startDate = analysedData.getStartDate();
 	QTime startTime = analysedData.getStartTime();

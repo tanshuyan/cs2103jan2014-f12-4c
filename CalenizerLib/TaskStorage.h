@@ -14,6 +14,8 @@
 #include "TaskDeadline.h"
 #include "TaskFloat.h"
 #include "TaskTimed.h"
+#include "Logger.h"
+#include "DisplayOutput.h"
 
 class TaskStorage { 
 private:

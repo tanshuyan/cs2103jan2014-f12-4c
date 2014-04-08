@@ -26,11 +26,28 @@ DisplayOutput Logic::executeUserInput(std::string userInput) {
 		analysedData = _parser.parse(userInput, _displayList);
 		executeCommand(analysedData, displayOutput);
 	}
-	catch(InvalidDateTimeException &e){
+	catch(InvalidDateTimeException &e) {
 		displayOutput.setFeedBack(e.what());
 		displayTask(_currentDisplayType, displayOutput);
 	}
-	
+	catch(InvalidTaskIDException &e) {
+		displayOutput.setFeedBack(e.what());
+		displayTask(_currentDisplayType, displayOutput);
+	}
+	catch(CannotUndoException &e) {
+		displayOutput.setFeedBack(_actionMsg.undoFailureFeedback());
+		displayTask(_currentDisplayType, displayOutput);
+		Logger& logLogic = Logger::getInstance();
+		logLogic.addInfoLog(_actionMsg.undoFailureFeedback());
+		logLogic.saveLog();
+	}
+	catch(CannotRedoException &e) {
+		displayOutput.setFeedBack(_actionMsg.redoFailureFeedback());
+		displayTask(_currentDisplayType, displayOutput);
+		Logger& logLogic = Logger::getInstance();
+		logLogic.addInfoLog(_actionMsg.redoFailureFeedback());
+		logLogic.saveLog();
+	}
 	return displayOutput;
 }
 
@@ -111,7 +128,7 @@ void Logic::executeCommand(AnalysedData& analysedData, DisplayOutput& displayOut
 
 void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	if(!(_dateTimeResolver.resolveAdd(analysedData))) {
-		displayOutput.setFeedBack("input order of start and end date is wrong\n");
+		displayOutput.setFeedBack(_actionMsg.invalidDateTimeFeedback());
 		return;
 	} 
 
@@ -175,14 +192,14 @@ void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	int index = analysedData.getIndex();
 
 	if(!isValidIndex(index)) {
-		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
+		throw InvalidTaskIDException("Invalid task index");
 		return;
 	}
 
 	std::vector<Task*>::iterator taskToEdit = indexToIterator(index);
 
 	if(!_dateTimeResolver.resolveEdit(*taskToEdit, analysedData)) {
-		displayOutput.setFeedBack("input order of start and end date is wrong\n");
+		displayOutput.setFeedBack(_actionMsg.invalidDateTimeFeedback());
 		return;
 	} 
 		
@@ -351,27 +368,24 @@ void Logic::displayTask(AnalysedData analysedData, DisplayOutput& displayOutput)
 }
 
 void Logic::undo(DisplayOutput& displayOutput) {
-	Logger& logLogic = Logger::getInstance();
-
 	if(_History.undo(_taskList)){
 		sortTaskList();
 		_userStorage.writeFile(_taskList);
 		displayOutput.setFeedBack(_actionMsg.undoSuccessFeedback());
 	}
 	else{
-		displayOutput.setFeedBack(_actionMsg.undoFailureFeedback());
+		throw CannotUndoException("nothing left to undo");
 	}
 }
 
 void Logic::redo(DisplayOutput& displayOutput) {
-	Logger& logLogic = Logger::getInstance();
 	if(_History.redo(_taskList)){
 		sortTaskList();
 		_userStorage.writeFile(_taskList);
 		displayOutput.setFeedBack(_actionMsg.redoSuccessFeedback());
 	}
 	else{
-		displayOutput.setFeedBack(_actionMsg.undoFailureFeedback());
+		throw CannotRedoException("nothing left to redo");
 	}
 }
 
@@ -393,6 +407,7 @@ bool Logic::isValidIndex(int index) {
 
 void Logic::loadFileContent() {
 	_taskList.clear();
+	sortTaskList();
 	_userStorage.loadFile(_taskList);
 	_History.saveHistory(_taskList);
 }

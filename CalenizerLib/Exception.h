@@ -30,16 +30,4 @@ public:
         CannotRedoException();
         CannotRedoException(char* desc) EXCEPTION_CONSTRUCTOR
 };
-
-class InvalidDateStdStrException:public std::exception{
-public:
-        InvalidDateStdStrException();
-        InvalidDateStdStrException(char* desc) EXCEPTION_CONSTRUCTOR
-};
-
-class InvalidTimeStdStrException:public std::exception{
-public:
-        InvalidTimeStdStrException();
-        InvalidTimeStdStrException(char* desc) EXCEPTION_CONSTRUCTOR
-};
 #endif
