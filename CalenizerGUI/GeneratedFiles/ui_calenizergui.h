@@ -56,12 +56,12 @@ public:
     {
         if (CalenizerGUIClass->objectName().isEmpty())
             CalenizerGUIClass->setObjectName(QStringLiteral("CalenizerGUIClass"));
-        CalenizerGUIClass->resize(992, 510);
+        CalenizerGUIClass->resize(992, 519);
         centralWidget = new QWidget(CalenizerGUIClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(790, 0, 151, 61));
+        label->setGeometry(QRect(790, 10, 151, 61));
         QFont font;
         font.setFamily(QStringLiteral("Malgun Gothic"));
         font.setPointSize(12);
@@ -71,13 +71,13 @@ public:
         label->setLayoutDirection(Qt::RightToLeft);
         lineEdit = new QLineEdit(centralWidget);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
-        lineEdit->setGeometry(QRect(20, 40, 711, 31));
+        lineEdit->setGeometry(QRect(20, 50, 711, 31));
         QFont font1;
         font1.setFamily(QStringLiteral("Malgun Gothic"));
         lineEdit->setFont(font1);
         textEdit = new QTextEdit(centralWidget);
         textEdit->setObjectName(QStringLiteral("textEdit"));
-        textEdit->setGeometry(QRect(750, 220, 221, 241));
+        textEdit->setGeometry(QRect(750, 230, 221, 241));
         textEdit->setFont(font1);
         textEdit->setFocusPolicy(Qt::NoFocus);
         textEdit->setContextMenuPolicy(Qt::NoContextMenu);
@@ -97,7 +97,7 @@ public:
         label_2->setFont(font2);
         tableWidget = new QTableWidget(centralWidget);
         tableWidget->setObjectName(QStringLiteral("tableWidget"));
-        tableWidget->setGeometry(QRect(20, 110, 711, 351));
+        tableWidget->setGeometry(QRect(20, 120, 711, 351));
         QFont font3;
         font3.setFamily(QStringLiteral("Malgun Gothic"));
         font3.setPointSize(10);
@@ -123,12 +123,12 @@ public:
         tableWidget->verticalHeader()->setProperty("showSortIndicator", QVariant(true));
         calendarWidget = new QCalendarWidget(centralWidget);
         calendarWidget->setObjectName(QStringLiteral("calendarWidget"));
-        calendarWidget->setGeometry(QRect(750, 70, 221, 141));
+        calendarWidget->setGeometry(QRect(750, 80, 221, 141));
         calendarWidget->setFocusPolicy(Qt::NoFocus);
         calendarWidget->setAutoFillBackground(true);
         layoutWidget = new QWidget(centralWidget);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(25, 80, 708, 19));
+        layoutWidget->setGeometry(QRect(25, 90, 708, 19));
         horizontalLayout = new QHBoxLayout(layoutWidget);
         horizontalLayout->setSpacing(30);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
@@ -222,7 +222,7 @@ public:
     {
         CalenizerGUIClass->setWindowTitle(QApplication::translate("CalenizerGUIClass", "CalenizerGUI", 0));
         label->setText(QApplication::translate("CalenizerGUIClass", "a", 0));
-        label_2->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p align=\"center\"><span style=\" font-size:20pt; font-weight:600; color:#000000;\">Calenizer</span></p></body></html>", 0));
+        label_2->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p align=\"center\"><span style=\" font-size:20pt; color:#000000;\">Calenizer</span></p></body></html>", 0));
 #ifndef QT_NO_TOOLTIP
         tableWidget->setToolTip(QString());
 #endif // QT_NO_TOOLTIP

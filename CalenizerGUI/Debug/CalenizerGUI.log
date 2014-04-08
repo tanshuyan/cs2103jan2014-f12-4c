@@ -1,7 +1,6 @@
-﻿Build started 4/7/2014 9:31:41 PM.
+﻿Build started 4/8/2014 8:17:35 PM.
      1>Project "E:\NUS ISE\CS2103\repo\CalenizerGUI\CalenizerGUI.vcxproj" on node 2 (Build target(s)).
      1>CustomBuild:
-         Uic'ing calenizergui.ui...
          Rcc'ing calenizergui.qrc...
      1>RCC : warning : No resources in 'E:\NUS ISE\CS2103\repo\CalenizerGUI\calenizergui.qrc'.
          
@@ -24,4 +23,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:11.75
+Time Elapsed 00:00:07.88

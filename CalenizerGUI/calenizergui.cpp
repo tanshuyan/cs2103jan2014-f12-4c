@@ -43,7 +43,7 @@ CalenizerGUI::~CalenizerGUI()
 
 void CalenizerGUI::updateDateTime(){
 	QDateTime dateTime = QDateTime::currentDateTime();
-	QString dateTimeString = dateTime.toString("dd MMMM yyyy\nhh:mm");
+	QString dateTimeString = dateTime.toString("dd MMMM yyyy\nhh:mm ap");
 	ui.label->setText(dateTimeString);
 }
 
@@ -188,7 +188,7 @@ void CalenizerGUI::run(){
 	}	
 
 	QDateTime dateTime = QDateTime::currentDateTime();
-	QString dateTimeString = dateTime.toString("dd MMMM yyyy\nhh:mm");
+	QString dateTimeString = dateTime.toString("dd MMMM yyyy\nhh:mm ap");
 	ui.label->setText(dateTimeString);
 
 	ui.lineEdit->clear();
