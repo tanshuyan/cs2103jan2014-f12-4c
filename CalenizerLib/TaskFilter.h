@@ -22,7 +22,10 @@
 
 class TaskFilter {
 private:
-
+	bool isTaskType(std::string);
+	std::string toUpper(std::string);
+	std::string markTask(const Task* taskToBeMarked, DateTime currentDateTime);
+	void markDisplayList(const std::vector<Task*>& displayList, std::vector<std::string>& displayListStatus);
 public:
 	TaskFilter();
 	//filters out tasks by complete/incomplete (specify at the bool)
@@ -38,11 +41,6 @@ public:
 
 	//displays today tasks
 	bool search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, QDate, std::vector<std::string> &displayListStatus);
-
-	bool isTaskType(std::string);
-	std::string toUpper(std::string);
-	std::string markTask(const Task* taskToBeMarked, DateTime currentDateTime);
-	void markDisplayList(std::vector<Task*> &displayList, std::vector<std::string> &displayListStatus);
 };
 
 #endif

@@ -3,11 +3,9 @@
 
 #include "MultipleIndexParser.h"
 
-
 QRegExp MultipleIndexParser::RX_TO("(\\d+)\\s*(?:to|-|until|til)\\s*(\\d+)", Qt::CaseInsensitive);
 
 QRegExp MultipleIndexParser::RX_INDEX("(\\d+)");
-
 
 MultipleIndexParser::MultipleIndexParser() {
 }
@@ -26,7 +24,8 @@ std::vector<int> MultipleIndexParser::parseMultipleIndex(QString descString) {
 			start = end;
 			end = temp;
 		}
-		for(int i = start; i <= end; i++) { // eg: 7 to 11, populate 7,8,9,10,11 and store in the vector
+		// eg: 7 to 11, populate 7,8,9,10,11 and store in the vector
+		for(int i = start; i <= end; i++) {
 			_index.push_back(i);
 		}
 		descString.remove(pos, RX_TO.matchedLength());
@@ -45,7 +44,6 @@ std::vector<int> MultipleIndexParser::parseMultipleIndex(QString descString) {
 	std::sort(_index.begin(), _index.end()); 
 	// create a unique vector
 	_index.erase(std::unique(_index.begin(), _index.end()), _index.end()); 
-
 	return _index;
 }
 

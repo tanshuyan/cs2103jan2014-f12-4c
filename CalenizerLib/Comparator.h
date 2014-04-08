@@ -12,8 +12,6 @@
 #include "DateTime.h"
 
 class Comparator {
-private:
-
 public:
 	Comparator();
 

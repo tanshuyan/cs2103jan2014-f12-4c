@@ -6,13 +6,13 @@
 QRegExp NLPSentenceParser::RX_ALL("^\\s*(?:all)\\s*(?:the)?\\s*(?:tasks|events)?\\s*\\s*$", Qt::CaseInsensitive);
 QRegExp NLPSentenceParser::RX_BEGIN("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:begin|beginning|start|starting)\\s*(?:with)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
 QRegExp NLPSentenceParser::RX_END("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:end|ending)\\s*(?:with|in)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
-QRegExp NLPSentenceParser::RX_CONTAIN("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:contains?|containing)\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
-QRegExp NLPSentenceParser::RX_EXACT("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:are)?\\s*(?:matching|containing)(?:only)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_CONTAIN("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:contains?|containing|with)\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_EXACT("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:are)?\\s*(?:matching|containing)?(?:only)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
 
 NLPSentenceParser::NLPSentenceParser(){
 }
 
-std::vector<int> NLPSentenceParser::parseSentence(QString inputString, std::vector<Task*> _displayList){
+std::vector<int> NLPSentenceParser::parseSentence(QString inputString, const std::vector<Task*> &_displayList){
 	if(search(inputString, RX_ALL)){
 		return parseAll(_displayList);
 	}
@@ -43,17 +43,17 @@ bool NLPSentenceParser::search(QString inputString, QRegExp &rx){
 	return false;
 }
 
-std::vector<int> NLPSentenceParser::parseAll(std::vector<Task*> _displayList){
+std::vector<int> NLPSentenceParser::parseAll(const std::vector<Task*> &_displayList){
 	std::vector<int> indexList;
 	for(int i = 1; i <= _displayList.size(); i++) {
 		indexList.push_back(i);
 	}
 	return indexList;
 }
-std::vector<int> NLPSentenceParser::parseSearchTerm(std::vector<Task*> _displayList, QRegExp &rx){
+std::vector<int> NLPSentenceParser::parseSearchTerm(const std::vector<Task*> &_displayList, QRegExp &rx){
 	std::vector<int> indexList;
 	int i = 1;
-	for(std::vector<Task*>::iterator iter = _displayList.begin(); iter != _displayList.end(); iter++) {
+	for(std::vector<Task*>::const_iterator iter = _displayList.begin(); iter != _displayList.end(); iter++) {
 		if(rx.indexIn((*iter)->getTaskDesc().c_str()) != -1){
 			indexList.push_back(i);
 		}

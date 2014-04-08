@@ -1,6 +1,6 @@
 //LogicParser.h 
 //v 1.0
-// 
+
 
 #ifndef LOGICPARSER_H
 #define LOGICPARSER_H
@@ -15,7 +15,6 @@ private:
 
 public:
 	LogicParser();
-	AnalysedData parse(std::string, std::vector<Task*> _displayList);
-
+	AnalysedData parse(std::string, const std::vector<Task*> &_displayList);
 };
 #endif

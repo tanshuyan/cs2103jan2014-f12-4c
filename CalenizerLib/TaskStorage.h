@@ -28,7 +28,5 @@ public:
 
 	void writeFile(std::vector<Task*>);
 	void loadFile(std::vector<Task*>&);
-
 };
-
 #endif
