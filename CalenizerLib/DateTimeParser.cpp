@@ -19,9 +19,9 @@ QRegExp DateTimeParser::RX_LONG_MONTH_DAY("(?:at|on|by)?\\s*(january|february|ma
 QRegExp DateTimeParser::RX_SHORT_WEEK_DAYS("(?:on|by)?\\s*(?:the|this)?\\s*(?:next|coming)?\\s*(sun|mon|tue|tues|wed|thu|thur|thurs|fri|sat)\\b",Qt::CaseInsensitive);
 QRegExp DateTimeParser::RX_LONG_WEEK_DAYS("(?:on|by)?\\s*(?:the|this)?\\s*(?:next|coming)?\\s*(sunday|monday|tuesday|wednesday|thursday|friday|saturday)",Qt::CaseInsensitive);
 QRegExp DateTimeParser::RX_TODAY("(?:by)?\\s*(today|tdy|td)",Qt::CaseInsensitive);
-QRegExp DateTimeParser::RX_TOMORROW("(?:by)?\\s*(tomorrow|tommorrow|tommorow|tmr)",Qt::CaseInsensitive);
-QRegExp DateTimeParser::RX_YESTERDAY("(?:since)?\\s*(yesterday|ystd)",Qt::CaseInsensitive);
-QRegExp DateTimeParser::RX_DAY_AFTER("(?:by)?\\s*(the)?\\s*(day)\\s*(after)\\s*(tomorrow|tommorrow|tommorow|tmr)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_TOMORROW("(?:by)?\\s*(tomorrow|tommorrow|tommorow|tmr|tomolo|tml)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_YESTERDAY("(?:since)?\\s*(yesterday|ystd|ytd|yest)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_DAY_AFTER("(?:by)?\\s*(the)?\\s*(day)\\s*(after|aft)\\s*(tomorrow|tommorrow|tommorow|tmr)",Qt::CaseInsensitive);
 QRegExp DateTimeParser::RX_NEXT_WEEK("(?:by)?\\s*(next|nxt)\\s*(week|wk)",Qt::CaseInsensitive);
 
 QRegExp DateTimeParser::RX_DAYWORDS("(("+RX_TODAY.pattern()
@@ -48,11 +48,11 @@ bool DateTimeParser::parseString(QString input, QDate &outputDate, QTime &output
 	}
 	bool isInvalidTime = !extractTime(input, outputTime);
 	if (isInvalidTime){
-		throw (10);
+		throw (InvalidDateTimeException("Invalid time entered"));
 	}
 	bool isInvalidDate = !extractDate(input, outputDate, dayOfWeek);
 	if (isInvalidDate){
-		throw (20);
+		throw (InvalidDateTimeException("Invalid date entered"));
 	}
 	bool isTaskDesc = !input.trimmed().isEmpty();
 	if (isTaskDesc){

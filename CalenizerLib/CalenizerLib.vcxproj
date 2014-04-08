@@ -86,6 +86,7 @@
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="LogicParser.cpp" />
+    <ClCompile Include="Message.cpp" />
     <ClCompile Include="MultipleIndexParser.cpp" />
     <ClCompile Include="NLPDateFunctions.cpp" />
     <ClCompile Include="NLPDateParser.cpp" />
@@ -97,7 +98,6 @@
     <ClCompile Include="TaskFloat.cpp" />
     <ClCompile Include="TaskStorage.cpp" />
     <ClCompile Include="TaskTimed.cpp" />
-    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnalysedData.h" />
@@ -107,6 +107,7 @@
     <ClInclude Include="DateTimeResolver.h" />
     <ClInclude Include="DisplayOutput.h" />
     <ClInclude Include="Exception.h" />
+    <ClInclude Include="Message.h" />
     <ClInclude Include="NLPSentenceParser.h" />
     <ClInclude Include="History.h" />
     <ClInclude Include="Logger.h" />
@@ -123,7 +124,6 @@
     <ClInclude Include="TaskFloat.h" />
     <ClInclude Include="TaskStorage.h" />
     <ClInclude Include="TaskTimed.h" />
-    <ClInclude Include="UI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

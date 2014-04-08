@@ -48,6 +48,5 @@ public:
 	bool operator!=(DateTime datetimeToCompare);
 	bool operator<(DateTime datetimeToCompare);
 	bool operator>(DateTime datetimeToCompare);
-
 };
 #endif

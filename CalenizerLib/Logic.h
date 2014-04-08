@@ -1,7 +1,8 @@
 // Logic.h
-// v 2.1
+// v 2.3
 // updated logic to accomodate new architecture
 // added sort function
+// refactored some code
 #pragma once
 #ifndef LOGIC_H
 #define LOGIC_H
@@ -27,6 +28,8 @@
 #include "Comparator.h"
 #include "DateTimeResolver.h"
 #include "TaskEditor.h"
+#include "Exception.h"
+#include "Message.h"
 
 class Logic {
 private:
@@ -44,6 +47,8 @@ private:
 
 	bool _loadStatus;
 	bool _displayStatus;
+
+	void executeCommand(AnalysedData&, DisplayOutput&);
 
 	void addTask(AnalysedData, DisplayOutput&);
 	void editTask(AnalysedData, DisplayOutput&);
@@ -63,9 +68,6 @@ private:
 public:
 	Logic();
 	~Logic();
-
 	DisplayOutput executeUserInput(std::string);
-	
 };
-
 #endif
