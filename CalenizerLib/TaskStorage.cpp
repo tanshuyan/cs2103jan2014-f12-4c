@@ -69,5 +69,9 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 			taskList.push_back(newTaskTimed);
 		}
 	}
+	Logger& logStorage = Logger::getInstance();
+	DisplayOutput actionMsg;
+	logStorage.addInfoLog(actionMsg.loadFileFeedback());
+	logStorage.saveLog();
 	_fileInput.close();
 }

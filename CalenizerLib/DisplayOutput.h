@@ -66,10 +66,14 @@ public:
 	std::string invalidIndexFeedback();
 	std::string invalidTimeFeedback();
 	std::string invalidDateFeedback();
+	std::string invalidDateTimeFeedback();
 
 	std::string displayCompleteFeedback();
 	std::string displayIncompleteFeedback();
 	std::string displayTodayFeedback();
 	std::string displayAllFeedback();
+
+	std::string loadFileFeedback();
+	std::string unableToConvertFeedback();
 };
 #endif
