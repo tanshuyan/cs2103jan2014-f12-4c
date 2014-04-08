@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_CalenizerGUI_t {
-    QByteArrayData data[7];
-    char stringdata[70];
+    QByteArrayData data[9];
+    char stringdata[90];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -35,10 +35,13 @@ QT_MOC_LITERAL(2, 17, 0),
 QT_MOC_LITERAL(3, 18, 13),
 QT_MOC_LITERAL(4, 32, 10),
 QT_MOC_LITERAL(5, 43, 10),
-QT_MOC_LITERAL(6, 54, 14)
+QT_MOC_LITERAL(6, 54, 14),
+QT_MOC_LITERAL(7, 69, 8),
+QT_MOC_LITERAL(8, 78, 10)
     },
     "CalenizerGUI\0run\0\0checkAlphabet\0"
     "resetInput\0displayAll\0updateDateTime\0"
+    "scrollUp\0scrollDown\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -48,7 +51,7 @@ static const uint qt_meta_data_CalenizerGUI[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -56,13 +59,17 @@ static const uint qt_meta_data_CalenizerGUI[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   39,    2, 0x08,
-       3,    0,   40,    2, 0x08,
-       4,    0,   41,    2, 0x08,
-       5,    0,   42,    2, 0x08,
-       6,    0,   43,    2, 0x08,
+       1,    0,   49,    2, 0x08,
+       3,    0,   50,    2, 0x08,
+       4,    0,   51,    2, 0x08,
+       5,    0,   52,    2, 0x08,
+       6,    0,   53,    2, 0x08,
+       7,    0,   54,    2, 0x08,
+       8,    0,   55,    2, 0x08,
 
  // slots: parameters
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -82,6 +89,8 @@ void CalenizerGUI::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 2: _t->resetInput(); break;
         case 3: _t->displayAll(); break;
         case 4: _t->updateDateTime(); break;
+        case 5: _t->scrollUp(); break;
+        case 6: _t->scrollDown(); break;
         default: ;
         }
     }
@@ -113,13 +122,13 @@ int CalenizerGUI::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 5)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 7;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 5)
+        if (_id < 7)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 5;
+        _id -= 7;
     }
     return _id;
 }

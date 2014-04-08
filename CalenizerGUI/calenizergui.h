@@ -6,6 +6,7 @@
 #include <QShortcut>
 #include <QCursor>
 #include <QTimer>
+#include <QScrollbar>
 #include <iostream>
 #include "ui_calenizergui.h"
 #include "DisplayOutput.h"
@@ -28,6 +29,8 @@ private slots:
 	void resetInput();
 	void displayAll(); 
 	void updateDateTime();
+	void scrollUp();
+	void scrollDown();
 
 private:
 	Ui::CalenizerGUIClass ui;

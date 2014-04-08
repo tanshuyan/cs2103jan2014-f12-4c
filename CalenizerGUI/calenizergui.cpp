@@ -59,6 +59,8 @@ void CalenizerGUI:: initialiseConnections() {
 
 void CalenizerGUI::initialiseShortcuts(){
 	new QShortcut(Qt::Key_Escape, this, SLOT(resetInput()));
+	new QShortcut(Qt::Key_Up, this, SLOT(scrollUp()));
+	new QShortcut(Qt::Key_Down, this, SLOT(scrollDown()));
 }
 
 void CalenizerGUI::initialiseTableStyle(){
@@ -267,4 +269,12 @@ void CalenizerGUI::fixColumnWidth(QTableWidget *table) {
 		table->horizontalHeader()->setSectionResizeMode(col, QHeaderView::Fixed);
 	}
 
+}
+
+void CalenizerGUI::scrollUp() {
+	ui.tableWidget->verticalScrollBar()->setSliderPosition(ui.tableWidget->verticalScrollBar()->sliderPosition() - ui.tableWidget->verticalScrollBar()->pageStep());
+}
+
+void CalenizerGUI::scrollDown() {
+	ui.tableWidget->verticalScrollBar()->setSliderPosition(ui.tableWidget->verticalScrollBar()->sliderPosition() + ui.tableWidget->verticalScrollBar()->pageStep());
 }
