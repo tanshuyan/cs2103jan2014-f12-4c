@@ -10,24 +10,24 @@
 class InvalidDateTimeException:public std::exception{
 public:
         InvalidDateTimeException();
-        InvalidDateTimeException(char* desc) EXCEPTION_CONSTRUCTOR
+        InvalidDateTimeException(const char* desc) EXCEPTION_CONSTRUCTOR
 };
 
 class InvalidTaskIDException:public std::exception{
 public:
         InvalidTaskIDException();
-        InvalidTaskIDException(char* desc) EXCEPTION_CONSTRUCTOR
+        InvalidTaskIDException(const char* desc) EXCEPTION_CONSTRUCTOR
 };
 
 class CannotUndoException:public std::exception{
 public:
         CannotUndoException();
-        CannotUndoException(char* desc) EXCEPTION_CONSTRUCTOR
+        CannotUndoException(const char* desc) EXCEPTION_CONSTRUCTOR
 };
 
 class CannotRedoException:public std::exception{
 public:
         CannotRedoException();
-        CannotRedoException(char* desc) EXCEPTION_CONSTRUCTOR
+        CannotRedoException(const char* desc) EXCEPTION_CONSTRUCTOR
 };
 #endif
