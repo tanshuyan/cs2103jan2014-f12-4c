@@ -35,14 +35,14 @@ DisplayOutput Logic::executeUserInput(std::string userInput) {
 		displayTask(_currentDisplayType, displayOutput);
 	}
 	catch(CannotUndoException &e) {
-		displayOutput.setFeedBack(_actionMsg.undoFailureFeedback());
+		displayOutput.setFeedBack(e.what());
 		displayTask(_currentDisplayType, displayOutput);
 		Logger& logLogic = Logger::getInstance();
 		logLogic.addInfoLog(_actionMsg.undoFailureFeedback());
 		logLogic.saveLog();
 	}
 	catch(CannotRedoException &e) {
-		displayOutput.setFeedBack(_actionMsg.redoFailureFeedback());
+		displayOutput.setFeedBack(e.what());
 		displayTask(_currentDisplayType, displayOutput);
 		Logger& logLogic = Logger::getInstance();
 		logLogic.addInfoLog(_actionMsg.redoFailureFeedback());
@@ -192,7 +192,7 @@ void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	int index = analysedData.getIndex();
 
 	if(!isValidIndex(index)) {
-		throw InvalidTaskIDException("Invalid task index");
+		throw InvalidTaskIDException(_actionMsg.invalidIndexFeedback().c_str());
 		return;
 	}
 
@@ -374,7 +374,7 @@ void Logic::undo(DisplayOutput& displayOutput) {
 		displayOutput.setFeedBack(_actionMsg.undoSuccessFeedback());
 	}
 	else{
-		throw CannotUndoException("nothing left to undo");
+		throw CannotUndoException(_actionMsg.undoFailureFeedback().c_str());
 	}
 }
 
@@ -385,7 +385,7 @@ void Logic::redo(DisplayOutput& displayOutput) {
 		displayOutput.setFeedBack(_actionMsg.redoSuccessFeedback());
 	}
 	else{
-		throw CannotRedoException("nothing left to redo");
+		throw CannotRedoException(_actionMsg.redoFailureFeedback().c_str());
 	}
 }
 
