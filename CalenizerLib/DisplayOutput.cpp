@@ -168,6 +168,11 @@ std::string DisplayOutput::invalidDateFeedback(){
 	return buffer;
 }
 
+std::string DisplayOutput::invalidDateTimeFeedback(){
+	sprintf_s(buffer, Message::MSG_INVALID_DATETIME.c_str());
+	return buffer;
+}
+
 std::string DisplayOutput::completeSuccessFeedback(std::string userInput){
 	sprintf_s(buffer, Message::MSG_COMPLETE_SUCCESS.c_str(), userInput.c_str());
 	return buffer;
@@ -215,3 +220,12 @@ std::string DisplayOutput::displayAllFeedback(){
 	return buffer;
 }
 
+std::string DisplayOutput::loadFileFeedback(){
+	sprintf_s(buffer, Message::MSG_LOAD_FILE.c_str(), _programName.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::unableToConvertFeedback(){
+	sprintf_s(buffer, Message::MSG_UNABLE_TO_CONVERT.c_str());
+	return buffer;
+}

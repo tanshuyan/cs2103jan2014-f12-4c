@@ -2,6 +2,7 @@
 //v 1.2
 #include "DateTime.h"
 #include <QDateTime>
+#include <assert.h>
 #include "Task.h"
 #include "TaskDeadline.h"
 #include "TaskTimed.h"
@@ -9,7 +10,8 @@
 #include "TaskDeadline.h"
 #include "TaskFloat.h"
 #include "TaskTimed.h"
-#include <assert.h>
+#include "Logger.h"
+#include "DisplayOutput.h"
 
 #ifndef TASKEDITOR
 #define TASKEDITOR
