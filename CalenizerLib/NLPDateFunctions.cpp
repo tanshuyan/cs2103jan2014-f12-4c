@@ -50,8 +50,8 @@ bool NLPDateFunctions::searchUntilFrom(QString &descString, QDate &startDate, QT
 	bool fromStringIsValid;
 	bool untilStringIsValid;
 	RX_UNTIL_FROM.lastIndexIn(descString);
-	fromStringIsValid = _dateTimeParser.parseString(RX_UNTIL_FROM.cap(1), startDate, startTime);
-	untilStringIsValid = _dateTimeParser.parseString(RX_UNTIL_FROM.cap(2), endDate, endTime, dayOfWeek);
+	fromStringIsValid = _dateTimeParser.parseString(RX_UNTIL_FROM.cap(2), startDate, startTime);
+	untilStringIsValid = _dateTimeParser.parseString(RX_UNTIL_FROM.cap(1), endDate, endTime, dayOfWeek);
 	if (fromStringIsValid && untilStringIsValid){
 		descString.truncate(RX_UNTIL_FROM.pos());
 		descString = descString.trimmed();
@@ -66,8 +66,8 @@ bool NLPDateFunctions::searchOnUntil(QString &descString, QDate &startDate, QTim
 	bool fromStringIsValid;
 	bool untilStringIsValid;
 	RX_ON_UNTIL.lastIndexIn(descString);
-	fromStringIsValid = _dateTimeParser.parseString(RX_ON_UNTIL.cap(2), startDate, startTime);
-	untilStringIsValid = _dateTimeParser.parseString(RX_ON_UNTIL.cap(1), endDate, endTime, dayOfWeek);
+	fromStringIsValid = _dateTimeParser.parseString(RX_ON_UNTIL.cap(1), startDate, startTime);
+	untilStringIsValid = _dateTimeParser.parseString(RX_ON_UNTIL.cap(2), endDate, endTime, dayOfWeek);
 	if (fromStringIsValid && untilStringIsValid){
 		descString.truncate(RX_ON_UNTIL.pos());
 		descString = descString.trimmed();
