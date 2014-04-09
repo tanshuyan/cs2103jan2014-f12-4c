@@ -33,7 +33,6 @@ CalenizerGUI::CalenizerGUI(QWidget *parent)
 	displayAll();
 	initialiseTableStyle();
 	initialiseShortcuts();
-	_g_current_row = 0;	
 }
 
 CalenizerGUI::~CalenizerGUI()
@@ -64,11 +63,6 @@ void CalenizerGUI::initialiseShortcuts(){
 }
 
 void CalenizerGUI::initialiseTableStyle(){
-	
-	//defensive coding
-	//if(palette !=NULL){
-		//delete palette;
-	//}
 
 	palette = new QPalette();
 	palette->setColor(QPalette::WindowText,Qt::black);
@@ -84,19 +78,13 @@ void CalenizerGUI::initialiseTableStyle(){
 
 	ui.textEdit->setTextColor(Qt::black);
 
-	ui.label->setStyleSheet (//"border-style: outset;"
-							//"border-width: 2px;"
-							//"border-radius: 10px;"
-							"border-color: white;"
-							"padding: 2px;"
-							//"background-color: white"
-							);
+	ui.label->setStyleSheet ("border-color: white;"
+							"padding: 2px;");
 
 	ui.textEdit->setStyleSheet ("border-style: outset;"
 								"border-width: 2px;"
 								"border-radius: 10px;"
 								"border-color: white;");
-								//"padding: 5px;");
 
 	ui.lineEdit->setStyleSheet ("border-style: outset;"
 								"border-width: 2px;"
@@ -113,6 +101,7 @@ void CalenizerGUI::initialiseTableStyle(){
 	setStyleSheet("background-color:#EEF5F8;");
 }
 
+//this function get the feedback message from every action that the user carried out
 void CalenizerGUI::getFeedback(DisplayOutput displayoutput){
 	QString str = QString::fromStdString(displayoutput.getFeedBack());
 	if (checkWord(str)) {
@@ -129,6 +118,7 @@ bool CalenizerGUI:: checkWord(QString input){
 	return (input.contains("invalid", Qt::CaseInsensitive));
 }
 
+//this function get the vector of string to be displayed and separate it individually according to each category in the column
 void CalenizerGUI::getTask(DisplayOutput displayoutput, int row){
 
 		std::string initialString = displayoutput.getDisplay().at(row);
@@ -208,6 +198,7 @@ void CalenizerGUI::displayAll() {
 	}
 }
 
+//this function check the first alphabet that user type and auto complete when the command is valid
 void CalenizerGUI::checkAlphabet() {
 
 	std::string text = ui.lineEdit->text().toStdString();
