@@ -6,6 +6,7 @@
 #include <QShortcut>
 #include <QCursor>
 #include <QTimer>
+#include <QScrollbar>
 #include <iostream>
 #include "ui_calenizergui.h"
 #include "DisplayOutput.h"
@@ -19,15 +20,14 @@ public:
 	CalenizerGUI(QWidget *parent = 0);
 	~CalenizerGUI();
 
-	//void displayTasks(std::vector<Task*>* displayList);
-
 private slots:
-	//void on_lineEdit_returnPressed();
 	void run();
 	void checkAlphabet();
 	void resetInput();
 	void displayAll(); 
 	void updateDateTime();
+	void scrollUp();
+	void scrollDown();
 
 private:
 	Ui::CalenizerGUIClass ui;
@@ -46,9 +46,6 @@ private:
 	std::string setStatus(std::string);
 
 	QPalette* palette;
-	//QLineEdit* line;
-
-	int _g_current_row;
 	Logic _g_logic;
 
 	static const QString ADD_MSG;
