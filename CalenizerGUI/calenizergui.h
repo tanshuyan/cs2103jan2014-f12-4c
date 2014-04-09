@@ -20,10 +20,7 @@ public:
 	CalenizerGUI(QWidget *parent = 0);
 	~CalenizerGUI();
 
-	//void displayTasks(std::vector<Task*>* displayList);
-
 private slots:
-	//void on_lineEdit_returnPressed();
 	void run();
 	void checkAlphabet();
 	void resetInput();
@@ -49,9 +46,6 @@ private:
 	std::string setStatus(std::string);
 
 	QPalette* palette;
-	//QLineEdit* line;
-
-	int _g_current_row;
 	Logic _g_logic;
 
 	static const QString ADD_MSG;
