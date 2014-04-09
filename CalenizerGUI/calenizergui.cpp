@@ -96,6 +96,50 @@ void CalenizerGUI::initialiseTableStyle(){
 	ui.calendarWidget->setStyleSheet("color: black");
 	ui.calendarWidget->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
 
+	ui.tableWidget->verticalScrollBar()->setStyleSheet("QScrollBar:vertical { border: none; background:white; width:10px; margin: 0px 0px 0px 0px; }"
+	"QScrollBar::handle:vertical {"
+    "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+    "    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
+    "    min-height: 0px;"
+    ""
+    "}"
+	"QScrollBar::add-line:vertical {"
+    "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+    "    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
+    "    height: px;"
+    "    subcontrol-position: bottom;"
+    "    subcontrol-origin: margin;"
+    "}"
+	"QScrollBar::sub-line:vertical {"
+    "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+    "    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
+    "    height: 0px;"
+    "    subcontrol-position: top;"
+    "    subcontrol-origin: margin;"
+    "}");
+
+	ui.textEdit->verticalScrollBar()->setStyleSheet("QScrollBar:vertical { border: 1px solid white; background:white; width:10px; margin: 0px 0px 0px 0px; }"
+	"QScrollBar::handle:vertical {"
+    "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+    "    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
+    "    min-height: 0px;"
+    ""
+    "}"
+	"QScrollBar::add-line:vertical {"
+    "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+    "    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
+    "    height: px;"
+    "    subcontrol-position: bottom;"
+    "    subcontrol-origin: margin;"
+    "}"
+	"QScrollBar::sub-line:vertical {"
+    "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+    "    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
+    "    height: 0px;"
+    "    subcontrol-position: top;"
+    "    subcontrol-origin: margin;"
+    "}");
+
 	ui.label->setAlignment(Qt::AlignCenter);
 
 	setStyleSheet("background-color:#EEF5F8;");

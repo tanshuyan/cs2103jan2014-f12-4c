@@ -56,7 +56,7 @@ public:
     {
         if (CalenizerGUIClass->objectName().isEmpty())
             CalenizerGUIClass->setObjectName(QStringLiteral("CalenizerGUIClass"));
-        CalenizerGUIClass->resize(992, 519);
+        CalenizerGUIClass->resize(992, 521);
         centralWidget = new QWidget(CalenizerGUIClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         label = new QLabel(centralWidget);
@@ -222,7 +222,7 @@ public:
     {
         CalenizerGUIClass->setWindowTitle(QApplication::translate("CalenizerGUIClass", "CalenizerGUI", 0));
         label->setText(QApplication::translate("CalenizerGUIClass", "a", 0));
-        label_2->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p align=\"center\"><span style=\" font-size:20pt; color:#000000;\">Calenizer</span></p></body></html>", 0));
+        label_2->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p align=\"center\"><span style=\" font-size:22pt; color:#000000;\">Calenizer</span></p></body></html>", 0));
 #ifndef QT_NO_TOOLTIP
         tableWidget->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
