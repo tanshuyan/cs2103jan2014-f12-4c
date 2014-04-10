@@ -4,17 +4,28 @@
 
 #include "DisplayOutput.h"
 
+const std::string DisplayOutput::EMPTY = "";
+
 DisplayOutput::DisplayOutput() {
-}
+} 
 
 void DisplayOutput::displayTasks(std::vector<Task*> displayList){
 	int counter = 1;
-	_displayList.clear();
+
+	//ensure it is cleared before displaying new list
+	if(!_displayListStatus.empty()){
+		_displayListStatus.clear();
+	}
+
 	for(std::vector<Task*>::iterator iter = displayList.begin(); iter != displayList.end();){
 		//Numbering
 		std::stringstream output;
 		output << counter << ". ";
 		counter++;
+
+		//assertion to ensure there is no empty task displayed
+		assert(*iter != NULL);
+
 		output << (*iter)->outputToString();
 		iter++;
 		_displayList.push_back(output.str());
@@ -22,6 +33,7 @@ void DisplayOutput::displayTasks(std::vector<Task*> displayList){
 }
 
 void DisplayOutput::setFeedBack(std::string feedback) {
+	assert(feedback != EMPTY);
 	_feedback = feedback;
 }
 /*
@@ -44,7 +56,10 @@ void DisplayOutput::setDisplayStatus(bool displayStatus) {
 }
 
 void DisplayOutput::setDisplayListStatus(std::vector<std::string> displayListStatus) {
-	_displayListStatus.clear();
+	//to ensure it is clear
+	if(!_displayListStatus.empty()){
+		_displayListStatus.clear();
+	}
 	_displayListStatus = displayListStatus;
 }
 
@@ -66,6 +81,7 @@ bool DisplayOutput::getDisplayStatus() {
 
 
 void DisplayOutput::displayToUser(std::string output) {
+	assert(output != EMPTY);
 	std::cout << output;
 }
 
@@ -81,9 +97,9 @@ std::string DisplayOutput::deleteMultipleFeedback(int userInput) {
 }
 
 std::string DisplayOutput::intToString(int userInput){
-  std::stringstream ss;
-   ss << userInput;
-   return ss.str();
+	std::stringstream ss;
+	ss << userInput;
+	return ss.str();
 }
 
 std::string DisplayOutput::addFeedback(std::string userInput) {
