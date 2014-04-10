@@ -7,7 +7,7 @@ QRegExp NLPSentenceParser::RX_ALL("^\\s*(?:all)\\s*(?:the)?\\s*(?:tasks|events)?
 QRegExp NLPSentenceParser::RX_BEGIN("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:begin|beginning|start|starting)\\s*(?:with)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
 QRegExp NLPSentenceParser::RX_END("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:end|ending)\\s*(?:with|in)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
 QRegExp NLPSentenceParser::RX_CONTAIN("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:contains?|containing|with)\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
-QRegExp NLPSentenceParser::RX_EXACT("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:are)?\\s*(?:matching|containing)?(?:only)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_EXACT("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:are)?\\s*(?:match|matching|containing)?(?:only)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
 
 NLPSentenceParser::NLPSentenceParser(){
 }
