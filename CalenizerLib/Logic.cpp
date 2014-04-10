@@ -118,6 +118,7 @@ void Logic::executeCommand(AnalysedData& analysedData, DisplayOutput& displayOut
 
 	if(analysedData.getCommand() == Message::CMD_EXIT) {
 		displayOutput.setFeedBack(Message::CMD_EXIT);
+		exit(0);
 	}
 
 	if(analysedData.getCommand() == Message::CMD_INVALID) {

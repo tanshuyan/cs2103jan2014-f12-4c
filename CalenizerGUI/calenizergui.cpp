@@ -264,11 +264,11 @@ void CalenizerGUI::checkAlphabet() {
 		} else if (text.at(0) == 's' && text.length() <= 7) {
 			ui.lineEdit->setText(SEARCH_MSG + " ");
 		} else if (text.at(0) == 'u') {
-			ui.lineEdit->setText(UNDO_MSG + " ");
+			ui.lineEdit->setText(UNDO_MSG);
 		} else if (text.at(0) == 'v' && text.length() <= 5) {
 			ui.lineEdit->setText(VIEW_MSG + " ");
 		} else if (text.at(0) == 'q' && text.length() <= 5) {
-			ui.lineEdit->setText(QUIT_MSG + " ");
+			ui.lineEdit->setText(QUIT_MSG);
 		}
 	}
 }
