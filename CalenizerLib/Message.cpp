@@ -29,8 +29,9 @@ const std::string Message::MSG_INVALID_DATE = "Invalid date\n";
 const std::string Message::MSG_INVALID_DATETIME = "Invalid input order of start and end date\n";
 
 const std::string Message::MSG_UNABLE_TO_CONVERT = "Task is unable to be converted\n";
-
 const std::string Message::MSG_LOAD_FILE = "All tasks loaded\n";
+const std::string Message::MSG_NOTHING_DISPLAY = "Invalid: nothing can be shown\n";
+
 const std::string Message::CMD_ADD = "add";
 const std::string Message::CMD_EDIT = "edit";
 const std::string Message::CMD_DELETE = "delete";
