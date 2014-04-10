@@ -4,10 +4,6 @@
 
 #include "DisplayOutput.h"
 
-const std::string DisplayOutput:: _programName = "Calenizer";	
-const std::string DisplayOutput::MSG_WELCOME = "Welcome to %s. At your service.";
-const std::string DisplayOutput::MSG_USERPROMPT= "What would you like %s to do? Give your command: ";
-
 DisplayOutput::DisplayOutput() {
 }
 
@@ -28,7 +24,7 @@ void DisplayOutput::displayTasks(std::vector<Task*> displayList){
 void DisplayOutput::setFeedBack(std::string feedback) {
 	_feedback = feedback;
 }
-
+/*
 void DisplayOutput::setFeedBack(std::vector<int> feedback) {
 	std::stringstream output;
 	for(std::vector<int>::iterator iter = feedback.begin(); iter!=feedback.end(); iter++) {
@@ -41,6 +37,7 @@ void DisplayOutput::setFeedBack(std::vector<int> feedback) {
 	}
 	_feedback = output.str();
 }
+*/
 
 void DisplayOutput::setDisplayStatus(bool displayStatus) {
 	_displayStatus = displayStatus;
@@ -67,38 +64,19 @@ bool DisplayOutput::getDisplayStatus() {
 	return _displayStatus;
 }
 
-std::string DisplayOutput::welcomeMsg(){
-	sprintf_s(buffer, MSG_WELCOME.c_str(), _programName.c_str());
-	return buffer;
-}
-
-std::string DisplayOutput::promptMsg(){
-	sprintf_s(buffer, MSG_USERPROMPT.c_str(), _programName.c_str());
-	return buffer;
-}
 
 void DisplayOutput::displayToUser(std::string output) {
 	std::cout << output;
-
-	//no newline after "command: "
-	if(output != MSG_USERPROMPT){
-		std::cout << std::endl;
-	}
-}
-
-std::string DisplayOutput::emptyFeedback() {
-	sprintf_s(buffer, Message::MSG_EMPTY_FILE.c_str(), _programName.c_str());
-	return buffer;
 }
 
 std::string DisplayOutput::deleteFeedback(std::string userInput) {
-	sprintf_s(buffer, Message::MSG_DELETE_SUCCESS.c_str(), _programName.c_str(), userInput.c_str());
+	sprintf_s(buffer, Message::MSG_DELETE_SUCCESS.c_str(), userInput.c_str());
 	return buffer;
 }
 
 std::string DisplayOutput::deleteMultipleFeedback(int userInput) {
 	std::string numofTasks= intToString(userInput);
-	sprintf_s(buffer, Message::MSG_DELETE_MULTIPLE_SUCCESS.c_str(), _programName.c_str(), numofTasks.c_str());
+	sprintf_s(buffer, Message::MSG_DELETE_MULTIPLE_SUCCESS.c_str(), numofTasks.c_str());
 	return buffer;
 }
 
@@ -109,7 +87,7 @@ std::string DisplayOutput::intToString(int userInput){
 }
 
 std::string DisplayOutput::addFeedback(std::string userInput) {
-	sprintf_s(buffer, Message::MSG_ADD_SUCCESS.c_str(), _programName.c_str(), userInput.c_str());
+	sprintf_s(buffer, Message::MSG_ADD_SUCCESS.c_str(), userInput.c_str());
 	return buffer;
 }
 
@@ -118,38 +96,33 @@ std::string DisplayOutput::invalidFeedback(){
 	return buffer;
 }
 
-std::string DisplayOutput::notFoundFeedback(std::string userInput){
-	sprintf_s(buffer, Message::MSG_NOT_FOUND.c_str(), userInput.c_str(), _programName.c_str());
-	return buffer;
-}
-
 std::string DisplayOutput::undoSuccessFeedback(){
-	sprintf_s(buffer, Message::MSG_UNDO_SUCCESS.c_str(), _programName.c_str());
+	sprintf_s(buffer, Message::MSG_UNDO_SUCCESS.c_str());
 	return buffer;
 }
 
 std::string DisplayOutput::undoFailureFeedback(){
-	sprintf_s(buffer, Message::MSG_UNDO_FAILURE.c_str(), _programName.c_str());
+	sprintf_s(buffer, Message::MSG_UNDO_FAILURE.c_str());
 	return buffer;
 }
 
 std::string DisplayOutput::redoSuccessFeedback(){
-	sprintf_s(buffer, Message::MSG_REDO_SUCCESS.c_str(), _programName.c_str());
+	sprintf_s(buffer, Message::MSG_REDO_SUCCESS.c_str());
 	return buffer;
 }
 
 std::string DisplayOutput::redoFailureFeedback(){
-	sprintf_s(buffer, Message::MSG_REDO_FAILURE.c_str(), _programName.c_str());
+	sprintf_s(buffer, Message::MSG_REDO_FAILURE.c_str());
 	return buffer;
 }
 
 std::string DisplayOutput::searchSuccessFeedback(std::string userInput){
-	sprintf_s(buffer, Message::MSG_SEARCH_SUCCESS.c_str(), userInput.c_str(), _programName.c_str());
+	sprintf_s(buffer, Message::MSG_SEARCH_SUCCESS.c_str(), userInput.c_str());
 	return buffer;
 }
 
 std::string DisplayOutput::searchFailureFeedback(std::string userInput){
-	sprintf_s(buffer, Message::MSG_SEARCH_FAILURE.c_str(), userInput.c_str(),_programName.c_str());
+	sprintf_s(buffer, Message::MSG_SEARCH_FAILURE.c_str(), userInput.c_str());
 	return buffer;
 }
 
@@ -201,27 +174,27 @@ std::string DisplayOutput::editFeedback(std::string userInput){
 }
 
 std::string DisplayOutput::displayCompleteFeedback(){
-	sprintf_s(buffer, Message::MSG_DISPLAYCOM.c_str(), _programName.c_str());
+	sprintf_s(buffer, Message::MSG_DISPLAYCOM.c_str());
 	return buffer;
 }
 
 std::string DisplayOutput::displayIncompleteFeedback(){
-	sprintf_s(buffer, Message::MSG_DISPLAYINCOM.c_str(), _programName.c_str());
+	sprintf_s(buffer, Message::MSG_DISPLAYINCOM.c_str());
 	return buffer;
 }
 
 std::string DisplayOutput::displayTodayFeedback(){
-	sprintf_s(buffer, Message::MSG_DISPLAYTODAY.c_str(), _programName.c_str());
+	sprintf_s(buffer, Message::MSG_DISPLAYTODAY.c_str());
 	return buffer;
 }
 
 std::string DisplayOutput::displayAllFeedback(){
-	sprintf_s(buffer, Message::MSG_DISPLAYALL.c_str(), _programName.c_str());
+	sprintf_s(buffer, Message::MSG_DISPLAYALL.c_str());
 	return buffer;
 }
 
 std::string DisplayOutput::loadFileFeedback(){
-	sprintf_s(buffer, Message::MSG_LOAD_FILE.c_str(), _programName.c_str());
+	sprintf_s(buffer, Message::MSG_LOAD_FILE.c_str());
 	return buffer;
 }
 

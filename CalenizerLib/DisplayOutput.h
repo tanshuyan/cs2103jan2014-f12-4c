@@ -15,13 +15,9 @@
 class DisplayOutput{
 private:
 	std::string intToString(int userInput);
-	static const std::string MSG_WELCOME;
-	static const std::string MSG_USERPROMPT;
 
 	static const int MAX_SIZE = 255;
 	char buffer[MAX_SIZE];
-
-	static const std::string _programName;
 
 	std::string _feedback;
 	std::vector<std::string> _displayList;
@@ -45,7 +41,6 @@ public:
 	std::string promptMsg();
 	void displayToUser(std::string output);
 
-	std::string emptyFeedback();
 	std::string editFeedback(std::string);
 	std::string addFeedback(std::string);
 	std::string deleteFeedback(std::string);
@@ -61,7 +56,6 @@ public:
 	std::string incompleteSuccessFeedback(std::string);
 	std::string incompleteMultipleSuccessFeedback(int);
 
-	std::string notFoundFeedback(std::string);
 	std::string invalidFeedback();
 	std::string invalidIndexFeedback();
 	std::string invalidTimeFeedback();
