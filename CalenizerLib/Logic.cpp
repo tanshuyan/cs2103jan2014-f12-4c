@@ -206,10 +206,12 @@ void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 		
 	_taskEditor.edit(*taskToEdit, analysedData);
 
+	std::string taskDesc= (*taskToEdit)->getTaskDesc();
+
 	sortTaskList();
 	_userStorage.writeFile(_taskList);
 	_History.saveHistory(_taskList);
-	displayOutput.setFeedBack(_actionMsg.editFeedback(analysedData.getTaskDesc()));
+	displayOutput.setFeedBack(_actionMsg.editFeedback(taskDesc));
 	return;
 }
 
