@@ -20,11 +20,15 @@ private:
 	static QRegExp RX_END;
 	static QRegExp RX_CONTAIN;
 	static QRegExp RX_EXACT;
+	static QRegExp RX_COMPLETE;
+	static QRegExp RX_INCOMPLETE;
 
 	bool search(QString inputString, QRegExp &rx);
 	std::vector<int> parseAll(const std::vector<Task*> &_displayList);
 	std::vector<int> parseSearchTerm(const std::vector<Task*> &_displayList, QRegExp &rx);
-	
+	std::vector<int> parseComplete(const std::vector<Task*> &_displayList);
+	std::vector<int> parseIncomplete(const std::vector<Task*> &_displayList);
+
 public:
 	NLPSentenceParser();
 	std::vector<int> parseSentence(QString inputString, const std::vector<Task*> &_displayList);
