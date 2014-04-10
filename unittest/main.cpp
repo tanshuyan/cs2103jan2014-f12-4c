@@ -13,6 +13,7 @@
 #include "Parser.h"
 #include "DisplayOutput.h"
 #include "Logic.h"
+#include "Message.h"
 #include <cstdlib>
 
 class TaskTest : public QObject {
@@ -114,15 +115,26 @@ private:
 				/*
                 void testFeedback(){
                     DisplayOutput display;
-                    std::string command;
+                    //std::string command;
                     Logic test;
                     display = test.executeUserInput("add mary had a little lamb");
-                    //display.displayToUser(display.getFeedBack());
 
-                    std::string expected = "added to Calenzier: \"mary had a little lamb\"";
+                    std::string expected = "Added: \"mary had a little lamb\"\n";
                     QVERIFY(display.getFeedBack() == expected);
                     system("PAUSE");
                 }*/
+
+				/*
+				 void testDisplayStatus(){
+                    DisplayOutput display;
+                    display.setDisplayStatus(false);
+                    bool expected = "false";
+                    QVERIFY(display.getDisplayStatus() == expected);
+                    system("PAUSE");
+                }
+				*/
+
+
 
 				// Unit Test END
 
