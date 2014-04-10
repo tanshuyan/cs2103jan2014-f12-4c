@@ -82,7 +82,13 @@ bool DisplayOutput::getDisplayStatus() {
 
 void DisplayOutput::displayToUser(std::string output) {
 	assert(output != EMPTY);
-	std::cout << output;
+
+	try {
+		std::cout << output;
+	}
+	catch (EmptyMessageException &e){
+		std::cout <<  _actionMsg.MSG_NOTHING_DISPLAY;
+	}
 }
 
 std::string DisplayOutput::deleteFeedback(std::string userInput) {
