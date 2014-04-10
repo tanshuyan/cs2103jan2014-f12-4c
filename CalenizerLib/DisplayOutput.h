@@ -9,6 +9,8 @@
 #include <vector>
 #include <sstream>
 #include <iostream>
+#include <assert.h>
+#include "Exception.h"
 #include "Task.h"
 #include "Message.h"
 
@@ -24,12 +26,13 @@ private:
 	// keeps a corresponding tracker on the status of task, if it is overdue, completed, incompleted etc
 	std::vector<std::string> _displayListStatus;
 	bool _displayStatus;
+	static const std::string EMPTY; 
 
 public:
 	DisplayOutput();
 	void displayTasks(std::vector<Task*>);
 	void setFeedBack(std::string);
-	void setFeedBack(std::vector<int>);
+	//void setFeedBack(std::vector<int>);
 	void setDisplayStatus(bool);
 	void setDisplayListStatus(std::vector<std::string>);
 	std::vector<std::string> getDisplayListStatus();
@@ -37,8 +40,6 @@ public:
 	std::vector<std::string> getDisplay();
 	bool getDisplayStatus();
 
-	std::string welcomeMsg();
-	std::string promptMsg();
 	void displayToUser(std::string output);
 
 	std::string editFeedback(std::string);

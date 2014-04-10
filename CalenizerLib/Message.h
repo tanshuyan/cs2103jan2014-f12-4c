@@ -11,21 +11,16 @@ public:
 	static const std::string MSG_EDIT_SUCCESS;
 	static const std::string MSG_DELETE_SUCCESS;
 	static const std::string MSG_DELETE_MULTIPLE_SUCCESS;
-
 	static const std::string MSG_UNDO_SUCCESS;
 	static const std::string MSG_UNDO_FAILURE;
-
 	static const std::string MSG_REDO_SUCCESS;
 	static const std::string MSG_REDO_FAILURE;
-
 	static const std::string MSG_SEARCH_SUCCESS;
 	static const std::string MSG_SEARCH_FAILURE;
-
 	static const std::string MSG_COMPLETE_SUCCESS;
 	static const std::string MSG_COMPLETE_MULTIPLE_SUCCESS;
 	static const std::string MSG_INCOMPLETE_SUCCESS;
 	static const std::string MSG_INCOMPLETE_MULTIPLE_SUCCESS;
-
 	static const std::string MSG_DISPLAYCOM;
 	static const std::string MSG_DISPLAYINCOM;
 	static const std::string MSG_DISPLAYTODAY;
@@ -37,10 +32,7 @@ public:
 	static const std::string MSG_INVALID_DATE;
 	static const std::string MSG_INVALID_DATETIME;
 
-	static const std::string MSG_NOT_FOUND;
-	static const std::string MSG_EMPTY_FILE;
 	static const std::string MSG_LOAD_FILE;
-
 	static const std::string MSG_UNABLE_TO_CONVERT;
 	
 	static const std::string CMD_ADD;
