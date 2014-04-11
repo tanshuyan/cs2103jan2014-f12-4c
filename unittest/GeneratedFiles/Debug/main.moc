@@ -19,7 +19,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_TaskTest_t {
     QByteArrayData data[16];
-    char stringdata[226];
+    char stringdata[231];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -43,7 +43,7 @@ QT_MOC_LITERAL(11, 153, 7),
 QT_MOC_LITERAL(12, 161, 12),
 QT_MOC_LITERAL(13, 174, 22),
 QT_MOC_LITERAL(14, 197, 14),
-QT_MOC_LITERAL(15, 212, 12)
+QT_MOC_LITERAL(15, 212, 17)
     },
     "TaskTest\0constructDeadlineTask\0\0"
     "constructTimedTask\0constructFloatTask\0"
@@ -51,7 +51,7 @@ QT_MOC_LITERAL(15, 212, 12)
     "testNLParser_1\0testFeedback\0"
     "testDisplayStatus\0addTest\0undoRedoTest\0"
     "completeIncompleteTest\0editDeleteTest\0"
-    "systemTest_5\0"
+    "searchDisplayTest\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -121,7 +121,7 @@ void TaskTest::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 10: _t->undoRedoTest(); break;
         case 11: _t->completeIncompleteTest(); break;
         case 12: _t->editDeleteTest(); break;
-        case 13: _t->systemTest_5(); break;
+        case 13: _t->searchDisplayTest(); break;
         default: ;
         }
     }
