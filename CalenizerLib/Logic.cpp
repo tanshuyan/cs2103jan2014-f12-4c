@@ -398,7 +398,7 @@ void Logic::redo(DisplayOutput& displayOutput) {
 
 std::vector<Task*>::iterator Logic::indexToIterator(int index){
 	std::vector<std::vector<Task*>::iterator>::iterator iter = _displayIndexList.begin();
-	for(int i=1; i!=index && i<=_displayIndexList.size(); i++){
+	for(int i=1; i!=index; i++){
 		iter++;
 	}
 	return *iter;

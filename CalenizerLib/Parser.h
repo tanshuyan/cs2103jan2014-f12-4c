@@ -13,7 +13,6 @@
 #include "NLPSentenceParser.h"
 #include "AnalysedData.h"
 #include "Message.h"
-#include "MultipleIndexParser.h"
 
 class Parser{
 private:
@@ -21,7 +20,6 @@ private:
 	std::vector<int> _index;
 	NLPDateParser _nlpDateParser;
 	NLPSentenceParser _nlpSentenceParser;
-	MultipleIndexParser _multipleIndexParser;
 
 	enum COMMAND_TYPE {
 		ADD, DELETE, SEARCH, EDIT, COMPLETE, INCOMPLETE, UNDO, REDO, DISPLAY, EXIT, INVALID
