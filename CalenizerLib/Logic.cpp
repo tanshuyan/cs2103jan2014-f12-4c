@@ -1,9 +1,4 @@
 // Logic.cpp
-// v2.3
-// changed display string to view, exit string to quit
-// added the msg feedback for search
-// added sort function
-// refactored some code
 
 #include "Logic.h"
 
@@ -47,6 +42,10 @@ DisplayOutput Logic::executeUserInput(std::string userInput) {
 		Logger& logLogic = Logger::getInstance();
 		logLogic.addInfoLog(_actionMsg.redoFailureFeedback());
 		logLogic.saveLog();
+	}
+	catch(InvalidTask &e) {
+		displayOutput.setFeedBack(e.what());
+		displayTask(_currentDisplayType, displayOutput);
 	}
 	return displayOutput;
 }
@@ -129,7 +128,7 @@ void Logic::executeCommand(AnalysedData& analysedData, DisplayOutput& displayOut
 
 void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	if(!(_dateTimeResolver.resolveAdd(analysedData))) {
-		displayOutput.setFeedBack(_actionMsg.invalidDateTimeFeedback());
+		throw InvalidDateTimeException(_actionMsg.invalidDateTimeFeedback().c_str());
 		return;
 	} 
 
@@ -145,6 +144,11 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	DateTime endDateTime;
 	endDateTime.setDate(endDate);
 	endDateTime.setTime(endTime);
+
+	if(startDate.isNull() && endDate.isNull() && startTime.isNull() && endTime.isNull() && taskDesc.empty()) {
+		throw InvalidTask(_actionMsg.invalidTaskFeedback().c_str());
+		return;
+	}
 	
 	if(startDate.isNull() && endDate.isNull() && startTime.isNull() && endTime.isNull()) { // floating task
 		Task* newFloatPtr = new TaskFloat;
@@ -242,7 +246,7 @@ void Logic::deleteTask(AnalysedData analysedData, DisplayOutput& displayOutput){
 	if(!invalidIndex.empty()) {
 		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
 	} else {
-		if ( removedIndexCount == 1){
+		if (removedIndexCount == 1){
 				//std::string taskDesc= removedContent;
 				displayOutput.setFeedBack(_actionMsg.deleteFeedback(removedContent));
 				//removedContents.pop_back();
@@ -394,7 +398,7 @@ void Logic::redo(DisplayOutput& displayOutput) {
 
 std::vector<Task*>::iterator Logic::indexToIterator(int index){
 	std::vector<std::vector<Task*>::iterator>::iterator iter = _displayIndexList.begin();
-	for(int i=1; i!=index && i<=_displayIndexList.size(); i++){
+	for(int i=1; i!=index; i++){
 		iter++;
 	}
 	return *iter;

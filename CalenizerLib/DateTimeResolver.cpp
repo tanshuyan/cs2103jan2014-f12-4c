@@ -1,6 +1,5 @@
 //DateTimeResolver.cpp
-//v 1.4
-//copypasta bug fix
+
 #include "DateTimeResolver.h"
 
 DateTimeResolver::DateTimeResolver(){

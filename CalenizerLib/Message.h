@@ -1,10 +1,10 @@
 // Message.h
-// v 1.1
 
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
 #include <string>
+
 class Message {
 public:
 	static const std::string MSG_ADD_SUCCESS;
@@ -31,6 +31,7 @@ public:
 	static const std::string MSG_INVALID_TIME;
 	static const std::string MSG_INVALID_DATE;
 	static const std::string MSG_INVALID_DATETIME;
+	static const std::string MSG_INVALID_TASK;
 
 	static const std::string MSG_LOAD_FILE;
 	static const std::string MSG_UNABLE_TO_CONVERT;

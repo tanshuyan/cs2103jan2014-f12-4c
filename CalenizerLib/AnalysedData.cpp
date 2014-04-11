@@ -1,6 +1,5 @@
 // AnalysedData.cpp
-// v1.2
-// Added dayOfWeek field and getter+setter functions
+
 #include "AnalysedData.h"
 
 AnalysedData::AnalysedData() {

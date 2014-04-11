@@ -1,7 +1,5 @@
 //NLParser.h
-//v 3.0
-//Ability to read dates and times at the end of the string not marked by keywords
-//Added ability to parse "until [weekday]" properly
+
 #ifndef NLPDATEPARSER_H
 #define NLPDATEPARSER_H
 

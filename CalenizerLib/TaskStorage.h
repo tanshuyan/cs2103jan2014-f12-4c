@@ -1,7 +1,5 @@
 // TaskStorage.h
-// v1.1
-// removed useless functions
-#pragma once
+
 #ifndef TASKSTORAGE_H
 #define TASKSTORAGE_H
 
@@ -28,7 +26,7 @@ public:
 	TaskStorage();
 	~TaskStorage();
 
-	void writeFile(std::vector<Task*>);
-	void loadFile(std::vector<Task*>&);
+	void writeFile(const std::vector<Task*> &taskList);
+	void loadFile(std::vector<Task*> &taskList);
 };
 #endif

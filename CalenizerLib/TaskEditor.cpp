@@ -1,6 +1,5 @@
 //TaskEditor.cpp
-//v 1.2
-//Bug fixes
+
 #include "TaskEditor.h"
 
 void TaskEditor::edit(Task* &task, AnalysedData &analysedData){
