@@ -1,5 +1,7 @@
 // TaskFilter.cpp
-
+// v1.2
+// added search float == display float tasks also
+// added marking functions
 #include "TaskFilter.h"
 
 TaskFilter::TaskFilter(){
