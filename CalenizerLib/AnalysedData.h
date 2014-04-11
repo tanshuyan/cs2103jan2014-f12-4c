@@ -1,12 +1,11 @@
 //AnalysedData.h
-// v1.2
-// Added dayOfWeek field
+
 #ifndef ANALYSEDDATA_H
 #define ANALYSEDDATA_H
 
-#include "DateTime.h"
 #include <vector>
 #include <string>
+#include "DateTime.h"
 
 class AnalysedData{
 private:
@@ -25,17 +24,17 @@ private:
 public:
 	AnalysedData();
 
-	void setDateTimeUnlabelled(bool);
-	void setIndex(int);
-	void setDisplayType(std::string);
-	void setCommand(std::string);
-	void setTaskDesc(std::string);
-	void setStartTime(QTime);
-	void setEndTime(QTime);
-	void setEndDate(QDate);
-	void setStartDate(QDate);
-	void setIndexVector(std::vector<int>);
-	void setDayOfWeek(int);
+	void setDateTimeUnlabelled(bool status);
+	void setIndex(int index);
+	void setDisplayType(std::string displayType);
+	void setCommand(std::string command);
+	void setTaskDesc(std::string taskDesc);
+	void setStartTime(QTime startTime);
+	void setEndTime(QTime endTime);
+	void setEndDate(QDate endDate);
+	void setStartDate(QDate startDate);
+	void setIndexVector(std::vector<int> index);
+	void setDayOfWeek(int dayOfWeek);
 
 	bool getDateTimeUnlabelled();
 	int getIndex();

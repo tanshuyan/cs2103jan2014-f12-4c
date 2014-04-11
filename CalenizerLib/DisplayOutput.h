@@ -1,6 +1,4 @@
 //DisplayOutput.h
-//v 1.0
-// this is an object between the interaction of Logic and Parser
 
 #ifndef DISPLAYOUTPUT_H
 #define DISPLAYOUTPUT_H
@@ -23,7 +21,6 @@ private:
 
 	std::string _feedback;
 	std::vector<std::string> _displayList;
-	// keeps a corresponding tracker on the status of task, if it is overdue, completed, incompleted etc
 	std::vector<std::string> _displayListStatus;
 	bool _displayStatus;
 	static const std::string EMPTY; 
@@ -31,11 +28,11 @@ private:
 
 public:
 	DisplayOutput();
-	void displayTasks(std::vector<Task*>);
-	void setFeedBack(std::string);
+	void displayTasks(std::vector<Task*> displayList);
+	void setFeedBack(std::string feedback);
 	//void setFeedBack(std::vector<int>);
-	void setDisplayStatus(bool);
-	void setDisplayListStatus(std::vector<std::string>);
+	void setDisplayStatus(bool status);
+	void setDisplayListStatus(std::vector<std::string> displayListStatus);
 	std::vector<std::string> getDisplayListStatus();
 	std::string getFeedBack();
 	std::vector<std::string> getDisplay();
@@ -43,26 +40,27 @@ public:
 
 	void displayToUser(std::string output);
 
-	std::string editFeedback(std::string);
-	std::string addFeedback(std::string);
-	std::string deleteFeedback(std::string);
-	std::string deleteMultipleFeedback(int);
+	std::string editFeedback(std::string userInput);
+	std::string addFeedback(std::string userInput);
+	std::string deleteFeedback(std::string userInput);
+	std::string deleteMultipleFeedback(int index);
 	std::string undoSuccessFeedback();
 	std::string undoFailureFeedback();
 	std::string redoSuccessFeedback();
 	std::string redoFailureFeedback();
-	std::string searchSuccessFeedback(std::string);
-	std::string searchFailureFeedback(std::string);
-	std::string completeSuccessFeedback(std::string);
-	std::string completeMultipleSuccessFeedback(int);
-	std::string incompleteSuccessFeedback(std::string);
-	std::string incompleteMultipleSuccessFeedback(int);
+	std::string searchSuccessFeedback(std::string userInput);
+	std::string searchFailureFeedback(std::string userInput);
+	std::string completeSuccessFeedback(std::string userInput);
+	std::string completeMultipleSuccessFeedback(int index);
+	std::string incompleteSuccessFeedback(std::string userInput);
+	std::string incompleteMultipleSuccessFeedback(int index);
 
 	std::string invalidFeedback();
 	std::string invalidIndexFeedback();
 	std::string invalidTimeFeedback();
 	std::string invalidDateFeedback();
 	std::string invalidDateTimeFeedback();
+	std::string invalidTaskFeedback();
 
 	std::string displayCompleteFeedback();
 	std::string displayIncompleteFeedback();

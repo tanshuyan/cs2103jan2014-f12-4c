@@ -1,17 +1,12 @@
 // TaskFloat.h
-// v1.2
-// removed setTaskType, moved tasktype-setting to the constructor
-// v1.3
-// Shifted tasktype string to public so it may be scoped by other classes
-// added taskDetailsToString
-#pragma once
+
 #ifndef TaskFloat_H
 #define TaskFloat_H
 
 #include <iostream>
 #include <string>
 #include <sstream>
-#include "task.h"
+#include "Task.h"
 #include "DateTime.h"
 
 class TaskFloat: public Task {
@@ -38,15 +33,15 @@ public:
 	DateTime getDeadline() const {return DateTime::DateTime();}
 	DateTime getStartDate() const {return DateTime::DateTime();}  
 
-	std::string getTaskDesc() const ;
-	std::string getTaskType() const ;
+	std::string getTaskDesc() const;
+	std::string getTaskType() const;
 	std::string dateTimeToString() {return "";}
 	std::string statusToString();
-	bool getCompleteStatus() const ;
+	bool getCompleteStatus() const;
 	std::string outputToString();
 	std::string taskDetailsToString();
 
 	std::string taskToString();
-	void stringToTask(std::string);
+	void stringToTask(std::string content);
 };
 #endif

@@ -1,6 +1,8 @@
 //TaskEditor.h
-//v 1.2
-#include "DateTime.h"
+
+#ifndef TASKEDITOR
+#define TASKEDITOR
+
 #include <QDateTime>
 #include <assert.h>
 #include "Task.h"
@@ -12,9 +14,7 @@
 #include "TaskTimed.h"
 #include "Logger.h"
 #include "DisplayOutput.h"
-
-#ifndef TASKEDITOR
-#define TASKEDITOR
+#include "DateTime.h"
 
 class TaskEditor{
 private:

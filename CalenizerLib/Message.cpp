@@ -27,6 +27,7 @@ const std::string Message::MSG_INVALID_INDEX = "Invalid index\n";
 const std::string Message::MSG_INVALID_TIME = "Invalid time\n";
 const std::string Message::MSG_INVALID_DATE = "Invalid date\n";
 const std::string Message::MSG_INVALID_DATETIME = "Invalid input order of start and end date\n";
+const std::string Message::MSG_INVALID_TASK = "Invalid task fields\n";
 
 const std::string Message::MSG_UNABLE_TO_CONVERT = "Task is unable to be converted\n";
 const std::string Message::MSG_LOAD_FILE = "All tasks loaded\n";

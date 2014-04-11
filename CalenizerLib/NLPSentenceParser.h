@@ -1,5 +1,5 @@
 //NLPSentenceParser.h
-//v 1.0
+
 #ifndef NLPSENTENCEPARSER_H
 #define NLPSENTENCEPARSER_H
 
@@ -10,7 +10,6 @@
 #include "TaskFloat.h"
 #include "TaskTimed.h"
 #include "MultipleIndexParser.h"
-//#include "NLPSentenceFunctions.h"
 
 class NLPSentenceParser{
 private:

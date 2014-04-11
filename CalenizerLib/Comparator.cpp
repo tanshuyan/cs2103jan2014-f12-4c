@@ -1,7 +1,5 @@
 // Comparator.cpp
-// v 1.1 
-// revamped sorting algo
-// added new sortbyenddate comparator
+
 #include "Comparator.h"
 
 const int RANK_ZERO = 0;

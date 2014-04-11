@@ -1,5 +1,5 @@
 //DateTime.cpp
-//v 1.4
+
 #include "DateTime.h"
 
 DateTime::DateTime(){
