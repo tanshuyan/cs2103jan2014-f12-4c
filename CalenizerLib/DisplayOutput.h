@@ -24,6 +24,7 @@ private:
 	std::vector<std::string> _displayListStatus;
 	bool _displayStatus;
 	static const std::string EMPTY; 
+	static const std::string DELIMITER; 
 	Message _actionMsg;
 
 public:

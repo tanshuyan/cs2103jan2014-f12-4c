@@ -3,6 +3,7 @@
 #include "DisplayOutput.h"
 
 const std::string DisplayOutput::EMPTY = "";
+const std::string DisplayOutput::DELIMITER = ". ";
 
 DisplayOutput::DisplayOutput() {
 } 
@@ -18,7 +19,7 @@ void DisplayOutput::displayTasks(std::vector<Task*> displayList){
 	for(std::vector<Task*>::iterator iter = displayList.begin(); iter != displayList.end();){
 		//Numbering
 		std::stringstream output;
-		output << counter << ". ";
+		output << counter << DELIMITER;
 		counter++;
 
 		//assertion to ensure there is no empty task displayed
