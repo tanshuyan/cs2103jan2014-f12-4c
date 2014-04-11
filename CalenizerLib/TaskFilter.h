@@ -30,8 +30,7 @@ public:
 	TaskFilter();
 	//filters out tasks by complete/incomplete (specify at the bool)
 	//post: returns false if no matching tasks are found
-	bool search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, bool, std::vector<std::string> &displayListStatus);
-	
+	bool filterTasks(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, std::vector<int> &indexList, std::vector<std::string> &displayListStatus){
 	//filters out tasks by search term (specify at the string)
 	//post: returns false if matching tasks are found
 	bool search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, std::string, std::vector<std::string> &displayListStatus);
