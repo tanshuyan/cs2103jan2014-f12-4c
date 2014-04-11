@@ -1,6 +1,4 @@
 // DisplayOutput.cpp
-// v1.0
-// main interaction with GUI and logic
 
 #include "DisplayOutput.h"
 
@@ -79,7 +77,7 @@ bool DisplayOutput::getDisplayStatus() {
 	return _displayStatus;
 }
 
-
+/*
 void DisplayOutput::displayToUser(std::string output) {
 	assert(output != EMPTY);
 
@@ -90,6 +88,7 @@ void DisplayOutput::displayToUser(std::string output) {
 		std::cout <<  _actionMsg.MSG_NOTHING_DISPLAY;
 	}
 }
+*/
 
 std::string DisplayOutput::deleteFeedback(std::string userInput) {
 	sprintf_s(buffer, Message::MSG_DELETE_SUCCESS.c_str(), userInput.c_str());
@@ -165,6 +164,11 @@ std::string DisplayOutput::invalidDateFeedback(){
 
 std::string DisplayOutput::invalidDateTimeFeedback(){
 	sprintf_s(buffer, Message::MSG_INVALID_DATETIME.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::invalidTaskFeedback(){
+	sprintf_s(buffer, Message::MSG_INVALID_TASK.c_str());
 	return buffer;
 }
 

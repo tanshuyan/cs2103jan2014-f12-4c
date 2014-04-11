@@ -1,9 +1,5 @@
 // Logic.h
-// v 2.3
-// updated logic to accomodate new architecture
-// added sort function
-// refactored some code
-#pragma once
+
 #ifndef LOGIC_H
 #define LOGIC_H
 
@@ -48,19 +44,19 @@ private:
 	bool _loadStatus;
 	bool _displayStatus;
 
-	void executeCommand(AnalysedData&, DisplayOutput&);
+	void executeCommand(AnalysedData &analysedData, DisplayOutput &displayOutput);
 
-	void addTask(AnalysedData, DisplayOutput&);
-	void editTask(AnalysedData, DisplayOutput&);
-	void deleteTask(AnalysedData, DisplayOutput&);
-	void setComplete(AnalysedData, DisplayOutput&);
-	void setIncomplete(AnalysedData, DisplayOutput&);
-	void displayTask(AnalysedData, DisplayOutput&);
-	void undo(DisplayOutput&);
-	void redo(DisplayOutput&);
+	void addTask(AnalysedData analysedData, DisplayOutput &displayOutput);
+	void editTask(AnalysedData analysedData, DisplayOutput &displayOutput);
+	void deleteTask(AnalysedData analysedData, DisplayOutput &displayOutput);
+	void setComplete(AnalysedData analysedData, DisplayOutput &displayOutput);
+	void setIncomplete(AnalysedData analysedData, DisplayOutput &displayOutput);
+	void displayTask(AnalysedData analysedData, DisplayOutput &displayOutput);
+	void undo(DisplayOutput &displayOutput);
+	void redo(DisplayOutput &displayOutput);
 
 	std::vector<Task*>::iterator indexToIterator(int index);
-	bool isValidIndex(int);
+	bool isValidIndex(int index);
 	void generateDisplayListIndex();
 	void loadFileContent();
 	void sortTaskList();
@@ -68,6 +64,6 @@ private:
 public:
 	Logic();
 	~Logic();
-	DisplayOutput executeUserInput(std::string);
+	DisplayOutput executeUserInput(std::string userInput);
 };
 #endif

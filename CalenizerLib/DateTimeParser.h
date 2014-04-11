@@ -1,7 +1,5 @@
 //DateTimeParser.h
-//v 3.1
-//some refactoring
-//Added ability to parse "at 1"
+
 #ifndef DATETIMEPARSER_H
 #define DATETIMEPARSER_H
 

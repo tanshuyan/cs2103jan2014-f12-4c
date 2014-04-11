@@ -1,11 +1,12 @@
 // TaskStorage.cpp
-// v1.2
-// remove useless functions
-// changed to task pointers
 
 #include "TaskStorage.h"
 
 const std::string TaskStorage:: _defaultFileName = "CalenizerStorage.txt";	
+
+const int ATTRIBUTE_TIMED = 4;
+const int ATTRIBUTE_DEADLINE = 3;
+const int ATTRIBUTE_FLOAT = 2;
 
 TaskStorage::TaskStorage() {
 	_fileName = _defaultFileName;
@@ -14,7 +15,7 @@ TaskStorage::TaskStorage() {
 TaskStorage::~TaskStorage() {
 }
 
-void TaskStorage::writeFile(std::vector<Task*> taskList){
+void TaskStorage::writeFile(const std::vector<Task*> &taskList){
 	_fileOutput.open(_fileName.c_str(), std::ios::trunc);
 	for(unsigned int i=0; i<taskList.size() ; i++) {
 		_fileOutput << taskList[i]->taskToString();
@@ -34,8 +35,7 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 		if (taskType == TaskDeadline::TASK_DEADLINE){
 			std::string taskContent;
 			std::string content;
-			//taskContent += taskType + "\n";
-			for(int i = 1; i <= 3 ; i++) { // deadline task has 3 more attributes
+			for(int i = 1; i <= ATTRIBUTE_DEADLINE ; i++) {
 			std::getline(_fileInput,content);
 			taskContent += content + "\n";
 			}
@@ -46,8 +46,7 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 		} else if (taskType == TaskFloat::TASK_FLOAT){
 			std::string taskContent;
 			std::string content; 
-			//taskContent += taskType + "\n";
-			for(int i = 1; i <= 2 ; i++) { // floating task has 2 more attributes
+			for(int i = 1; i <= ATTRIBUTE_FLOAT ; i++) {
 			std::getline(_fileInput,content);
 			taskContent  += content + "\n";
 			}
@@ -58,8 +57,7 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 		} else if (taskType == TaskTimed::TASK_TIMED){
 			std::string taskContent;
 			std::string content;
-			//taskContent += taskType + "\n";
-			for(int i = 1; i <= 4 ; i++) { // timed task has 4 more attributes
+			for(int i = 1; i <= ATTRIBUTE_TIMED ; i++) {
 			std::getline(_fileInput,content);
 			taskContent += content + "\n";
 			}

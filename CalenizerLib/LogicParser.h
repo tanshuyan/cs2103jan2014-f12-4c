@@ -1,13 +1,11 @@
 //LogicParser.h 
-//v 1.0
-
 
 #ifndef LOGICPARSER_H
 #define LOGICPARSER_H
 
+#include <string>
 #include "AnalysedData.h"
 #include "Parser.h"
-#include <string>
 
 class LogicParser {
 private:
@@ -15,6 +13,6 @@ private:
 
 public:
 	LogicParser();
-	AnalysedData parse(std::string, const std::vector<Task*> &_displayList);
+	AnalysedData parse(std::string userInput, const std::vector<Task*> &_displayList);
 };
 #endif

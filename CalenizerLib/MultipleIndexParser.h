@@ -1,5 +1,4 @@
 //MultipleIndexParser.h
-//v 1.0
 
 #ifndef MULTIPLEINDEXPARSER_H
 #define MULTIPLEINDEXPARSER_H

@@ -1,6 +1,4 @@
 // LogicParser.cpp
-// v1.0
-// facade pattern interaction between logic and parser
 
 #include "LogicParser.h"
 

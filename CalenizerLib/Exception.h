@@ -1,5 +1,5 @@
 //Exception.h
-//v1.0
+
 #ifndef EXCEPTION_H
 #define EXCEPTION_H
 
@@ -31,9 +31,9 @@ public:
         CannotRedoException(const char* desc) EXCEPTION_CONSTRUCTOR
 };
 
-class EmptyMessageException:public std::exception{
+class InvalidTask:public std::exception{
 public:
-        EmptyMessageException();
-        EmptyMessageException(const char* desc) EXCEPTION_CONSTRUCTOR
+        InvalidTask();
+        InvalidTask(const char* desc) EXCEPTION_CONSTRUCTOR
 };
 #endif

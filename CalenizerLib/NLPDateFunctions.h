@@ -1,6 +1,5 @@
 //NLPDateFunctions.h
-//v 3.1
-//Added ability to parse "until [weekday]" properly
+
 #ifndef NLPDATEFUNCTIONS_H
 #define NLPDATEFUNCTIONS_H
 
