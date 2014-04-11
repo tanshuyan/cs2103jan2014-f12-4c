@@ -27,6 +27,7 @@ private:
 	std::vector<std::string> _displayListStatus;
 	bool _displayStatus;
 	static const std::string EMPTY; 
+	Message _actionMsg;
 
 public:
 	DisplayOutput();
