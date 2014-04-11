@@ -9,11 +9,10 @@
 #include "TaskDeadline.h"
 #include "TaskFloat.h"
 #include "TaskTimed.h"
-#include "MultipleIndexParser.h"
+#include "Exception.h"
 
 class NLPSentenceParser{
 private:
-	MultipleIndexParser _multipleIndexParser;
 	static QRegExp RX_ALL;
 	static QRegExp RX_BEGIN;
 	static QRegExp RX_END;

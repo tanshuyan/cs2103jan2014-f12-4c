@@ -3,13 +3,13 @@
 
 #include "NLPSentenceParser.h"
 
-QRegExp NLPSentenceParser::RX_ALL("^\\s*(?:all)\\s*(?:the)?\\s*(?:tasks|events)?\\s*\\s*$", Qt::CaseInsensitive);
-QRegExp NLPSentenceParser::RX_BEGIN("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:begin|beginning|start|starting)\\s*(?:with)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
-QRegExp NLPSentenceParser::RX_END("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:end|ending)\\s*(?:with|in)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
-QRegExp NLPSentenceParser::RX_CONTAIN("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:contains?|containing|with)\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
-QRegExp NLPSentenceParser::RX_EXACT("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:are)?\\s*(?:match|matches|matching|containing)?(?:only)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
-QRegExp NLPSentenceParser::RX_COMPLETE("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:are)?\\s*(?:completed?)\\s*$", Qt::CaseInsensitive);
-QRegExp NLPSentenceParser::RX_INCOMPLETE("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:are)?\\s*(?:incompleted?|not+\\s+complete)\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_ALL("^\\s*(?:all)\\s*(?:the)?\\s*(?:tasks?|events?)?\\s*\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_BEGIN("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks?|events?)?\\s*(?:that)?\\s*(?:begin|beginning|start|starting)\\s*(?:with)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_END("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks?|events?)?\\s*(?:that)?\\s*(?:end|ending)\\s*(?:with|in)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_CONTAIN("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks?|events?)?\\s*(?:that)?\\s*(?:contains?|containing|with)\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_EXACT("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks?|events?)?\\s*(?:that)?\\s*(?:are)?\\s*(?:match|matches|matching|containing)?(?:only)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_COMPLETE("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks?|events?)?\\s*(?:that)?\\s*(?:are)?\\s*(?:completed?)\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_INCOMPLETE("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks?|events?)?\\s*(?:that)?\\s*(?:are)?\\s*(?:incompleted?|not+\\s+complete)\\s*$", Qt::CaseInsensitive);
 
 NLPSentenceParser::NLPSentenceParser(){
 }
@@ -41,7 +41,8 @@ std::vector<int> NLPSentenceParser::parseSentence(QString inputString, const std
 	if(search(inputString, RX_INCOMPLETE)){
 		return parseIncomplete(_displayList);
 	}
-	return _multipleIndexParser.parseMultipleIndex(inputString);
+	throw SentenceFailedToParse();
+	return;
 }
 
 bool NLPSentenceParser::search(QString inputString, QRegExp &rx){

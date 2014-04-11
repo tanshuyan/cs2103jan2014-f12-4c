@@ -1,5 +1,4 @@
 //Parser.cpp
-
 #include "Parser.h"
 
 Parser::Parser() {
@@ -134,7 +133,12 @@ AnalysedData Parser::displayCMD(std::string userInput) {
 AnalysedData Parser::incompleteCMD(std::string userInput, const std::vector<Task*> &_displayList) {
 	AnalysedData analysedData;
 	analysedData.setCommand(Message::CMD_INCOMPLETE);
-	_index = _nlpSentenceParser.parseSentence(userInput.c_str(), _displayList);
+	try{
+		_index = _nlpSentenceParser.parseSentence(userInput.c_str(), _displayList);
+	}
+	catch(SentenceFailedToParse){
+		 _multipleIndexParser.parseMultipleIndex(userInput.c_str());
+	}
 	analysedData.setIndexVector(_index);
 	return analysedData;
 }
@@ -142,7 +146,12 @@ AnalysedData Parser::incompleteCMD(std::string userInput, const std::vector<Task
 AnalysedData Parser::completeCMD(std::string userInput, const std::vector<Task*> &_displayList) {
 	AnalysedData analysedData;
 	analysedData.setCommand(Message::CMD_COMPLETE);
-	_index = _nlpSentenceParser.parseSentence(userInput.c_str(), _displayList);
+	try{
+		_index = _nlpSentenceParser.parseSentence(userInput.c_str(), _displayList);
+	}
+	catch(SentenceFailedToParse){
+		 _multipleIndexParser.parseMultipleIndex(userInput.c_str());
+	}
 	analysedData.setIndexVector(_index);
 	return analysedData;
 }
@@ -150,7 +159,12 @@ AnalysedData Parser::completeCMD(std::string userInput, const std::vector<Task*>
 AnalysedData Parser::deleteCMD(std::string userInput, const std::vector<Task*> &_displayList) {
 	AnalysedData analysedData;
 	analysedData.setCommand(Message::CMD_DELETE);
-	_index = _nlpSentenceParser.parseSentence(userInput.c_str(), _displayList);
+	try{
+		_index = _nlpSentenceParser.parseSentence(userInput.c_str(), _displayList);
+	}
+	catch(SentenceFailedToParse){
+		 _multipleIndexParser.parseMultipleIndex(userInput.c_str());
+	}
 	analysedData.setIndexVector(_index);
 	return analysedData;
 }
