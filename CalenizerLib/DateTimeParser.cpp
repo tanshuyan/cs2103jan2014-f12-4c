@@ -4,9 +4,9 @@
 
 QRegExp DateTimeParser::RX_EMPTY("(^\\s*$)");
 
-QRegExp DateTimeParser::RX_HOUR_MIN_AP("(?:at|on|by)?\\s*(\\d{1,2})\\s*(?::?)\\s*(\\d{2})\\s*(am|pm)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_HOUR_MIN_AP("(?:at|on|by)?\\s*(\\d{1,2})(?::?)(\\d{2})\\s*(am|pm)",Qt::CaseInsensitive);
 QRegExp DateTimeParser::RX_HOUR_AP("(?:at|on|by)?\\s*(\\d{1,2})\\s*(am|pm)",Qt::CaseInsensitive);
-QRegExp DateTimeParser::RX_HOUR_COL_MIN("(?:at|on|by)?\\s*(\\d{1,2})\\s*(?::)\\s*(\\d{2})",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_HOUR_COL_MIN("(?:at|on|by)?\\s*(\\d{1,2})(?::)(\\d{2})",Qt::CaseInsensitive);
 QRegExp DateTimeParser::RX_AT_HOUR("(?:at|by)\\s*(\\d{1,2})($|\\s+)(?!jan|/|-|\\.|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)",Qt::CaseInsensitive);
 
 QRegExp DateTimeParser::RX_DASHES_SLASHES("(?:at|on|by)?\\s*(\\d{1,2})(?:/|-|\\.)(\\d{1,2})(?:/|-|\\.)?(\\d{1,4})?",Qt::CaseInsensitive);
