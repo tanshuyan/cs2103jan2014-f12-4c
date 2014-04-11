@@ -28,7 +28,6 @@ std::vector<int> NLPSentenceParser::parseSentence(QString inputString, const std
 	}
 	if(search(inputString, RX_CONTAIN)){
 		QRegExp rx("(" + QRegExp::escape(RX_CONTAIN.cap(1).trimmed()) + ")", Qt::CaseInsensitive);
-		QString lalala = RX_BEGIN.cap(1).trimmed();
 		return parseSearchTerm(_displayList, rx);
 	}
 	if(search(inputString, RX_EXACT)){

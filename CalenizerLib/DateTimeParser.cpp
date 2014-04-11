@@ -4,9 +4,9 @@
 
 QRegExp DateTimeParser::RX_EMPTY("(^\\s*$)");
 
-QRegExp DateTimeParser::RX_HOUR_MIN_AP("(?:at|on|by)?\\s*(\\d{1,2})\\s*(?::?)\\s*(\\d{2})\\s*(am|pm)",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_HOUR_MIN_AP("(?:at|on|by)?\\s*(\\d{1,2})(?::?)(\\d{2})\\s*(am|pm)",Qt::CaseInsensitive);
 QRegExp DateTimeParser::RX_HOUR_AP("(?:at|on|by)?\\s*(\\d{1,2})\\s*(am|pm)",Qt::CaseInsensitive);
-QRegExp DateTimeParser::RX_HOUR_COL_MIN("(?:at|on|by)?\\s*(\\d{1,2})\\s*(?::)\\s*(\\d{2})",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_HOUR_COL_MIN("(?:at|on|by)?\\s*(\\d{1,2})(?::)(\\d{2})",Qt::CaseInsensitive);
 QRegExp DateTimeParser::RX_AT_HOUR("(?:at|by)\\s*(\\d{1,2})($|\\s+)(?!jan|/|-|\\.|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)",Qt::CaseInsensitive);
 
 QRegExp DateTimeParser::RX_DASHES_SLASHES("(?:at|on|by)?\\s*(\\d{1,2})(?:/|-|\\.)(\\d{1,2})(?:/|-|\\.)?(\\d{1,4})?",Qt::CaseInsensitive);
@@ -46,11 +46,11 @@ bool DateTimeParser::parseString(QString input, QDate &outputDate, QTime &output
 	}
 	bool isInvalidTime = !extractTime(input, outputTime);
 	if (isInvalidTime){
-		throw (InvalidDateTimeException("Invalid time entered"));
+		throw (InvalidDateTimeException(Message::MSG_INVALID_TIME.c_str()));
 	}
 	bool isInvalidDate = !extractDate(input, outputDate, dayOfWeek);
 	if (isInvalidDate){
-		throw (InvalidDateTimeException("Invalid date entered"));
+		throw (InvalidDateTimeException(Message::MSG_INVALID_DATE.c_str()));
 	}
 	bool isTaskDesc = !input.trimmed().isEmpty();
 	if (isTaskDesc){

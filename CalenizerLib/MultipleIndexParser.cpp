@@ -2,16 +2,26 @@
 
 #include "MultipleIndexParser.h"
 
+QRegExp MultipleIndexParser::RX_NEGATIVE_INDEX("(?:^|\\D)\\s*(-\\d+)", Qt::CaseInsensitive);
 QRegExp MultipleIndexParser::RX_TO("(\\d+)\\s*(?:to|-|until|til)\\s*(\\d+)", Qt::CaseInsensitive);
+QRegExp MultipleIndexParser::RX_INDEX("\\b(\\d+)\\b");
 
-QRegExp MultipleIndexParser::RX_INDEX("(\\d+)");
+const QString ZERO_INDEX = "0";
 
 MultipleIndexParser::MultipleIndexParser() {
 }
 
 std::vector<int> MultipleIndexParser::parseMultipleIndex(QString descString) {
 	_index.clear();
+	//Search for negative indexes and turn them zeroes
 	int pos = 0; 
+	pos = RX_NEGATIVE_INDEX.indexIn(descString, pos);
+	while(pos != -1){
+		descString.replace(RX_NEGATIVE_INDEX.pos(1), RX_NEGATIVE_INDEX.cap(1).length(), ZERO_INDEX);
+		pos = RX_NEGATIVE_INDEX.indexIn(descString, pos);
+	}
+	//Search for "index to index" format
+	pos = 0;
 	pos = RX_TO.indexIn(descString, pos);
 	while(pos != -1){
 		int start = RX_TO.cap(1).toInt();
@@ -30,7 +40,7 @@ std::vector<int> MultipleIndexParser::parseMultipleIndex(QString descString) {
 		descString.remove(pos, RX_TO.matchedLength());
 		pos = RX_TO.indexIn(descString, pos);
 	}
-	
+	//Search for lone indexes
 	pos = 0;
 	pos = RX_INDEX.indexIn(descString, pos);
 	while(pos != -1){

@@ -163,7 +163,6 @@ bool NLPDateFunctions::searchUnmarkedDateTime(QString &descString, QDate &startD
 	do{
 		pos = RX_UNMARKED_DATETIME.indexIn(descString, pos+1);
 		stringIsValid = _dateTimeParser.parseString(RX_UNMARKED_DATETIME.cap(0), foundDate, foundTime);
-		QString lalala = RX_UNMARKED_DATETIME.cap(0);
 	}while (!stringIsValid && pos != -1);
 
 	if(stringIsValid){

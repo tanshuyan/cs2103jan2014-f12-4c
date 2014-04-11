@@ -8,6 +8,7 @@
 #include <string>
 #include <QRegExp>
 #include "DateTime.h"
+#include "Message.h"
 #include "Exception.h"
 
 class DateTimeParser{
