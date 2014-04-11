@@ -34,6 +34,7 @@ public:
 
 	static const std::string MSG_LOAD_FILE;
 	static const std::string MSG_UNABLE_TO_CONVERT;
+	static const std::string MSG_NOTHING_DISPLAY;
 	
 	static const std::string CMD_ADD;
 	static const std::string CMD_EDIT;
