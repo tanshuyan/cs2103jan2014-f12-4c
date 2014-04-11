@@ -11,8 +11,8 @@ void DisplayOutput::displayTasks(std::vector<Task*> displayList){
 	int counter = 1;
 
 	//ensure it is cleared before displaying new list
-	if(!_displayListStatus.empty()){
-		_displayListStatus.clear();
+	if(!_displayList.empty()){
+		_displayList.clear();
 	}
 
 	for(std::vector<Task*>::iterator iter = displayList.begin(); iter != displayList.end();){

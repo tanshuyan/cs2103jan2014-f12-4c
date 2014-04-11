@@ -4,6 +4,7 @@
 #include <QtCore/QCoreApplication>
 #include <QTest>
 #include <QtTest\Qttest>
+#include <cstdlib>
 #include <qobject.h>
 #include <qstring.h>
 #include "taskStorage.h"
@@ -14,7 +15,6 @@
 #include "DisplayOutput.h"
 #include "Logic.h"
 #include "Message.h"
-#include <cstdlib>
 
 class TaskTest : public QObject {
         Q_OBJECT
@@ -23,33 +23,35 @@ private:
         private slots:
 
                 // Unit Test START
-				// testDeadlineTask tests the functionality of storage as well as the constructor of a deadline task
-				void testDeadlineTask() {
-					std::string deadlineTaskString = "cs2013 is fun\n13/02/2014 14:00\nfalse\n";
+				// constructDeadlineTask tests the functionality of storage as well as the constructor of a deadline task
+				void constructDeadlineTask() {
+					std::string deadlineTaskString = "do IE2150 report\n13/04/2014 14:00\nfalse\n";
 					Task* deadlineTaskPtr = new TaskDeadline;
 					deadlineTaskPtr->stringToTask(deadlineTaskString);
 
-					std::string expected = "DEADLINE\ncs2013 is fun\n13/02/2014 14:00\nfalse\n";
+					std::string expected = "DEADLINE\ndo IE2150 report\n13/04/2014 14:00\nfalse\n";
 					QVERIFY(deadlineTaskPtr->taskToString() == expected);
 					system("PAUSE");
                 }
-				// testTimedTask tests the functionality of storage as well as the constructor of a timed task
-                void testTimedTask() {
-              		std::string timedTaskString = "cs2013 is fun\n13/02/2014 14:00\n14/03/2014 15:30\nfalse\n";
+				
+				 // constructTimedTask tests the functionality of storage as well as the constructor of a timed task
+                void constructTimedTask() {
+              		std::string timedTaskString = "do IE2150 report\n13/04/2014 14:00\n14/04/2014 15:30\nfalse\n";
 					Task* timedTaskPtr = new TaskTimed;
 					timedTaskPtr->stringToTask(timedTaskString);
 
-					std::string expected = "TIMED\ncs2013 is fun\n13/02/2014 14:00\n14/03/2014 15:30\nfalse\n";
+					std::string expected = "TIMED\ndo IE2150 report\n13/04/2014 14:00\n14/04/2014 15:30\nfalse\n";
 					QVERIFY(timedTaskPtr->taskToString() == expected);
 					system("PAUSE");
                 }
-				// testFloatTask tests the functionality of storage as well as the constructor of a float task
-				void testFloatTask() {
-					std::string floatTaskString = "cs2013 is NO fun\nfalse\n";
+
+				// constructFloatTask tests the functionality of storage as well as the constructor of a float task
+				void constructFloatTask() {
+					std::string floatTaskString = "do IE2150 report\nfalse\n";
 					Task* floatTaskPtr = new TaskFloat;
 					floatTaskPtr->stringToTask(floatTaskString);
 
-					std::string expected = "FLOAT\ncs2013 is NO fun\nfalse\n";
+					std::string expected = "FLOAT\ndo IE2150 report\nfalse\n";
 					QVERIFY(floatTaskPtr->taskToString() == expected);
 					system("PAUSE");
 				}
@@ -122,7 +124,7 @@ private:
 
                     std::string expected = "Added: \"mary had a little lamb\"\n";
                     QVERIFY(display.getFeedBack() == expected);
-					//display = test.executeUserInput("delete 1 to 50");
+					display = test.executeUserInput("delete 1 to 50");
                     system("PAUSE");
                 }
 				
@@ -133,7 +135,6 @@ private:
                     display.setDisplayStatus(false);
                     bool expected = false;
                     QVERIFY(display.getDisplayStatus() == expected);
-					//display = test.executeUserInput("delete 1 to 50");
                     system("PAUSE");
                 }
 
@@ -141,8 +142,8 @@ private:
 				// Unit Test END
 
 				// System testing
-				// systemTest_1 tests the adding of tasks, and the inherent sorting
-				void systemTest_1() {
+				// addTest tests the adding of tasks, and the inherent sorting and delete all
+				void addTest() {
 					Logic logic;
 					DisplayOutput displayOutput;
 					std::vector<std::string> output;
@@ -159,59 +160,61 @@ private:
 			 		QVERIFY(output[0] == expectedOutput2);
 					std::string expectedOutput3 = "2. TIMED<>finish homework<>22 Dec 2014 10:00 pm to 25 Dec 2014 10:00 pm<>false\n";
 					QVERIFY(output[1] == expectedOutput3);
-					displayOutput = logic.executeUserInput("delete 1 to 50");
+					displayOutput = logic.executeUserInput("delete all");
+					QVERIFY(displayOutput.getDisplay().size() == 0);
 					system("PAUSE");
 				}
 				
-				// systemTest_2 tests the sequence of undo and redo
-				void systemTest_2() {
+				// undoRedoTest tests the sequence of undo and redo and complete "incomplete"
+				void undoRedoTest() {
 					Logic logic;
 					DisplayOutput displayOutput;
 					std::vector<std::string> output;
-					std::string testDeadline = "add do homework on 23 dec 10pm";
-					std::string testTimed = "add finish homework from 22 dec to 25 dec 10pm";
+					std::string testDeadline = "add do homework on 23 may 10pm";
+					std::string testTimed = "add finish homework from 22 may to 25 may 10pm";
 					displayOutput = logic.executeUserInput(testDeadline);
 					displayOutput = logic.executeUserInput(testTimed);
 					displayOutput = logic.executeUserInput("undo");
 					output = displayOutput.getDisplay();
-					std::string expectedOutput1 = "1. DEADLINE<>do homework<>23 Dec 2014 10:00 pm<>false\n";
+					std::string expectedOutput1 = "1. DEADLINE<>do homework<>23 May 2014 10:00 pm<>false\n";
 					QVERIFY(output[0] == expectedOutput1);
 					displayOutput = logic.executeUserInput("redo");
 					output = displayOutput.getDisplay();
-					std::string expectedOutput2 = "2. TIMED<>finish homework<>22 Dec 2014 10:00 pm to 25 Dec 2014 10:00 pm<>false\n";
+					std::string expectedOutput2 = "2. TIMED<>finish homework<>22 May 2014 10:00 pm to 25 May 2014 10:00 pm<>false\n";
 					QVERIFY(output[1] == expectedOutput2);
-					displayOutput = logic.executeUserInput("complete 1");
+					displayOutput = logic.executeUserInput("complete incomplete");
 					displayOutput = logic.executeUserInput("undo");
 					displayOutput = logic.executeUserInput("complete 1");
 					displayOutput = logic.executeUserInput("undo");
 					QVERIFY(output[0] == expectedOutput1);
-					displayOutput = logic.executeUserInput("delete 1 to 50");
+					displayOutput = logic.executeUserInput("delete tasks contain \"homework\"");
 					system("PAUSE");
 				}
-				// systemTest_3 tests the incomplete and complete functionality (multiple completes) and the sorting algo
-				void systemTest_3() {
+				
+				// completeIncompleteTest tests the incomplete and complete functionality (multiple completes) and resolveAdd function to auto fill in time when user doesnt specify
+				void completeIncompleteTest() {
 					Logic logic;
 					DisplayOutput displayOutput;
 					std::vector<std::string> output;
-					std::string testDeadline = "add do homework on 23 dec 10pm";
-					std::string testTimed = "add finish homework from 22 dec to 25 dec 10pm";
+					std::string testDeadline = "add do internship report on 23 june 10pm";
+					std::string testTimed = "add finish reservist from 22 july to 25 july";
 					displayOutput = logic.executeUserInput(testDeadline);
 					displayOutput = logic.executeUserInput(testTimed);
-					displayOutput = logic.executeUserInput("complete 1 to 2");
+					displayOutput = logic.executeUserInput("complete 1 to 3");
 					output = displayOutput.getDisplay();
-					std::string expectedOutput1 = "1. DEADLINE<>do homework<>23 Dec 2014 10:00 pm<>true\n";
-					std::string expectedOutput2 = "2. TIMED<>finish homework<>22 Dec 2014 10:00 pm to 25 Dec 2014 10:00 pm<>true\n";
+					std::string expectedOutput1 = "1. DEADLINE<>do internship report<>23 Jun 2014 10:00 pm<>true\n";
+					std::string expectedOutput2 = "2. TIMED<>finish reservist<>22 Jul 2014 12:00 am to 25 Jul 2014 11:59 pm<>true\n";
 					QVERIFY(output[0] == expectedOutput1);
 					QVERIFY(output[1] == expectedOutput2);
-					displayOutput = logic.executeUserInput("incomplete 1");
+					displayOutput = logic.executeUserInput("incomplete contain \"do\"");
 					output = displayOutput.getDisplay();
-					std::string expectedOutput3 = "1. DEADLINE<>do homework<>23 Dec 2014 10:00 pm<>false\n";
+					std::string expectedOutput3 = "1. DEADLINE<>do internship report<>23 Jun 2014 10:00 pm<>false\n";
 					QVERIFY(output[0] == expectedOutput3);
 					displayOutput = logic.executeUserInput("delete 1 to 50");
 					system("PAUSE");
 				}
-				// systemTest_4 tests edit and delete functionality
-				void systemTest_4() {
+				// editDeleteTest tests edit and delete functionality, together with the sorting algo
+				void editDeleteTest() {
 					Logic logic;
 					DisplayOutput displayOutput;
 					std::vector<std::string> output;
@@ -230,6 +233,7 @@ private:
 					std::string expectedOutput1 = "5. DEADLINE<>do homework<>25 Dec 2014 11:00 pm<>false\n";
 					QVERIFY(output[4] == expectedOutput1);
 					displayOutput = logic.executeUserInput("delete 1");
+					// pushes back the duration of the task for timed task
 					displayOutput = logic.executeUserInput("edit 1 on 25 dec 11pm");
 					displayOutput = logic.executeUserInput("edit 1 start 23 dec");
 					displayOutput = logic.executeUserInput("edit 2 end 24 dec");
@@ -242,7 +246,7 @@ private:
 					QVERIFY(output[1] == expectedOutput2);
 					QVERIFY(output[2] == expectedOutput3);
 					QVERIFY(output[3] == expectedOutput4);
-					displayOutput = logic.executeUserInput("delete 1 to 50");
+					displayOutput = logic.executeUserInput("delete incomplete");
 					system("PAUSE");
 				}
 				
