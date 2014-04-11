@@ -11,6 +11,7 @@ bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displa
 	displayList.clear();
 	displayIndexList.clear();
 	
+	int index = 1;
 	for(std::vector<Task*>::iterator iter = taskList.begin(); iter != taskList.end(); iter++){
 		if ((*iter)->getCompleteStatus() == status && iter != taskList.end()){
 			displayList.push_back(*iter);
@@ -23,6 +24,14 @@ bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displa
 	}
 	markDisplayList(displayList, displayListStatus);
 	return true;
+}
+
+std::vector<Task*>::iterator TaskFilter::indexToIterator(int index, std::vector<Task*> &taskList){
+	std::vector<Task*>::iterator iter = taskList.begin();
+	for(int i=1; i!=index && i<=taskList.size(); i++){
+		iter++;
+	}
+	return iter;
 }
 
 bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, std::string taskDesc, std::vector<std::string> &displayListStatus){

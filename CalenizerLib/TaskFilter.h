@@ -31,7 +31,7 @@ public:
 	//filters out tasks by complete/incomplete (specify at the bool)
 	//post: returns false if no matching tasks are found
 	bool search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, bool, std::vector<std::string> &displayListStatus);
-	
+	std::vector<Task*>::iterator indexToIterator(int index, std::vector<Task*> &taskList);
 	//filters out tasks by search term (specify at the string)
 	//post: returns false if matching tasks are found
 	bool search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, std::string, std::vector<std::string> &displayListStatus);
