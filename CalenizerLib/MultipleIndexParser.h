@@ -11,6 +11,7 @@
 //All functions return false if any error occurs
 class MultipleIndexParser{
 private:
+	static QRegExp RX_NEGATIVE_INDEX;
 	static QRegExp RX_TO;
 	static QRegExp RX_INDEX;
 	std::vector<int> _index;
