@@ -1,9 +1,5 @@
 //Parser.h
-//IN PROGRESS
-//v 2.8
-// updated parser to accomodate new architecture
-//v 3.0
-//edited some code bits to add ability to properly parse subsequent days of the week
+
 #ifndef PARSER_H
 #define PARSER_H
 
@@ -11,10 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
-#include <string>
 #include <sstream>
-#include <vector>
-#include <algorithm>
 #include <QRegExp>
 #include "NLPDateParser.h"
 #include "NLPSentenceParser.h"
@@ -36,16 +29,16 @@ public:
 	Parser();
 	
 	AnalysedData parse(std::string, const std::vector<Task*> &_displayList);
-	COMMAND_TYPE getCommand(std::string);
+	COMMAND_TYPE getCommand(std::string userInput);
 	
 	AnalysedData undoCMD();
 	AnalysedData redoCMD();	
-	AnalysedData searchCMD(std::string);
-	AnalysedData displayCMD(std::string);
-	AnalysedData incompleteCMD(std::string, const std::vector<Task*> &_taskList);
-	AnalysedData completeCMD(std::string, const std::vector<Task*> &_taskList);
-	AnalysedData deleteCMD(std::string, const std::vector<Task*> &_taskList);
-	AnalysedData editCMD(std::string);
-	AnalysedData addCMD(std::string);
+	AnalysedData searchCMD(std::string userInput);
+	AnalysedData displayCMD(std::string userInput);
+	AnalysedData incompleteCMD(std::string userInput, const std::vector<Task*> &_taskList);
+	AnalysedData completeCMD(std::string userInput, const std::vector<Task*> &_taskList);
+	AnalysedData deleteCMD(std::string userInput, const std::vector<Task*> &_taskList);
+	AnalysedData editCMD(std::string userInput);
+	AnalysedData addCMD(std::string userInput);
 };
 #endif

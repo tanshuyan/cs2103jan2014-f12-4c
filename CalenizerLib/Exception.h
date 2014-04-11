@@ -1,5 +1,5 @@
 //Exception.h
-//v1.0
+
 #ifndef EXCEPTION_H
 #define EXCEPTION_H
 

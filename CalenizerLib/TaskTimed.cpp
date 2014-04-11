@@ -1,7 +1,4 @@
 // TaskTimed.cpp
-// v1.3
-// removed setTaskType, moved tasktype-setting to the constructor
-// added taskDetailsToString
 
 #include "TaskTimed.h"
 

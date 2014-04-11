@@ -1,7 +1,4 @@
 //NLPDateParser.cpp
-//v 3.0
-//Ability to read dates and times at the end of the string not marked by keywords
-//Added ability to parse "until [weekday]" properly
 
 #include "NLPDateParser.h"
 

@@ -1,7 +1,4 @@
 //Parser.cpp
-//IN PROGRESS
-//v 3.0
-//edited some code bits to add ability to properly parse subsequent days of the week
 
 #include "Parser.h"
 

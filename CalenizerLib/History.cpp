@@ -1,8 +1,5 @@
 // History.cpp
-// v1.2
-// changed the function for deep copies to taskDetailsToString()
-// fixed a bug in undo, deep copies
-// modularise functions
+
 #include "History.h"
 
 History::History(){

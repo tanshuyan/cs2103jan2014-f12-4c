@@ -1,6 +1,4 @@
 // Logger.h
-// v 1.1
-// added different warning levels
 
 #ifndef LOGGER_H
 #define LOGGER_H
@@ -27,9 +25,9 @@ public:
 		return instance;
 	}
 	
-	void addWarningLog(std::string);
-	void addErrorLog(std::string);
-	void addInfoLog(std::string);
+	void addWarningLog(std::string newLog);
+	void addErrorLog(std::string newLog);
+	void addInfoLog(std::string newLog);
 	void saveLog();
 };
 #endif

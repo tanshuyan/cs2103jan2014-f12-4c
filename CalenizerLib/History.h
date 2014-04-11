@@ -1,9 +1,5 @@
-// History.cpp
-// v1.2
-// changed the function for deep copies to taskDetailsToString()
-// fixed a bug in undo, deep copies
-// modularise functions
-#pragma once
+// History.h
+
 #ifndef HISTORY_H
 #define HISTORY_H
 
@@ -24,10 +20,10 @@ private:
 public:
 	History();
 
-	void saveHistory(std::vector<Task*> &);
+	void saveHistory(std::vector<Task*> &taskList);
 	void clearRedo();
 
-	void createDeepCopy(std::vector<Task*> &, std::vector<Task*> &);
+	void createDeepCopy(std::vector<Task*> &taskList, std::vector<Task*> &copyList);
 
 	//Returns success of undo operation
 	bool History::undo(std::vector<Task*> &taskList);

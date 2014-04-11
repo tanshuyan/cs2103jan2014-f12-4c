@@ -1,8 +1,5 @@
 // Task.h
-// v1.3
-// removed setTaskType, moved tasktype-setting to the constructor
-// added taskDetailsToString
-#pragma once
+
 #ifndef TASK_H
 #define TASK_H
 
@@ -12,13 +9,13 @@
 
 class Task {
 public:
-	virtual void setTask(bool, std::string) {return;}
-	virtual void setTask(bool, std::string, DateTime) {return;}
-	virtual void setTask(bool, std::string, DateTime, DateTime) {return;}
-	virtual void setCompleteStatus(bool) {return;}
-	virtual void setTaskDesc(std::string) {return;}
-	virtual void setDeadline(DateTime) {return;}
-	virtual void setStartDate(DateTime) {return;}
+	virtual void setTask(bool status, std::string taskDesc) {return;}
+	virtual void setTask(bool status, std::string taskDesc, DateTime) {return;}
+	virtual void setTask(bool status, std::string taskDesc, DateTime, DateTime) {return;}
+	virtual void setCompleteStatus(bool status) {return;}
+	virtual void setTaskDesc(std::string taskDesc) {return;}
+	virtual void setDeadline(DateTime deadline) {return;}
+	virtual void setStartDate(DateTime startDate) {return;}
 	
 	virtual DateTime getDeadline() const {return DateTime::DateTime();}
 	virtual DateTime getStartDate() const {return DateTime::DateTime();}  
@@ -31,7 +28,7 @@ public:
 	virtual bool getCompleteStatus() const  {return false;}
 	virtual std::string outputToString() {return "";}
 	virtual std::string taskToString() {return "";}
-	virtual void stringToTask(std::string) {return;}
+	virtual void stringToTask(std::string content) {return;}
 };
 
 #endif

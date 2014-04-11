@@ -1,9 +1,4 @@
 // Logic.cpp
-// v2.3
-// changed display string to view, exit string to quit
-// added the msg feedback for search
-// added sort function
-// refactored some code
 
 #include "Logic.h"
 
@@ -151,7 +146,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	endDateTime.setTime(endTime);
 
 	if(startDate.isNull() && endDate.isNull() && startTime.isNull() && endTime.isNull() && taskDesc.empty()) {
-		throw InvalidTask(_actionMsg.invalidFeedback().c_str());
+		throw InvalidTask(_actionMsg.invalidTaskFeedback().c_str());
 		return;
 	}
 	

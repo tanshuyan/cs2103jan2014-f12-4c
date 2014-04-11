@@ -1,5 +1,4 @@
 // MultipleIndexParser.cpp
-// v1.0
 
 #include "MultipleIndexParser.h"
 

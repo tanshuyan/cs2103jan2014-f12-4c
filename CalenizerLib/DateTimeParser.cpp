@@ -1,7 +1,5 @@
 //DateTimeParser.cpp
-//v 3.1
-//some code refactoring
-//ability to parse "at 1"
+
 #include "DateTimeParser.h"
 
 QRegExp DateTimeParser::RX_EMPTY("(^\\s*$)");
