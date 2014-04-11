@@ -28,14 +28,14 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 
 	std::string taskType;
 	while(std::getline(_fileInput,taskType)) {
-		while((taskType != TaskFloat::TASK_FLOAT) && (taskType != TaskDeadline::TASK_DEADLINE) && (taskType != TaskTimed::TASK_TIMED)) {
+		while((taskType != TaskFloat::TASK_FLOAT) && (taskType != TaskDeadline::TASK_DEADLINE) && (taskType != TaskTimed::TASK_TIMED) && _fileInput.good()) {
 			std::getline(_fileInput, taskType);
 		}
 
 		if (taskType == TaskDeadline::TASK_DEADLINE){
 			std::string taskContent;
 			std::string content;
-			for(int i = 1; i <= ATTRIBUTE_DEADLINE ; i++) {
+			for(int i = 1; i <= ATTRIBUTE_DEADLINE && _fileInput.good(); i++) {
 			std::getline(_fileInput,content);
 			taskContent += content + "\n";
 			}
@@ -46,7 +46,7 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 		} else if (taskType == TaskFloat::TASK_FLOAT){
 			std::string taskContent;
 			std::string content; 
-			for(int i = 1; i <= ATTRIBUTE_FLOAT ; i++) {
+			for(int i = 1; i <= ATTRIBUTE_FLOAT && _fileInput.good(); i++) {
 			std::getline(_fileInput,content);
 			taskContent  += content + "\n";
 			}
@@ -57,7 +57,7 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 		} else if (taskType == TaskTimed::TASK_TIMED){
 			std::string taskContent;
 			std::string content;
-			for(int i = 1; i <= ATTRIBUTE_TIMED ; i++) {
+			for(int i = 1; i <= ATTRIBUTE_TIMED && _fileInput.good(); i++) {
 			std::getline(_fileInput,content);
 			taskContent += content + "\n";
 			}
