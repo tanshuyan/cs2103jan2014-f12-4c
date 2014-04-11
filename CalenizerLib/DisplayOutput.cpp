@@ -11,8 +11,8 @@ void DisplayOutput::displayTasks(std::vector<Task*> displayList){
 	int counter = 1;
 
 	//ensure it is cleared before displaying new list
-	if(!_displayListStatus.empty()){
-		_displayListStatus.clear();
+	if(!_displayList.empty()){
+		_displayList.clear();
 	}
 
 	for(std::vector<Task*>::iterator iter = displayList.begin(); iter != displayList.end();){
@@ -77,7 +77,6 @@ bool DisplayOutput::getDisplayStatus() {
 	return _displayStatus;
 }
 
-/*
 void DisplayOutput::displayToUser(std::string output) {
 	assert(output != EMPTY);
 
@@ -88,7 +87,6 @@ void DisplayOutput::displayToUser(std::string output) {
 		std::cout <<  _actionMsg.MSG_NOTHING_DISPLAY;
 	}
 }
-*/
 
 std::string DisplayOutput::deleteFeedback(std::string userInput) {
 	sprintf_s(buffer, Message::MSG_DELETE_SUCCESS.c_str(), userInput.c_str());

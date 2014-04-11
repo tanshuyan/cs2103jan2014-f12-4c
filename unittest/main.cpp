@@ -3,9 +3,10 @@
 #include <QtTest\Qttest>
 #include <QtCore/QCoreApplication>
 #include <QTest>
+#include <QtTest\Qttest>
+#include <cstdlib>
 #include <qobject.h>
 #include <qstring.h>
-#include <cstdlib>
 #include "taskStorage.h"
 #include "Task.h"
 #include "TaskDeadline.h"
@@ -18,10 +19,12 @@
 class TaskTest : public QObject {
         Q_OBJECT
 private:
+	
         private slots:
+
                 // Unit Test START
 				// constructDeadlineTask tests the functionality of storage as well as the constructor of a deadline task
-			/*	void constructDeadlineTask() {
+				void constructDeadlineTask() {
 					std::string deadlineTaskString = "do IE2150 report\n13/04/2014 14:00\nfalse\n";
 					Task* deadlineTaskPtr = new TaskDeadline;
 					deadlineTaskPtr->stringToTask(deadlineTaskString);
@@ -30,7 +33,8 @@ private:
 					QVERIFY(deadlineTaskPtr->taskToString() == expected);
 					system("PAUSE");
                 }
-				// constructTimedTask tests the functionality of storage as well as the constructor of a timed task
+				
+				 // constructTimedTask tests the functionality of storage as well as the constructor of a timed task
                 void constructTimedTask() {
               		std::string timedTaskString = "do IE2150 report\n13/04/2014 14:00\n14/04/2014 15:30\nfalse\n";
 					Task* timedTaskPtr = new TaskTimed;
@@ -40,6 +44,7 @@ private:
 					QVERIFY(timedTaskPtr->taskToString() == expected);
 					system("PAUSE");
                 }
+
 				// constructFloatTask tests the functionality of storage as well as the constructor of a float task
 				void constructFloatTask() {
 					std::string floatTaskString = "do IE2150 report\nfalse\n";
@@ -55,8 +60,10 @@ private:
 				void testParser() {
 					Parser parser;
 					AnalysedData expectedOutput;
+					//test input
 					std::string testString = "event";
 					AnalysedData output = parser.addCMD(testString);
+					//expected output
 					expectedOutput.setCommand("add");
 					expectedOutput.setTaskDesc("event");
 					QDate startDate;
@@ -71,8 +78,10 @@ private:
 				void testParser_2() {
 					Parser parser;
 					AnalysedData expectedOutput;
+					//test input
 					std::string testString = "event";
 					AnalysedData output = parser.addCMD(testString);
+					//expected output
 					expectedOutput.setCommand("add");
 					expectedOutput.setTaskDesc("event");
 					QDate startDate;
@@ -105,8 +114,9 @@ private:
 					//NLParser parser;
 					system("PAUSE");
 				}
-				/*
-                void testFeedback(){
+				
+
+				 void testFeedback(){
                     DisplayOutput display;
                     //std::string command;
                     Logic test;
@@ -114,18 +124,20 @@ private:
 
                     std::string expected = "Added: \"mary had a little lamb\"\n";
                     QVERIFY(display.getFeedBack() == expected);
+					display = test.executeUserInput("delete 1 to 50");
                     system("PAUSE");
-                }*/
-
-				/*
-				 void testDisplayStatus(){
+                }
+				
+				
+				void testDisplayStatus(){
                     DisplayOutput display;
+					Logic test;
                     display.setDisplayStatus(false);
-                    bool expected = "false";
+                    bool expected = false;
                     QVERIFY(display.getDisplayStatus() == expected);
                     system("PAUSE");
                 }
-				*/
+
 
 				// Unit Test END
 
@@ -148,15 +160,17 @@ private:
 			 		QVERIFY(output[0] == expectedOutput2);
 					std::string expectedOutput3 = "2. TIMED<>finish homework<>22 Dec 2014 10:00 pm to 25 Dec 2014 10:00 pm<>false\n";
 					QVERIFY(output[1] == expectedOutput3);
-					displayOutput = logic.executeUserInput("delete 1 to 50");
+					displayOutput = logic.executeUserInput("delete all");
+					QVERIFY(displayOutput.getDisplay().size() == 0);
 					system("PAUSE");
 				}
+				
 				// undoRedoTest tests the sequence of undo and redo and complete "incomplete"
 				void undoRedoTest() {
 					Logic logic;
 					DisplayOutput displayOutput;
 					std::vector<std::string> output;
-					std::string testDeadline = "add do homework on 23/05/2014 10pm";
+					std::string testDeadline = "add do homework on 23 may 10pm";
 					std::string testTimed = "add finish homework from 22 may to 25 may 10pm";
 					displayOutput = logic.executeUserInput(testDeadline);
 					displayOutput = logic.executeUserInput(testTimed);
@@ -168,14 +182,15 @@ private:
 					output = displayOutput.getDisplay();
 					std::string expectedOutput2 = "2. TIMED<>finish homework<>22 May 2014 10:00 pm to 25 May 2014 10:00 pm<>false\n";
 					QVERIFY(output[1] == expectedOutput2);
-					displayOutput = logic.executeUserInput("complete \"incomplete\"");
+					displayOutput = logic.executeUserInput("complete incomplete");
 					displayOutput = logic.executeUserInput("undo");
 					displayOutput = logic.executeUserInput("complete 1");
 					displayOutput = logic.executeUserInput("undo");
 					QVERIFY(output[0] == expectedOutput1);
-					displayOutput = logic.executeUserInput("delete tasks start \"homework\"");
+					displayOutput = logic.executeUserInput("delete tasks contain \"homework\"");
 					system("PAUSE");
 				}
+				
 				// completeIncompleteTest tests the incomplete and complete functionality (multiple completes) and resolveAdd function to auto fill in time when user doesnt specify
 				void completeIncompleteTest() {
 					Logic logic;
@@ -188,7 +203,7 @@ private:
 					displayOutput = logic.executeUserInput("complete 1 to 3");
 					output = displayOutput.getDisplay();
 					std::string expectedOutput1 = "1. DEADLINE<>do internship report<>23 Jun 2014 10:00 pm<>true\n";
-					std::string expectedOutput2 = "2. TIMED<>finish reservist<>22 July 2014 12:00 am to 25 July 2014 11:59 pm<>true\n";
+					std::string expectedOutput2 = "2. TIMED<>finish reservist<>22 Jul 2014 12:00 am to 25 Jul 2014 11:59 pm<>true\n";
 					QVERIFY(output[0] == expectedOutput1);
 					QVERIFY(output[1] == expectedOutput2);
 					displayOutput = logic.executeUserInput("incomplete contain \"do\"");
