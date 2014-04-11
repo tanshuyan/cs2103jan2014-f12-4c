@@ -112,8 +112,9 @@ private:
 					//NLParser parser;
 					system("PAUSE");
 				}
-				/*
-                void testFeedback(){
+				
+
+				 void testFeedback(){
                     DisplayOutput display;
                     //std::string command;
                     Logic test;
@@ -121,19 +122,20 @@ private:
 
                     std::string expected = "Added: \"mary had a little lamb\"\n";
                     QVERIFY(display.getFeedBack() == expected);
-                    system("PAUSE");
-                }*/
-
-				/*
-				 void testDisplayStatus(){
-                    DisplayOutput display;
-                    display.setDisplayStatus(false);
-                    bool expected = "false";
-                    QVERIFY(display.getDisplayStatus() == expected);
+					//display = test.executeUserInput("delete 1 to 50");
                     system("PAUSE");
                 }
-				*/
-
+				
+				
+				void testDisplayStatus(){
+                    DisplayOutput display;
+					Logic test;
+                    display.setDisplayStatus(false);
+                    bool expected = false;
+                    QVERIFY(display.getDisplayStatus() == expected);
+					//display = test.executeUserInput("delete 1 to 50");
+                    system("PAUSE");
+                }
 
 
 				// Unit Test END

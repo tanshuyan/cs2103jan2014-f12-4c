@@ -36,4 +36,10 @@ public:
         InvalidTask();
         InvalidTask(const char* desc) EXCEPTION_CONSTRUCTOR
 };
+
+class EmptyMessageException:public std::exception{
+public:
+        EmptyMessageException();
+        EmptyMessageException(const char* desc) EXCEPTION_CONSTRUCTOR
+}
 #endif
