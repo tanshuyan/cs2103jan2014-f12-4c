@@ -4,7 +4,8 @@
 
 QRegExp MultipleIndexParser::RX_TO("(\\d+)\\s*(?:to|-|until|til)\\s*(\\d+)", Qt::CaseInsensitive);
 
-QRegExp MultipleIndexParser::RX_INDEX("(\\d+)");
+//FIX THIS with "\\s-?(\\d+)\\s" or something
+QRegExp MultipleIndexParser::RX_INDEX("-?(\\d+)");
 
 MultipleIndexParser::MultipleIndexParser() {
 }
