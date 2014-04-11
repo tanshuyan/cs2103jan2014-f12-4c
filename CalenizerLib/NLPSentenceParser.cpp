@@ -41,7 +41,8 @@ std::vector<int> NLPSentenceParser::parseSentence(QString inputString, const std
 	if(search(inputString, RX_INCOMPLETE)){
 		return parseIncomplete(_displayList);
 	}
-	return _multipleIndexParser.parseMultipleIndex(inputString);
+	throw SentenceFailedToParse();
+	return;
 }
 
 bool NLPSentenceParser::search(QString inputString, QRegExp &rx){
