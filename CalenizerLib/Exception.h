@@ -42,10 +42,4 @@ public:
         EmptyMessageException();
         EmptyMessageException(const char* desc) EXCEPTION_CONSTRUCTOR
 };
-
-class SentenceFailedToParse:public std::exception{
-public:
-        SentenceFailedToParse();
-        SentenceFailedToParse(const char* desc) EXCEPTION_CONSTRUCTOR
-};
 #endif
