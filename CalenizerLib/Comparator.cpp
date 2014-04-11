@@ -4,20 +4,24 @@
 // added new sortbyenddate comparator
 #include "Comparator.h"
 
+const int RANK_ZERO = 0;
+const int RANK_ONE = 1;
+const int RANK_TWO = 2;
+
 bool Comparator::sortByStartDate(const Task* a, const Task* b) {
-	DateTime A;
-	DateTime B;
+	DateTime dateTimeA;
+	DateTime dateTimeB;
 	if(a->getTaskType() == TaskDeadline::TASK_DEADLINE) {
-		A = a->getDeadline();
+		dateTimeA = a->getDeadline();
 	} else{
-		A = a->getStartDate();
+		dateTimeA = a->getStartDate();
 	}
 	if(b->getTaskType() == TaskDeadline::TASK_DEADLINE) {
-		B = b->getDeadline();
+		dateTimeB = b->getDeadline();
 	} else{
-		B = b->getStartDate();
+		dateTimeB = b->getStartDate();
 	}
-	return (A<B);
+	return (dateTimeA < dateTimeB);
 }
 
 bool Comparator::sortByEndDate(const Task* a, const Task* b) {
@@ -25,37 +29,37 @@ bool Comparator::sortByEndDate(const Task* a, const Task* b) {
 }
 
 bool Comparator::sortByCompleteness(const Task* a, const Task* b) {
-	int A;
-	int B;
+	int rankA;
+	int rankB;
 	if(a->getCompleteStatus()){
-		A = 1;
+		rankA = RANK_ONE;
 	} else{
-		A = 0;
+		rankA = RANK_ZERO;
 	}
 	if(b->getCompleteStatus()){
-		B = 1;
+		rankB = RANK_ONE;
 	} else{
-		B = 0;
+		rankB = RANK_ZERO;
 	}
-	return (A<B);
+	return (rankA < rankB);
 }
 
 bool Comparator::sortByTaskType(const Task* a, const Task* b) {
-	int A;
-	int B;
+	int rankA;
+	int rankB;
 	if(a->getTaskType() == TaskTimed::TASK_TIMED){
-		A = 0;
+		rankA = RANK_ZERO;
 	} else if(a->getTaskType() == TaskDeadline::TASK_DEADLINE){
-		A = 1;
+		rankA = RANK_ONE;
 	} else{
-		A = 2;
+		rankA = RANK_TWO;
 	}
 	if(b->getTaskType() == TaskTimed::TASK_TIMED){
-		B = 0;
+		rankB = RANK_ZERO;
 	} else if(b->getTaskType() == TaskDeadline::TASK_DEADLINE){
-		B = 1;
+		rankB = RANK_ONE;
 	} else{
-		B = 2;
+		rankB = RANK_TWO;
 	}
-	return (A<B);
+	return (rankA < rankB);
 }

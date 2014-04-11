@@ -48,6 +48,10 @@ DisplayOutput Logic::executeUserInput(std::string userInput) {
 		logLogic.addInfoLog(_actionMsg.redoFailureFeedback());
 		logLogic.saveLog();
 	}
+	catch(InvalidTask &e) {
+		displayOutput.setFeedBack(e.what());
+		displayTask(_currentDisplayType, displayOutput);
+	}
 	return displayOutput;
 }
 
@@ -129,7 +133,7 @@ void Logic::executeCommand(AnalysedData& analysedData, DisplayOutput& displayOut
 
 void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	if(!(_dateTimeResolver.resolveAdd(analysedData))) {
-		displayOutput.setFeedBack(_actionMsg.invalidDateTimeFeedback());
+		throw InvalidDateTimeException(_actionMsg.invalidDateTimeFeedback().c_str());
 		return;
 	} 
 
@@ -145,6 +149,11 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	DateTime endDateTime;
 	endDateTime.setDate(endDate);
 	endDateTime.setTime(endTime);
+
+	if(startDate.isNull() && endDate.isNull() && startTime.isNull() && endTime.isNull() && taskDesc.empty()) {
+		throw InvalidTask(_actionMsg.invalidFeedback().c_str());
+		return;
+	}
 	
 	if(startDate.isNull() && endDate.isNull() && startTime.isNull() && endTime.isNull()) { // floating task
 		Task* newFloatPtr = new TaskFloat;
@@ -242,7 +251,7 @@ void Logic::deleteTask(AnalysedData analysedData, DisplayOutput& displayOutput){
 	if(!invalidIndex.empty()) {
 		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
 	} else {
-		if ( removedIndexCount == 1){
+		if (removedIndexCount == 1){
 				//std::string taskDesc= removedContent;
 				displayOutput.setFeedBack(_actionMsg.deleteFeedback(removedContent));
 				//removedContents.pop_back();

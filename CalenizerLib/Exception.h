@@ -30,4 +30,10 @@ public:
         CannotRedoException();
         CannotRedoException(const char* desc) EXCEPTION_CONSTRUCTOR
 };
+
+class InvalidTask:public std::exception{
+public:
+        InvalidTask();
+        InvalidTask(const char* desc) EXCEPTION_CONSTRUCTOR
+};
 #endif
