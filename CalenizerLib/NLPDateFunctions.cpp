@@ -42,6 +42,7 @@ bool NLPDateFunctions::searchFromUntil(QString &descString, QDate &startDate, QT
 		dateTimeIsUnlabelled = false;
 		return true;
 	}
+	dayOfWeek = -1;
 	return false;
 }
 
@@ -58,6 +59,7 @@ bool NLPDateFunctions::searchUntilFrom(QString &descString, QDate &startDate, QT
 		dateTimeIsUnlabelled = false;
 		return true;
 	}
+	dayOfWeek = -1;
 	return false;
 }
 
@@ -74,6 +76,7 @@ bool NLPDateFunctions::searchOnUntil(QString &descString, QDate &startDate, QTim
 		dateTimeIsUnlabelled = false;
 		return true;
 	}
+	dayOfWeek = -1;
 	return false;
 }
 
@@ -113,6 +116,7 @@ bool NLPDateFunctions::searchUntil(QString &descString, QDate &startDate, QTime 
 		dateTimeIsUnlabelled = false;
 		return true;
 	}
+	dayOfWeek = -1;
 	return false;
 }
 
