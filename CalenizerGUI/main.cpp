@@ -1,4 +1,5 @@
-//v1.1
+//@author A0101843R
+
 #include "calenizergui.h"
 #include <QtWidgets/QApplication>
 #include "Windows.h"

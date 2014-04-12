@@ -1,3 +1,5 @@
+//@author A0004695A
+
 // TaskFilter.h
 
 #ifndef TASKFILTER_H
@@ -37,5 +39,4 @@ public:
 	//displays today tasks
 	bool search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, QDate, std::vector<std::string> &displayListStatus);
 };
-
 #endif

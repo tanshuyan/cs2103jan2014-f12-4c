@@ -1,3 +1,5 @@
+//@author A0004695A
+
 // Logic.h
 
 #ifndef LOGIC_H

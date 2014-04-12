@@ -1,3 +1,5 @@
+//@author A0004695A
+
 //Exception.h
 
 #ifndef EXCEPTION_H
@@ -31,10 +33,10 @@ public:
         CannotRedoException(const char* desc) EXCEPTION_CONSTRUCTOR
 };
 
-class InvalidTask:public std::exception{
+class InvalidTaskException:public std::exception{
 public:
-        InvalidTask();
-        InvalidTask(const char* desc) EXCEPTION_CONSTRUCTOR
+        InvalidTaskException();
+        InvalidTaskException(const char* desc) EXCEPTION_CONSTRUCTOR
 };
 
 class EmptyMessageException:public std::exception{

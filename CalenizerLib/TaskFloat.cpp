@@ -1,3 +1,5 @@
+//@author A0094659L
+
 // TaskFloat.cpp
 
 #include "taskFloat.h"

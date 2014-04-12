@@ -1,3 +1,5 @@
+//@author A0004695A
+
 //Parser.cpp
 
 #include "Parser.h"
@@ -10,9 +12,9 @@ AnalysedData Parser::parse(std::string userInput, const std::vector<Task*> &_dis
 	std::string command;
 	std::string dummy;
 	std::string commandLine;
-	input >> command; // the first word is always a command
-	std::getline(input, dummy, ' '); // trim whitespace 
-	std::getline(input, commandLine); // commandLine gets the remaining userInput
+	input >> command; 
+	std::getline(input, dummy, ' '); 
+	std::getline(input, commandLine); 
 
 	switch(getCommand(command)) {
 	case ADD: {

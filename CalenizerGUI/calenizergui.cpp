@@ -1,4 +1,7 @@
-//v1.1
+//@author A0101843R
+
+// Calenizer.h
+
 #include "calenizergui.h"
 
 const QString CalenizerGUI::ADD_MSG = "add";

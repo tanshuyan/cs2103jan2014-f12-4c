@@ -1,3 +1,5 @@
+//@author A0004695A
+
 //TaskEditor.h
 
 #ifndef TASKEDITOR

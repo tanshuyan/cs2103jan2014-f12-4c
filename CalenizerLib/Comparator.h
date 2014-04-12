@@ -1,3 +1,5 @@
+//@author A0004695A
+
 // Comparator.h
 
 #ifndef COMPARATOR_H

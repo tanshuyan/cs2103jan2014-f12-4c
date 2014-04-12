@@ -1,6 +1,7 @@
+//@author A0097286M
+
 //NLPDateFunctions.cpp
-//v 3.1
-//Some changes to RX_ON_AT_BY enable "at 1" recognition
+
 #include "NLPDateFunctions.h"
 QRegExp NLPDateFunctions::RX_QUOTES("\"(.+)\"");
 QRegExp NLPDateFunctions::RX_FROM_UNTIL("\\b(?:starting|start|lasting|from(?!\\s+from)|begin|beginning)\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);

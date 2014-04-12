@@ -1,5 +1,6 @@
+//@author A0097286M
+
 //NLPSentenceParser.cpp
-//v 1.0
 
 #include "NLPSentenceParser.h"
 

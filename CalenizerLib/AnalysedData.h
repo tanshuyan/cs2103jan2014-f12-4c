@@ -1,3 +1,5 @@
+//@author A0101843R
+
 //AnalysedData.h
 
 #ifndef ANALYSEDDATA_H

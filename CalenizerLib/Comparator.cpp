@@ -1,3 +1,5 @@
+//@author A0004695A
+
 // Comparator.cpp
 
 #include "Comparator.h"
