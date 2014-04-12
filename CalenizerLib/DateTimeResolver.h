@@ -22,8 +22,8 @@ private:
 	//Completes the date and time fields the user left blank for the case of Add
 	void completeAdd(QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime);
 	//Given a reference 'curr' date & time, it guesses the event date given the upcoming event time
-	void setNearestValidDay(QDate &dateToSet, QTime eventTime, QDate &currDate = QDate::currentDate(), QTime &currTime = QTime::currentTime());
-	void setEndToDayOfWeek(QDate startDate, QDate &endDate, int dayOfWeek);
+	QDate setNearestValidDay(QTime eventTime, QDate currDate = QDate::currentDate(), QTime currTime = QTime::currentTime());
+	QDate setEndToDayOfWeek(QDate startDate, QDate endDate, int dayOfWeek);
 	//If there both start and end date/times are present, it checks that they are in the valid order
 	bool checkDateOrderIsValid(QDate startDate, QTime startTime, QDate endDate, QTime endTime);
 	bool checkDateOrderIsValid(QDate startDate, QTime startTime, QDate endDate, QTime endTime, const Task* task);

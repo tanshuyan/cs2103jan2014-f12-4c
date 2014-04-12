@@ -13,9 +13,6 @@
 
 class DateTimeParser{
 private:
-	QDate _date;
-	QTime _time;
-	
 	static QRegExp RX_EMPTY;
 
 	static QRegExp RX_HOUR_MIN_AP;

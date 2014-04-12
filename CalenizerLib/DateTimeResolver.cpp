@@ -2,9 +2,10 @@
 
 #include "DateTimeResolver.h"
 
+const QTime DAY_START(0,0,0);
+const QTime DAY_END(23,59,0);
+
 DateTimeResolver::DateTimeResolver(){
-	_dayStart.setHMS(0,0,0);
-	_dayEnd.setHMS(23,59,0);
 }
 
 bool DateTimeResolver::resolveAdd(AnalysedData &analysedData) {
@@ -14,7 +15,7 @@ bool DateTimeResolver::resolveAdd(AnalysedData &analysedData) {
 	QTime endTime = analysedData.getEndTime();
 	int dayOfWeek = analysedData.getDayOfWeek();
 	if(startDate.isValid()){
-		setEndToDayOfWeek(startDate, endDate, dayOfWeek);
+		endDate = setEndToDayOfWeek(startDate, endDate, dayOfWeek);
 	}
 	completeAdd(startDate, startTime, endDate, endTime);
 	analysedData.setStartDate(startDate);
@@ -32,7 +33,7 @@ bool DateTimeResolver::resolveEdit(const Task* task, AnalysedData &analysedData)
 	bool dateTimeIsUnlabelled = analysedData.getDateTimeUnlabelled();
 	int dayOfWeek = analysedData.getDayOfWeek();
 	if(startDate.isValid()){
-		setEndToDayOfWeek(startDate, endDate, dayOfWeek);
+		endDate = setEndToDayOfWeek(startDate, endDate, dayOfWeek);
 	}
 	completeEdit(task, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled);
 	analysedData.setStartDate(startDate);
@@ -138,12 +139,12 @@ void DateTimeResolver::completeAdd(QDate &startDate, QTime &startTime, QDate &en
 		//Lacks start date
 		if(startDate.isNull()){
 			//set the date to either today or tomorrow, depending on current time vs. startTime
-			setNearestValidDay(startDate, startTime);
+			startDate = setNearestValidDay(startTime);
 			return;
 		}
 		//Lacks start time
 		if(startTime.isNull()){
-			startTime = _dayEnd;
+			startTime = DAY_END;
 			return;
 		}
 		return;
@@ -152,12 +153,12 @@ void DateTimeResolver::completeAdd(QDate &startDate, QTime &startTime, QDate &en
 	if(startDate.isNull() && startTime.isNull()){
 		//Lacks end date
 		if(endDate.isNull()){
-			setNearestValidDay(endDate, endTime);
+			endDate = setNearestValidDay(endTime);
 			return;
 		}
 		//Lacks end time
 		if(endTime.isNull()){
-			endTime = _dayEnd;
+			endTime = DAY_END;
 			return;
 		}
 		return;
@@ -166,27 +167,38 @@ void DateTimeResolver::completeAdd(QDate &startDate, QTime &startTime, QDate &en
 	//Cases that are missing two fields
 	//Missing both dates
 	if(startDate.isNull() && endDate.isNull()){
-		setNearestValidDay(startDate,startTime);
-		setNearestValidDay(endDate,endTime,startDate,startTime);
+		startDate = setNearestValidDay(startTime);
+		endDate = setNearestValidDay(endTime,startDate,startTime);
 		return;
 	}
 	//Missing both times
 	if(startTime.isNull() && endTime.isNull()){
-		startTime = _dayStart;
-		endTime = _dayEnd;
+		startTime = DAY_START;
+		endTime = DAY_END;
 		return;
 	}
-
+	//Missing start time and end date
+	if(startTime.isNull() && endDate.isNull()){
+		startTime = DAY_START;
+		endDate = startDate;
+		return;
+	}
+	//Missing end time and start date
+	if(endTime.isNull() && startDate.isNull()){
+		startDate = setNearestValidDay(startTime);
+		endTime = DAY_END;
+		return;
+	}
 	//Cases that are missing one field
 	//No start date
 	if(startDate.isNull()){
-		setNearestValidDay(startDate, startTime);
+		startDate = setNearestValidDay(startTime);
 		return;
 	}
 	//No start time
 	if(startTime.isNull()){
 		if(startDate == endDate){
-			startTime = _dayStart;
+			startTime = DAY_START;
 		} else{
 			startTime = endTime;
 		}
@@ -194,13 +206,13 @@ void DateTimeResolver::completeAdd(QDate &startDate, QTime &startTime, QDate &en
 	}
 	//No end date
 	if(endDate.isNull()){
-		setNearestValidDay(endDate, endTime, startDate, startTime);
+		endDate = setNearestValidDay(endTime, startDate, startTime);
 		return;
 	}
 	//No end time
 	if(endTime.isNull()){
 		if(startDate == endDate){
-			endTime = _dayEnd;
+			endTime = DAY_END;
 		} else{
 			endTime = startTime;
 		}
@@ -210,22 +222,22 @@ void DateTimeResolver::completeAdd(QDate &startDate, QTime &startTime, QDate &en
 	return;
 }
 
-void DateTimeResolver::setNearestValidDay(QDate &dateToSet, QTime eventTime, QDate &currDate, QTime &currTime){
+QDate DateTimeResolver::setNearestValidDay(QTime eventTime, QDate currDate, QTime currTime){
 	assert (eventTime.isValid());
 	//if the event time is later than the current time
+	QDate dateToSet;
 	if(eventTime > currTime){
 				dateToSet = currDate;
 			} else{
 				dateToSet = currDate.addDays(1);
 			}
-	return;
+	return dateToSet;
 }
 
-void DateTimeResolver::setEndToDayOfWeek(QDate startDate, QDate &endDate, int dayOfWeek){
+QDate DateTimeResolver::setEndToDayOfWeek(QDate startDate, QDate endDate, int dayOfWeek){
 	assert(dayOfWeek >= -1 && dayOfWeek <= 7);
 	if(dayOfWeek == 0){
-		endDate = startDate.addDays(7);
-		return;
+		return startDate.addDays(7);
 	}
 	if(dayOfWeek != -1){
 		endDate = startDate;
@@ -233,7 +245,7 @@ void DateTimeResolver::setEndToDayOfWeek(QDate startDate, QDate &endDate, int da
 			endDate = endDate.addDays(1);
 		} while(endDate.toString("dddd") != QDate::longDayName(dayOfWeek));
 	}
-	return;
+	return endDate;
 }
 
 bool DateTimeResolver::checkDateOrderIsValid(QDate startDate, QTime startTime, QDate endDate, QTime endTime){
