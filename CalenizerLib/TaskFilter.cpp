@@ -1,3 +1,5 @@
+//@author A0004695A
+
 // TaskFilter.cpp
 
 #include "TaskFilter.h"
@@ -8,14 +10,12 @@ TaskFilter::TaskFilter(){
 bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, bool status, std::vector<std::string> &displayListStatus){
 	displayList.clear();
 	displayIndexList.clear();
-	
 	for(std::vector<Task*>::iterator iter = taskList.begin(); iter != taskList.end(); iter++){
 		if ((*iter)->getCompleteStatus() == status && iter != taskList.end()){
 			displayList.push_back(*iter);
 			displayIndexList.push_back(iter);
 		}
 	}
-	
 	if (displayList.empty()){
 		return false;
 	}
@@ -43,7 +43,6 @@ bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displa
 			}
 		}
 	}
-
 	if (displayList.empty()){
 		return false;
 	}
@@ -54,12 +53,10 @@ bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displa
 bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, std::vector<std::string> &displayListStatus) {
 	displayList.clear();
 	displayIndexList.clear();
-
 	for(std::vector<Task*>::iterator iter = taskList.begin(); iter != taskList.end(); iter++){
 			displayList.push_back(*iter);
 			displayIndexList.push_back(iter);
 	}
-		
 	if (displayList.empty()){
 		return false;
 	}
@@ -70,7 +67,6 @@ bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displa
 bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, QDate currentDate, std::vector<std::string> &displayListStatus){
 	displayList.clear();
 	displayIndexList.clear();
-
 	for(std::vector<Task*>::iterator iter = taskList.begin(); iter != taskList.end(); iter++){
 		// for deadline tasks, display those with deadline = today's date
 		if((*iter)->getTaskType() == TaskDeadline::TASK_DEADLINE) {
@@ -87,7 +83,6 @@ bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displa
 			}
 		}
 	}
-
 	if (displayList.empty()){
 		return false;
 	}

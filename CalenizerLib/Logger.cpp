@@ -1,6 +1,6 @@
+//@author A0004695A
+
 // Logger.cpp
-// v 1.1
-// added different warning levels
 
 #include "Logger.h"
 

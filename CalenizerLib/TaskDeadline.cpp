@@ -1,7 +1,6 @@
+//@author A0094659L
+
 // TaskDeadline.cpp
-// v1.2
-// removed setTaskType, moved tasktype-setting to the constructor
-// added taskDetailsToString
 
 #include "TaskDeadline.h"
 

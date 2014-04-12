@@ -1,4 +1,4 @@
-// TaskTimed.h
+//@author A0094659L
 
 #ifndef TASKTIMED_H
 #define TASKTIMED_H

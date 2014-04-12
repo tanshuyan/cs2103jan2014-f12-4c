@@ -1,3 +1,5 @@
+//@author A0097286M
+
 //MultipleIndexParser.h
 
 #ifndef MULTIPLEINDEXPARSER_H

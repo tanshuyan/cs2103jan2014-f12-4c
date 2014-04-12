@@ -1,3 +1,5 @@
+//@author A0097286M
+
 //NLPSentenceParser.h
 
 #ifndef NLPSENTENCEPARSER_H

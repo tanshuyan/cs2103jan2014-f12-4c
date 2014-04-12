@@ -1,3 +1,5 @@
+//@author A0004695A
+
 // History.h
 
 #ifndef HISTORY_H

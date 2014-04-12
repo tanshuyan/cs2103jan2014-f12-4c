@@ -1,3 +1,5 @@
+//@author A0004695A
+
 // Logger.h
 
 #ifndef LOGGER_H

@@ -1,3 +1,5 @@
+//@author A0097286M
+
 // MultipleIndexParser.cpp
 
 #include "MultipleIndexParser.h"

@@ -1,3 +1,5 @@
+//@author A0004695A
+
 // Logic.cpp
 
 #include "Logic.h"
@@ -43,7 +45,7 @@ DisplayOutput Logic::executeUserInput(std::string userInput) {
 		logLogic.addInfoLog(_actionMsg.redoFailureFeedback());
 		logLogic.saveLog();
 	}
-	catch(InvalidTask &e) {
+	catch(InvalidTaskException &e) {
 		displayOutput.setFeedBack(e.what());
 		displayTask(_currentDisplayType, displayOutput);
 	}
@@ -146,7 +148,7 @@ void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
 	endDateTime.setTime(endTime);
 
 	if(startDate.isNull() && endDate.isNull() && startTime.isNull() && endTime.isNull() && taskDesc.empty()) {
-		throw InvalidTask(_actionMsg.invalidTaskFeedback().c_str());
+		throw InvalidTaskException(_actionMsg.invalidTaskFeedback().c_str());
 		return;
 	}
 	
@@ -262,8 +264,7 @@ void Logic::setComplete(AnalysedData analysedData, DisplayOutput& displayOutput)
 	std::vector<int> invalidIndex;
 	std::string taskCompleted;
 	int completeIndexCount = 0;
-	//std::vector<std::string> taskCompleted;
-
+	
 	for(unsigned int i = index.size(); i > 0; i--) {
 		taskIndex = index[i-1];
 		if(isValidIndex(taskIndex)) {
@@ -280,10 +281,8 @@ void Logic::setComplete(AnalysedData analysedData, DisplayOutput& displayOutput)
 		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
 	} else {
 			if ( completeIndexCount == 1){
-				//std::string taskDesc= removedContent;
 				displayOutput.setFeedBack(_actionMsg.completeSuccessFeedback(taskCompleted));
-				//removedContents.pop_back();
-			}
+				}
 			else {
 				displayOutput.setFeedBack(_actionMsg.completeMultipleSuccessFeedback(completeIndexCount));
 			}
@@ -301,7 +300,6 @@ void Logic::setIncomplete(AnalysedData analysedData, DisplayOutput& displayOutpu
 	std::vector<int> invalidIndex;
 	std::string taskIncompleted;
 	int incompleteIndexCount = 0;
-	//std::vector<std::string> taskIncompleted;
 
 	for(unsigned int i = index.size(); i > 0; i--) {
 		taskIndex = index[i-1];
@@ -319,9 +317,7 @@ void Logic::setIncomplete(AnalysedData analysedData, DisplayOutput& displayOutpu
 		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
 	} else {
 			if ( incompleteIndexCount == 1){
-				//std::string taskDesc= removedContent;
 				displayOutput.setFeedBack(_actionMsg.incompleteSuccessFeedback(taskIncompleted));
-				//removedContents.pop_back();
 			}
 			else {
 				displayOutput.setFeedBack(_actionMsg.incompleteMultipleSuccessFeedback(incompleteIndexCount));
@@ -339,11 +335,11 @@ void Logic::displayTask(AnalysedData analysedData, DisplayOutput& displayOutput)
 	_displayIndexList.clear();
 	if(analysedData.getCommand() == Message::CMD_DISPLAY) {
 
-		if(analysedData.getDisplayType() == Message::DISPLAY_COMPLETE) { // display completed task
+		if(analysedData.getDisplayType() == Message::DISPLAY_COMPLETE) { 
 			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, true, displayListStatus);
 		}
 			
-		if(analysedData.getDisplayType() == Message::DISPLAY_INCOMPLETE) { // display incompleted task
+		if(analysedData.getDisplayType() == Message::DISPLAY_INCOMPLETE) { 
 			_displayStatus = _filter.search(_taskList, _displayList,_displayIndexList, false, displayListStatus);
 		}
 

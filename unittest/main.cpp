@@ -1,5 +1,5 @@
-// v1.1
-// added system testing
+// Unit Test
+
 #include <QtTest\Qttest>
 #include <QtCore/QCoreApplication>
 #include <QTest>
@@ -23,6 +23,7 @@ private:
 	private slots:
 
 		// Unit Test START
+		//@author A0094659L
 		// constructDeadlineTask tests the functionality of storage as well as the constructor of a deadline task
 		void constructDeadlineTask() {
 			std::string deadlineTaskString = "do IE2150 report\n13/04/2014 14:00\nfalse\n";
@@ -55,7 +56,29 @@ private:
 			QVERIFY(floatTaskPtr->taskToString() == expected);
 			system("PAUSE");
 		}
+		
+		void testFeedback() {
+			DisplayOutput display;
+			//std::string command;
+			Logic test;
+			display = test.executeUserInput("add mary had a little lamb");
+
+			std::string expected = "Added: \"mary had a little lamb\"\n";
+			QVERIFY(display.getFeedBack() == expected);
+			display = test.executeUserInput("delete 1 to 50");
+			system("PAUSE");
+		}
 				
+		void testDisplayStatus() {
+			DisplayOutput display;
+			Logic test;
+			display.setDisplayStatus(false);
+			bool expected = false;
+			QVERIFY(display.getDisplayStatus() == expected);
+			system("PAUSE");
+		}		
+
+		//@author A0097286M
 		//NLParser Unit Tests
 		void testParser() {
 			Parser parser;
@@ -115,32 +138,9 @@ private:
 			system("PAUSE");
 		}
 				
-
-		void testFeedback() {
-			DisplayOutput display;
-			//std::string command;
-			Logic test;
-			display = test.executeUserInput("add mary had a little lamb");
-
-			std::string expected = "Added: \"mary had a little lamb\"\n";
-			QVERIFY(display.getFeedBack() == expected);
-			display = test.executeUserInput("delete 1 to 50");
-			system("PAUSE");
-		}
-				
-				
-		void testDisplayStatus() {
-			DisplayOutput display;
-			Logic test;
-			display.setDisplayStatus(false);
-			bool expected = false;
-			QVERIFY(display.getDisplayStatus() == expected);
-			system("PAUSE");
-		}
-
-
 		// Unit Test END
 
+		//@author A0004695A
 		// System testing
 		// addTest tests the adding of tasks, and the inherent sorting and delete all
 		void addTest() {
@@ -249,7 +249,8 @@ private:
 			displayOutput = logic.executeUserInput("delete incomplete");
 			system("PAUSE");
 		}
-				
+		
+		//@author A0101843R
 		// searchDisplayTest tests the search functionality of search terms and also, search terms containing tasks types, and deleting on current display, doesnt affect those not in the current display criteria
 		void searchDisplayTest() {
 			Logic logic;

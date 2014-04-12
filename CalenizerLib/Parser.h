@@ -1,3 +1,5 @@
+//@author A0004695A
+
 //Parser.h
 
 #ifndef PARSER_H

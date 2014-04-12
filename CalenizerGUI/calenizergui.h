@@ -1,4 +1,7 @@
-//v1.1
+//@author A0101843R
+
+// Calenizer.h
+
 #ifndef CALENIZERGUI_H
 #define CALENIZERGUI_H
 
@@ -75,4 +78,4 @@ private:
 	};
 };
 
-#endif // CALENIZERGUI_H
+#endif

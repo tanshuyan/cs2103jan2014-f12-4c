@@ -1,3 +1,5 @@
+//@author A0004695A
+
 // History.cpp
 
 #include "History.h"
@@ -35,14 +37,14 @@ void History::createDeepCopy(std::vector<Task*> &taskList, std::vector<Task*> &c
 			newFloatPtr->stringToTask(temp);
 			copyList.push_back(newFloatPtr);
 		
-		} else if ((*iter)->getTaskType() == TaskDeadline::TASK_DEADLINE) { // create a new deadline task	
+		} else if ((*iter)->getTaskType() == TaskDeadline::TASK_DEADLINE) { 
 			std::string temp;
 			Task* newDeadlinePtr = new TaskDeadline;
 			temp = (*iter)->taskDetailsToString();
 			newDeadlinePtr->stringToTask(temp);
 			copyList.push_back(newDeadlinePtr);
 
-		} else if ((*iter)->getTaskType() == TaskTimed::TASK_TIMED) { // create a new deadline task
+		} else if ((*iter)->getTaskType() == TaskTimed::TASK_TIMED) {
 			std::string temp;
 			Task* newTimedPtr = new TaskTimed;
 			temp = (*iter)->taskDetailsToString();
@@ -56,8 +58,8 @@ bool History::undo(std::vector<Task*> &taskList){
 	if(_prevHistorys.size() == 1){
 		return false;
 	}
-	
-	_nextHistorys.push(_prevHistorys.top()); // the _currHistory and top of _prevHistory are the same because of the nature of saveHistory 
+	// the _currHistory and top of _prevHistory are the same because of the nature of saveHistory 
+	_nextHistorys.push(_prevHistorys.top()); 
 	_prevHistorys.pop();
 	_currHistory = _prevHistorys.top(); 
 	std::vector<Task*>::iterator iter;
