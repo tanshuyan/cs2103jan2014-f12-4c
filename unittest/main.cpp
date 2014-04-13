@@ -1,3 +1,5 @@
+//@author A0094659L
+
 // Unit Test
 
 #include <QtTest\Qttest>
@@ -7,7 +9,7 @@
 #include <cstdlib>
 #include <qobject.h>
 #include <qstring.h>
-#include "taskStorage.h"
+#include "TaskStorage.h"
 #include "Task.h"
 #include "TaskDeadline.h"
 #include "TaskTimed.h"
@@ -326,6 +328,13 @@ private:
 			QVERIFY(displayOutput.getDisplay().size() == 1);
 			displayOutput = logic.executeUserInput("delete 1 to 50");
 		}
+		
+		// stopSystemTest uses system pause to pause the programme for the developer to see the results of the tests
+		void stopSystemTest() {
+			system("PAUSE");
+		}
+
+		// End of system testing
 };
 
 QTEST_MAIN(TaskTest);
