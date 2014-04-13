@@ -79,62 +79,116 @@ private:
 		}		
 
 		//@author A0097286M
-		//NLParser Unit Tests
-		void testParser() {
+		//Parser Unit Tests
+		//Tests ability to ignore non-valid keywords (i.e. the "from" and "to" in this test case)
+		//Tests ability to recognise "today"
+		//Tests ability to trim whitespaces from the start and end of descriptions
+		//Tests ability to recognise that the date has a start/end date labelled
+		void addSingleStartTime() {
 			Parser parser;
 			AnalysedData expectedOutput;
 			//test input
-			std::string testString = "event";
+			std::string testString = "  get food from macdonalds to eat    today at 10am";
 			AnalysedData output = parser.addCMD(testString);
 			//expected output
 			expectedOutput.setCommand("add");
-			expectedOutput.setTaskDesc("event");
-			QDate startDate;
+			expectedOutput.setTaskDesc("get food from macdonalds to eat");
+			QDate startDate = QDate::currentDate();
 			expectedOutput.setStartDate(startDate);
-			QTime startTime;
-			expectedOutput.setStartTime(startTime);
-
-			QVERIFY(output == expectedOutput);
-			system("PAUSE");
-		}
-
-		void testParser_2() {
-			Parser parser;
-			AnalysedData expectedOutput;
-			//test input
-			std::string testString = "event";
-			AnalysedData output = parser.addCMD(testString);
-			//expected output
-			expectedOutput.setCommand("add");
-			expectedOutput.setTaskDesc("event");
-			QDate startDate;
-			expectedOutput.setStartDate(startDate);
-			QTime startTime;
-			expectedOutput.setStartTime(startTime);
-			QVERIFY(output == expectedOutput);
-			system("PAUSE");
-		}
-
-		void testParser_3() {
-			Parser parser;
-			AnalysedData expectedOutput;
-			//test input
-			std::string testString = "event on 4th dec at 4:30pm";
-			AnalysedData output = parser.addCMD(testString);
-			//expected output
-			expectedOutput.setCommand("add");
-			expectedOutput.setTaskDesc("event");
-			QDate startDate(2014,12,4);
-			expectedOutput.setStartDate(startDate);
-			QTime startTime(16,30);
+			QTime startTime(10,0);
 			expectedOutput.setStartTime(startTime);
 			expectedOutput.setDateTimeUnlabelled(true);
 			QVERIFY(output == expectedOutput);
 			system("PAUSE");
 		}
 
-		void testNLParser_1() {
-			//NLParser parser;
+		//Tests ability to ignore non-date terms (i.e. on 10th street)
+		//Tests ability to take in worded months
+		//Tests ability to take in start time, start date, end time, end date
+		//Tests ability to auto-complete the year when not given
+		void addStartAndEnd() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			//test input
+			std::string testString = "meet friend on 10th street on 16th august 10:04 pm until aug 18 at 6:59";
+			AnalysedData output = parser.addCMD(testString);
+			//expected output
+			expectedOutput.setCommand("add");
+			expectedOutput.setTaskDesc("meet friend on 10th street");
+			QDate startDate(2014,8,16);
+			expectedOutput.setStartDate(startDate);
+			QTime startTime(22,04);
+			expectedOutput.setStartTime(startTime);
+			QDate endDate(2014,8,18);
+			expectedOutput.setEndDate(endDate);
+			QTime endTime(18,59);
+			expectedOutput.setEndTime(endTime);
+			expectedOutput.setDateTimeUnlabelled(false);
+			QVERIFY(output == expectedOutput);
+			system("PAUSE");
+		}
+
+		//Tests ability to take in a fully specified date in slash format
+		//Tests ability to recognise "at 8" as 8am
+		//Tests ability to recognise date as an unlabelled date (it is not clearly marked as a start or end date)
+		//Tests ability to read the index to be edited
+		void editSlashFormat() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			//test input
+			std::string testString = "12 event on 4/12/2015 at 8";
+			AnalysedData output = parser.editCMD(testString);
+			//expected output
+			expectedOutput.setCommand("edit");
+			expectedOutput.setTaskDesc("event");
+			QDate startDate(2015,12,4);
+			expectedOutput.setStartDate(startDate);
+			QTime startTime(8,0);
+			expectedOutput.setStartTime(startTime);
+			expectedOutput.setIndex(12);
+			expectedOutput.setDateTimeUnlabelled(true);
+			QVERIFY(output == expectedOutput);
+			system("PAUSE");
+		}
+
+		//Tests ability to parse a sentence with no valid date or time
+		//Tests ability to extract a quoted sentence and make it the description
+		//Tests ability to treat nested quotes as part of the larger quoted sentence
+		//Tests ability to read the index to be edited, in the case with quotes
+		void editWithQuotes() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			//test input
+			std::string testString = "1 not part of the desc \"meeting on \"imports\" from 8.01 warehouse\" from today NOT";
+			AnalysedData output = parser.editCMD(testString);
+			//expected output
+			expectedOutput.setCommand("edit");
+			expectedOutput.setTaskDesc("meeting on \"imports\" from 8.01 warehouse");
+			expectedOutput.setIndex(1);
+			expectedOutput.setDateTimeUnlabelled(true);
+			QVERIFY(output == expectedOutput);
+			system("PAUSE");
+		}
+
+		//Tests ability to parse multiple indexes
+		void deleteMultipleIndex() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			std::vector<Task*> displayList;
+			//test input
+			std::string testString = "1, 3,5 9-11";
+			AnalysedData output = parser.deleteCMD(testString, displayList);
+			//expected output
+			expectedOutput.setCommand("delete");
+			std::vector<int> index;
+			index.push_back(1);
+			index.push_back(3);
+			index.push_back(5);
+			index.push_back(9);
+			index.push_back(10);
+			index.push_back(11);
+			expectedOutput.setIndexVector(index);
+			QVERIFY(output == expectedOutput);
 			system("PAUSE");
 		}
 				
