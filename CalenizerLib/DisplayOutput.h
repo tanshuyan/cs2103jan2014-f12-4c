@@ -33,7 +33,6 @@ public:
 	DisplayOutput();
 	void displayTasks(std::vector<Task*> displayList);
 	void setFeedBack(std::string feedback);
-	//void setFeedBack(std::vector<int>);
 	void setDisplayStatus(bool status);
 	void setDisplayListStatus(std::vector<std::string> displayListStatus);
 	std::vector<std::string> getDisplayListStatus();

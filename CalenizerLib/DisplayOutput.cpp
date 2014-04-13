@@ -37,20 +37,6 @@ void DisplayOutput::setFeedBack(std::string feedback) {
 	assert(feedback != EMPTY);
 	_feedback = feedback;
 }
-/*
-void DisplayOutput::setFeedBack(std::vector<int> feedback) {
-	std::stringstream output;
-	for(std::vector<int>::iterator iter = feedback.begin(); iter!=feedback.end(); iter++) {
-		output << "Index " << *iter;
-		if(iter == feedback.end()) {
-			output << " cannot be found\n";
-		} else {
-			output << " ";
-		}
-	}
-	_feedback = output.str();
-}
-*/
 
 void DisplayOutput::setDisplayStatus(bool displayStatus) {
 	_displayStatus = displayStatus;
