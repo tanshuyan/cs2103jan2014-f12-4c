@@ -17,7 +17,6 @@
 #include "TaskFilter.h"
 #include "TaskStorage.h"
 #include "History.h"
-#include "UIDisplay.h"
 #include "AnalysedData.h"
 #include "LogicParser.h"
 #include "DisplayOutput.h"
