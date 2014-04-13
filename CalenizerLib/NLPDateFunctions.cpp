@@ -12,7 +12,7 @@ QRegExp NLPDateFunctions::RX_FROM("^(?:\\s*)(?:from)\\b(.+)", Qt::CaseInsensitiv
 QRegExp NLPDateFunctions::RX_END("\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLPDateFunctions::RX_ON_AT_BY("\\b(at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by))|by(?!\\s+(on|at|by)))\\b(.+)", Qt::CaseInsensitive);
 QRegExp NLPDateFunctions::RX_TODAY_WORDS(DateTimeParser::RX_DAYWORDS.pattern()+"\\b(.*)", Qt::CaseInsensitive);
-QRegExp NLPDateFunctions::RX_UNMARKED_DATETIME("\\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|\\d)(.+)", Qt::CaseInsensitive);
+QRegExp NLPDateFunctions::RX_UNMARKED_DATETIME("\\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|\\d|on|at|by)(.+)", Qt::CaseInsensitive);
 
 NLPDateFunctions::NLPDateFunctions(){
 }
