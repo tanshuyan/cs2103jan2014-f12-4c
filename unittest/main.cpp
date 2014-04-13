@@ -32,7 +32,6 @@ private:
 
 			std::string expected = "DEADLINE\ndo IE2150 report\n13/04/2014 14:00\nfalse\n";
 			QVERIFY(deadlineTaskPtr->taskToString() == expected);
-			system("PAUSE");
 		}
 				
 		// constructTimedTask tests the functionality of storage as well as the constructor of a timed task
@@ -43,7 +42,6 @@ private:
 
 			std::string expected = "TIMED\ndo IE2150 report\n13/04/2014 14:00\n14/04/2014 15:30\nfalse\n";
 			QVERIFY(timedTaskPtr->taskToString() == expected);
-			system("PAUSE");
 		}
 
 		// constructFloatTask tests the functionality of storage as well as the constructor of a float task
@@ -54,19 +52,16 @@ private:
 
 			std::string expected = "FLOAT\ndo IE2150 report\nfalse\n";
 			QVERIFY(floatTaskPtr->taskToString() == expected);
-			system("PAUSE");
 		}
 		
 		void testFeedback() {
 			DisplayOutput display;
-			//std::string command;
 			Logic test;
 			display = test.executeUserInput("add mary had a little lamb");
 
 			std::string expected = "Added: \"mary had a little lamb\"\n";
 			QVERIFY(display.getFeedBack() == expected);
 			display = test.executeUserInput("delete 1 to 50");
-			system("PAUSE");
 		}
 				
 		void testDisplayStatus() {
@@ -75,7 +70,6 @@ private:
 			display.setDisplayStatus(false);
 			bool expected = false;
 			QVERIFY(display.getDisplayStatus() == expected);
-			system("PAUSE");
 		}		
 
 		//@author A0097286M
@@ -99,7 +93,6 @@ private:
 			expectedOutput.setStartTime(startTime);
 			expectedOutput.setDateTimeUnlabelled(true);
 			QVERIFY(output == expectedOutput);
-			system("PAUSE");
 		}
 
 		//Tests ability to ignore non-date terms (i.e. on 10th street)
@@ -125,7 +118,6 @@ private:
 			expectedOutput.setEndTime(endTime);
 			expectedOutput.setDateTimeUnlabelled(false);
 			QVERIFY(output == expectedOutput);
-			system("PAUSE");
 		}
 
 		//Tests ability to take in a fully specified date in slash format
@@ -148,7 +140,6 @@ private:
 			expectedOutput.setIndex(12);
 			expectedOutput.setDateTimeUnlabelled(true);
 			QVERIFY(output == expectedOutput);
-			system("PAUSE");
 		}
 
 		//Tests ability to parse a sentence with no valid date or time
@@ -167,7 +158,6 @@ private:
 			expectedOutput.setIndex(1);
 			expectedOutput.setDateTimeUnlabelled(true);
 			QVERIFY(output == expectedOutput);
-			system("PAUSE");
 		}
 
 		//Tests ability to parse multiple indexes
@@ -189,14 +179,17 @@ private:
 			index.push_back(11);
 			expectedOutput.setIndexVector(index);
 			QVERIFY(output == expectedOutput);
-			system("PAUSE");
 		}
-				
 		// Unit Test END
 
 		//@author A0004695A
 		// System testing
-		// addTest tests the adding of tasks, and the inherent sorting and delete all
+		// this series of system test will require an empty CalenizerStorage.txt file to pass
+		// delete function is called at the end of every system testing to clear the CalenizerStorage.txt for the next system test
+
+		// addTest tests the functionality adding of tasks
+		// addTest tests the functionality inherent sorting of display list 
+		// addTest tests the functionality function of delete all
 		void addTest() {
 			Logic logic;
 			DisplayOutput displayOutput;
@@ -216,10 +209,11 @@ private:
 			QVERIFY(output[1] == expectedOutput3);
 			displayOutput = logic.executeUserInput("delete all");
 			QVERIFY(displayOutput.getDisplay().size() == 0);
-			system("PAUSE");
 		}
 				
-		// undoRedoTest tests the sequence of undo and redo and complete "incomplete"
+		// undoRedoTest tests the the functionality of undo and redo
+		// undoRedoTest tests the functionality to complete "incomplete"
+		// undoRedoTest tests the functionality to delete tasks containing "searchterm"
 		void undoRedoTest() {
 			Logic logic;
 			DisplayOutput displayOutput;
@@ -242,10 +236,11 @@ private:
 			displayOutput = logic.executeUserInput("undo");
 			QVERIFY(output[0] == expectedOutput1);
 			displayOutput = logic.executeUserInput("delete tasks contain \"homework\"");
-			system("PAUSE");
 		}
 				
-		// completeIncompleteTest tests the incomplete and complete functionality (multiple completes) and resolveAdd function to auto fill in time when user doesnt specify
+		// completeIncompleteTest tests the functionality of multiple incomplete and complete 
+		// completeIncompleteTest tests the functionality of resolveAdd to auto fill in time when user doesnt specify
+		// completeIncompleteTest tests the functionality to delete multiple indexes
 		void completeIncompleteTest() {
 			Logic logic;
 			DisplayOutput displayOutput;
@@ -265,9 +260,12 @@ private:
 			std::string expectedOutput3 = "1. DEADLINE<>do internship report<>23 Jun 2014 10:00 pm<>false\n";
 			QVERIFY(output[0] == expectedOutput3);
 			displayOutput = logic.executeUserInput("delete 1 to 50");
-			system("PAUSE");
 		}
-		// editDeleteTest tests edit and delete functionality, together with the sorting algo
+		// editDeleteTest tests the functionality of shifting the duration of timed tasks (using "on")
+		// editDeleteTest tests the functionality of editing end dates and start dates
+		// editDeleteTest tests the functionality of delete incomplete
+		// editDeleteTest tests the sorting algo in ranking the tasks 
+
 		void editDeleteTest() {
 			Logic logic;
 			DisplayOutput displayOutput;
@@ -301,7 +299,6 @@ private:
 			QVERIFY(output[2] == expectedOutput3);
 			QVERIFY(output[3] == expectedOutput4);
 			displayOutput = logic.executeUserInput("delete incomplete");
-			system("PAUSE");
 		}
 		
 		//@author A0101843R
@@ -328,10 +325,7 @@ private:
 			displayOutput = logic.executeUserInput("view");
 			QVERIFY(displayOutput.getDisplay().size() == 1);
 			displayOutput = logic.executeUserInput("delete 1 to 50");
-			system("PAUSE");
 		}
-
-
 };
 
 QTEST_MAIN(TaskTest);
