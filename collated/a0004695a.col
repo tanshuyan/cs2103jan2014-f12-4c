@@ -3,7 +3,7 @@
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Comparator.cpp
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Comparator.cpp
 	 */
 
 
@@ -70,14 +70,14 @@ bool Comparator::sortByTaskType(const Task* a, const Task* b) {
 	}
 	return (rankA < rankB);
 }
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Comparator.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Comparator.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Comparator.h
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Comparator.h
 	 */
 
 
@@ -102,14 +102,14 @@ public:
 	static bool sortByTaskType(const Task* a, const Task* b);
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Comparator.h
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Comparator.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Exception.h
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Exception.h
 	 */
 
 
@@ -158,14 +158,14 @@ public:
         EmptyMessageException(const char* desc) EXCEPTION_CONSTRUCTOR
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Exception.h
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Exception.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\History.cpp
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\History.cpp
 	 */
 
 
@@ -256,14 +256,14 @@ bool History::redo(std::vector<Task*> &taskList){
 	createDeepCopy(_currHistory, taskList);
 	return true;
 }
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\History.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\History.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\History.h
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\History.h
 	 */
 
 
@@ -302,14 +302,14 @@ public:
 
 #endif
 
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\History.h
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\History.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logger.cpp
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Logger.cpp
 	 */
 
 
@@ -349,14 +349,14 @@ void Logger::saveLog() {
 
 	outputFile.close();
 }
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logger.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Logger.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logger.h
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Logger.h
 	 */
 
 
@@ -393,14 +393,14 @@ public:
 	void saveLog();
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logger.h
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Logger.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logic.cpp
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Logic.cpp
 	 */
 
 
@@ -838,14 +838,14 @@ void Logic::sortTaskList() {
 }
 
 
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logic.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Logic.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logic.h
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Logic.h
 	 */
 
 
@@ -917,14 +917,14 @@ public:
 	DisplayOutput executeUserInput(std::string userInput);
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logic.h
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Logic.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Parser.cpp
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Parser.cpp
 	 */
 
 
@@ -1140,14 +1140,14 @@ AnalysedData Parser::addCMD(std::string userInput) {
 }
 
 
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Parser.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Parser.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Parser.h
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Parser.h
 	 */
 
 
@@ -1195,14 +1195,14 @@ public:
 	AnalysedData addCMD(std::string userInput);
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Parser.h
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Parser.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskEditor.cpp
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskEditor.cpp
 	 */
 
 
@@ -1386,14 +1386,14 @@ void TaskEditor::upgradeToTimed(Task* &task, QDate startDate, QTime startTime, Q
 	task->setTask(status,desc,start,deadline);
 	return;
 }
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskEditor.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskEditor.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskEditor.h
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskEditor.h
 	 */
 
 
@@ -1434,14 +1434,14 @@ public:
 	void edit(Task* &task, AnalysedData&);
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskEditor.h
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskEditor.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFilter.cpp
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskFilter.cpp
 	 */
 
 
@@ -1593,14 +1593,14 @@ void TaskFilter::markDisplayList(const std::vector<Task*> &displayList, std::vec
 	}
 }
 
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFilter.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskFilter.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFilter.h
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskFilter.h
 	 */
 
 
@@ -1644,14 +1644,14 @@ public:
 	bool search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, QDate, std::vector<std::string> &displayListStatus);
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFilter.h
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskFilter.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\unittest\main.cpp
 	 */
 
 		// System testing
@@ -1709,9 +1709,9 @@ public:
 			displayOutput = logic.executeUserInput("delete tasks contain \"homework\"");
 		}
 				
-		// completeIncompleteTest tests the functionality of multiple incomplete and complete 
-		// completeIncompleteTest tests the functionality of resolveAdd to auto fill in time when user doesnt specify
-		// completeIncompleteTest tests the functionality to delete multiple indexes
+		//// completeIncompleteTest tests the functionality of multiple incomplete and complete 
+		//// completeIncompleteTest tests the functionality of resolveAdd to auto fill in time when user doesnt specify
+		//// completeIncompleteTest tests the functionality to delete multiple indexes
 		void completeIncompleteTest() {
 			Logic logic;
 			DisplayOutput displayOutput;
@@ -1732,10 +1732,10 @@ public:
 			QVERIFY(output[0] == expectedOutput3);
 			displayOutput = logic.executeUserInput("delete 1 to 50");
 		}
-		// editDeleteTest tests the functionality of shifting the duration of timed tasks (using "on")
-		// editDeleteTest tests the functionality of editing end dates and start dates
-		// editDeleteTest tests the functionality of delete incomplete
-		// editDeleteTest tests the sorting algo in ranking the tasks 
+		//// editDeleteTest tests the functionality of shifting the duration of timed tasks (using "on")
+		//// editDeleteTest tests the functionality of editing end dates and start dates
+		//// editDeleteTest tests the functionality of delete incomplete
+		//// editDeleteTest tests the sorting algo in ranking the tasks 
 
 		void editDeleteTest() {
 			Logic logic;
@@ -1772,7 +1772,7 @@ public:
 			displayOutput = logic.executeUserInput("delete incomplete");
 		}
 		
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\unittest\main.cpp
 
 
 

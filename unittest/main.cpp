@@ -59,23 +59,24 @@ private:
 			delete floatTaskPtr;
 		}
 		
-		//void testFeedback() {
-		//	DisplayOutput display;
-		//	Logic test;
-		//	display = test.executeUserInput("add mary had a little lamb");
+		void testFeedback() {
+			DisplayOutput display;
+			Logic test;
+			display = test.executeUserInput("delete all");
+			display = test.executeUserInput("add mary had a little lamb");
 
-		//	std::string expected = "Added: \"mary had a little lamb\"\n";
-		//	QVERIFY(display.getFeedBack() == expected);
-		//	display = test.executeUserInput("delete 1 to 50");
-		//}
-		//		
-		//void testDisplayStatus() {
-		//	DisplayOutput display;
-		//	Logic test;
-		//	display.setDisplayStatus(false);
-		//	bool expected = false;
-		//	QVERIFY(display.getDisplayStatus() == expected);
-		//}		
+			std::string expected = "Added: \"mary had a little lamb\"\n";
+			QVERIFY(display.getFeedBack() == expected);
+			display = test.executeUserInput("delete 1 to 50");
+		}
+				
+		void testDisplayStatus() {
+			DisplayOutput display;
+			Logic test;
+			display.setDisplayStatus(false);
+			bool expected = false;
+			QVERIFY(display.getDisplayStatus() == expected);
+		}		
 
 		////@author A0097286M
 		////Parser Unit Tests
@@ -83,47 +84,47 @@ private:
 		////Tests ability to recognise "today"
 		////Tests ability to trim whitespaces from the start and end of descriptions
 		////Tests ability to recognise that the date has a start/end date labelled
-		//void addSingleStartTime() {
-		//	Parser parser;
-		//	AnalysedData expectedOutput;
-		//	//test input
-		//	std::string testString = "  get food from macdonalds to eat    today at 10am";
-		//	AnalysedData output = parser.addCMD(testString);
-		//	//expected output
-		//	expectedOutput.setCommand("add");
-		//	expectedOutput.setTaskDesc("get food from macdonalds to eat");
-		//	QDate startDate = QDate::currentDate();
-		//	expectedOutput.setStartDate(startDate);
-		//	QTime startTime(10,0);
-		//	expectedOutput.setStartTime(startTime);
-		//	expectedOutput.setDateTimeUnlabelled(true);
-		//	QVERIFY(output == expectedOutput);
-		//}
+		void addSingleStartTime() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			//test input
+			std::string testString = "  get food from macdonalds to eat    today at 10am";
+			AnalysedData output = parser.addCMD(testString);
+			//expected output
+			expectedOutput.setCommand("add");
+			expectedOutput.setTaskDesc("get food from macdonalds to eat");
+			QDate startDate = QDate::currentDate();
+			expectedOutput.setStartDate(startDate);
+			QTime startTime(10,0);
+			expectedOutput.setStartTime(startTime);
+			expectedOutput.setDateTimeUnlabelled(true);
+			QVERIFY(output == expectedOutput);
+		}
 
 		////Tests ability to ignore non-date terms (i.e. on 10th street)
 		////Tests ability to take in worded months
 		////Tests ability to take in start time, start date, end time, end date
 		////Tests ability to auto-complete the year when not given
-		//void addStartAndEnd() {
-		//	Parser parser;
-		//	AnalysedData expectedOutput;
-		//	//test input
-		//	std::string testString = "meet friend on 10th street on 16th august 10:04 pm until aug 18 at 6:59";
-		//	AnalysedData output = parser.addCMD(testString);
-		//	//expected output
-		//	expectedOutput.setCommand("add");
-		//	expectedOutput.setTaskDesc("meet friend on 10th street");
-		//	QDate startDate(2014,8,16);
-		//	expectedOutput.setStartDate(startDate);
-		//	QTime startTime(22,04);
-		//	expectedOutput.setStartTime(startTime);
-		//	QDate endDate(2014,8,18);
-		//	expectedOutput.setEndDate(endDate);
-		//	QTime endTime(18,59);
-		//	expectedOutput.setEndTime(endTime);
-		//	expectedOutput.setDateTimeUnlabelled(false);
-		//	QVERIFY(output == expectedOutput);
-		//}
+		void addStartAndEnd() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			//test input
+			std::string testString = "meet friend on 10th street on 16th august 10:04 pm until aug 18 at 6:59";
+			AnalysedData output = parser.addCMD(testString);
+			//expected output
+			expectedOutput.setCommand("add");
+			expectedOutput.setTaskDesc("meet friend on 10th street");
+			QDate startDate(2014,8,16);
+			expectedOutput.setStartDate(startDate);
+			QTime startTime(22,04);
+			expectedOutput.setStartTime(startTime);
+			QDate endDate(2014,8,18);
+			expectedOutput.setEndDate(endDate);
+			QTime endTime(18,59);
+			expectedOutput.setEndTime(endTime);
+			expectedOutput.setDateTimeUnlabelled(false);
+			QVERIFY(output == expectedOutput);
+		}
 
 		//Tests ability to take in a fully specified date in slash format
 		//Tests ability to recognise "at 8" as 8am
@@ -151,19 +152,19 @@ private:
 		////Tests ability to extract a quoted sentence and make it the description
 		////Tests ability to treat nested quotes as part of the larger quoted sentence
 		////Tests ability to read the index to be edited, in the case with quotes
-		//void editWithQuotes() {
-		//	Parser parser;
-		//	AnalysedData expectedOutput;
-		//	//test input
-		//	std::string testString = "1 not part of the desc \"meeting on \"imports\" from 8.01 warehouse\" from today NOT";
-		//	AnalysedData output = parser.editCMD(testString);
-		//	//expected output
-		//	expectedOutput.setCommand("edit");
-		//	expectedOutput.setTaskDesc("meeting on \"imports\" from 8.01 warehouse");
-		//	expectedOutput.setIndex(1);
-		//	expectedOutput.setDateTimeUnlabelled(true);
-		//	QVERIFY(output == expectedOutput);
-		//}
+		void editWithQuotes() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			//test input
+			std::string testString = "1 not part of the desc \"meeting on \"imports\" from 8.01 warehouse\" from today NOT";
+			AnalysedData output = parser.editCMD(testString);
+			//expected output
+			expectedOutput.setCommand("edit");
+			expectedOutput.setTaskDesc("meeting on \"imports\" from 8.01 warehouse");
+			expectedOutput.setIndex(1);
+			expectedOutput.setDateTimeUnlabelled(true);
+			QVERIFY(output == expectedOutput);
+		}
 
 		//Tests ability to parse multiple indexes
 		void deleteMultipleIndex() {
@@ -246,65 +247,65 @@ private:
 		//// completeIncompleteTest tests the functionality of multiple incomplete and complete 
 		//// completeIncompleteTest tests the functionality of resolveAdd to auto fill in time when user doesnt specify
 		//// completeIncompleteTest tests the functionality to delete multiple indexes
-		//void completeIncompleteTest() {
-		//	Logic logic;
-		//	DisplayOutput displayOutput;
-		//	std::vector<std::string> output;
-		//	std::string testDeadline = "add do internship report on 23 june 10pm";
-		//	std::string testTimed = "add finish reservist from 22 july to 25 july";
-		//	displayOutput = logic.executeUserInput(testDeadline);
-		//	displayOutput = logic.executeUserInput(testTimed);
-		//	displayOutput = logic.executeUserInput("complete 1 to 3");
-		//	output = displayOutput.getDisplay();
-		//	std::string expectedOutput1 = "1. DEADLINE<>do internship report<>23 Jun 2014 10:00 pm<>true\n";
-		//	std::string expectedOutput2 = "2. TIMED<>finish reservist<>22 Jul 2014 12:00 am to 25 Jul 2014 11:59 pm<>true\n";
-		//	QVERIFY(output[0] == expectedOutput1);
-		//	QVERIFY(output[1] == expectedOutput2);
-		//	displayOutput = logic.executeUserInput("incomplete contain \"do\"");
-		//	output = displayOutput.getDisplay();
-		//	std::string expectedOutput3 = "1. DEADLINE<>do internship report<>23 Jun 2014 10:00 pm<>false\n";
-		//	QVERIFY(output[0] == expectedOutput3);
-		//	displayOutput = logic.executeUserInput("delete 1 to 50");
-		//}
+		void completeIncompleteTest() {
+			Logic logic;
+			DisplayOutput displayOutput;
+			std::vector<std::string> output;
+			std::string testDeadline = "add do internship report on 23 june 10pm";
+			std::string testTimed = "add finish reservist from 22 july to 25 july";
+			displayOutput = logic.executeUserInput(testDeadline);
+			displayOutput = logic.executeUserInput(testTimed);
+			displayOutput = logic.executeUserInput("complete 1 to 3");
+			output = displayOutput.getDisplay();
+			std::string expectedOutput1 = "1. DEADLINE<>do internship report<>23 Jun 2014 10:00 pm<>true\n";
+			std::string expectedOutput2 = "2. TIMED<>finish reservist<>22 Jul 2014 12:00 am to 25 Jul 2014 11:59 pm<>true\n";
+			QVERIFY(output[0] == expectedOutput1);
+			QVERIFY(output[1] == expectedOutput2);
+			displayOutput = logic.executeUserInput("incomplete contain \"do\"");
+			output = displayOutput.getDisplay();
+			std::string expectedOutput3 = "1. DEADLINE<>do internship report<>23 Jun 2014 10:00 pm<>false\n";
+			QVERIFY(output[0] == expectedOutput3);
+			displayOutput = logic.executeUserInput("delete 1 to 50");
+		}
 		//// editDeleteTest tests the functionality of shifting the duration of timed tasks (using "on")
 		//// editDeleteTest tests the functionality of editing end dates and start dates
 		//// editDeleteTest tests the functionality of delete incomplete
 		//// editDeleteTest tests the sorting algo in ranking the tasks 
 
-		//void editDeleteTest() {
-		//	Logic logic;
-		//	DisplayOutput displayOutput;
-		//	std::vector<std::string> output;
-		//	std::string testDeadline = "add do homework on 23 dec 10pm";
-		//	std::string testTimed = "add finish homework from 22 dec to 25 dec 10pm";
-		//	std::string testTimed2 = "add unfinish homework from 22 dec to 25 dec 10pm";
-		//	std::string testTimed3 = "add do finish homework from 22 dec to 25 dec 10pm";
-		//	std::string testTimed4 = "add must finish homework from 22 dec to 25 dec 10pm";
-		//	displayOutput = logic.executeUserInput(testDeadline);
-		//	displayOutput = logic.executeUserInput(testTimed);
-		//	displayOutput = logic.executeUserInput(testTimed2);
-		//	displayOutput = logic.executeUserInput(testTimed3);
-		//	displayOutput = logic.executeUserInput(testTimed4);
-		//	displayOutput = logic.executeUserInput("edit 1 on 25 dec 11pm");
-		//	output = displayOutput.getDisplay();
-		//	std::string expectedOutput1 = "5. DEADLINE<>do homework<>25 Dec 2014 11:00 pm<>false\n";
-		//	QVERIFY(output[4] == expectedOutput1);
-		//	displayOutput = logic.executeUserInput("delete 1");
-		//	// pushes back the duration of the task for timed task
-		//	displayOutput = logic.executeUserInput("edit 1 on 25 dec 11pm");
-		//	displayOutput = logic.executeUserInput("edit 1 start 23 dec");
-		//	displayOutput = logic.executeUserInput("edit 2 end 24 dec");
-		//	output = displayOutput.getDisplay();
-		//	expectedOutput1 = "1. TIMED<>must finish homework<>22 Dec 2014 10:00 pm to 24 Dec 2014 10:00 pm<>false\n";
-		//	std::string expectedOutput2 = "2. TIMED<>do finish homework<>23 Dec 2014 10:00 pm to 25 Dec 2014 10:00 pm<>false\n";
-		//	std::string expectedOutput3 = "3. DEADLINE<>do homework<>25 Dec 2014 11:00 pm<>false\n";
-		//	std::string expectedOutput4 = "4. TIMED<>unfinish homework<>25 Dec 2014 11:00 pm to 28 Dec 2014 11:00 pm<>false\n";
-		//	QVERIFY(output[0] == expectedOutput1);
-		//	QVERIFY(output[1] == expectedOutput2);
-		//	QVERIFY(output[2] == expectedOutput3);
-		//	QVERIFY(output[3] == expectedOutput4);
-		//	displayOutput = logic.executeUserInput("delete incomplete");
-		//}
+		void editDeleteTest() {
+			Logic logic;
+			DisplayOutput displayOutput;
+			std::vector<std::string> output;
+			std::string testDeadline = "add do homework on 23 dec 10pm";
+			std::string testTimed = "add finish homework from 22 dec to 25 dec 10pm";
+			std::string testTimed2 = "add unfinish homework from 22 dec to 25 dec 10pm";
+			std::string testTimed3 = "add do finish homework from 22 dec to 25 dec 10pm";
+			std::string testTimed4 = "add must finish homework from 22 dec to 25 dec 10pm";
+			displayOutput = logic.executeUserInput(testDeadline);
+			displayOutput = logic.executeUserInput(testTimed);
+			displayOutput = logic.executeUserInput(testTimed2);
+			displayOutput = logic.executeUserInput(testTimed3);
+			displayOutput = logic.executeUserInput(testTimed4);
+			displayOutput = logic.executeUserInput("edit 1 on 25 dec 11pm");
+			output = displayOutput.getDisplay();
+			std::string expectedOutput1 = "5. DEADLINE<>do homework<>25 Dec 2014 11:00 pm<>false\n";
+			QVERIFY(output[4] == expectedOutput1);
+			displayOutput = logic.executeUserInput("delete 1");
+			// pushes back the duration of the task for timed task
+			displayOutput = logic.executeUserInput("edit 1 on 25 dec 11pm");
+			displayOutput = logic.executeUserInput("edit 1 start 23 dec");
+			displayOutput = logic.executeUserInput("edit 2 end 24 dec");
+			output = displayOutput.getDisplay();
+			expectedOutput1 = "1. TIMED<>must finish homework<>22 Dec 2014 10:00 pm to 24 Dec 2014 10:00 pm<>false\n";
+			std::string expectedOutput2 = "2. TIMED<>do finish homework<>23 Dec 2014 10:00 pm to 25 Dec 2014 10:00 pm<>false\n";
+			std::string expectedOutput3 = "3. DEADLINE<>do homework<>25 Dec 2014 11:00 pm<>false\n";
+			std::string expectedOutput4 = "4. TIMED<>unfinish homework<>25 Dec 2014 11:00 pm to 28 Dec 2014 11:00 pm<>false\n";
+			QVERIFY(output[0] == expectedOutput1);
+			QVERIFY(output[1] == expectedOutput2);
+			QVERIFY(output[2] == expectedOutput3);
+			QVERIFY(output[3] == expectedOutput4);
+			displayOutput = logic.executeUserInput("delete incomplete");
+		}
 		
 		//@author A0101843R
 		// searchDisplayTest tests the search functionality of search terms and also, search terms containing tasks types, and deleting on current display, doesnt affect those not in the current display criteria
