@@ -3,7 +3,7 @@
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\calenizergui.cpp
+	 * origin: C:\Users\Ritsume\Desktop\lolol\CalenizerGUI\calenizergui.cpp
 	 */
 
 
@@ -323,14 +323,14 @@ void CalenizerGUI::scrollUp() {
 void CalenizerGUI::scrollDown() {
 	ui.tableWidget->verticalScrollBar()->setSliderPosition(ui.tableWidget->verticalScrollBar()->sliderPosition() + ui.tableWidget->verticalScrollBar()->pageStep());
 }
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\calenizergui.cpp
+	// End of segment: C:\Users\Ritsume\Desktop\lolol\CalenizerGUI\calenizergui.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\calenizergui.h
+	 * origin: C:\Users\Ritsume\Desktop\lolol\CalenizerGUI\calenizergui.h
 	 */
 
 
@@ -414,14 +414,14 @@ private:
 
 #endif
 
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\calenizergui.h
+	// End of segment: C:\Users\Ritsume\Desktop\lolol\CalenizerGUI\calenizergui.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\main.cpp
+	 * origin: C:\Users\Ritsume\Desktop\lolol\CalenizerGUI\main.cpp
 	 */
 
 
@@ -446,14 +446,14 @@ int main(int argc, char *argv[])
     program.show();
 	return app.exec();
 }
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\main.cpp
+	// End of segment: C:\Users\Ritsume\Desktop\lolol\CalenizerGUI\main.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\AnalysedData.cpp
+	 * origin: C:\Users\Ritsume\Desktop\lolol\CalenizerLib\AnalysedData.cpp
 	 */
 
 
@@ -594,14 +594,14 @@ bool AnalysedData::operator==(AnalysedData other){
 	}
 	return true;
 }
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\AnalysedData.cpp
+	// End of segment: C:\Users\Ritsume\Desktop\lolol\CalenizerLib\AnalysedData.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\AnalysedData.h
+	 * origin: C:\Users\Ritsume\Desktop\lolol\CalenizerLib\AnalysedData.h
 	 */
 
 
@@ -658,14 +658,14 @@ public:
 	bool operator==(AnalysedData other);
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\AnalysedData.h
+	// End of segment: C:\Users\Ritsume\Desktop\lolol\CalenizerLib\AnalysedData.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTime.cpp
+	 * origin: C:\Users\Ritsume\Desktop\lolol\CalenizerLib\DateTime.cpp
 	 */
 
 
@@ -798,14 +798,14 @@ bool DateTime::operator>(DateTime datetimeToCompare){
 	}
 	return false;
 }
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTime.cpp
+	// End of segment: C:\Users\Ritsume\Desktop\lolol\CalenizerLib\DateTime.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTime.h
+	 * origin: C:\Users\Ritsume\Desktop\lolol\CalenizerLib\DateTime.h
 	 */
 
 
@@ -858,14 +858,14 @@ public:
 	bool operator>(DateTime datetimeToCompare);
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTime.h
+	// End of segment: C:\Users\Ritsume\Desktop\lolol\CalenizerLib\DateTime.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
+	 * origin: C:\Users\Ritsume\Desktop\lolol\unittest\main.cpp
 	 */
 
 		// searchDisplayTest tests the search functionality of search terms and also, search terms containing tasks types, and deleting on current display, doesnt affect those not in the current display criteria
@@ -904,7 +904,7 @@ public:
 QTEST_MAIN(TaskTest);
 #include "main.moc"
 
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
+	// End of segment: C:\Users\Ritsume\Desktop\lolol\unittest\main.cpp
 
 
 
