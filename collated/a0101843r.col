@@ -1,0 +1,912 @@
+//@author: a0101843r
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\calenizergui.cpp
+	 */
+
+
+// Calenizer.h
+
+#include "calenizergui.h"
+
+const QString CalenizerGUI::ADD_MSG = "add";
+const QString CalenizerGUI::DELETE_MSG = "delete";
+const QString CalenizerGUI::EDIT_MSG= "edit";
+const QString CalenizerGUI::SEARCH_MSG = "search";
+const QString CalenizerGUI::COMPLETE_MSG = "complete";
+const QString CalenizerGUI::INCOMPLETE_MSG = "incomplete";
+const QString CalenizerGUI::REDO_MSG = "redo";
+const QString CalenizerGUI::UNDO_MSG = "undo";
+const QString CalenizerGUI::VIEW_MSG= "view";
+const QString CalenizerGUI::QUIT_MSG= "quit";
+const std::string CalenizerGUI::EMPTY_STRING = "";
+
+const std::string CalenizerGUI::STATUS_TRUE= "true\n";
+const std::string CalenizerGUI::STATUS_FALSE= "false\n";
+
+const std::string CalenizerGUI::STATUS_COMPLETE = "Complete";
+const std::string CalenizerGUI::STATUS_INCOMPLETE = "Incomplete";
+const std::string CalenizerGUI::STATUS_OVERDUE = "Overdue";
+const std::string CalenizerGUI::STATUS_ONGOING = "Ongoing";
+
+const std::string CalenizerGUI::CMD_DISPLAY_ALL = "view all";
+
+CalenizerGUI::CalenizerGUI(QWidget *parent)
+	: QMainWindow(parent)
+{
+	ui.setupUi(this);
+
+	initialiseTable(ui.tableWidget);
+	initialiseConnections();
+	displayAll();
+	initialiseTableStyle();
+	initialiseShortcuts();
+}
+
+CalenizerGUI::~CalenizerGUI()
+{
+
+}
+
+void CalenizerGUI::updateDateTime(){
+	QDateTime dateTime = QDateTime::currentDateTime();
+	QString dateTimeString = dateTime.toString("dd MMMM yyyy\nhh:mm ap");
+	ui.label->setText(dateTimeString);
+}
+
+void CalenizerGUI:: initialiseConnections() {
+	connect(ui.lineEdit, SIGNAL(textEdited(QString)), this, SLOT(checkAlphabet()));
+	connect(ui.lineEdit, SIGNAL(Qt::Key_Escape), this, SLOT(resetInput()));
+	connect(ui.lineEdit, SIGNAL(returnPressed()), this, SLOT(run()));
+	
+	QTimer *timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(updateDateTime()));
+	timer->start(1);
+}
+
+void CalenizerGUI::initialiseShortcuts(){
+	new QShortcut(Qt::Key_Escape, this, SLOT(resetInput()));
+	new QShortcut(Qt::Key_Up, this, SLOT(scrollUp()));
+	new QShortcut(Qt::Key_Down, this, SLOT(scrollDown()));
+}
+
+void CalenizerGUI::initialiseTableStyle(){
+
+	palette = new QPalette();
+	palette->setColor(QPalette::WindowText,Qt::black);
+	ui.label->setPalette(*palette);
+
+	palette->setColor(QPalette::Text,Qt::black);
+	ui.lineEdit->setPalette(*palette);
+
+	ui.tableWidget->setStyleSheet("color: black;" 
+								  "gridline-color: white;"
+								  "background-color: white;");
+	ui.tableWidget->setShowGrid(false);
+
+	ui.textEdit->setTextColor(Qt::black);
+
+	ui.label->setStyleSheet ("border-color: white;"
+							"padding: 2px;");
+
+	ui.textEdit->setStyleSheet ("border-style: outset;"
+								"border-width: 2px;"
+								"border-radius: 10px;"
+								"border-color: white;");
+
+	ui.lineEdit->setStyleSheet ("border-style: outset;"
+								"border-width: 2px;"
+								"border-radius: 10px;"
+								"border-color: white;"
+								"padding: 2px;"
+								"background-color: white");
+
+	ui.calendarWidget->setStyleSheet("color: black");
+	ui.calendarWidget->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
+
+	ui.tableWidget->verticalScrollBar()->setStyleSheet("QScrollBar:vertical { border: none; background:white; width:10px; margin: 0px 0px 0px 0px; }"
+	"QScrollBar::handle:vertical {"
+    "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+    "    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
+    "    min-height: 0px;"
+    ""
+    "}"
+	"QScrollBar::add-line:vertical {"
+    "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+    "    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
+    "    height: px;"
+    "    subcontrol-position: bottom;"
+    "    subcontrol-origin: margin;"
+    "}"
+	"QScrollBar::sub-line:vertical {"
+    "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+    "    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
+    "    height: 0px;"
+    "    subcontrol-position: top;"
+    "    subcontrol-origin: margin;"
+    "}");
+
+	ui.textEdit->verticalScrollBar()->setStyleSheet("QScrollBar:vertical { border: 1px solid white; background:white; width:10px; margin: 0px 0px 0px 0px; }"
+	"QScrollBar::handle:vertical {"
+    "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+    "    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
+    "    min-height: 0px;"
+    ""
+    "}"
+	"QScrollBar::add-line:vertical {"
+    "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+    "    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
+    "    height: px;"
+    "    subcontrol-position: bottom;"
+    "    subcontrol-origin: margin;"
+    "}"
+	"QScrollBar::sub-line:vertical {"
+    "    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,"
+    "    stop: 0  rgb(32, 47, 130), stop: 0.5 rgb(32, 47, 130),  stop:1 rgb(32, 47, 130));"
+    "    height: 0px;"
+    "    subcontrol-position: top;"
+    "    subcontrol-origin: margin;"
+    "}");
+
+	ui.label->setAlignment(Qt::AlignCenter);
+
+	setStyleSheet("background-color:#EEF5F8;");
+}
+
+//this function get the feedback message from every action that the user carried out
+void CalenizerGUI::getFeedback(DisplayOutput displayoutput){
+	QString str = QString::fromStdString(displayoutput.getFeedBack());
+	if (checkWord(str)) {
+		ui.textEdit->setTextColor( QColor( "red" ) );
+	}
+	else {
+		ui.textEdit->setTextColor( QColor( "black" ) );
+	}
+
+	ui.textEdit->append(str);
+}
+
+bool CalenizerGUI:: checkWord(QString input){
+	return (input.contains("invalid", Qt::CaseInsensitive));
+}
+
+//this function get the vector of string to be displayed and separate it individually according to each category in the column
+void CalenizerGUI::getTask(DisplayOutput displayoutput, int row){
+
+		std::string initialString = displayoutput.getDisplay().at(row);
+		int startIndex = initialString.find_first_of("<>");
+
+		int pos = initialString.find("<>", initialString.find("<>") + 1);
+		std::string desc = initialString.substr(startIndex+2,pos-(startIndex+2));
+
+		startIndex = pos+1;
+		int lastIndex = initialString.find("<>", startIndex);
+
+		std::string duration;
+		if(lastIndex != initialString.npos){
+			duration = initialString.substr(pos+2,lastIndex-(pos+2));
+		} else {
+			duration = "";
+		}
+
+		std::string status = displayoutput.getDisplayListStatus().at(row);
+
+		QTableWidgetItem *taskDesc = new QTableWidgetItem(QString::fromStdString(desc));
+		QTableWidgetItem *taskDuration = new QTableWidgetItem(QString::fromStdString(duration));
+		QTableWidgetItem *taskStatus = new QTableWidgetItem(QString::fromStdString(status));
+		
+		ui.tableWidget->setItem(row, 0, taskDesc);
+		ui.tableWidget->setItem(row, 1, taskDuration);
+		ui.tableWidget->setItem(row, 2, taskStatus);
+		
+		if(status == STATUS_COMPLETE) {
+			taskDesc->setBackgroundColor(QColor(235,227,205));
+				taskDuration->setBackgroundColor(QColor(235,227,205));
+				taskStatus->setBackgroundColor(QColor(235,227,205));
+		}
+		
+		if(status == STATUS_OVERDUE) {
+				taskDesc->setBackgroundColor(QColor(255,181,194));
+				taskDuration->setBackgroundColor(QColor(255,181,194));
+				taskStatus->setBackgroundColor(QColor(255,181,194));
+		}
+
+		if(status == STATUS_ONGOING) {
+				taskDesc->setBackgroundColor(QColor(230,240,147));
+				taskDuration->setBackgroundColor(QColor(230,240,147));
+				taskStatus->setBackgroundColor(QColor(230,240,147));
+		}
+}
+
+void CalenizerGUI::run(){
+	std::string userInput = ui.lineEdit->text().toStdString();
+
+	DisplayOutput displayoutput= _g_logic.executeUserInput(userInput);
+	getFeedback(displayoutput);
+
+	ui.tableWidget->setRowCount(displayoutput.getDisplay().size());
+
+	for(int row=0; row<displayoutput.getDisplay().size(); row++){
+		getTask(displayoutput,row);
+		ui.tableWidget->verticalHeader()->setSectionResizeMode(row, QHeaderView::Fixed);
+	}	
+
+	QDateTime dateTime = QDateTime::currentDateTime();
+	QString dateTimeString = dateTime.toString("dd MMMM yyyy\nhh:mm ap");
+	ui.label->setText(dateTimeString);
+
+	ui.lineEdit->clear();
+}
+
+void CalenizerGUI::displayAll() {
+	DisplayOutput displayoutput= _g_logic.executeUserInput(CMD_DISPLAY_ALL);
+	getFeedback(displayoutput);
+
+	ui.tableWidget->setRowCount(displayoutput.getDisplay().size());
+
+	for(int row=0; row<displayoutput.getDisplay().size(); row++){
+		getTask(displayoutput,row);
+		ui.tableWidget->verticalHeader()->setSectionResizeMode(row, QHeaderView::Fixed);
+	}
+}
+
+//this function check the first alphabet that user type and auto complete when the command is valid
+void CalenizerGUI::checkAlphabet() {
+
+	std::string text = ui.lineEdit->text().toStdString();
+
+	if(text == EMPTY_STRING) {
+	} else {
+		if(text.at(0) == 'a' && text.length() <= 4) {
+			ui.lineEdit->setText(ADD_MSG + " ");
+		} else if (text.at(0) == 'c' && text.length() <= 9) {
+			ui.lineEdit->setText(COMPLETE_MSG + " ");
+		} else if (text.at(0) == 'd' && text.length() <= 7) {
+			ui.lineEdit->setText(DELETE_MSG + " ");
+		} else if (text.at(0) == 'e' && text.length() <= 5) {
+			ui.lineEdit->setText(EDIT_MSG + " ");
+		} else if (text.at(0) == 'i' && text.length() <= 11) {
+			ui.lineEdit->setText(INCOMPLETE_MSG + " ");
+		} else if (text.at(0) == 'r') {
+			ui.lineEdit->setText(REDO_MSG);
+		} else if (text.at(0) == 's' && text.length() <= 7) {
+			ui.lineEdit->setText(SEARCH_MSG + " ");
+		} else if (text.at(0) == 'u') {
+			ui.lineEdit->setText(UNDO_MSG);
+		} else if (text.at(0) == 'v' && text.length() <= 5) {
+			ui.lineEdit->setText(VIEW_MSG + " ");
+		} else if (text.at(0) == 'q' && text.length() <= 5) {
+			ui.lineEdit->setText(QUIT_MSG);
+		}
+	}
+}
+
+void CalenizerGUI::resetInput(){
+	ui.lineEdit->setText("");
+}
+
+void CalenizerGUI::setColumnWidth(QTableWidget *table) {
+	QStringList tableHeader;
+	tableHeader << "Task Description" << "Duration" << "Status";
+	table->setColumnCount(3);
+	table->setHorizontalHeaderLabels(tableHeader);
+
+	table->setColumnWidth(TASK_DESC, 280);
+	table->setColumnWidth(TASK_DURATION, 300);
+	table->setColumnWidth(TASK_STATUS,90);
+	table->horizontalHeader()->setStretchLastSection(true);
+}
+
+void CalenizerGUI::initialiseTable(QTableWidget *table) {
+	setColumnWidth(table);
+	fixColumnWidth(table);
+	table->horizontalHeaderItem(0)->setTextAlignment(Qt::AlignLeft);
+	table->horizontalHeaderItem(1)->setTextAlignment(Qt::AlignLeft);
+	table->horizontalHeaderItem(2)->setTextAlignment(Qt::AlignLeft);
+	ui.tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+}
+
+void CalenizerGUI::fixColumnWidth(QTableWidget *table) {
+	
+	for(unsigned int col = 0 ; col < 3; col++) {
+		table->horizontalHeader()->setSectionResizeMode(col, QHeaderView::Fixed);
+	}
+
+}
+
+void CalenizerGUI::scrollUp() {
+	ui.tableWidget->verticalScrollBar()->setSliderPosition(ui.tableWidget->verticalScrollBar()->sliderPosition() - ui.tableWidget->verticalScrollBar()->pageStep());
+}
+
+void CalenizerGUI::scrollDown() {
+	ui.tableWidget->verticalScrollBar()->setSliderPosition(ui.tableWidget->verticalScrollBar()->sliderPosition() + ui.tableWidget->verticalScrollBar()->pageStep());
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\calenizergui.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\calenizergui.h
+	 */
+
+
+// Calenizer.h
+
+#ifndef CALENIZERGUI_H
+#define CALENIZERGUI_H
+
+#include <QtWidgets/QMainWindow>
+#include <QShortcut>
+#include <QCursor>
+#include <QTimer>
+#include <QScrollbar>
+#include <iostream>
+#include "ui_calenizergui.h"
+#include "DisplayOutput.h"
+#include "Logic.h"
+
+class CalenizerGUI : public QMainWindow
+{
+	Q_OBJECT
+
+public:
+	CalenizerGUI(QWidget *parent = 0);
+	~CalenizerGUI();
+
+private slots:
+	void run();
+	void checkAlphabet();
+	void resetInput();
+	void displayAll(); 
+	void updateDateTime();
+	void scrollUp();
+	void scrollDown();
+
+private:
+	Ui::CalenizerGUIClass ui;
+	bool checkWord(QString input);
+
+	void initialiseTableStyle();
+	void initialiseTableSize();
+	
+	void initialiseShortcuts();
+	void initialiseConnections();
+	void initialiseTable(QTableWidget *table);
+	void setColumnWidth(QTableWidget *table);
+	void fixColumnWidth(QTableWidget *table);
+	void getFeedback(DisplayOutput);
+	void getTask(DisplayOutput, int);
+	std::string setStatus(std::string);
+
+	QPalette* palette;
+	Logic _g_logic;
+
+	static const QString ADD_MSG;
+	static const QString DELETE_MSG;
+	static const QString SEARCH_MSG;
+	static const QString EDIT_MSG;
+	static const QString COMPLETE_MSG;
+	static const QString INCOMPLETE_MSG;
+	static const QString UNDO_MSG;
+	static const QString REDO_MSG;
+	static const QString VIEW_MSG;
+	static const QString QUIT_MSG;
+	static const std::string EMPTY_STRING;
+	static const std::string CMD_DISPLAY_ALL;
+
+	static const std::string STATUS_TRUE;
+	static const std::string STATUS_FALSE;
+	static const std::string STATUS_COMPLETE;
+	static const std::string STATUS_INCOMPLETE;
+	static const std::string STATUS_OVERDUE;
+	static const std::string STATUS_ONGOING;
+
+	static enum ColumnHeader {
+		TASK_DESC, 
+		TASK_DURATION, 
+		TASK_STATUS,
+	};
+};
+
+#endif
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\calenizergui.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\main.cpp
+	 */
+
+
+#include "calenizergui.h"
+#include <QtWidgets/QApplication>
+#include "Windows.h"
+#include <QTimer>
+#include <QtCore>
+#include <QApplication>
+#include <QPixmap>
+#include <QSplashScreen>
+#include <QWidget>
+#include <QMainWindow>
+#include <QThread>
+#include <QDesktopWidget>
+#include <QPainter>
+
+int main(int argc, char *argv[])
+{
+	QApplication app(argc, argv);
+    CalenizerGUI program;
+    program.show();
+	return app.exec();
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\main.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\AnalysedData.cpp
+	 */
+
+
+// AnalysedData.cpp
+
+#include "AnalysedData.h"
+
+AnalysedData::AnalysedData() {
+	_taskIndex = -1;
+	_dateTimeIsUnlabelled = true;
+	_dayOfWeek = -1;
+}
+
+void AnalysedData::setDateTimeUnlabelled(bool status) {
+	_dateTimeIsUnlabelled = status;
+}
+
+void AnalysedData::setIndex(int index) {
+	_taskIndex = index;
+}
+
+void AnalysedData::setDisplayType(std::string displayType) {
+	_displayType = displayType;
+}
+
+void AnalysedData::setCommand(std::string command) {
+	_command = command;
+}
+
+void AnalysedData::setTaskDesc(std::string taskDesc) {
+	_taskDesc = taskDesc;
+}
+
+void AnalysedData::setStartTime(QTime startTime) {
+	_startTime = startTime;
+}
+
+void AnalysedData::setEndTime(QTime endTime) {
+	_endTime = endTime;
+}
+
+void AnalysedData::setEndDate(QDate endDate) {
+	_endDate = endDate;
+}
+
+void AnalysedData::setStartDate(QDate startDate) {
+	_startDate = startDate;
+}
+
+void AnalysedData::setIndexVector(std::vector<int> index) {
+	_index = index;
+}
+
+void AnalysedData::setDayOfWeek(int dayOfWeek) {
+	_dayOfWeek = dayOfWeek;
+}
+
+bool AnalysedData::getDateTimeUnlabelled() {
+	return _dateTimeIsUnlabelled;
+}
+
+int AnalysedData::getIndex() {
+	return _taskIndex;
+}
+
+std::string AnalysedData::getDisplayType() {
+	return _displayType;
+}
+
+std::string AnalysedData::getCommand() {
+	return _command;
+}
+
+std::string AnalysedData::getTaskDesc() {
+	return _taskDesc;
+}
+
+QTime AnalysedData::getStartTime() {
+	return _startTime;
+}
+
+QTime AnalysedData::getEndTime() {
+	return _endTime;
+}
+
+QDate AnalysedData::getStartDate() {
+	return _startDate;
+}
+
+QDate AnalysedData::getEndDate() {
+	return _endDate;
+}
+
+std::vector<int> AnalysedData::getIndexVector() {
+	return _index;
+}
+
+int AnalysedData::getDayOfWeek() {
+	return _dayOfWeek;
+}
+
+bool AnalysedData::operator==(AnalysedData other){
+	if(other.getTaskDesc() != _taskDesc){
+		return false;
+	}
+	if(other.getCommand() != _command){
+		return false;
+	}
+	if(other.getDisplayType() != _displayType){
+		return false;
+	}
+	if(other.getStartDate() != _startDate){
+		return false;
+	}
+	if(other.getIndex() != _taskIndex){
+		return false;
+	}
+	if(other.getStartTime() != _startTime){
+		return false;
+	}
+	if(other.getEndTime() != _endTime){
+		return false;
+	}
+	if(other.getStartDate() != _startDate){
+		return false;
+	}
+	if(other.getStartDate() != _startDate){
+		return false;
+	}
+	if(other.getEndDate() != _endDate){
+		return false;
+	}
+	if(other.getIndexVector() != _index){
+		return false;
+	}
+	if(other.getDateTimeUnlabelled() != _dateTimeIsUnlabelled){
+		return false;
+	}
+	return true;
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\AnalysedData.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\AnalysedData.h
+	 */
+
+
+//AnalysedData.h
+
+#ifndef ANALYSEDDATA_H
+#define ANALYSEDDATA_H
+
+#include <vector>
+#include <string>
+#include "DateTime.h"
+
+class AnalysedData{
+private:
+	std::string _taskDesc;
+	std::string _command;
+	std::string _displayType;
+	int _taskIndex;
+	QTime _startTime;
+	QTime _endTime;
+	QDate _startDate;
+	QDate _endDate;
+	std::vector<int> _index;
+	bool _dateTimeIsUnlabelled;
+	int _dayOfWeek;
+
+public:
+	AnalysedData();
+
+	void setDateTimeUnlabelled(bool status);
+	void setIndex(int index);
+	void setDisplayType(std::string displayType);
+	void setCommand(std::string command);
+	void setTaskDesc(std::string taskDesc);
+	void setStartTime(QTime startTime);
+	void setEndTime(QTime endTime);
+	void setEndDate(QDate endDate);
+	void setStartDate(QDate startDate);
+	void setIndexVector(std::vector<int> index);
+	void setDayOfWeek(int dayOfWeek);
+
+	bool getDateTimeUnlabelled();
+	int getIndex();
+	std::string getDisplayType();
+	std::string getCommand();
+	std::string getTaskDesc();
+	QTime getStartTime();
+	QTime getEndTime();
+	QDate getStartDate();
+	QDate getEndDate();
+	std::vector<int> getIndexVector();
+	int getDayOfWeek();
+
+	bool operator==(AnalysedData other);
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\AnalysedData.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTime.cpp
+	 */
+
+
+//DateTime.cpp
+
+#include "DateTime.h"
+
+DateTime::DateTime(){
+}
+
+DateTime::DateTime(QDate date, QTime time){
+	_date = date;
+	_time = time;
+}
+
+bool DateTime::setDate(int day, int month, int year){
+	return _date.setDate(year, month, day);
+}
+
+bool DateTime::setTime(int hour, int min=0){
+	return _time.setHMS(hour, min, 0);
+}
+
+bool DateTime::setDate(QDate date){
+	return _date.setDate(date.year(), date.month(), date.day());
+}
+
+bool DateTime::setTime(QTime time){
+	return _time.setHMS(time.hour(), time.minute(), 0);
+}
+
+QDate DateTime::getDate(){
+	return _date;
+}
+
+QTime DateTime::getTime(){
+	return _time;
+}
+
+void DateTime::setCurrDateTime(){
+	_date = QDate::currentDate();
+	_time = QTime::currentTime();
+	return;
+}
+
+std::string DateTime::dateToString(bool displayTodayAsWord){
+	if(displayTodayAsWord && _date == _date.currentDate()){
+		return "Today";
+	}
+	if(displayTodayAsWord && _date == (_date.currentDate()).addDays(1)){
+		return "Tomorrow";
+	}
+	if(displayTodayAsWord && _date == (_date.currentDate()).addDays(-1)){
+		return "Yesterday";
+	}
+	QString format="dd MMM yyyy";
+	QString output=_date.toString(format);
+	return output.toStdString();
+}
+
+std::string DateTime::dayToString(){
+	QString format="ddd";
+	QString output=_date.toString(format);
+	return output.toStdString();
+}
+
+std::string DateTime::timeToString(){
+	QString format="h:mm ap";
+	QString output=_time.toString(format);
+	return output.toStdString();
+}
+
+std::string DateTime::dataToString(){
+	std::string dateString = _date.toString("dd/MM/yyyy").toStdString();
+	std::string timeString = _time.toString("hh:mm").toStdString();
+
+	return dateString + " " + timeString;
+}
+
+void DateTime::dataFromString(std::string data){
+	QRegExp rxDate("(\\d{2})(/)(\\d{2})(/)(\\d{4})(\\s)");
+	QString dataStr(data.c_str());
+	QString dateString;
+	QString timeString;
+
+	int pos = rxDate.indexIn(dataStr);
+	int len = rxDate.matchedLength();
+	if(pos != -1){
+		dateString = dataStr.mid(pos, len);
+		dataStr.remove(pos, len);
+	}
+
+	_date = QDate::fromString(dateString, "dd/MM/yyyy ");
+	timeString = dataStr;
+	_time = QTime::fromString(timeString, "hh:mm");
+
+	return;
+}
+
+//to arrange the dates during sorting and also to check for clashes
+//To coder: remember to compare year, then month, then day.
+bool DateTime::operator==(DateTime datetimeToCompare){
+	if(_date.operator==(datetimeToCompare.getDate()) && _time.operator==(datetimeToCompare.getTime())){
+		return true;
+	}
+	return false;
+}
+bool DateTime::operator!=(DateTime datetimeToCompare){
+	if(_date.operator!=(datetimeToCompare.getDate()) || _time.operator!=(datetimeToCompare.getTime())){
+		return true;
+	}
+	return false;
+}
+bool DateTime::operator<(DateTime datetimeToCompare){
+	if(_date.operator<(datetimeToCompare.getDate())){
+		return true;
+	}
+	if(_date.operator==(datetimeToCompare.getDate()) && _time.operator<(datetimeToCompare.getTime())){
+		return true;
+	}
+	return false;
+}
+
+bool DateTime::operator>(DateTime datetimeToCompare){
+	if(_date.operator>(datetimeToCompare.getDate())){
+		return true;
+	}
+	if(_date.operator==(datetimeToCompare.getDate()) && _time.operator>(datetimeToCompare.getTime())){
+		return true;
+	}
+	return false;
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTime.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTime.h
+	 */
+
+
+//DateTime.h
+
+#ifndef DATETIME_H
+#define DATETIME_H
+
+#include <QDateTime>
+#include <QString>
+#include <string>
+#include <QRegExp>
+
+class DateTime{
+private:
+	QDate _date;
+	QTime _time;
+
+public:
+	DateTime();
+	DateTime(QDate date, QTime time);
+
+	//returns false if date is invalid
+	bool setDate(int day, int month, int year);
+	//returns false if time is invalid
+	bool setTime(int hour, int min);
+	bool setDate(QDate date);
+	bool setTime(QTime time);
+
+	QDate getDate();
+	QTime getTime();
+	
+	void setCurrDateTime();
+
+	//returns date in format 16 Jul 2014
+	//set bool to "true" if you want the date to display as "Today", "Tomorrow", or "Yesterday"
+	std::string dateToString(bool displayTodayAsWord=false);
+	//returns day in format Tue
+	std::string dayToString();
+	//returns time in format 1:09 pm
+	std::string timeToString();
+
+	std::string dataToString();
+	void dataFromString(std::string data);
+
+	//to sort the dates and check for clashes
+	bool operator==(DateTime datetimeToCompare);
+	bool operator!=(DateTime datetimeToCompare);
+	bool operator<(DateTime datetimeToCompare);
+	bool operator>(DateTime datetimeToCompare);
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTime.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
+	 */
+
+		// searchDisplayTest tests the search functionality of search terms and also, search terms containing tasks types, and deleting on current display, doesnt affect those not in the current display criteria
+		void searchDisplayTest() {
+			Logic logic;
+			DisplayOutput displayOutput;
+			std::vector<std::string> output;
+			std::string testDeadline = "add do homework on 23/12/2014 10pm";
+			std::string testTimed = "add finish homework from 22 dec to 25 dec 10pm";
+			displayOutput = logic.executeUserInput(testDeadline);
+			displayOutput = logic.executeUserInput(testTimed);
+			displayOutput = logic.executeUserInput("search do");
+			output = displayOutput.getDisplay();
+			std::string expectedOutput1 = "1. DEADLINE<>do homework<>23 Dec 2014 10:00 pm<>false\n";
+			QVERIFY(output[0] == expectedOutput1);
+			displayOutput = logic.executeUserInput("search timed");
+			output = displayOutput.getDisplay();
+			std::string expectedOutput2 = "1. TIMED<>finish homework<>22 Dec 2014 10:00 pm to 25 Dec 2014 10:00 pm<>false\n";
+			QVERIFY(output[0] == expectedOutput2);
+			displayOutput = logic.executeUserInput("delete 1");
+			//delete will only the existing displaylist "search timed" that the user is on, deadline task which is not in the display is unaffected
+			QVERIFY(displayOutput.getDisplay().size() == 0);
+			displayOutput = logic.executeUserInput("view");
+			QVERIFY(displayOutput.getDisplay().size() == 1);
+			displayOutput = logic.executeUserInput("delete 1 to 50");
+		}
+		
+		// stopSystemTest uses system pause to pause the programme for the developer to see the results of the tests
+		void stopSystemTest() {
+			system("PAUSE");
+		}
+
+		// End of system testing
+};
+
+QTEST_MAIN(TaskTest);
+#include "main.moc"
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
+
+
+
+
+
