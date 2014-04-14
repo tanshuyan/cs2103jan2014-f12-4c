@@ -1,0 +1,1284 @@
+//@author: a0094659l
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DisplayOutput.cpp
+	 */
+
+
+// DisplayOutput.cpp
+
+#include "DisplayOutput.h"
+
+const std::string DisplayOutput::EMPTY = "";
+const std::string DisplayOutput::DELIMITER = ". ";
+
+DisplayOutput::DisplayOutput() {
+} 
+
+void DisplayOutput::displayTasks(std::vector<Task*> displayList){
+	int counter = 1;
+
+	//ensure it is cleared before displaying new list
+	if(!_displayList.empty()){
+		_displayList.clear();
+	}
+
+	for(std::vector<Task*>::iterator iter = displayList.begin(); iter != displayList.end();){
+		//Numbering
+		std::stringstream output;
+		output << counter << DELIMITER;
+		counter++;
+
+		//assertion to ensure there is no empty task displayed
+		assert(*iter != NULL);
+
+		output << (*iter)->outputToString();
+		iter++;
+		_displayList.push_back(output.str());
+	}
+}
+
+void DisplayOutput::setFeedBack(std::string feedback) {
+	assert(feedback != EMPTY);
+	_feedback = feedback;
+}
+
+void DisplayOutput::setDisplayStatus(bool displayStatus) {
+	_displayStatus = displayStatus;
+}
+
+void DisplayOutput::setDisplayListStatus(std::vector<std::string> displayListStatus) {
+	//to ensure it is clear
+	if(!_displayListStatus.empty()){
+		_displayListStatus.clear();
+	}
+	_displayListStatus = displayListStatus;
+}
+
+std::vector<std::string> DisplayOutput::getDisplayListStatus() {
+	return _displayListStatus;
+}
+
+std::string DisplayOutput::getFeedBack() {
+	return _feedback;
+}
+
+std::vector<std::string> DisplayOutput::getDisplay() {
+	return _displayList;
+}
+
+bool DisplayOutput::getDisplayStatus() {
+	return _displayStatus;
+}
+
+void DisplayOutput::displayToUser(std::string output) {
+	assert(output != EMPTY);
+
+	try {
+		std::cout << output;
+	}
+	catch (EmptyMessageException &e){
+		std::cout <<  _actionMsg.MSG_NOTHING_DISPLAY;
+	}
+}
+
+std::string DisplayOutput::deleteFeedback(std::string userInput) {
+	sprintf_s(buffer, Message::MSG_DELETE_SUCCESS.c_str(), userInput.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::deleteMultipleFeedback(int userInput) {
+	std::string numofTasks= intToString(userInput);
+	sprintf_s(buffer, Message::MSG_DELETE_MULTIPLE_SUCCESS.c_str(), numofTasks.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::intToString(int userInput){
+	std::stringstream ss;
+	ss << userInput;
+	return ss.str();
+}
+
+std::string DisplayOutput::addFeedback(std::string userInput) {
+	sprintf_s(buffer, Message::MSG_ADD_SUCCESS.c_str(), userInput.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::invalidFeedback(){
+	sprintf_s(buffer, Message::MSG_INVALID_CMD.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::undoSuccessFeedback(){
+	sprintf_s(buffer, Message::MSG_UNDO_SUCCESS.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::undoFailureFeedback(){
+	sprintf_s(buffer, Message::MSG_UNDO_FAILURE.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::redoSuccessFeedback(){
+	sprintf_s(buffer, Message::MSG_REDO_SUCCESS.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::redoFailureFeedback(){
+	sprintf_s(buffer, Message::MSG_REDO_FAILURE.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::searchSuccessFeedback(std::string userInput){
+	sprintf_s(buffer, Message::MSG_SEARCH_SUCCESS.c_str(), userInput.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::searchFailureFeedback(std::string userInput){
+	sprintf_s(buffer, Message::MSG_SEARCH_FAILURE.c_str(), userInput.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::invalidIndexFeedback(){
+	sprintf_s(buffer, Message::MSG_INVALID_INDEX.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::invalidTimeFeedback(){
+	sprintf_s(buffer, Message::MSG_INVALID_TIME.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::invalidDateFeedback(){
+	sprintf_s(buffer, Message::MSG_INVALID_DATE.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::invalidDateTimeFeedback(){
+	sprintf_s(buffer, Message::MSG_INVALID_DATETIME.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::invalidTaskFeedback(){
+	sprintf_s(buffer, Message::MSG_INVALID_TASK.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::completeSuccessFeedback(std::string userInput){
+	sprintf_s(buffer, Message::MSG_COMPLETE_SUCCESS.c_str(), userInput.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::completeMultipleSuccessFeedback(int userInput) {
+	std::string numofTasks= intToString(userInput);
+	sprintf_s(buffer, Message::MSG_COMPLETE_MULTIPLE_SUCCESS.c_str(), numofTasks.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::incompleteSuccessFeedback(std::string userInput){
+	sprintf_s(buffer, Message::MSG_INCOMPLETE_SUCCESS.c_str(), userInput.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::incompleteMultipleSuccessFeedback(int userInput) {
+	std::string numofTasks= intToString(userInput);
+	sprintf_s(buffer, Message::MSG_INCOMPLETE_MULTIPLE_SUCCESS.c_str(), numofTasks.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::editFeedback(std::string userInput){
+	sprintf_s(buffer, Message::MSG_EDIT_SUCCESS.c_str(), userInput.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::displayCompleteFeedback(){
+	sprintf_s(buffer, Message::MSG_DISPLAYCOM.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::displayIncompleteFeedback(){
+	sprintf_s(buffer, Message::MSG_DISPLAYINCOM.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::displayTodayFeedback(){
+	sprintf_s(buffer, Message::MSG_DISPLAYTODAY.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::displayAllFeedback(){
+	sprintf_s(buffer, Message::MSG_DISPLAYALL.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::loadFileFeedback(){
+	sprintf_s(buffer, Message::MSG_LOAD_FILE.c_str());
+	return buffer;
+}
+
+std::string DisplayOutput::unableToConvertFeedback(){
+	sprintf_s(buffer, Message::MSG_UNABLE_TO_CONVERT.c_str());
+	return buffer;
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DisplayOutput.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DisplayOutput.h
+	 */
+
+
+//DisplayOutput.h
+
+#ifndef DISPLAYOUTPUT_H
+#define DISPLAYOUTPUT_H
+
+#include <string>
+#include <vector>
+#include <sstream>
+#include <iostream>
+#include <assert.h>
+#include "Exception.h"
+#include "Task.h"
+#include "Message.h"
+
+class DisplayOutput{
+private:
+	std::string intToString(int userInput);
+
+	static const int MAX_SIZE = 255;
+	char buffer[MAX_SIZE];
+
+	std::string _feedback;
+	std::vector<std::string> _displayList;
+	std::vector<std::string> _displayListStatus;
+	bool _displayStatus;
+	static const std::string EMPTY; 
+	static const std::string DELIMITER; 
+	Message _actionMsg;
+
+public:
+	DisplayOutput();
+	void displayTasks(std::vector<Task*> displayList);
+	void setFeedBack(std::string feedback);
+	void setDisplayStatus(bool status);
+	void setDisplayListStatus(std::vector<std::string> displayListStatus);
+	std::vector<std::string> getDisplayListStatus();
+	std::string getFeedBack();
+	std::vector<std::string> getDisplay();
+	bool getDisplayStatus();
+
+	void displayToUser(std::string output);
+
+	std::string editFeedback(std::string userInput);
+	std::string addFeedback(std::string userInput);
+	std::string deleteFeedback(std::string userInput);
+	std::string deleteMultipleFeedback(int index);
+	std::string undoSuccessFeedback();
+	std::string undoFailureFeedback();
+	std::string redoSuccessFeedback();
+	std::string redoFailureFeedback();
+	std::string searchSuccessFeedback(std::string userInput);
+	std::string searchFailureFeedback(std::string userInput);
+	std::string completeSuccessFeedback(std::string userInput);
+	std::string completeMultipleSuccessFeedback(int index);
+	std::string incompleteSuccessFeedback(std::string userInput);
+	std::string incompleteMultipleSuccessFeedback(int index);
+
+	std::string invalidFeedback();
+	std::string invalidIndexFeedback();
+	std::string invalidTimeFeedback();
+	std::string invalidDateFeedback();
+	std::string invalidDateTimeFeedback();
+	std::string invalidTaskFeedback();
+
+	std::string displayCompleteFeedback();
+	std::string displayIncompleteFeedback();
+	std::string displayTodayFeedback();
+	std::string displayAllFeedback();
+
+	std::string loadFileFeedback();
+	std::string unableToConvertFeedback();
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DisplayOutput.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\LogicParser.cpp
+	 */
+
+
+// LogicParser.cpp
+
+#include "LogicParser.h"
+
+LogicParser::LogicParser() {
+}
+
+AnalysedData LogicParser::parse(std::string userInput, const std::vector<Task*> &_displayList) {
+	AnalysedData analysedData;
+	analysedData = _parser.parse(userInput, _displayList);
+	return analysedData;
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\LogicParser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\LogicParser.h
+	 */
+
+
+//LogicParser.h 
+
+#ifndef LOGICPARSER_H
+#define LOGICPARSER_H
+
+#include <string>
+#include "AnalysedData.h"
+#include "Parser.h"
+
+class LogicParser {
+private:
+	Parser _parser;
+
+public:
+	LogicParser();
+	AnalysedData parse(std::string userInput, const std::vector<Task*> &_displayList);
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\LogicParser.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Message.cpp
+	 */
+
+
+// Message.cpp
+
+#include "Message.h"
+
+const std::string Message::MSG_ADD_SUCCESS ="Added: \"%s\"\n";
+const std::string Message::MSG_EDIT_SUCCESS ="Edited: \"%s\"\n";
+const std::string Message::MSG_DELETE_SUCCESS ="Deleted: \"%s\"\n";
+const std::string Message::MSG_DELETE_MULTIPLE_SUCCESS ="%s tasks deleted\n";
+const std::string Message::MSG_UNDO_SUCCESS ="Latest change undone\n";
+const std::string Message::MSG_UNDO_FAILURE ="Nothing to undo\n";
+const std::string Message::MSG_REDO_SUCCESS ="Latest undo reverted\n";
+const std::string Message::MSG_REDO_FAILURE ="Nothing to redo\n";
+const std::string Message::MSG_SEARCH_SUCCESS ="Search term \"%s\" found\n";
+const std::string Message::MSG_SEARCH_FAILURE ="Invalid search term: \"%s\"\n";
+const std::string Message::MSG_COMPLETE_SUCCESS ="\"%s\" marked as complete\n";
+const std::string Message::MSG_COMPLETE_MULTIPLE_SUCCESS ="%s tasks marked as complete\n";
+const std::string Message::MSG_INCOMPLETE_SUCCESS ="\"%s\" marked as incomplete\n";
+const std::string Message::MSG_INCOMPLETE_MULTIPLE_SUCCESS ="%s tasks marked as incomplete\n";
+
+const std::string Message::MSG_DISPLAYCOM = "Completed tasks shown\n";
+const std::string Message::MSG_DISPLAYINCOM = "Incompleted tasks shown\n";
+const std::string Message::MSG_DISPLAYTODAY = "Today tasks shown\n";
+const std::string Message::MSG_DISPLAYALL = "All tasks shown\n";
+
+const std::string Message::MSG_INVALID_CMD = "Invalid command\n";
+const std::string Message::MSG_INVALID_INDEX = "Invalid index\n";
+const std::string Message::MSG_INVALID_TIME = "Invalid time\n";
+const std::string Message::MSG_INVALID_DATE = "Invalid date\n";
+const std::string Message::MSG_INVALID_DATETIME = "Invalid input order of start and end date\n";
+const std::string Message::MSG_INVALID_TASK = "Invalid task fields\n";
+
+const std::string Message::MSG_UNABLE_TO_CONVERT = "Task is unable to be converted\n";
+const std::string Message::MSG_LOAD_FILE = "All tasks loaded\n";
+const std::string Message::MSG_NOTHING_DISPLAY = "Invalid: nothing can be shown\n";
+
+const std::string Message::CMD_ADD = "add";
+const std::string Message::CMD_EDIT = "edit";
+const std::string Message::CMD_DELETE = "delete";
+const std::string Message::CMD_DISPLAY = "view";
+const std::string Message::CMD_EXIT = "quit";
+const std::string Message::CMD_SEARCH = "search";
+const std::string Message::CMD_COMPLETE = "complete";
+const std::string Message::CMD_INCOMPLETE = "incomplete";
+const std::string Message::CMD_UNDO = "undo";
+const std::string Message::CMD_REDO = "redo";
+const std::string Message::CMD_INVALID = "invalid";
+
+const std::string Message::DISPLAY_ALL = "all";
+const std::string Message::DISPLAY_COMPLETE = "complete";
+const std::string Message::DISPLAY_INCOMPLETE = "incomplete";
+const std::string Message::DISPLAY_TODAY = "today";
+
+const std::string Message::STATUS_OVERDUE = "Overdue"; 
+const std::string Message::STATUS_ONGOING = "Ongoing"; 
+const std::string Message::STATUS_COMPLETE = "Complete"; 
+const std::string Message::STATUS_INCOMPLETE = "Incomplete";
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Message.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Message.h
+	 */
+
+
+// Message.h
+
+#ifndef MESSAGE_H
+#define MESSAGE_H
+
+#include <string>
+
+class Message {
+public:
+	static const std::string MSG_ADD_SUCCESS;
+	static const std::string MSG_EDIT_SUCCESS;
+	static const std::string MSG_DELETE_SUCCESS;
+	static const std::string MSG_DELETE_MULTIPLE_SUCCESS;
+	static const std::string MSG_UNDO_SUCCESS;
+	static const std::string MSG_UNDO_FAILURE;
+	static const std::string MSG_REDO_SUCCESS;
+	static const std::string MSG_REDO_FAILURE;
+	static const std::string MSG_SEARCH_SUCCESS;
+	static const std::string MSG_SEARCH_FAILURE;
+	static const std::string MSG_COMPLETE_SUCCESS;
+	static const std::string MSG_COMPLETE_MULTIPLE_SUCCESS;
+	static const std::string MSG_INCOMPLETE_SUCCESS;
+	static const std::string MSG_INCOMPLETE_MULTIPLE_SUCCESS;
+	static const std::string MSG_DISPLAYCOM;
+	static const std::string MSG_DISPLAYINCOM;
+	static const std::string MSG_DISPLAYTODAY;
+	static const std::string MSG_DISPLAYALL;
+
+	static const std::string MSG_INVALID_CMD;
+	static const std::string MSG_INVALID_INDEX;
+	static const std::string MSG_INVALID_TIME;
+	static const std::string MSG_INVALID_DATE;
+	static const std::string MSG_INVALID_DATETIME;
+	static const std::string MSG_INVALID_TASK;
+
+	static const std::string MSG_LOAD_FILE;
+	static const std::string MSG_UNABLE_TO_CONVERT;
+	static const std::string MSG_NOTHING_DISPLAY;
+	
+	static const std::string CMD_ADD;
+	static const std::string CMD_EDIT;
+	static const std::string CMD_DELETE;
+	static const std::string CMD_DISPLAY;
+	static const std::string CMD_EXIT;
+	static const std::string CMD_SEARCH;
+	static const std::string CMD_COMPLETE;
+	static const std::string CMD_INCOMPLETE;
+	static const std::string CMD_UNDO;
+	static const std::string CMD_REDO;
+	static const std::string CMD_INVALID;
+
+	static const std::string DISPLAY_ALL;
+	static const std::string DISPLAY_COMPLETE;
+	static const std::string DISPLAY_INCOMPLETE;
+	static const std::string DISPLAY_TODAY;
+
+	static const std::string STATUS_OVERDUE;
+	static const std::string STATUS_ONGOING;
+	static const std::string STATUS_COMPLETE;
+	static const std::string STATUS_INCOMPLETE;
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Message.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Task.h
+	 */
+
+
+// Task.h
+
+#ifndef TASK_H
+#define TASK_H
+
+#include <string>
+#include <sstream>
+#include "DateTime.h"
+
+class Task {
+public:
+	virtual void setTask(bool status, std::string taskDesc) {return;}
+	virtual void setTask(bool status, std::string taskDesc, DateTime) {return;}
+	virtual void setTask(bool status, std::string taskDesc, DateTime, DateTime) {return;}
+	virtual void setCompleteStatus(bool status) {return;}
+	virtual void setTaskDesc(std::string taskDesc) {return;}
+	virtual void setDeadline(DateTime deadline) {return;}
+	virtual void setStartDate(DateTime startDate) {return;}
+	
+	virtual DateTime getDeadline() const {return DateTime::DateTime();}
+	virtual DateTime getStartDate() const {return DateTime::DateTime();}  
+
+	virtual std::string taskDetailsToString() {return "";}
+	virtual std::string dateTimeToString() {return "";}
+	virtual std::string statusToString() {return "";}
+	virtual std::string getTaskDesc() const {return "";}
+	virtual std::string getTaskType() const {return "";}
+	virtual bool getCompleteStatus() const  {return false;}
+	virtual std::string outputToString() {return "";}
+	virtual std::string taskToString() {return "";}
+	virtual void stringToTask(std::string content) {return;}
+};
+
+#endif
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Task.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskDeadline.cpp
+	 */
+
+
+// TaskDeadline.cpp
+
+#include "TaskDeadline.h"
+
+const std::string TaskDeadline::TASK_DEADLINE = "DEADLINE";
+const std::string TaskDeadline::STATUS_TRUE = "true";
+const std::string TaskDeadline::STATUS_FALSE = "false";
+
+TaskDeadline::TaskDeadline() {
+	_completeStatus = false;
+	_taskType = TASK_DEADLINE;
+}
+
+TaskDeadline::~TaskDeadline(){
+}
+
+void TaskDeadline::setTask(bool status, std::string taskDesc, DateTime deadline) {
+	setCompleteStatus(status);
+	setTaskDesc(taskDesc);
+	setDeadline(deadline);
+}
+
+void TaskDeadline::setCompleteStatus(bool status) {
+	if(status == true) {
+		_completeStatus = true;
+	} else {
+		_completeStatus = false;
+	}
+}
+
+void TaskDeadline::setTaskDesc(std::string taskDesc) {
+	_taskDesc = taskDesc;
+}
+
+void TaskDeadline::setDeadline(DateTime deadline) {
+	_deadline = deadline;
+}
+
+DateTime TaskDeadline::getDeadline() const {
+	return _deadline;
+}
+
+std::string TaskDeadline::getTaskDesc() const {
+	return _taskDesc;
+}
+
+std::string TaskDeadline::getTaskType() const {
+	return _taskType;
+}
+
+std::string TaskDeadline::dateTimeToString() {
+	return _deadline.dataToString();
+}
+
+std::string TaskDeadline::statusToString() {
+	if(_completeStatus) {
+		return STATUS_TRUE;
+	} else {
+		return STATUS_FALSE;
+	}
+}
+
+bool TaskDeadline::getCompleteStatus() const {
+	return _completeStatus;
+}
+
+std::string TaskDeadline::outputToString() {
+	std::ostringstream output;
+	output << getTaskType() << "<>"; 
+	output << getTaskDesc() << "<>";
+	output << _deadline.dateToString(true) << " " << _deadline.timeToString() << "<>";
+	output << statusToString() << std::endl;
+	return output.str();
+}
+
+std::string TaskDeadline::taskDetailsToString() {
+	std::ostringstream output;
+	output << getTaskDesc() << std::endl;
+	output << dateTimeToString() << std::endl;
+	output << statusToString() << std::endl;
+	return output.str();
+}
+
+std::string TaskDeadline::taskToString() {
+	std::ostringstream output;
+	output << getTaskType() << std::endl; 
+	output << getTaskDesc() << std::endl;
+	output << dateTimeToString() << std::endl;
+	output << statusToString() << std::endl;
+	return output.str();
+}
+
+void TaskDeadline::stringToTask(std::string content) {
+	std::istringstream input(content);
+	std::string taskDesc;
+	std::string dateTime;
+	DateTime deadline;
+	std::string statusString;
+	bool status;
+
+	std::getline(input, taskDesc);
+	std::getline(input, dateTime);
+	input >> statusString;
+	if (statusString == STATUS_TRUE){
+		status = true;
+	}
+	else{
+		status = false;
+	}
+	deadline.dataFromString(dateTime);
+	setTask(status, taskDesc, deadline);
+}
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskDeadline.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskDeadline.h
+	 */
+
+
+// TaskDeadline.h
+
+#ifndef TASKDEADLINE_H
+#define TASKDEADLINE_H
+
+#include <iostream>
+#include <string>
+#include <sstream>
+#include "Task.h"
+#include "DateTime.h"
+
+class TaskDeadline: public Task {
+private:
+	std::string _taskType;
+	DateTime _deadline;
+	std::string _taskDesc;
+	bool _completeStatus;
+	static const std::string STATUS_FALSE;
+	static const std::string STATUS_TRUE;
+
+public:
+	static const std::string TASK_DEADLINE;
+	TaskDeadline();
+	~TaskDeadline();
+
+	void setTask(bool status, std::string taskDesc, DateTime deadline);
+	void setTask(bool status, std::string taskDesc) {return;}
+	void setTask(bool status, std::string taskDesc, DateTime deadline, DateTime startDate) {return;}
+	void setCompleteStatus(bool status);
+	void setTaskDesc(std::string taskDesc);
+	void setDeadline(DateTime deadline);
+	void setStartDate(DateTime startDate) {return;}
+
+	DateTime getDeadline() const;
+	DateTime getStartDate() const {return DateTime::DateTime();}  
+
+	std::string getTaskDesc() const;
+	std::string getTaskType() const;
+	std::string dateTimeToString();
+	std::string statusToString();
+	bool getCompleteStatus() const;
+	std::string outputToString();
+	std::string taskDetailsToString();
+
+	std::string taskToString();
+	void stringToTask(std::string content);
+};
+#endif
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskDeadline.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFloat.cpp
+	 */
+
+
+// TaskFloat.cpp
+
+#include "taskFloat.h"
+
+const std::string TaskFloat::TASK_FLOAT = "FLOAT";
+const std::string TaskFloat::STATUS_TRUE = "true";
+const std::string TaskFloat::STATUS_FALSE = "false";
+
+TaskFloat::TaskFloat() {
+	_completeStatus = false;
+	_taskType = TASK_FLOAT;
+}
+
+TaskFloat::~TaskFloat(){
+}
+
+void TaskFloat::setTask(bool status, std::string taskDesc) {
+	setCompleteStatus(status);
+	setTaskDesc(taskDesc);
+}
+
+void TaskFloat::setCompleteStatus(bool status) {
+	_completeStatus = status;
+}
+
+void TaskFloat::setTaskDesc(std::string taskDesc) {
+	_taskDesc = taskDesc;
+}
+
+std::string TaskFloat::getTaskDesc() const {
+	return _taskDesc;
+}
+
+std::string TaskFloat::getTaskType() const {
+	return _taskType;
+}
+
+std::string TaskFloat::statusToString() {
+	if(_completeStatus) {
+		return STATUS_TRUE;
+	} else {
+		return STATUS_FALSE;
+	}
+}
+
+bool TaskFloat::getCompleteStatus() const {
+	return _completeStatus;
+}
+
+std::string TaskFloat::outputToString() {
+	std::ostringstream output;
+	output << getTaskType() << "<>"; 
+	output << getTaskDesc() << "<>";
+	output << statusToString() << std::endl;
+	return output.str();
+}
+
+std::string TaskFloat::taskDetailsToString() {
+	std::ostringstream output;
+	output << getTaskDesc() << std::endl;
+	output << statusToString() << std::endl;
+	return output.str();
+}
+
+std::string TaskFloat::taskToString() {
+	std::ostringstream output;
+	output << getTaskType() << std::endl; 
+	output << getTaskDesc() << std::endl;
+	output << statusToString() << std::endl;
+	return output.str();
+}
+
+void TaskFloat::stringToTask(std::string content) {
+	std::istringstream input(content);
+	std::string dump;
+	std::string taskDesc;
+	std::string statusString; 
+	bool status;
+	
+	std::getline(input, taskDesc);
+	input >> statusString;
+	if (statusString == STATUS_TRUE){
+		status = true;
+	}
+	else{
+		status = false;
+	}
+	setTask(status, taskDesc);
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFloat.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFloat.h
+	 */
+
+
+// TaskFloat.h
+
+#ifndef TaskFloat_H
+#define TaskFloat_H
+
+#include <iostream>
+#include <string>
+#include <sstream>
+#include "Task.h"
+#include "DateTime.h"
+
+class TaskFloat: public Task {
+private:
+	std::string _taskType;
+	std::string _taskDesc;
+	bool _completeStatus;
+	static const std::string STATUS_FALSE;
+	static const std::string STATUS_TRUE;
+
+public:
+	static const std::string TASK_FLOAT;
+	TaskFloat();
+	~TaskFloat();
+	
+	void setTask(bool, std::string);
+	void setTask(bool, std::string, DateTime) {return;}
+	void setTask(bool, std::string, DateTime, DateTime) {return;}
+	void setCompleteStatus(bool);
+	void setTaskDesc(std::string);
+	void setDeadline(DateTime) {return;}
+	void setStartDate(DateTime) {return;}
+	
+	DateTime getDeadline() const {return DateTime::DateTime();}
+	DateTime getStartDate() const {return DateTime::DateTime();}  
+
+	std::string getTaskDesc() const;
+	std::string getTaskType() const;
+	std::string dateTimeToString() {return "";}
+	std::string statusToString();
+	bool getCompleteStatus() const;
+	std::string outputToString();
+	std::string taskDetailsToString();
+
+	std::string taskToString();
+	void stringToTask(std::string content);
+};
+#endif
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFloat.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskStorage.cpp
+	 */
+
+
+// TaskStorage.cpp
+
+#include "TaskStorage.h"
+
+const std::string TaskStorage:: _defaultFileName = "CalenizerStorage.txt";	
+
+const int ATTRIBUTE_TIMED = 4;
+const int ATTRIBUTE_DEADLINE = 3;
+const int ATTRIBUTE_FLOAT = 2;
+
+TaskStorage::TaskStorage() {
+	_fileName = _defaultFileName;
+}
+
+TaskStorage::~TaskStorage() {
+}
+
+void TaskStorage::writeFile(const std::vector<Task*> &taskList){
+	_fileOutput.open(_fileName.c_str(), std::ios::trunc);
+	for(unsigned int i=0; i<taskList.size() ; i++) {
+		_fileOutput << taskList[i]->taskToString();
+	}
+	_fileOutput.close();
+}
+
+void TaskStorage::loadFile(std::vector<Task*>& taskList) {
+	_fileInput.open(_fileName.c_str(), std::fstream::_Noreplace);
+
+	std::string taskType;
+	while(std::getline(_fileInput,taskType)) {
+		while((taskType != TaskFloat::TASK_FLOAT) && (taskType != TaskDeadline::TASK_DEADLINE) && (taskType != TaskTimed::TASK_TIMED) && _fileInput.good()) {
+			std::getline(_fileInput, taskType);
+		}
+
+		if (taskType == TaskDeadline::TASK_DEADLINE){
+			std::string taskContent;
+			std::string content;
+			for(int i = 1; i <= ATTRIBUTE_DEADLINE && _fileInput.good(); i++) {
+			std::getline(_fileInput,content);
+			taskContent += content + "\n";
+			}
+
+			Task* newTask = new TaskDeadline;
+			newTask->stringToTask(taskContent);
+			taskList.push_back(newTask);
+		} else if (taskType == TaskFloat::TASK_FLOAT){
+			std::string taskContent;
+			std::string content; 
+			for(int i = 1; i <= ATTRIBUTE_FLOAT && _fileInput.good(); i++) {
+			std::getline(_fileInput,content);
+			taskContent  += content + "\n";
+			}
+
+			Task* newTaskFloat = new TaskFloat;
+			newTaskFloat->stringToTask(taskContent);
+			taskList.push_back(newTaskFloat);
+		} else if (taskType == TaskTimed::TASK_TIMED){
+			std::string taskContent;
+			std::string content;
+			for(int i = 1; i <= ATTRIBUTE_TIMED && _fileInput.good(); i++) {
+			std::getline(_fileInput,content);
+			taskContent += content + "\n";
+			}
+
+			Task* newTaskTimed = new TaskTimed;
+			newTaskTimed->stringToTask(taskContent);
+			taskList.push_back(newTaskTimed);
+		}
+	}
+	Logger& logStorage = Logger::getInstance();
+	DisplayOutput actionMsg;
+	logStorage.addInfoLog(actionMsg.loadFileFeedback());
+	logStorage.saveLog();
+	_fileInput.close();
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskStorage.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskStorage.h
+	 */
+
+
+// TaskStorage.h
+
+#ifndef TASKSTORAGE_H
+#define TASKSTORAGE_H
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <fstream>
+#include "Task.h"
+#include "TaskDeadline.h"
+#include "TaskFloat.h"
+#include "TaskTimed.h"
+#include "Logger.h"
+#include "DisplayOutput.h"
+
+class TaskStorage { 
+private:
+    std::string _fileName;		
+	static const std::string _defaultFileName;
+	std::ifstream _fileInput;
+	std::ofstream _fileOutput;
+
+public:
+	TaskStorage();
+	~TaskStorage();
+
+	void writeFile(const std::vector<Task*> &taskList);
+	void loadFile(std::vector<Task*> &taskList);
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskStorage.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskTimed.cpp
+	 */
+
+
+// TaskTimed.cpp
+
+#include "TaskTimed.h"
+
+const std::string TaskTimed::TASK_TIMED = "TIMED";
+const std::string TaskTimed::STATUS_TRUE = "true";
+const std::string TaskTimed::STATUS_FALSE = "false";
+
+TaskTimed::TaskTimed() {
+	_completeStatus = false;
+	_taskType = TASK_TIMED;
+}
+
+TaskTimed::~TaskTimed() {
+}
+
+void TaskTimed::setTask(bool status, std::string taskDesc, DateTime startDateTime, DateTime endDateTime) {
+	setCompleteStatus(status);
+	setTaskDesc(taskDesc);
+	setStartDate(startDateTime);
+	setDeadline(endDateTime);
+}
+
+
+void TaskTimed::setCompleteStatus(bool status) {
+	if(status == true) {
+		_completeStatus = true;
+	} else {
+		_completeStatus = false;
+	}
+}
+
+void TaskTimed::setTaskDesc(std::string taskDesc) {
+	_taskDesc = taskDesc;
+}
+
+void TaskTimed::setDeadline(DateTime deadline) {
+	_endDateTime = deadline;
+}
+
+void TaskTimed::setStartDate(DateTime startDate) {
+	_startDateTime = startDate;
+}
+
+DateTime TaskTimed::getDeadline() const {
+	return _endDateTime;
+}
+
+DateTime TaskTimed::getStartDate() const {
+	return _startDateTime;
+}
+
+std::string TaskTimed::getTaskDesc() const {
+	return _taskDesc;
+}
+
+std::string TaskTimed::getTaskType() const {
+	return _taskType;
+}
+
+std::string TaskTimed::dateTimeToString() {
+	std::ostringstream output;
+	output << _startDateTime.dataToString() << std::endl;
+	output << _endDateTime.dataToString();
+	return output.str();
+}
+
+std::string TaskTimed::statusToString() {
+	if(_completeStatus) {
+		return STATUS_TRUE;
+	} else {
+		return STATUS_FALSE;
+	}
+}
+
+bool TaskTimed::getCompleteStatus() const {
+	return _completeStatus;
+}
+
+std::string TaskTimed::outputToString() {
+	std::ostringstream output;
+	output << getTaskType() << "<>"; 
+	output << getTaskDesc() << "<>";
+	output << _startDateTime.dateToString(true) << " " << _startDateTime.timeToString() << " to " << _endDateTime.dateToString(true) << " " << _endDateTime.timeToString() << "<>";
+	output << statusToString() << std::endl;
+	return output.str();
+}
+
+std::string TaskTimed::taskDetailsToString() {
+	std::ostringstream output;
+	output << getTaskDesc() << std::endl;
+	output << dateTimeToString() << std::endl;
+	output << statusToString() << std::endl;
+	return output.str();
+}
+
+std::string TaskTimed::taskToString() {
+	std::ostringstream output;
+	output << getTaskType() << std::endl; 
+	output << getTaskDesc() << std::endl;
+	output << dateTimeToString() << std::endl;
+	output << statusToString() << std::endl;
+	return output.str();
+}
+
+void TaskTimed::stringToTask(std::string content) {
+	std::istringstream input(content);
+	std::string taskDesc;
+	std::string dateTime;
+	std::string endDate;
+	DateTime startDateTime;
+	DateTime endDateTime;
+	std::string statusString;
+	bool status = false;
+
+	std::getline(input, taskDesc);
+	std::getline(input, dateTime);
+	std::getline(input, endDate);
+	input >> statusString;
+	if (statusString == STATUS_TRUE){
+		status = true;
+	}
+	else{
+		status = false;
+	}
+	startDateTime.dataFromString(dateTime);
+	endDateTime.dataFromString(endDate);
+	setTask(status, taskDesc, startDateTime, endDateTime);
+}
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskTimed.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskTimed.h
+	 */
+
+
+#ifndef TASKTIMED_H
+#define TASKTIMED_H
+
+#include <iostream>
+#include <string>
+#include <sstream>
+#include "Task.h"
+#include "DateTime.h"
+
+class TaskTimed: public Task {
+private:
+	std::string _taskType;
+	std::string _taskDesc;
+	bool _completeStatus;
+	DateTime _startDateTime;
+	DateTime _endDateTime;
+	static const std::string STATUS_FALSE;
+	static const std::string STATUS_TRUE;
+
+public:
+	static const std::string TASK_TIMED;
+	TaskTimed();
+	~TaskTimed();
+
+	void setTask(bool status, std::string taskDesc, DateTime deadline, DateTime startDate);
+	void setTask(bool status, std::string taskDesc) {return;}
+	void setTask(bool status, std::string taskDesc, DateTime deadline) {return;}
+	void setCompleteStatus(bool status);
+	void setTaskDesc(std::string taskDesc);
+	void setDeadline(DateTime deadline);
+	void setStartDate(DateTime startDate);
+	
+	DateTime getDeadline() const;
+	DateTime getStartDate() const;
+
+	std::string getTaskDesc() const;
+	std::string getTaskType() const;
+	std::string dateTimeToString();
+	std::string statusToString();
+	bool getCompleteStatus() const;
+	std::string outputToString();
+	std::string taskDetailsToString();
+
+	std::string taskToString();
+	void stringToTask(std::string content);
+};
+#endif
+
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskTimed.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
+	 */
+
+		// constructDeadlineTask tests the functionality of storage as well as the constructor of a deadline task
+		void constructDeadlineTask() {
+			std::string deadlineTaskString = "do IE2150 report\n13/04/2014 14:00\nfalse\n";
+			Task* deadlineTaskPtr = new TaskDeadline;
+			deadlineTaskPtr->stringToTask(deadlineTaskString);
+
+			std::string expected = "DEADLINE\ndo IE2150 report\n13/04/2014 14:00\nfalse\n";
+			QVERIFY(deadlineTaskPtr->taskToString() == expected);
+		}
+				
+		// constructTimedTask tests the functionality of storage as well as the constructor of a timed task
+		void constructTimedTask() {
+			std::string timedTaskString = "do IE2150 report\n13/04/2014 14:00\n14/04/2014 15:30\nfalse\n";
+			Task* timedTaskPtr = new TaskTimed;
+			timedTaskPtr->stringToTask(timedTaskString);
+
+			std::string expected = "TIMED\ndo IE2150 report\n13/04/2014 14:00\n14/04/2014 15:30\nfalse\n";
+			QVERIFY(timedTaskPtr->taskToString() == expected);
+		}
+
+		// constructFloatTask tests the functionality of storage as well as the constructor of a float task
+		void constructFloatTask() {
+			std::string floatTaskString = "do IE2150 report\nfalse\n";
+			Task* floatTaskPtr = new TaskFloat;
+			floatTaskPtr->stringToTask(floatTaskString);
+
+			std::string expected = "FLOAT\ndo IE2150 report\nfalse\n";
+			QVERIFY(floatTaskPtr->taskToString() == expected);
+		}
+		
+		void testFeedback() {
+			DisplayOutput display;
+			Logic test;
+			display = test.executeUserInput("add mary had a little lamb");
+
+			std::string expected = "Added: \"mary had a little lamb\"\n";
+			QVERIFY(display.getFeedBack() == expected);
+			display = test.executeUserInput("delete 1 to 50");
+		}
+				
+		void testDisplayStatus() {
+			DisplayOutput display;
+			Logic test;
+			display.setDisplayStatus(false);
+			bool expected = false;
+			QVERIFY(display.getDisplayStatus() == expected);
+		}		
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
+
+
+
+
+

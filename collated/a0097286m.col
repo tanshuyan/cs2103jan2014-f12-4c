@@ -1,0 +1,1693 @@
+//@author: a0097286m
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeParser.cpp
+	 */
+
+
+//DateTimeParser.cpp
+
+#include "DateTimeParser.h"
+
+QRegExp DateTimeParser::RX_EMPTY("(^\\s*$)");
+
+QRegExp DateTimeParser::RX_HOUR_MIN_AP("\\b(?:at|on|by)?\\s*(\\d{1,2})(?::?)(\\d{2})\\s*(am|pm)\\b",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_HOUR_AP("\\b(?:at|on|by)?\\s*(\\d{1,2})\\s*(am|pm)\\b",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_HOUR_COL_MIN("\\b(?:at|on|by)?\\s*(\\d{1,2})(?::)(\\d{2})\\b",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_AT_HOUR("\\b(?:at|by)\\s*(\\d{1,2})($|\\s+)(?!jan|/|-|\\.|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\\b",Qt::CaseInsensitive);
+
+QRegExp DateTimeParser::RX_DASHES_SLASHES("\\b(?:at|on|by)?\\s*(\\d{1,2})(?:/|-|\\.)(\\d{1,2})(?:/|-|\\.)?(\\d{1,4})?",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_DAY_SHORT_MONTH("\\b(?:at|on|by)?\\s*(?:the)?\\s*(\\d{1,2})(?:st|nd|rd|th)?\\s*(?:of)?\\s*(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\\b\\s*(\\d{1,4})?",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_DAY_LONG_MONTH("\\b(?:at|on|by)?\\s*(?:the)?\\s*(\\d{1,2})(?:st|nd|rd|th)?\\s*(?:of)?\\s*(january|february|march|april|may|june|july|august|september|october|november|december)\\b\\s*(\\d{1,4})?",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_SHORT_MONTH_DAY("\\b(?:at|on|by)?\\s*(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\\b\\s*(?:the)?\\s*(\\d{1,2})(?:st|nd|rd|th)?\\b\\s*(\\d{1,4})?",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_LONG_MONTH_DAY("\\b(?:at|on|by)?\\s*(january|february|march|april|may|june|july|august|september|october|november|december)\\b\\s*(?:the)?\\s*(\\d{1,2})(?:st|nd|rd|th)?\\b\\s*(\\d{1,4})?",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_SHORT_WEEK_DAYS("\\b(?:on|by)?\\s*(?:the|this)?\\s*(?:next|coming)?\\s*(sun|mon|tue|tues|wed|thu|thur|thurs|fri|sat)\\b",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_LONG_WEEK_DAYS("\\b(?:on|by)?\\s*(?:the|this)?\\s*(?:next|coming)?\\s*(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\\b",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_TODAY("\\b(?:by)?\\s*(today|tdy|td|2day|tdae|todae)\\b",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_TOMORROW("\\b(?:by)?\\s*(tomorrow|tommorrow|tommorow|tmr|tomolo|tml|tmrw|tmw)\\b",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_YESTERDAY("\\b(?:since)?\\s*(yesterday|ystd|ytd|yest)\\b",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_DAY_AFTER("\\b(?:by)?\\s*(the)?\\s*(day)\\s*(after|aft)\\s*(tomorrow|tommorrow|tommorow|tmr|tmrw|tmw)\\b",Qt::CaseInsensitive);
+QRegExp DateTimeParser::RX_NEXT_WEEK("\\b(?:by)?\\s*(next|nxt)\\s*(week|wk)\\b",Qt::CaseInsensitive);
+
+QRegExp DateTimeParser::RX_DAYWORDS("(("+RX_TODAY.pattern()
+									+")|("+RX_TOMORROW.pattern()
+									+")|("+RX_YESTERDAY.pattern()
+									+")|("+RX_YESTERDAY.pattern()
+									+")|("+RX_DAY_AFTER.pattern()
+									+")|("+RX_NEXT_WEEK.pattern()
+									+")|("+RX_SHORT_WEEK_DAYS.pattern()
+									+")|("+RX_LONG_WEEK_DAYS.pattern()
+									+"))",Qt::CaseInsensitive);
+
+DateTimeParser::DateTimeParser(){
+}
+
+bool DateTimeParser::parseString(QString input, QDate &outputDate, QTime &outputTime, int &dayOfWeek){
+	QDate nullDate;
+	QTime nullTime;
+	outputDate = nullDate;
+	outputTime = nullTime;
+	//if the input string is empty, or only contains white spaces, the keyword is assumed to be part of the description
+	if (RX_EMPTY.exactMatch(input)){
+		return false;
+	}
+	bool isInvalidTime = !extractTime(input, outputTime);
+	if (isInvalidTime){
+		throw (InvalidDateTimeException(Message::MSG_INVALID_TIME.c_str()));
+	}
+	bool isInvalidDate = !extractDate(input, outputDate, dayOfWeek);
+	if (isInvalidDate){
+		throw (InvalidDateTimeException(Message::MSG_INVALID_DATE.c_str()));
+	}
+	bool isTaskDesc = !input.trimmed().isEmpty();
+	if (isTaskDesc){
+		outputDate = nullDate;
+		outputTime = nullTime;
+		return false;
+	}
+	return true;
+}
+
+bool DateTimeParser::parseString(QString input, QDate &outputDate, QTime &outputTime){
+	int dummy;
+	return parseString(input, outputDate, outputTime, dummy);
+}
+
+bool DateTimeParser::extractTime(QString &input, QTime &time){
+	int pos;
+	//check for HourMinAP format (1000 AM)
+	pos = RX_HOUR_MIN_AP.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_HOUR_MIN_AP.matchedLength());
+		return parseHourMinAP(time);
+	}
+	//check for HourAP format (10 AM)
+	pos = RX_HOUR_AP.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_HOUR_AP.matchedLength());
+		return parseHourAP(time);
+	}
+	//check for HourColMin format (10:00)
+	pos = RX_HOUR_COL_MIN.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_HOUR_COL_MIN.matchedLength());
+		return parseHourColMin(time);
+	}
+	//check for AtHour format (at 10)
+	pos = RX_AT_HOUR.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_AT_HOUR.matchedLength());
+		return parseAtHour(time);
+	}
+	return true;
+}
+
+bool DateTimeParser::extractDate(QString &input, QDate &date, int &dayOfWeek){
+	int pos;
+	dayOfWeek = -1;
+	//check for full month format (3rd december)
+	pos = RX_DAY_LONG_MONTH.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_DAY_LONG_MONTH.matchedLength());
+		return parseDayLongWordMonth(date);
+	}
+	//check for abbreviated month format (3rd dec)
+	pos = RX_DAY_SHORT_MONTH.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_DAY_SHORT_MONTH.matchedLength());
+		return parseDayShortWordMonth(date);
+	}
+	//check for full month format (december 3rd)
+	pos = RX_LONG_MONTH_DAY.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_LONG_MONTH_DAY.matchedLength());
+		return parseLongWordMonthDay(date);
+	}
+	//check for abbreviated month format (dec 3rd)
+	pos = RX_SHORT_MONTH_DAY.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_SHORT_MONTH_DAY.matchedLength());
+		return parseShortWordMonthDay(date);
+	}
+	//check for DashesSlashes format (31/1/2014, 31-1-2014)
+	pos = RX_DASHES_SLASHES.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_DASHES_SLASHES.matchedLength());
+		return parseDashesSlashes(date);
+	}
+	//check for short week format (sun, mon)
+	pos = RX_SHORT_WEEK_DAYS.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_SHORT_WEEK_DAYS.matchedLength());
+		return parseShortWeekDays(date, dayOfWeek);
+	}
+	//check for long week format (sunday, monday)
+	pos = RX_LONG_WEEK_DAYS.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_LONG_WEEK_DAYS.matchedLength());
+		return parseLongWeekDays(date, dayOfWeek);
+	}
+	//check for "Today" words
+	pos = RX_TODAY.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_TODAY.matchedLength());
+		return parseToday(date);
+	}
+	//check for "the day after tomorrow" words
+	pos = RX_DAY_AFTER.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_DAY_AFTER.matchedLength());
+		return parseDayAfter(date);
+	}
+	//check for "Tomorrow" words
+	pos = RX_TOMORROW.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_TOMORROW.matchedLength());
+		return parseTomorrow(date);
+	}
+	//check for "Yesterday" words
+	pos = RX_YESTERDAY.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_YESTERDAY.matchedLength());
+		return parseYesterday(date);
+	}
+	//check for "next week" words
+	pos = RX_NEXT_WEEK.indexIn(input);
+	if(pos != -1){
+		input.remove(pos, RX_NEXT_WEEK.matchedLength());
+		return parseNextWeek(date, dayOfWeek);
+	}
+	return true;
+}
+
+bool DateTimeParser::extractDate(QString &input, QDate &date){
+	int dummy;
+	return extractDate(input, date, dummy);
+}
+
+//Time Parsers
+
+bool DateTimeParser::parseHourMinAP(QTime &time){
+	//Get hours
+	int hour = RX_HOUR_MIN_AP.cap(1).toInt();
+	//Get minutes
+	int minute = RX_HOUR_MIN_AP.cap(2).toInt();
+
+ 	if(hour > 12 || hour < 1 || minute < 0 || minute > 59){
+		return false;
+	}
+	if(hour == 12){
+		hour = 0;
+	}
+	if (RX_HOUR_MIN_AP.cap(3).contains("pm", Qt::CaseInsensitive)){
+		hour += 12;
+	}
+	time.setHMS(hour, minute, 0);
+	return true;
+}
+
+bool DateTimeParser::parseHourAP(QTime &time){
+	//Get hours
+	int hour = RX_HOUR_AP.cap(1).toInt();
+	if(hour > 12 || hour < 1){
+		return false;
+	}
+	if(hour == 12){
+		hour = 0;
+	}
+	if (RX_HOUR_AP.cap(2).contains("pm", Qt::CaseInsensitive)){
+		hour += 12;
+	}
+	time.setHMS(hour, 0, 0);
+	return true;
+}
+
+bool DateTimeParser::parseHourColMin(QTime &time){
+	//Get hours
+	int hour = RX_HOUR_COL_MIN.cap(1).toInt();
+	//Get minutes
+	int minute = RX_HOUR_COL_MIN.cap(2).toInt();
+		
+	if(hour > 23 || hour < 0 || minute < 0 || minute > 59){
+		return false;
+	}
+	//In the case that the user types anything from 1:00 to 6:00, regard it as pm
+	if(RX_HOUR_COL_MIN.cap(1).size() == 1){
+		if(hour >= 1 && hour <= 6){
+			hour += 12;
+		}
+	}
+	time.setHMS(hour, minute, 0);
+	return true;
+}
+
+bool DateTimeParser::parseAtHour(QTime &time){
+	//Get hours
+	int hour = RX_AT_HOUR.cap(1).toInt();
+		
+	if(hour > 12 || hour < 0){
+		return false;
+	}
+	//In the case that the user types anything from 1:00 to 6:00, regard it as pm
+	if(hour >= 1 && hour <= 6){
+		hour += 12;
+	}
+	time.setHMS(hour, 0, 0);
+	return true;
+}
+//Date Parsers
+
+bool DateTimeParser::parseDashesSlashes(QDate &date){
+	//Get days
+	int day = RX_DASHES_SLASHES.cap(1).toInt();
+	//Get Months
+	int month = RX_DASHES_SLASHES.cap(2).toInt();
+	//Get Years
+	int year = RX_DASHES_SLASHES.cap(3).toInt();
+	autoCompleteYear(RX_DASHES_SLASHES.cap(3).size(), year);
+	if(RX_DASHES_SLASHES.pos(3) == -1){
+		year = guessYear(day, month);
+	}
+	return date.setDate(year, month, day);
+}
+
+bool DateTimeParser::parseDayShortWordMonth(QDate &date){
+	//Get days
+	int day = RX_DAY_SHORT_MONTH.cap(1).toInt();
+	//Get Months
+	int month = QDate::fromString(RX_DAY_SHORT_MONTH.cap(2), "MMM").month();
+	//Get Years
+	int year = RX_DAY_SHORT_MONTH.cap(3).toInt();
+	autoCompleteYear(RX_DAY_SHORT_MONTH.cap(3).size(), year);
+	if (RX_DAY_SHORT_MONTH.pos(3) == -1){
+		year = guessYear(day, month);
+	}
+	return date.setDate(year, month, day);
+}
+
+bool DateTimeParser::parseDayLongWordMonth(QDate &date){
+	//Get days
+	int day = RX_DAY_LONG_MONTH.cap(1).toInt();
+	//Get Months
+	int month = QDate::fromString(RX_DAY_LONG_MONTH.cap(2), "MMMM").month();
+	//Get Years
+	int year = RX_DAY_LONG_MONTH.cap(3).toInt();
+	autoCompleteYear(RX_DAY_LONG_MONTH.cap(3).size(), year);
+	if (RX_DAY_LONG_MONTH.pos(3) == -1){
+		year = guessYear(day, month);
+	}
+	return date.setDate(year, month, day);
+}
+
+bool DateTimeParser::parseShortWordMonthDay(QDate &date){
+	//Get days
+	int day = RX_SHORT_MONTH_DAY.cap(2).toInt();
+	//Get Months
+	int month = QDate::fromString(RX_SHORT_MONTH_DAY.cap(1), "MMM").month();
+	//Get Years
+	int year = RX_SHORT_MONTH_DAY.cap(3).toInt();
+	autoCompleteYear(RX_SHORT_MONTH_DAY.cap(3).size(), year);
+	if (RX_SHORT_MONTH_DAY.pos(3) == -1){
+		year = guessYear(day, month);
+	}
+	return date.setDate(year, month, day);
+}
+
+bool DateTimeParser::parseLongWordMonthDay(QDate &date){
+	//Get days
+	int day = RX_LONG_MONTH_DAY.cap(2).toInt();
+	//Get Months
+	int month = QDate::fromString(RX_LONG_MONTH_DAY.cap(1), "MMMM").month();
+	//Get Years
+	int year = RX_LONG_MONTH_DAY.cap(3).toInt();
+	autoCompleteYear(RX_LONG_MONTH_DAY.cap(3).size(), year);
+	if (RX_LONG_MONTH_DAY.pos(3) == -1){
+		year = guessYear(day, month);
+	}
+	return date.setDate(year, month, day);
+}
+
+bool DateTimeParser::parseShortWeekDays(QDate &date, int &dayOfWeek){
+	QDate testDate = QDate::currentDate();
+	int i;
+	for(i=1; i<=7; ++i){
+		testDate = testDate.addDays(1);
+		if(testDate.toString("ddd").toLower() == RX_SHORT_WEEK_DAYS.cap(1).toLower()){
+			dayOfWeek = dayOFWeekToInt(RX_SHORT_WEEK_DAYS.cap(1));
+			dayOfWeek = i;
+			date = testDate;
+			return true;
+		}
+	}
+	return false;
+}
+
+bool DateTimeParser::parseLongWeekDays(QDate &date, int &dayOfWeek){
+	QDate testDate = QDate::currentDate();
+	int i;
+	for(i=1; i<=7; ++i){
+		testDate = testDate.addDays(1);
+		if(testDate.toString("dddd").toLower() == RX_LONG_WEEK_DAYS.cap(1).toLower()){
+			dayOfWeek = dayOFWeekToInt(RX_LONG_WEEK_DAYS.cap(1));
+			date = testDate;
+			return true;
+		}
+	}
+	return false;
+}
+
+bool DateTimeParser::parseToday(QDate &date){
+	//Today
+	date = QDate::currentDate();
+	return true;
+}
+
+bool DateTimeParser::parseTomorrow(QDate &date){		
+	//Tomorrow
+	date = QDate::currentDate().addDays(1);
+	return true;
+}
+
+bool DateTimeParser::parseYesterday(QDate &date){		
+	//Yesterday
+	date = QDate::currentDate().addDays(-1);
+	return true;
+}
+
+bool DateTimeParser::parseDayAfter(QDate &date){		
+	//The day after tomorrow
+	date = QDate::currentDate().addDays(2);
+	return true;
+}
+
+bool DateTimeParser::parseNextWeek(QDate &date, int &dayOfWeek){		
+	//Next Week
+	dayOfWeek = 0;
+	date = QDate::currentDate().addDays(7);
+	return true;
+}
+
+int DateTimeParser::guessYear(int &day, int &month){
+	QDate testDate;
+	int tempDay = day;
+	int tempMonth = month;
+	int currYear = testDate.currentDate().year();
+
+	if(day == 29 && month == 2){
+		if(testDate.currentDate().month() <= 2 && (currYear) % 4 != 0){
+			day = 28;
+			tempDay = 28;
+		}
+		if(testDate.currentDate().month() > 2 && (currYear+1) % 4 != 0){
+			day = 28;
+			tempDay = 28;
+		}
+	}
+	testDate.setDate(currYear, tempMonth, tempDay);
+	if(testDate.isValid() && testDate.operator>=(testDate.currentDate())){
+		return currYear;
+	}
+	return currYear+1;
+}
+
+void DateTimeParser::autoCompleteYear(int size, int &year){
+	if(size == 2 || size == 1){
+		year+=2000;
+	}
+	return;
+}
+
+int DateTimeParser::dayOFWeekToInt(QString dayOfWeek){
+	for(int i=1; i<8; i++){
+		if(QDate::longDayName(i).toLower() == dayOfWeek.toLower()){
+			return i;
+		}
+	}
+	return -1;
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeParser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeParser.h
+	 */
+
+
+//DateTimeParser.h
+
+#ifndef DATETIMEPARSER_H
+#define DATETIMEPARSER_H
+
+#include <QDateTime>
+#include <QString>
+#include <string>
+#include <QRegExp>
+#include "DateTime.h"
+#include "Message.h"
+#include "Exception.h"
+
+class DateTimeParser{
+private:
+	static QRegExp RX_EMPTY;
+
+	static QRegExp RX_HOUR_MIN_AP;
+	static QRegExp RX_HOUR_AP;
+	static QRegExp RX_HOUR_COL_MIN;
+	static QRegExp RX_AT_HOUR;
+
+	static QRegExp RX_DASHES_SLASHES;
+	static QRegExp RX_DAY_SHORT_MONTH;
+	static QRegExp RX_DAY_LONG_MONTH;
+	static QRegExp RX_SHORT_MONTH_DAY;
+	static QRegExp RX_LONG_MONTH_DAY;
+	static QRegExp RX_SHORT_WEEK_DAYS;
+	static QRegExp RX_LONG_WEEK_DAYS;
+	static QRegExp RX_TODAY;
+	static QRegExp RX_TOMORROW;
+	static QRegExp RX_YESTERDAY;
+	static QRegExp RX_DAY_AFTER;
+	static QRegExp RX_NEXT_WEEK;
+
+	//Parsing functions for all supported time formats
+	//Posts: return true if valid time is found
+
+	//e.g. 10:00PM, 1000Pm, 10 : 00 pm	(13:00 pm not accepted)
+	bool parseHourMinAP(QTime &time);
+	//e.g. 10PM, 10Pm, 10 pm			(13 pm not accepted)
+	bool parseHourAP(QTime &time);
+	//e.g. 10:00, 10 : 00				(24:00 not accepted)
+	bool parseHourColMin(QTime &time);
+	//e.g. at 10
+	bool parseAtHour(QTime &time);
+
+	//parsing functions for all supported date formats
+	//Posts: return true if valid date is found
+
+	//any combination of DD or D, MM or M, YY or YYYY, in that order (e.g. 31/1/2014, 1-12-14), year is optional
+	bool parseDashesSlashes(QDate &date);
+	bool parseDayShortWordMonth(QDate &date);
+	bool parseDayLongWordMonth(QDate &date);
+	bool parseShortWordMonthDay(QDate &date);
+	bool parseLongWordMonthDay(QDate &date);
+	bool parseShortWeekDays(QDate &date, int &dayOfWeek);
+	bool parseLongWeekDays(QDate &date, int &dayOfWeek);
+	bool parseToday(QDate &date);
+	bool parseTomorrow(QDate &date);
+	bool parseYesterday(QDate &date);
+	bool parseDayAfter(QDate &date);
+	bool parseNextWeek(QDate &date, int &dayOfWeek);
+	
+	//Post: returns a year that assumes the day and month are upcoming dates. Changes 29 Feb to 28 Feb if upcoming Feb has no 29th.
+	int guessYear(int &day, int &month);
+	void autoCompleteYear(int size, int &year);
+	int dayOFWeekToInt(QString dayOfWeek);
+
+public:
+	DateTimeParser();
+	static QRegExp RX_DAYWORDS;
+	
+	//Sets date or time to null if no valid date or time is found respectively. Used primarily for end dates.
+	//Post: returns false if string is suspected to be part of desc, and date and time will be set to null
+	//Records the day of the week as well. Mon is 1, Sun is 7, "Next Week" is 0, and "No indicated day" is -1. 
+	bool parseString(QString input, QDate &outputDate, QTime &outputTime, int &dayOfWeek);
+	//Overloaded function that does not require dayOfWeek field. Used primarily for start dates.
+	bool parseString(QString input, QDate &outputDate, QTime &outputTime);
+	//Post: returns false if an invalid time found
+	bool extractTime(QString &input, QTime &time);
+	//Post: returns false if an invalid date is found
+	bool extractDate(QString &input, QDate &date, int &dayOfWeek);
+	//Overloaded function that does not require dayOfWeek field
+	bool extractDate(QString &input, QDate &date);
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeParser.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeResolver.cpp
+	 */
+
+
+//DateTimeResolver.cpp
+
+#include "DateTimeResolver.h"
+
+const QTime DAY_START(0,0,0);
+const QTime DAY_END(23,59,0);
+
+DateTimeResolver::DateTimeResolver(){
+}
+
+bool DateTimeResolver::resolveAdd(AnalysedData &analysedData) {
+	QDate startDate = analysedData.getStartDate();
+	QTime startTime = analysedData.getStartTime();
+	QDate endDate = analysedData.getEndDate();
+	QTime endTime = analysedData.getEndTime();
+	int dayOfWeek = analysedData.getDayOfWeek();
+	if(startDate.isValid()){
+		endDate = setEndToDayOfWeek(startDate, endDate, dayOfWeek);
+	}
+	completeAdd(startDate, startTime, endDate, endTime);
+	analysedData.setStartDate(startDate);
+	analysedData.setStartTime(startTime);
+	analysedData.setEndDate(endDate);
+	analysedData.setEndTime(endTime);
+	return checkDateOrderIsValid(startDate, startTime, endDate, endTime);
+}
+
+bool DateTimeResolver::resolveEdit(const Task* task, AnalysedData &analysedData){
+	QDate startDate = analysedData.getStartDate();
+	QTime startTime = analysedData.getStartTime();
+	QDate endDate = analysedData.getEndDate();
+	QTime endTime = analysedData.getEndTime();
+	bool dateTimeIsUnlabelled = analysedData.getDateTimeUnlabelled();
+	int dayOfWeek = analysedData.getDayOfWeek();
+	if(startDate.isValid()){
+		endDate = setEndToDayOfWeek(startDate, endDate, dayOfWeek);
+	}
+	completeEdit(task, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled);
+	analysedData.setStartDate(startDate);
+	analysedData.setStartTime(startTime);
+	analysedData.setEndDate(endDate);
+	analysedData.setEndTime(endTime);
+	return checkDateOrderIsValid(startDate, startTime, endDate, endTime, task);
+}
+
+void DateTimeResolver::completeEdit(const Task* task, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool dateTimeIsUnlabelled){
+	//User input contains only desc
+	if(startDate.isNull() && startTime.isNull() && endDate.isNull() && endTime.isNull()){
+		return;
+	}
+
+	if(task->getTaskType() == TaskFloat::TASK_FLOAT){
+		completeAdd(startDate, startTime, endDate, endTime);
+		return;
+	}
+
+	if(task->getTaskType() == TaskDeadline::TASK_DEADLINE){
+		//only start date/time
+		if((startDate.isValid()||startTime.isValid()) && endDate.isNull() && endTime.isNull()){
+			//If only start date/time is specified, it will be used to directly edit the deadline's end date/time
+			endDate = startDate;
+			endTime = startTime;
+			QDate nullDate;
+			startDate = nullDate;
+			QTime nullTime;
+			startTime = nullTime;
+			return;
+		}
+		//only end date/time
+		if((endDate.isValid()||endTime.isValid()) && startDate.isNull() && startTime.isNull()){
+			return;
+		}
+		//only start and end times specified
+		if(startDate.isNull() && startTime.isValid() && endDate.isNull() && endTime.isValid()){
+			//set start date to the deadline's date
+			startDate = task->getDeadline().getDate();
+			completeAdd(startDate, startTime, endDate, endTime);
+			return;
+		}
+		//only start date missing
+		if(startDate.isNull() && startTime.isValid() && endDate.isValid() && endTime.isValid()){
+			//set start date to the deadline's date if possible, else set to today
+			if (endDate > task->getDeadline().getDate()){
+				startDate = task->getDeadline().getDate();
+			} else{
+				startDate = QDate::currentDate();
+			}
+			return;
+		}
+		//All other cases
+		completeAdd(startDate, startTime, endDate, endTime);
+		return;
+	}
+
+	if(task->getTaskType() == TaskTimed::TASK_TIMED){
+		if(dateTimeIsUnlabelled){
+			if (startDate.isNull()){
+				startDate = task->getStartDate().getDate();
+			}
+			if (startTime.isNull()){
+				startTime = task->getStartDate().getTime();
+			}
+			QDateTime start;
+			start.setDate(task->getStartDate().getDate());
+			start.setTime(task->getStartDate().getTime());
+			QDateTime end;
+			end.setDate(task->getDeadline().getDate());
+			end.setTime(task->getDeadline().getTime());
+			qint64 gap = end.toMSecsSinceEpoch() - start.toMSecsSinceEpoch();
+
+			start.setDate(startDate);
+			start.setTime(startTime);
+			end = start.addMSecs(gap);
+			endDate = end.date();
+			endTime = end.time();
+			return;
+		}
+		return;
+	}
+	assert(false);
+	return;
+}
+
+
+void DateTimeResolver::completeAdd(QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime){
+	
+	//User input contains only desc
+	if(startDate.isNull() && startTime.isNull() && endDate.isNull() && endTime.isNull()){
+		return;
+	}
+	//User input is fully completed
+	if(startDate.isValid() && startTime.isValid() && endDate.isValid() && endTime.isValid()){
+		return;
+	}
+	
+	//Cases where only one field is present (and are missing the associated date/time field)
+	//Single start date/time
+	if(endDate.isNull() && endTime.isNull()){
+		//Lacks start date
+		if(startDate.isNull()){
+			//set the date to either today or tomorrow, depending on current time vs. startTime
+			startDate = setNearestValidDay(startTime);
+			return;
+		}
+		//Lacks start time
+		if(startTime.isNull()){
+			startTime = DAY_END;
+			return;
+		}
+		return;
+	}
+	//Single end date/time
+	if(startDate.isNull() && startTime.isNull()){
+		//Lacks end date
+		if(endDate.isNull()){
+			endDate = setNearestValidDay(endTime);
+			return;
+		}
+		//Lacks end time
+		if(endTime.isNull()){
+			endTime = DAY_END;
+			return;
+		}
+		return;
+	}
+
+	//Cases that are missing two fields
+	//Missing both dates
+	if(startDate.isNull() && endDate.isNull()){
+		startDate = setNearestValidDay(startTime);
+		endDate = setNearestValidDay(endTime,startDate,startTime);
+		return;
+	}
+	//Missing both times
+	if(startTime.isNull() && endTime.isNull()){
+		startTime = DAY_START;
+		endTime = DAY_END;
+		return;
+	}
+	//Missing start time and end date
+	if(startTime.isNull() && endDate.isNull()){
+		startTime = DAY_START;
+		endDate = startDate;
+		return;
+	}
+	//Missing end time and start date
+	if(endTime.isNull() && startDate.isNull()){
+		startDate = setNearestValidDay(startTime);
+		endTime = DAY_END;
+		return;
+	}
+	//Cases that are missing one field
+	//No start date
+	if(startDate.isNull()){
+		startDate = setNearestValidDay(startTime);
+		return;
+	}
+	//No start time
+	if(startTime.isNull()){
+		if(startDate == endDate){
+			startTime = DAY_START;
+		} else{
+			startTime = endTime;
+		}
+		return;
+	}
+	//No end date
+	if(endDate.isNull()){
+		endDate = setNearestValidDay(endTime, startDate, startTime);
+		return;
+	}
+	//No end time
+	if(endTime.isNull()){
+		if(startDate == endDate){
+			endTime = DAY_END;
+		} else{
+			endTime = startTime;
+		}
+		return;
+	}
+	assert(false);
+	return;
+}
+
+QDate DateTimeResolver::setNearestValidDay(QTime eventTime, QDate currDate, QTime currTime){
+	assert (eventTime.isValid());
+	//if the event time is later than the current time
+	QDate dateToSet;
+	if(eventTime > currTime){
+				dateToSet = currDate;
+			} else{
+				dateToSet = currDate.addDays(1);
+			}
+	return dateToSet;
+}
+
+QDate DateTimeResolver::setEndToDayOfWeek(QDate startDate, QDate endDate, int dayOfWeek){
+	assert(dayOfWeek >= -1 && dayOfWeek <= 7);
+	if(dayOfWeek == 0){
+		return startDate.addDays(7);
+	}
+	if(dayOfWeek != -1){
+		endDate = startDate;
+		do{
+			endDate = endDate.addDays(1);
+		} while(endDate.toString("dddd") != QDate::longDayName(dayOfWeek));
+	}
+	return endDate;
+}
+
+bool DateTimeResolver::checkDateOrderIsValid(QDate startDate, QTime startTime, QDate endDate, QTime endTime){
+	if(startDate.isValid() && endDate.isValid()){
+		QDateTime start;
+		start.setDate(startDate);
+		start.setTime(startTime);
+		assert(start.isValid());
+		QDateTime end;
+		end.setDate(endDate);
+		end.setTime(endTime);
+		assert(end.isValid());
+
+		if(start > end){
+			return false;
+		}
+	}
+	return true;
+}
+
+bool DateTimeResolver::checkDateOrderIsValid(QDate startDate, QTime startTime, QDate endDate, QTime endTime, const Task* task){
+	if(task->getTaskType() == TaskTimed::TASK_TIMED){
+		if(startDate.isNull()){
+			startDate = task->getStartDate().getDate();
+		}
+		if(startTime.isNull()){
+			startTime = task->getStartDate().getTime();
+		}
+		if(endDate.isNull()){
+			endDate = task->getDeadline().getDate();
+		}
+		if(endTime.isNull()){
+			endTime = task->getDeadline().getTime();
+		}
+	}
+	if(startDate.isValid() && endDate.isValid()){
+		QDateTime start;
+		start.setDate(startDate);
+		start.setTime(startTime);
+		assert(start.isValid());
+		QDateTime end;
+		end.setDate(endDate);
+		end.setTime(endTime);
+		assert(end.isValid());
+
+		if(start > end){
+			return false;
+		}
+	}
+	return true;
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeResolver.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeResolver.h
+	 */
+
+
+//DateTimeResolver.h
+
+#ifndef DATETIMERESOLVER
+#define DATETIMERESOLVER
+
+#include <assert.h>
+#include <QDateTime>
+#include "Task.h"
+#include "TaskDeadline.h"
+#include "TaskFloat.h"
+#include "TaskTimed.h"
+#include "AnalysedData.h"
+#include "DateTime.h"
+
+class DateTimeResolver{
+private:
+	QTime _dayStart;
+	QTime _dayEnd;
+
+	//Completes the date and time fields the user left blank for the case of Edit
+	void completeEdit(const Task* task, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool dateTimeIsUnlabelled);
+	//Completes the date and time fields the user left blank for the case of Add
+	void completeAdd(QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime);
+	//Given a reference 'curr' date & time, it guesses the event date given the upcoming event time
+	QDate setNearestValidDay(QTime eventTime, QDate currDate = QDate::currentDate(), QTime currTime = QTime::currentTime());
+	QDate setEndToDayOfWeek(QDate startDate, QDate endDate, int dayOfWeek);
+	//If there both start and end date/times are present, it checks that they are in the valid order
+	bool checkDateOrderIsValid(QDate startDate, QTime startTime, QDate endDate, QTime endTime);
+	bool checkDateOrderIsValid(QDate startDate, QTime startTime, QDate endDate, QTime endTime, const Task* task);
+
+public:
+	DateTimeResolver();
+	//Completes the missing date or time entries as much as possible, and checks if they are in the correct order
+	//Returns false if start and end date/time are not in correct order
+	bool resolveAdd(AnalysedData &analysedData);
+	//Completes the missing date or time entries in certain special scenarios, and checks if they are in the correct order
+	//Returns false if start and end date/time are not in correct order
+	bool resolveEdit(const Task* task, AnalysedData &analysedData);
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeResolver.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\MultipleIndexParser.cpp
+	 */
+
+
+// MultipleIndexParser.cpp
+
+#include "MultipleIndexParser.h"
+
+QRegExp MultipleIndexParser::RX_NEGATIVE_INDEX("(?:^|\\D)\\s*(-\\d+)", Qt::CaseInsensitive);
+QRegExp MultipleIndexParser::RX_TO("(\\d+)\\s*(?:to|-|until|til)\\s*(\\d+)", Qt::CaseInsensitive);
+QRegExp MultipleIndexParser::RX_INDEX("\\b(\\d+)\\b");
+
+const QString ZERO_INDEX = "0";
+
+MultipleIndexParser::MultipleIndexParser() {
+}
+
+std::vector<int> MultipleIndexParser::parseMultipleIndex(QString descString) {
+	_index.clear();
+	//Search for negative indexes and turn them zeroes
+	int pos = 0; 
+	pos = RX_NEGATIVE_INDEX.indexIn(descString, pos);
+	while(pos != -1){
+		descString.replace(RX_NEGATIVE_INDEX.pos(1), RX_NEGATIVE_INDEX.cap(1).length(), ZERO_INDEX);
+		pos = RX_NEGATIVE_INDEX.indexIn(descString, pos);
+	}
+	//Search for "index to index" format
+	pos = 0;
+	pos = RX_TO.indexIn(descString, pos);
+	while(pos != -1){
+		int start = RX_TO.cap(1).toInt();
+		int end = RX_TO.cap(2).toInt();
+		if(start > end)
+		{
+			//swap
+			int temp = start;
+			start = end;
+			end = temp;
+		}
+		// eg: 7 to 11, populate 7,8,9,10,11 and store in the vector
+		for(int i = start; i <= end; i++) {
+			_index.push_back(i);
+		}
+		descString.remove(pos, RX_TO.matchedLength());
+		pos = RX_TO.indexIn(descString, pos);
+	}
+	//Search for lone indexes
+	pos = 0;
+	pos = RX_INDEX.indexIn(descString, pos);
+	while(pos != -1){
+		int index = RX_INDEX.cap(1).toInt();
+		_index.push_back(index);
+		descString.remove(pos, RX_INDEX.matchedLength());
+		pos = RX_INDEX.indexIn(descString, pos);
+	}
+	
+	std::sort(_index.begin(), _index.end()); 
+	// create a unique vector
+	_index.erase(std::unique(_index.begin(), _index.end()), _index.end()); 
+	return _index;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\MultipleIndexParser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\MultipleIndexParser.h
+	 */
+
+
+//MultipleIndexParser.h
+
+#ifndef MULTIPLEINDEXPARSER_H
+#define MULTIPLEINDEXPARSER_H
+
+#include <string>
+#include <QRegExp>
+#include <vector>
+#include <algorithm>
+
+//All functions return false if any error occurs
+class MultipleIndexParser{
+private:
+	static QRegExp RX_NEGATIVE_INDEX;
+	static QRegExp RX_TO;
+	static QRegExp RX_INDEX;
+	std::vector<int> _index;
+
+public:
+	MultipleIndexParser();
+	std::vector<int> parseMultipleIndex(QString);
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\MultipleIndexParser.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateFunctions.cpp
+	 */
+
+
+//NLPDateFunctions.cpp
+
+#include "NLPDateFunctions.h"
+QRegExp NLPDateFunctions::RX_QUOTES("\"(.+)\"");
+QRegExp NLPDateFunctions::RX_FROM_UNTIL("\\b(?:starting|start|lasting|from(?!\\s+from)|begin|beginning)\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
+QRegExp NLPDateFunctions::RX_UNTIL_FROM("\\b(?:ending|end|until|till|til|to)\\b(.+)\\b(?:starting|start|from(?!\\s+from)|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
+QRegExp NLPDateFunctions::RX_ON_UNTIL("\\b(?:at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by))|by(?!\\s+(on|at|by)))\\b(.+)\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
+QRegExp NLPDateFunctions::RX_START("\\b(?:starting|start|lasting|from(?!\\s+from)|begin|beginning)\\b(.+)", Qt::CaseInsensitive);
+QRegExp NLPDateFunctions::RX_FROM("^(?:\\s*)(?:from)\\b(.+)", Qt::CaseInsensitive);
+QRegExp NLPDateFunctions::RX_END("\\b(?:ending|end|until|till|til|to)\\b(.+)", Qt::CaseInsensitive);
+QRegExp NLPDateFunctions::RX_ON_AT_BY("\\b(at(?!\\s+(on|at|by))|on(?!\\s+(on|at|by))|by(?!\\s+(on|at|by)))\\b(.+)", Qt::CaseInsensitive);
+QRegExp NLPDateFunctions::RX_TODAY_WORDS(DateTimeParser::RX_DAYWORDS.pattern()+"\\b(.*)", Qt::CaseInsensitive);
+QRegExp NLPDateFunctions::RX_UNMARKED_DATETIME("\\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|\\d|on|at|by)(.+)", Qt::CaseInsensitive);
+
+NLPDateFunctions::NLPDateFunctions(){
+}
+
+QString NLPDateFunctions::extractQuotedDesc(QString &descString){
+	RX_QUOTES.indexIn(descString);
+	return RX_QUOTES.cap(1);
+}
+
+bool NLPDateFunctions::searchFromUntil(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled, int &dayOfWeek){
+	int pos = -1;
+	bool fromStringIsValid;
+	bool untilStringIsValid;
+	do{
+		pos = RX_FROM_UNTIL.indexIn(descString, pos+1);
+		QString fromString = RX_FROM_UNTIL.cap(1);
+		//removes any "from"s, since the user may have typed "starting from" or "beginning from"
+		if (RX_FROM.indexIn(RX_FROM_UNTIL.cap(1)) != -1){
+			fromString = RX_FROM.cap(1);
+		}
+		fromStringIsValid = _dateTimeParser.parseString(fromString, startDate, startTime);
+		untilStringIsValid = _dateTimeParser.parseString(RX_FROM_UNTIL.cap(2), endDate, endTime, dayOfWeek);
+	}while (!(fromStringIsValid && untilStringIsValid) && pos != -1);
+
+	if (fromStringIsValid && untilStringIsValid){
+		descString.truncate(RX_FROM_UNTIL.pos());
+		descString = descString.trimmed();
+		dateTimeIsUnlabelled = false;
+		return true;
+	}
+	dayOfWeek = -1;
+	return false;
+}
+
+bool NLPDateFunctions::searchUntilFrom(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled, int &dayOfWeek){
+	int pos = -1;
+	bool fromStringIsValid;
+	bool untilStringIsValid;
+	RX_UNTIL_FROM.lastIndexIn(descString);
+	fromStringIsValid = _dateTimeParser.parseString(RX_UNTIL_FROM.cap(2), startDate, startTime);
+	untilStringIsValid = _dateTimeParser.parseString(RX_UNTIL_FROM.cap(1), endDate, endTime, dayOfWeek);
+	if (fromStringIsValid && untilStringIsValid){
+		descString.truncate(RX_UNTIL_FROM.pos());
+		descString = descString.trimmed();
+		dateTimeIsUnlabelled = false;
+		return true;
+	}
+	dayOfWeek = -1;
+	return false;
+}
+
+bool NLPDateFunctions::searchOnUntil(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled, int &dayOfWeek){
+	int pos = -1;
+	bool fromStringIsValid;
+	bool untilStringIsValid;
+	RX_ON_UNTIL.lastIndexIn(descString);
+	fromStringIsValid = _dateTimeParser.parseString(RX_ON_UNTIL.cap(1), startDate, startTime);
+	untilStringIsValid = _dateTimeParser.parseString(RX_ON_UNTIL.cap(2), endDate, endTime, dayOfWeek);
+	if (fromStringIsValid && untilStringIsValid){
+		descString.truncate(RX_ON_UNTIL.pos());
+		descString = descString.trimmed();
+		dateTimeIsUnlabelled = false;
+		return true;
+	}
+	dayOfWeek = -1;
+	return false;
+}
+
+bool NLPDateFunctions::searchFrom(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled){
+	int pos = -1;
+	bool fromStringIsValid;
+	do{
+		pos = RX_START.indexIn(descString, pos+1);
+		QString fromString = RX_START.cap(1);
+		if (RX_FROM.indexIn(RX_START.cap(1)) != -1){
+			fromString = RX_FROM.cap(1);
+		}
+		fromStringIsValid = _dateTimeParser.parseString(fromString, startDate, startTime);
+	}while (!fromStringIsValid && pos != -1);
+	
+	if (fromStringIsValid){
+		descString.truncate(RX_START.pos());
+		descString = descString.trimmed();
+		endDate = _nullDate;
+		endTime = _nullTime;
+		dateTimeIsUnlabelled = false;
+		return true;
+	}
+	return false;
+}
+
+bool NLPDateFunctions::searchUntil(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled, int &dayOfWeek){
+	int pos = -1;
+	bool untilStringIsValid;
+	RX_END.lastIndexIn(descString);
+	untilStringIsValid = _dateTimeParser.parseString(RX_END.cap(1), endDate, endTime, dayOfWeek);
+	if (untilStringIsValid){
+		descString.truncate(RX_END.pos());
+		descString = descString.trimmed();
+		startDate = _nullDate;
+		startTime = _nullTime;
+		dateTimeIsUnlabelled = false;
+		return true;
+	}
+	dayOfWeek = -1;
+	return false;
+}
+
+bool NLPDateFunctions::searchOn(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled){
+	int pos = -1;
+	bool stringIsValid;
+	do{
+		pos = RX_ON_AT_BY.indexIn(descString, pos+1);
+		stringIsValid = _dateTimeParser.parseString(RX_ON_AT_BY.cap(0), startDate, startTime);
+	}while (!stringIsValid && pos != -1);
+
+	if (stringIsValid){
+		descString.truncate(RX_ON_AT_BY.pos());
+		descString = descString.trimmed();
+		endDate = _nullDate;
+		endTime = _nullTime;
+		return true;
+	}
+	return false;
+}
+
+bool NLPDateFunctions::searchTodayWords(QString &descString, QDate &startDate, QTime &startTime){
+	QDate foundDate;
+	QTime foundTime;
+	int pos = -1;
+	bool stringIsValid;
+	do{
+		pos = RX_TODAY_WORDS.indexIn(descString, pos+1);
+		stringIsValid = _dateTimeParser.parseString(RX_TODAY_WORDS.cap(0), foundDate, foundTime);
+	}while (!stringIsValid && pos != -1);
+	
+	if (stringIsValid){
+		startDate = foundDate;
+		if (startTime.isNull()){
+			startTime = foundTime;
+		}
+		descString.truncate(RX_TODAY_WORDS.pos());
+		return true;
+	}
+	return false;
+}
+
+bool NLPDateFunctions::searchUnmarkedDateTime(QString &descString, QDate &startDate, QTime &startTime){
+	QDate foundDate;
+	QTime foundTime;
+	int pos = -1;
+	bool stringIsValid = false;
+	do{
+		pos = RX_UNMARKED_DATETIME.indexIn(descString, pos+1);
+		stringIsValid = _dateTimeParser.parseString(RX_UNMARKED_DATETIME.cap(0), foundDate, foundTime);
+	}while (!stringIsValid && pos != -1);
+
+	if(stringIsValid){
+		if(startDate.isNull() && startTime.isNull()){
+			startDate = foundDate;
+			startTime = foundTime;
+			descString.truncate(pos);
+			return true;
+		}
+		if(startDate.isNull() && foundDate.isValid()){
+			searchUnmarkedDate(descString, startDate, pos);
+			return true;
+		}
+		if(startTime.isNull() && foundTime.isValid()){
+			searchUnmarkedTime(descString, startTime, pos);
+			return true; 
+		}
+	}
+	return false;
+}
+
+void NLPDateFunctions::searchUnmarkedDate(QString &descString, QDate &startDate, int pos){
+	//subString contains the date and time substring
+	QString subString = descString.mid(pos);
+	_dateTimeParser.extractDate(subString, startDate);
+	//check if the extracted date was found at the very end of the string 
+	if(descString.mid(pos).startsWith(subString) || subString.isEmpty()){
+		descString.truncate(pos+subString.length());
+	} else{
+		descString.truncate(pos);
+	}
+	return;
+}
+
+void NLPDateFunctions::searchUnmarkedTime(QString &descString, QTime &startTime, int pos){
+	//subString contains the date and time substring
+	QString subString = descString.mid(pos);
+	_dateTimeParser.extractTime(subString, startTime);
+	//check if the extracted time was found at the very end of the string 
+	if(descString.mid(pos).startsWith(subString) || subString.isEmpty()){
+		descString.truncate(pos+subString.length());
+	} else{
+		descString.truncate(pos);
+	}
+	return;
+}
+
+void NLPDateFunctions::guessContextualTime(QString descString, QTime &startTime){
+	if (startTime.isNull()){
+		_dateTimeParser.extractTime(descString, startTime);
+	}
+	return;
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateFunctions.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateFunctions.h
+	 */
+
+
+//NLPDateFunctions.h
+
+#ifndef NLPDATEFUNCTIONS_H
+#define NLPDATEFUNCTIONS_H
+
+#include <QDateTime>
+#include <QString>
+#include <QRegExp>
+#include "DateTimeParser.h"
+
+//All functions return false if any error occurs
+class NLPDateFunctions{
+private:
+	DateTimeParser _dateTimeParser;
+	const QDate _nullDate;
+	const QTime _nullTime;
+
+	static QRegExp RX_QUOTES;
+	static QRegExp RX_FROM_UNTIL;
+	static QRegExp RX_UNTIL_FROM;
+	static QRegExp RX_ON_UNTIL;
+	static QRegExp RX_START;
+	static QRegExp RX_END;
+	static QRegExp RX_ON_AT_BY;
+	static QRegExp RX_FROM;
+	static QRegExp RX_TODAY_WORDS;
+	static QRegExp RX_UNMARKED_DATETIME;
+
+	//Extracts the startDate from the position pos in the descString, and removes it from the point it was found in the string
+	void searchUnmarkedDate(QString &descString, QDate &startDate, int pos);
+	//Extracts the startTime from the position pos in the descString, and removes it from the point it was found in the string
+	void searchUnmarkedTime(QString &descString, QTime &startTime, int pos);
+
+public:
+	NLPDateFunctions();
+	QString extractQuotedDesc(QString &descString);
+	bool searchFromUntil(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled, int &dayOfWeek);
+	bool searchUntilFrom(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled, int &dayOfWeek);
+	bool searchOnUntil(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled, int &dayOfWeek);
+	bool searchFrom(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled);
+	bool searchUntil(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled, int &dayOfWeek);
+	bool searchOn(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled);
+
+	bool searchTodayWords(QString &descString, QDate &startDate, QTime &startTime);
+	bool searchUnmarkedDateTime(QString &descString, QDate &startDate, QTime &startTime);
+	void guessContextualTime(QString descString, QTime &startTime);
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateFunctions.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateParser.cpp
+	 */
+
+
+//NLPDateParser.cpp
+
+#include "NLPDateParser.h"
+
+NLPDateParser::NLPDateParser(){
+}
+
+void NLPDateParser::parseDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled, int &dayOfWeek){
+	QString desc = extractDesc(descString);
+	extractMarkedDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek);
+	extractWordedDates(descString, startDate, startTime);
+	extractUnmarkedDateTime(descString, startDate, startTime, endDate, endTime);
+	guessContextualTime(descString, startTime);
+
+	if(!desc.isEmpty()){
+		descString = desc;
+	}
+	return;
+}
+
+QString NLPDateParser::extractDesc(QString &descString){
+	//Takes out the greatest par of the desc in "quotes"
+	return _nlpDateFunctions.extractQuotedDesc(descString);
+}
+
+void NLPDateParser::extractMarkedDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlabelled, int &dayOfWeek){
+	dateTimeIsUnlabelled = true;
+	dayOfWeek = -1;
+	//search for "from... until..." format
+	if(_nlpDateFunctions.searchFromUntil(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek)){
+		return;
+	}
+	//search for "until... from..." format
+	if(_nlpDateFunctions.searchUntilFrom(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek)){
+		return;
+	}
+	//search for "on... until..." format
+	if(_nlpDateFunctions.searchOnUntil(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek)){
+		return;
+	}
+	//search for "start..." format
+	if(_nlpDateFunctions.searchFrom(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled)){
+		return;
+	}
+	//search for "end..." format
+	if(_nlpDateFunctions.searchUntil(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek)){
+		return;
+	}
+	//search for "at... on..." format
+	if(_nlpDateFunctions.searchOn(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled)){
+		return;
+	}
+	return;
+}
+
+void NLPDateParser::extractWordedDates(QString &descString, QDate &startDate, QTime &startTime){
+	if(startDate.isNull()){
+		//Search for "Today" "Tomorrow" words that are untagged with keywords
+		(_nlpDateFunctions.searchTodayWords(descString, startDate, startTime));
+	}
+	return;
+}
+
+void NLPDateParser::extractUnmarkedDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime){
+	_nlpDateFunctions.searchUnmarkedDateTime(descString, startDate, startTime);
+	return;
+}
+
+void NLPDateParser::guessContextualTime(QString descString, QTime &startTime){
+	_nlpDateFunctions.guessContextualTime(descString, startTime);
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateParser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateParser.h
+	 */
+
+
+//NLParser.h
+
+#ifndef NLPDATEPARSER_H
+#define NLPDATEPARSER_H
+
+#include <QDateTime>
+#include <QString>
+#include <QRegExp>
+#include "NLPDateFunctions.h"
+
+class NLPDateParser{
+private:
+	NLPDateFunctions _nlpDateFunctions;
+
+	QString extractDesc(QString &descString);
+	//Extracts dates and times marked by keywords such as "Starting", "From" or "On" and removes them from the descString
+	void extractMarkedDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled, int &dayOfWeek);
+	//Extracts dates marked by words such as "Today", "Tmr" or months such as "August" and removes them from the descString
+	void extractWordedDates(QString &descString, QDate &startDate, QTime &startTime);
+	//Extracts dates and times unmarked by any keywords found at the end of descString and removes them from descString
+	void extractUnmarkedDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime);
+	//Attempts to contextually guess a starting time from the user input, such as "8pm meeting". Does not alter descString.
+	void guessContextualTime(QString descString, QTime &startTime);
+
+public:
+	NLPDateParser();
+	void parseDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled, int &dayOfWeek);
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateParser.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPSentenceParser.cpp
+	 */
+
+
+//NLPSentenceParser.cpp
+
+#include "NLPSentenceParser.h"
+
+QRegExp NLPSentenceParser::RX_ALL("^\\s*(?:all)\\s*(?:the)?\\s*(?:tasks|events)?\\s*\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_BEGIN("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:begin|beginning|start|starting)\\s*(?:with)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_END("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:end|ending)\\s*(?:with|in)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_CONTAIN("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:contains?|containing|with)\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_EXACT("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:are)?\\s*(?:match|matches|matching|containing)?(?:only)?\\s*\"(.+)\"\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_COMPLETE("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:are)?\\s*(?:completed?)\\s*$", Qt::CaseInsensitive);
+QRegExp NLPSentenceParser::RX_INCOMPLETE("^\\s*(?:all)?\\s*(?:the)?\\s*(?:tasks|events)?\\s*(?:that)?\\s*(?:are)?\\s*(?:incompleted?|not+\\s+complete)\\s*$", Qt::CaseInsensitive);
+
+NLPSentenceParser::NLPSentenceParser(){
+}
+
+std::vector<int> NLPSentenceParser::parseSentence(QString inputString, const std::vector<Task*> &_displayList){
+	if(search(inputString, RX_ALL)){
+		return parseAll(_displayList);
+	}
+	if(search(inputString, RX_BEGIN)){
+		QRegExp rx("(^" + QRegExp::escape(RX_BEGIN.cap(1).trimmed()) + ")", Qt::CaseInsensitive);
+		return parseSearchTerm(_displayList, rx);
+	}
+	if(search(inputString, RX_END)){
+		QRegExp rx("(" + QRegExp::escape(RX_END.cap(1).trimmed()) + "$)", Qt::CaseInsensitive);
+		return parseSearchTerm(_displayList, rx);
+	}
+	if(search(inputString, RX_CONTAIN)){
+		QRegExp rx("(" + QRegExp::escape(RX_CONTAIN.cap(1).trimmed()) + ")", Qt::CaseInsensitive);
+		return parseSearchTerm(_displayList, rx);
+	}
+	if(search(inputString, RX_EXACT)){
+		QRegExp rx("(^" + QRegExp::escape(RX_EXACT.cap(1).trimmed()) + "$)", Qt::CaseInsensitive);
+		return parseSearchTerm(_displayList, rx);
+	}
+	if(search(inputString, RX_COMPLETE)){
+		return parseComplete(_displayList);
+	}
+	if(search(inputString, RX_INCOMPLETE)){
+		return parseIncomplete(_displayList);
+	}
+	return _multipleIndexParser.parseMultipleIndex(inputString);
+}
+
+bool NLPSentenceParser::search(QString inputString, QRegExp &rx){
+	if(rx.indexIn(inputString) != -1){
+		return true;
+	}
+	return false;
+}
+
+std::vector<int> NLPSentenceParser::parseAll(const std::vector<Task*> &_displayList){
+	std::vector<int> indexList;
+	for(int i = 1; i <= _displayList.size(); i++) {
+		indexList.push_back(i);
+	}
+	return indexList;
+}
+
+std::vector<int> NLPSentenceParser::parseSearchTerm(const std::vector<Task*> &_displayList, QRegExp &rx){
+	std::vector<int> indexList;
+	int i = 1;
+	for(std::vector<Task*>::const_iterator iter = _displayList.begin(); iter != _displayList.end(); iter++) {
+		if(rx.indexIn((*iter)->getTaskDesc().c_str()) != -1){
+			indexList.push_back(i);
+		}
+		i++;
+	}
+	return indexList;
+}
+
+std::vector<int> NLPSentenceParser::parseComplete(const std::vector<Task*> &_displayList){
+	std::vector<int> indexList;
+	int i = 1;
+	for(std::vector<Task*>::const_iterator iter = _displayList.begin(); iter != _displayList.end(); iter++) {
+		if((*iter)->getCompleteStatus() == true){
+			indexList.push_back(i);
+		}
+		i++;
+	}
+	return indexList;
+}
+
+std::vector<int> NLPSentenceParser::parseIncomplete(const std::vector<Task*> &_displayList){
+	std::vector<int> indexList;
+	int i = 1;
+	for(std::vector<Task*>::const_iterator iter = _displayList.begin(); iter != _displayList.end(); iter++) {
+		if((*iter)->getCompleteStatus() == false){
+			indexList.push_back(i);
+		}
+		i++;
+	}
+	return indexList;
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPSentenceParser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPSentenceParser.h
+	 */
+
+
+//NLPSentenceParser.h
+
+#ifndef NLPSENTENCEPARSER_H
+#define NLPSENTENCEPARSER_H
+
+#include <QString>
+#include <QRegExp>
+#include "Task.h"
+#include "TaskDeadline.h"
+#include "TaskFloat.h"
+#include "TaskTimed.h"
+#include "MultipleIndexParser.h"
+
+class NLPSentenceParser{
+private:
+	MultipleIndexParser _multipleIndexParser;
+	static QRegExp RX_ALL;
+	static QRegExp RX_BEGIN;
+	static QRegExp RX_END;
+	static QRegExp RX_CONTAIN;
+	static QRegExp RX_EXACT;
+	static QRegExp RX_COMPLETE;
+	static QRegExp RX_INCOMPLETE;
+
+	bool search(QString inputString, QRegExp &rx);
+	std::vector<int> parseAll(const std::vector<Task*> &_displayList);
+	std::vector<int> parseSearchTerm(const std::vector<Task*> &_displayList, QRegExp &rx);
+	std::vector<int> parseComplete(const std::vector<Task*> &_displayList);
+	std::vector<int> parseIncomplete(const std::vector<Task*> &_displayList);
+
+public:
+	NLPSentenceParser();
+	std::vector<int> parseSentence(QString inputString, const std::vector<Task*> &_displayList);
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPSentenceParser.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
+	 */
+
+		//Parser Unit Tests
+		//Tests ability to ignore non-valid keywords (i.e. the "from" and "to" in this test case)
+		//Tests ability to recognise "today"
+		//Tests ability to trim whitespaces from the start and end of descriptions
+		//Tests ability to recognise that the date has a start/end date labelled
+		void addSingleStartTime() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			//test input
+			std::string testString = "  get food from macdonalds to eat    today at 10am";
+			AnalysedData output = parser.addCMD(testString);
+			//expected output
+			expectedOutput.setCommand("add");
+			expectedOutput.setTaskDesc("get food from macdonalds to eat");
+			QDate startDate = QDate::currentDate();
+			expectedOutput.setStartDate(startDate);
+			QTime startTime(10,0);
+			expectedOutput.setStartTime(startTime);
+			expectedOutput.setDateTimeUnlabelled(true);
+			QVERIFY(output == expectedOutput);
+		}
+
+		//Tests ability to ignore non-date terms (i.e. on 10th street)
+		//Tests ability to take in worded months
+		//Tests ability to take in start time, start date, end time, end date
+		//Tests ability to auto-complete the year when not given
+		void addStartAndEnd() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			//test input
+			std::string testString = "meet friend on 10th street on 16th august 10:04 pm until aug 18 at 6:59";
+			AnalysedData output = parser.addCMD(testString);
+			//expected output
+			expectedOutput.setCommand("add");
+			expectedOutput.setTaskDesc("meet friend on 10th street");
+			QDate startDate(2014,8,16);
+			expectedOutput.setStartDate(startDate);
+			QTime startTime(22,04);
+			expectedOutput.setStartTime(startTime);
+			QDate endDate(2014,8,18);
+			expectedOutput.setEndDate(endDate);
+			QTime endTime(18,59);
+			expectedOutput.setEndTime(endTime);
+			expectedOutput.setDateTimeUnlabelled(false);
+			QVERIFY(output == expectedOutput);
+		}
+
+		//Tests ability to take in a fully specified date in slash format
+		//Tests ability to recognise "at 8" as 8am
+		//Tests ability to recognise date as an unlabelled date (it is not clearly marked as a start or end date)
+		//Tests ability to read the index to be edited
+		void editSlashFormat() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			//test input
+			std::string testString = "12 event on 4/12/2015 at 8";
+			AnalysedData output = parser.editCMD(testString);
+			//expected output
+			expectedOutput.setCommand("edit");
+			expectedOutput.setTaskDesc("event");
+			QDate startDate(2015,12,4);
+			expectedOutput.setStartDate(startDate);
+			QTime startTime(8,0);
+			expectedOutput.setStartTime(startTime);
+			expectedOutput.setIndex(12);
+			expectedOutput.setDateTimeUnlabelled(true);
+			QVERIFY(output == expectedOutput);
+		}
+
+		//Tests ability to parse a sentence with no valid date or time
+		//Tests ability to extract a quoted sentence and make it the description
+		//Tests ability to treat nested quotes as part of the larger quoted sentence
+		//Tests ability to read the index to be edited, in the case with quotes
+		void editWithQuotes() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			//test input
+			std::string testString = "1 not part of the desc \"meeting on \"imports\" from 8.01 warehouse\" from today NOT";
+			AnalysedData output = parser.editCMD(testString);
+			//expected output
+			expectedOutput.setCommand("edit");
+			expectedOutput.setTaskDesc("meeting on \"imports\" from 8.01 warehouse");
+			expectedOutput.setIndex(1);
+			expectedOutput.setDateTimeUnlabelled(true);
+			QVERIFY(output == expectedOutput);
+		}
+
+		//Tests ability to parse multiple indexes
+		void deleteMultipleIndex() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			std::vector<Task*> displayList;
+			//test input
+			std::string testString = "1, 3,5 9-11";
+			AnalysedData output = parser.deleteCMD(testString, displayList);
+			//expected output
+			expectedOutput.setCommand("delete");
+			std::vector<int> index;
+			index.push_back(1);
+			index.push_back(3);
+			index.push_back(5);
+			index.push_back(9);
+			index.push_back(10);
+			index.push_back(11);
+			expectedOutput.setIndexVector(index);
+			QVERIFY(output == expectedOutput);
+		}
+		// Unit Test END
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
+
+
+
+
+
