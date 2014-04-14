@@ -19,7 +19,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_TaskTest_t {
     QByteArrayData data[17];
-    char stringdata[264];
+    char stringdata[266];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,27 +33,27 @@ QT_MOC_LITERAL(1, 9, 21),
 QT_MOC_LITERAL(2, 31, 0),
 QT_MOC_LITERAL(3, 32, 18),
 QT_MOC_LITERAL(4, 51, 18),
-QT_MOC_LITERAL(5, 70, 12),
-QT_MOC_LITERAL(6, 83, 17),
-QT_MOC_LITERAL(7, 101, 18),
-QT_MOC_LITERAL(8, 120, 14),
-QT_MOC_LITERAL(9, 135, 15),
-QT_MOC_LITERAL(10, 151, 14),
-QT_MOC_LITERAL(11, 166, 19),
-QT_MOC_LITERAL(12, 186, 7),
-QT_MOC_LITERAL(13, 194, 12),
-QT_MOC_LITERAL(14, 207, 22),
-QT_MOC_LITERAL(15, 230, 14),
-QT_MOC_LITERAL(16, 245, 17)
+QT_MOC_LITERAL(5, 70, 17),
+QT_MOC_LITERAL(6, 88, 18),
+QT_MOC_LITERAL(7, 107, 14),
+QT_MOC_LITERAL(8, 122, 15),
+QT_MOC_LITERAL(9, 138, 14),
+QT_MOC_LITERAL(10, 153, 19),
+QT_MOC_LITERAL(11, 173, 7),
+QT_MOC_LITERAL(12, 181, 12),
+QT_MOC_LITERAL(13, 194, 22),
+QT_MOC_LITERAL(14, 217, 14),
+QT_MOC_LITERAL(15, 232, 17),
+QT_MOC_LITERAL(16, 250, 14)
     },
     "TaskTest\0constructDeadlineTask\0\0"
     "constructTimedTask\0constructFloatTask\0"
-    "testFeedback\0testDisplayStatus\0"
-    "addSingleStartTime\0addStartAndEnd\0"
-    "editSlashFormat\0editWithQuotes\0"
-    "deleteMultipleIndex\0addTest\0undoRedoTest\0"
-    "completeIncompleteTest\0editDeleteTest\0"
-    "searchDisplayTest\0"
+    "testDisplayStatus\0addSingleStartTime\0"
+    "addStartAndEnd\0editSlashFormat\0"
+    "editWithQuotes\0deleteMultipleIndex\0"
+    "addTest\0undoRedoTest\0completeIncompleteTest\0"
+    "editDeleteTest\0searchDisplayTest\0"
+    "stopSystemTest\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -115,18 +115,18 @@ void TaskTest::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 0: _t->constructDeadlineTask(); break;
         case 1: _t->constructTimedTask(); break;
         case 2: _t->constructFloatTask(); break;
-        case 3: _t->testFeedback(); break;
-        case 4: _t->testDisplayStatus(); break;
-        case 5: _t->addSingleStartTime(); break;
-        case 6: _t->addStartAndEnd(); break;
-        case 7: _t->editSlashFormat(); break;
-        case 8: _t->editWithQuotes(); break;
-        case 9: _t->deleteMultipleIndex(); break;
-        case 10: _t->addTest(); break;
-        case 11: _t->undoRedoTest(); break;
-        case 12: _t->completeIncompleteTest(); break;
-        case 13: _t->editDeleteTest(); break;
-        case 14: _t->searchDisplayTest(); break;
+        case 3: _t->testDisplayStatus(); break;
+        case 4: _t->addSingleStartTime(); break;
+        case 5: _t->addStartAndEnd(); break;
+        case 6: _t->editSlashFormat(); break;
+        case 7: _t->editWithQuotes(); break;
+        case 8: _t->deleteMultipleIndex(); break;
+        case 9: _t->addTest(); break;
+        case 10: _t->undoRedoTest(); break;
+        case 11: _t->completeIncompleteTest(); break;
+        case 12: _t->editDeleteTest(); break;
+        case 13: _t->searchDisplayTest(); break;
+        case 14: _t->stopSystemTest(); break;
         default: ;
         }
     }
