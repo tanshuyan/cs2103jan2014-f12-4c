@@ -1,0 +1,1419 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+File Location:
+C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\calenizergui.ui
+uncollated source code:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CalenizerGUIClass</class>
+ <widget class="QMainWindow" name="CalenizerGUIClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>992</width>
+    <height>521</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>CalenizerGUI</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>790</x>
+      <y>10</y>
+      <width>151</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Malgun Gothic</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
+    <property name="text">
+     <string>a</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>50</y>
+      <width>711</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Malgun Gothic</family>
+     </font>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textEdit">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>230</y>
+      <width>221</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Malgun Gothic</family>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::NoContextMenu</enum>
+    </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhNone</set>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAsNeeded</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+    <property name="textInteractionFlags">
+     <set>Qt::NoTextInteraction</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>0</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Malgun Gothic</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:22pt; color:#000000;&quot;&gt;Calenizer&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>120</y>
+      <width>711</width>
+      <height>351</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Malgun Gothic</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string/>
+    </property>
+    <property name="statusTip">
+     <string/>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <property name="lineWidth">
+     <number>5</number>
+    </property>
+    <property name="midLineWidth">
+     <number>3</number>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
+    <property name="tabKeyNavigation">
+     <bool>false</bool>
+    </property>
+    <property name="showDropIndicator" stdset="0">
+     <bool>false</bool>
+    </property>
+    <property name="dragDropOverwriteMode">
+     <bool>false</bool>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::NoSelection</enum>
+    </property>
+    <property name="textElideMode">
+     <enum>Qt::ElideNone</enum>
+    </property>
+    <property name="sortingEnabled">
+     <bool>false</bool>
+    </property>
+    <property name="cornerButtonEnabled">
+     <bool>false</bool>
+    </property>
+    <property name="rowCount">
+     <number>0</number>
+    </property>
+    <property name="columnCount">
+     <number>0</number>
+    </property>
+    <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+     <bool>true</bool>
+    </attribute>
+   </widget>
+   <widget class="QCalendarWidget" name="calendarWidget">
+    <property name="geometry">
+     <rect>
+      <x>750</x>
+      <y>80</y>
+      <width>221</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>25</x>
+      <y>90</y>
+      <width>708</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>30</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="font">
+        <font>
+         <family>Malgun Gothic</family>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;[&lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#ff0000;&quot;&gt;a&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;]dd&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_8">
+       <property name="font">
+        <font>
+         <family>Malgun Gothic</family>
+        </font>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;[&lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#ff0000;&quot;&gt;c&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;]omplete&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_7">
+       <property name="font">
+        <font>
+         <family>Malgun Gothic</family>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;[&lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#ff0000;&quot;&gt;d&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;]elete&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_9">
+       <property name="font">
+        <font>
+         <family>Malgun Gothic</family>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;[&lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#ff0000;&quot;&gt;e&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;]dit&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_6">
+       <property name="font">
+        <font>
+         <family>Malgun Gothic</family>
+        </font>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;[&lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#ff0000;&quot;&gt;i&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;]ncomplete&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_10">
+       <property name="font">
+        <font>
+         <family>Malgun Gothic</family>
+        </font>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;[&lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#ff0000;&quot;&gt;r&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;]edo&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="font">
+        <font>
+         <family>Malgun Gothic</family>
+        </font>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;[&lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#ff0000;&quot;&gt;s&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;]earch&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_11">
+       <property name="font">
+        <font>
+         <family>Malgun Gothic</family>
+        </font>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;[&lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#ff0000;&quot;&gt;u&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;]ndo&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="font">
+        <font>
+         <family>Malgun Gothic</family>
+        </font>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;[&lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#ff0000;&quot;&gt;v&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;]iew&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_12">
+       <property name="font">
+        <font>
+         <family>Malgun Gothic</family>
+        </font>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;[&lt;/span&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#ff0000;&quot;&gt;q&lt;/span&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;]uit&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>992</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>tableWidget</tabstop>
+  <tabstop>lineEdit</tabstop>
+ </tabstops>
+ <resources>
+  <include location="calenizergui.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>lineEdit</sender>
+   <signal>returnPressed()</signal>
+   <receiver>textEdit</receiver>
+   <slot>copy()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>286</x>
+     <y>91</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>318</x>
+     <y>364</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit</sender>
+   <signal>returnPressed()</signal>
+   <receiver>tableWidget</receiver>
+   <slot>doItemsLayout()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>370</x>
+     <y>82</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>373</x>
+     <y>120</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
+
+
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+File Location:
+C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\GeneratedFiles\Debug\moc_calenizergui.cpp
+uncollated source code:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+/****************************************************************************
+** Meta object code from reading C++ file 'calenizergui.h'
+**
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.2.1)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#include "../../calenizergui.h"
+#include <QtCore/qbytearray.h>
+#include <QtCore/qmetatype.h>
+#if !defined(Q_MOC_OUTPUT_REVISION)
+#error "The header file 'calenizergui.h' doesn't include <QObject>."
+#elif Q_MOC_OUTPUT_REVISION != 67
+#error "This file was generated using the moc from 5.2.1. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+QT_BEGIN_MOC_NAMESPACE
+struct qt_meta_stringdata_CalenizerGUI_t {
+    QByteArrayData data[9];
+    char stringdata[90];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    offsetof(qt_meta_stringdata_CalenizerGUI_t, stringdata) + ofs \
+        - idx * sizeof(QByteArrayData) \
+    )
+static const qt_meta_stringdata_CalenizerGUI_t qt_meta_stringdata_CalenizerGUI = {
+    {
+QT_MOC_LITERAL(0, 0, 12),
+QT_MOC_LITERAL(1, 13, 3),
+QT_MOC_LITERAL(2, 17, 0),
+QT_MOC_LITERAL(3, 18, 13),
+QT_MOC_LITERAL(4, 32, 10),
+QT_MOC_LITERAL(5, 43, 10),
+QT_MOC_LITERAL(6, 54, 14),
+QT_MOC_LITERAL(7, 69, 8),
+QT_MOC_LITERAL(8, 78, 10)
+    },
+    "CalenizerGUI\0run\0\0checkAlphabet\0"
+    "resetInput\0displayAll\0updateDateTime\0"
+    "scrollUp\0scrollDown\0"
+};
+#undef QT_MOC_LITERAL
+
+static const uint qt_meta_data_CalenizerGUI[] = {
+
+ // content:
+       7,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       7,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+ // slots: name, argc, parameters, tag, flags
+       1,    0,   49,    2, 0x08,
+       3,    0,   50,    2, 0x08,
+       4,    0,   51,    2, 0x08,
+       5,    0,   52,    2, 0x08,
+       6,    0,   53,    2, 0x08,
+       7,    0,   54,    2, 0x08,
+       8,    0,   55,    2, 0x08,
+
+ // slots: parameters
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+
+       0        // eod
+};
+
+void CalenizerGUI::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        CalenizerGUI *_t = static_cast<CalenizerGUI *>(_o);
+        switch (_id) {
+        case 0: _t->run(); break;
+        case 1: _t->checkAlphabet(); break;
+        case 2: _t->resetInput(); break;
+        case 3: _t->displayAll(); break;
+        case 4: _t->updateDateTime(); break;
+        case 5: _t->scrollUp(); break;
+        case 6: _t->scrollDown(); break;
+        default: ;
+        }
+    }
+    Q_UNUSED(_a);
+}
+
+const QMetaObject CalenizerGUI::staticMetaObject = {
+    { &QMainWindow::staticMetaObject, qt_meta_stringdata_CalenizerGUI.data,
+      qt_meta_data_CalenizerGUI,  qt_static_metacall, 0, 0}
+};
+
+
+const QMetaObject *CalenizerGUI::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+}
+
+void *CalenizerGUI::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_CalenizerGUI.stringdata))
+        return static_cast<void*>(const_cast< CalenizerGUI*>(this));
+    return QMainWindow::qt_metacast(_clname);
+}
+
+int CalenizerGUI::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QMainWindow::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 7)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 7;
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        if (_id < 7)
+            *reinterpret_cast<int*>(_a[0]) = -1;
+        _id -= 7;
+    }
+    return _id;
+}
+QT_END_MOC_NAMESPACE
+
+
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+File Location:
+C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\GeneratedFiles\qrc_calenizergui.cpp
+uncollated source code:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+/****************************************************************************
+** Resource object code
+**
+** Created by: The Resource Compiler for Qt version 5.2.1
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#include <QtCore/qglobal.h>
+
+QT_BEGIN_NAMESPACE
+
+QT_END_NAMESPACE
+
+
+int QT_MANGLE_NAMESPACE(qInitResources_calenizergui)()
+{
+    return 1;
+}
+
+Q_CONSTRUCTOR_FUNCTION(QT_MANGLE_NAMESPACE(qInitResources_calenizergui))
+
+int QT_MANGLE_NAMESPACE(qCleanupResources_calenizergui)()
+{
+    return 1;
+}
+
+Q_DESTRUCTOR_FUNCTION(QT_MANGLE_NAMESPACE(qCleanupResources_calenizergui))
+
+
+
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+File Location:
+C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\GeneratedFiles\Release\moc_calenizergui.cpp
+uncollated source code:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+/****************************************************************************
+** Meta object code from reading C++ file 'calenizergui.h'
+**
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.2.1)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#include "../../calenizergui.h"
+#include <QtCore/qbytearray.h>
+#include <QtCore/qmetatype.h>
+#if !defined(Q_MOC_OUTPUT_REVISION)
+#error "The header file 'calenizergui.h' doesn't include <QObject>."
+#elif Q_MOC_OUTPUT_REVISION != 67
+#error "This file was generated using the moc from 5.2.1. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+QT_BEGIN_MOC_NAMESPACE
+struct qt_meta_stringdata_CalenizerGUI_t {
+    QByteArrayData data[9];
+    char stringdata[90];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    offsetof(qt_meta_stringdata_CalenizerGUI_t, stringdata) + ofs \
+        - idx * sizeof(QByteArrayData) \
+    )
+static const qt_meta_stringdata_CalenizerGUI_t qt_meta_stringdata_CalenizerGUI = {
+    {
+QT_MOC_LITERAL(0, 0, 12),
+QT_MOC_LITERAL(1, 13, 3),
+QT_MOC_LITERAL(2, 17, 0),
+QT_MOC_LITERAL(3, 18, 13),
+QT_MOC_LITERAL(4, 32, 10),
+QT_MOC_LITERAL(5, 43, 10),
+QT_MOC_LITERAL(6, 54, 14),
+QT_MOC_LITERAL(7, 69, 8),
+QT_MOC_LITERAL(8, 78, 10)
+    },
+    "CalenizerGUI\0run\0\0checkAlphabet\0"
+    "resetInput\0displayAll\0updateDateTime\0"
+    "scrollUp\0scrollDown\0"
+};
+#undef QT_MOC_LITERAL
+
+static const uint qt_meta_data_CalenizerGUI[] = {
+
+ // content:
+       7,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       7,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+ // slots: name, argc, parameters, tag, flags
+       1,    0,   49,    2, 0x08,
+       3,    0,   50,    2, 0x08,
+       4,    0,   51,    2, 0x08,
+       5,    0,   52,    2, 0x08,
+       6,    0,   53,    2, 0x08,
+       7,    0,   54,    2, 0x08,
+       8,    0,   55,    2, 0x08,
+
+ // slots: parameters
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+
+       0        // eod
+};
+
+void CalenizerGUI::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        CalenizerGUI *_t = static_cast<CalenizerGUI *>(_o);
+        switch (_id) {
+        case 0: _t->run(); break;
+        case 1: _t->checkAlphabet(); break;
+        case 2: _t->resetInput(); break;
+        case 3: _t->displayAll(); break;
+        case 4: _t->updateDateTime(); break;
+        case 5: _t->scrollUp(); break;
+        case 6: _t->scrollDown(); break;
+        default: ;
+        }
+    }
+    Q_UNUSED(_a);
+}
+
+const QMetaObject CalenizerGUI::staticMetaObject = {
+    { &QMainWindow::staticMetaObject, qt_meta_stringdata_CalenizerGUI.data,
+      qt_meta_data_CalenizerGUI,  qt_static_metacall, 0, 0}
+};
+
+
+const QMetaObject *CalenizerGUI::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+}
+
+void *CalenizerGUI::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_CalenizerGUI.stringdata))
+        return static_cast<void*>(const_cast< CalenizerGUI*>(this));
+    return QMainWindow::qt_metacast(_clname);
+}
+
+int CalenizerGUI::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QMainWindow::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 7)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 7;
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        if (_id < 7)
+            *reinterpret_cast<int*>(_a[0]) = -1;
+        _id -= 7;
+    }
+    return _id;
+}
+QT_END_MOC_NAMESPACE
+
+
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+File Location:
+C:\Users\Desmond\Desktop\QTCalenizer\CalenizerGUI\GeneratedFiles\ui_calenizergui.h
+uncollated source code:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+/********************************************************************************
+** Form generated from reading UI file 'calenizergui.ui'
+**
+** Created by: Qt User Interface Compiler version 5.2.1
+**
+** WARNING! All changes made in this file will be lost when recompiling UI file!
+********************************************************************************/
+
+#ifndef UI_CALENIZERGUI_H
+#define UI_CALENIZERGUI_H
+
+#include <QtCore/QVariant>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCalendarWidget>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTableWidget>
+#include <QtWidgets/QTextEdit>
+#include <QtWidgets/QWidget>
+
+QT_BEGIN_NAMESPACE
+
+class Ui_CalenizerGUIClass
+{
+public:
+    QWidget *centralWidget;
+    QLabel *label;
+    QLineEdit *lineEdit;
+    QTextEdit *textEdit;
+    QLabel *label_2;
+    QTableWidget *tableWidget;
+    QCalendarWidget *calendarWidget;
+    QWidget *layoutWidget;
+    QHBoxLayout *horizontalLayout;
+    QLabel *label_3;
+    QLabel *label_8;
+    QLabel *label_7;
+    QLabel *label_9;
+    QLabel *label_6;
+    QLabel *label_10;
+    QLabel *label_5;
+    QLabel *label_11;
+    QLabel *label_4;
+    QLabel *label_12;
+    QStatusBar *statusBar;
+    QMenuBar *menuBar;
+
+    void setupUi(QMainWindow *CalenizerGUIClass)
+    {
+        if (CalenizerGUIClass->objectName().isEmpty())
+            CalenizerGUIClass->setObjectName(QStringLiteral("CalenizerGUIClass"));
+        CalenizerGUIClass->resize(992, 521);
+        centralWidget = new QWidget(CalenizerGUIClass);
+        centralWidget->setObjectName(QStringLiteral("centralWidget"));
+        label = new QLabel(centralWidget);
+        label->setObjectName(QStringLiteral("label"));
+        label->setGeometry(QRect(790, 10, 151, 61));
+        QFont font;
+        font.setFamily(QStringLiteral("Malgun Gothic"));
+        font.setPointSize(12);
+        font.setBold(true);
+        font.setWeight(75);
+        label->setFont(font);
+        label->setLayoutDirection(Qt::RightToLeft);
+        lineEdit = new QLineEdit(centralWidget);
+        lineEdit->setObjectName(QStringLiteral("lineEdit"));
+        lineEdit->setGeometry(QRect(20, 50, 711, 31));
+        QFont font1;
+        font1.setFamily(QStringLiteral("Malgun Gothic"));
+        lineEdit->setFont(font1);
+        textEdit = new QTextEdit(centralWidget);
+        textEdit->setObjectName(QStringLiteral("textEdit"));
+        textEdit->setGeometry(QRect(750, 230, 221, 241));
+        textEdit->setFont(font1);
+        textEdit->setFocusPolicy(Qt::NoFocus);
+        textEdit->setContextMenuPolicy(Qt::NoContextMenu);
+        textEdit->setInputMethodHints(Qt::ImhNone);
+        textEdit->setFrameShape(QFrame::NoFrame);
+        textEdit->setFrameShadow(QFrame::Plain);
+        textEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        textEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        textEdit->setReadOnly(true);
+        textEdit->setTextInteractionFlags(Qt::NoTextInteraction);
+        label_2 = new QLabel(centralWidget);
+        label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setGeometry(QRect(20, 0, 131, 41));
+        QFont font2;
+        font2.setFamily(QStringLiteral("Malgun Gothic"));
+        font2.setPointSize(10);
+        label_2->setFont(font2);
+        tableWidget = new QTableWidget(centralWidget);
+        tableWidget->setObjectName(QStringLiteral("tableWidget"));
+        tableWidget->setGeometry(QRect(20, 120, 711, 351));
+        QFont font3;
+        font3.setFamily(QStringLiteral("Malgun Gothic"));
+        font3.setPointSize(10);
+        font3.setBold(false);
+        font3.setWeight(50);
+        tableWidget->setFont(font3);
+        tableWidget->setFocusPolicy(Qt::NoFocus);
+        tableWidget->setFrameShape(QFrame::StyledPanel);
+        tableWidget->setFrameShadow(QFrame::Raised);
+        tableWidget->setLineWidth(5);
+        tableWidget->setMidLineWidth(3);
+        tableWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        tableWidget->setTabKeyNavigation(false);
+        tableWidget->setProperty("showDropIndicator", QVariant(false));
+        tableWidget->setDragDropOverwriteMode(false);
+        tableWidget->setSelectionMode(QAbstractItemView::NoSelection);
+        tableWidget->setTextElideMode(Qt::ElideNone);
+        tableWidget->setSortingEnabled(false);
+        tableWidget->setCornerButtonEnabled(false);
+        tableWidget->setRowCount(0);
+        tableWidget->setColumnCount(0);
+        tableWidget->verticalHeader()->setProperty("showSortIndicator", QVariant(true));
+        calendarWidget = new QCalendarWidget(centralWidget);
+        calendarWidget->setObjectName(QStringLiteral("calendarWidget"));
+        calendarWidget->setGeometry(QRect(750, 80, 221, 141));
+        calendarWidget->setFocusPolicy(Qt::NoFocus);
+        calendarWidget->setAutoFillBackground(true);
+        layoutWidget = new QWidget(centralWidget);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        layoutWidget->setGeometry(QRect(25, 90, 708, 19));
+        horizontalLayout = new QHBoxLayout(layoutWidget);
+        horizontalLayout->setSpacing(30);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        label_3 = new QLabel(layoutWidget);
+        label_3->setObjectName(QStringLiteral("label_3"));
+        QFont font4;
+        font4.setFamily(QStringLiteral("Malgun Gothic"));
+        font4.setBold(false);
+        font4.setWeight(50);
+        label_3->setFont(font4);
+
+        horizontalLayout->addWidget(label_3);
+
+        label_8 = new QLabel(layoutWidget);
+        label_8->setObjectName(QStringLiteral("label_8"));
+        label_8->setFont(font1);
+
+        horizontalLayout->addWidget(label_8);
+
+        label_7 = new QLabel(layoutWidget);
+        label_7->setObjectName(QStringLiteral("label_7"));
+        QFont font5;
+        font5.setFamily(QStringLiteral("Malgun Gothic"));
+        font5.setPointSize(8);
+        label_7->setFont(font5);
+
+        horizontalLayout->addWidget(label_7);
+
+        label_9 = new QLabel(layoutWidget);
+        label_9->setObjectName(QStringLiteral("label_9"));
+        label_9->setFont(font4);
+
+        horizontalLayout->addWidget(label_9);
+
+        label_6 = new QLabel(layoutWidget);
+        label_6->setObjectName(QStringLiteral("label_6"));
+        label_6->setFont(font1);
+
+        horizontalLayout->addWidget(label_6);
+
+        label_10 = new QLabel(layoutWidget);
+        label_10->setObjectName(QStringLiteral("label_10"));
+        label_10->setFont(font1);
+
+        horizontalLayout->addWidget(label_10);
+
+        label_5 = new QLabel(layoutWidget);
+        label_5->setObjectName(QStringLiteral("label_5"));
+        label_5->setFont(font1);
+
+        horizontalLayout->addWidget(label_5);
+
+        label_11 = new QLabel(layoutWidget);
+        label_11->setObjectName(QStringLiteral("label_11"));
+        label_11->setFont(font1);
+
+        horizontalLayout->addWidget(label_11);
+
+        label_4 = new QLabel(layoutWidget);
+        label_4->setObjectName(QStringLiteral("label_4"));
+        label_4->setFont(font1);
+
+        horizontalLayout->addWidget(label_4);
+
+        label_12 = new QLabel(layoutWidget);
+        label_12->setObjectName(QStringLiteral("label_12"));
+        label_12->setFont(font1);
+
+        horizontalLayout->addWidget(label_12);
+
+        CalenizerGUIClass->setCentralWidget(centralWidget);
+        statusBar = new QStatusBar(CalenizerGUIClass);
+        statusBar->setObjectName(QStringLiteral("statusBar"));
+        CalenizerGUIClass->setStatusBar(statusBar);
+        menuBar = new QMenuBar(CalenizerGUIClass);
+        menuBar->setObjectName(QStringLiteral("menuBar"));
+        menuBar->setGeometry(QRect(0, 0, 992, 21));
+        CalenizerGUIClass->setMenuBar(menuBar);
+        QWidget::setTabOrder(tableWidget, lineEdit);
+
+        retranslateUi(CalenizerGUIClass);
+        QObject::connect(lineEdit, SIGNAL(returnPressed()), textEdit, SLOT(copy()));
+        QObject::connect(lineEdit, SIGNAL(returnPressed()), tableWidget, SLOT(doItemsLayout()));
+
+        QMetaObject::connectSlotsByName(CalenizerGUIClass);
+    } // setupUi
+
+    void retranslateUi(QMainWindow *CalenizerGUIClass)
+    {
+        CalenizerGUIClass->setWindowTitle(QApplication::translate("CalenizerGUIClass", "CalenizerGUI", 0));
+        label->setText(QApplication::translate("CalenizerGUIClass", "a", 0));
+        label_2->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p align=\"center\"><span style=\" font-size:22pt; color:#000000;\">Calenizer</span></p></body></html>", 0));
+#ifndef QT_NO_TOOLTIP
+        tableWidget->setToolTip(QString());
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        tableWidget->setStatusTip(QString());
+#endif // QT_NO_STATUSTIP
+        label_3->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">a</span><span style=\" font-size:10pt;\">]dd</span></p></body></html>", 0));
+        label_8->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">c</span><span style=\" font-size:10pt;\">]omplete</span></p></body></html>", 0));
+        label_7->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">d</span><span style=\" font-size:10pt;\">]elete</span></p></body></html>", 0));
+        label_9->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">e</span><span style=\" font-size:10pt;\">]dit</span></p></body></html>", 0));
+        label_6->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">i</span><span style=\" font-size:10pt;\">]ncomplete</span></p></body></html>", 0));
+        label_10->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">r</span><span style=\" font-size:10pt;\">]edo</span></p></body></html>", 0));
+        label_5->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">s</span><span style=\" font-size:10pt;\">]earch</span></p></body></html>", 0));
+        label_11->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">u</span><span style=\" font-size:10pt;\">]ndo</span></p></body></html>", 0));
+        label_4->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">v</span><span style=\" font-size:10pt;\">]iew</span></p></body></html>", 0));
+        label_12->setText(QApplication::translate("CalenizerGUIClass", "<html><head/><body><p><span style=\" font-size:10pt;\">[</span><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">q</span><span style=\" font-size:10pt;\">]uit</span></p></body></html>", 0));
+    } // retranslateUi
+
+};
+
+namespace Ui {
+    class CalenizerGUIClass: public Ui_CalenizerGUIClass {};
+} // namespace Ui
+
+QT_END_NAMESPACE
+
+#endif // UI_CALENIZERGUI_H
+
+
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+File Location:
+C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\calenizerlib.cpp
+uncollated source code:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#include "calenizerlib.h"
+
+CalenizerLib::CalenizerLib()
+{
+
+}
+
+CalenizerLib::~CalenizerLib()
+{
+
+}
+
+
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+File Location:
+C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\calenizerlib.h
+uncollated source code:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#ifndef CALENIZERLIB_H
+#define CALENIZERLIB_H
+
+#include "calenizerlib_global.h"
+
+class CALENIZERLIB_EXPORT CalenizerLib
+{
+public:
+	CalenizerLib();
+	~CalenizerLib();
+
+private:
+
+};
+
+#endif // CALENIZERLIB_H
+
+
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+File Location:
+C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\calenizerlib_global.h
+uncollated source code:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#ifndef CALENIZERLIB_GLOBAL_H
+#define CALENIZERLIB_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#ifdef CALENIZERLIB_LIB
+# define CALENIZERLIB_EXPORT Q_DECL_EXPORT
+#else
+# define CALENIZERLIB_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // CALENIZERLIB_GLOBAL_H
+
+
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+File Location:
+C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\LogicStub.cpp
+uncollated source code:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#include "LogicStub.h"
+
+LogicStub::LogicStub(){
+}
+
+std::string LogicStub::addTask(std::string taskDesc, QDate startDate, QTime startTime){
+	std::string output=taskDesc + "\n" + startDate.toString("dd/MM/yyyy").toStdString() + "\n" + startTime.toString("hh:mm").toStdString() + "\n\n";
+	std::cout<< output;
+	return output;
+}
+
+std::string LogicStub::addTask(std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
+	std::string output=taskDesc + "\n" + startDate.toString("dd/MM/yyyy").toStdString() + "\n" + startTime.toString("hh:mm").toStdString() + "\n" + endDate.toString("dd/MM/yyyy").toStdString() + "\n" + endTime.toString("hh:mm").toStdString() + "\n\n";
+	std::cout<< output;
+	return output;
+}
+
+std::string LogicStub::editTask(std::string taskDesc, QDate startDate, QTime startTime){
+	std::string output=taskDesc + "\n" + startDate.toString("dd/MM/yyyy").toStdString() + "\n" + startTime.toString("hh:mm").toStdString() + "\n\n";
+	std::cout<< output;
+	return "output";
+}
+
+std::string LogicStub::editTask(std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
+	std::string output=taskDesc + "\n" + startDate.toString("dd/MM/yyyy").toStdString() + "\n" + startTime.toString("hh:mm").toStdString() + "\n" + endDate.toString("dd/MM/yyyy").toStdString() + "\n" + endTime.toString("hh:mm").toStdString() + "\n\n";
+	std::cout<< output;
+	return output;
+}
+
+
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+File Location:
+C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\LogicStub.h
+uncollated source code:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+// LogicStub.h
+//v 1.0
+
+#ifndef LOGICSTUB_H
+#define LOGICSTUB_H
+
+#include <string>
+#include <QString>
+#include <QDateTime>
+#include <iostream>
+
+class LogicStub{
+private:
+
+public:
+	LogicStub();
+	std::string addTask(std::string taskDesc, QDate startDate, QTime startTime);
+	std::string addTask(std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime);
+	std::string editTask(std::string taskDesc, QDate startDate, QTime startTime);
+	std::string editTask(std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime);
+};
+#endif
+
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+File Location:
+C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\ParserFeedback.cpp
+uncollated source code:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+// Display.cpp
+// v1.3
+#include <iostream>
+#include "ParserFeedback.h"
+
+const std::string ParserFeedback:: _programName = "Calenzier";	
+
+const std::string ParserFeedback::MSG_ADD_SUCCESS ="added to %s: \"%s\"";
+const std::string ParserFeedback::MSG_EDIT_SUCCESS ="%s updated";
+const std::string ParserFeedback::MSG_DELETE_SUCCESS ="deleted from %s: \"%s\"";
+const std::string ParserFeedback::MSG_UNDO_SUCCESS ="latest change to %s undone";
+const std::string ParserFeedback::MSG_UNDO_FAILURE ="Nothing to undone in %s";
+const std::string ParserFeedback::MSG_REDO_SUCCESS ="latest undo to %s reverted";
+const std::string ParserFeedback::MSG_REDO_FAILURE ="Nothing to redo in %s";
+const std::string ParserFeedback::MSG_SEARCH_SUCCESS ="search term %s found in %s";
+const std::string ParserFeedback::MSG_SEARCH_FAILURE ="search term %s not found in %s";
+const std::string ParserFeedback::MSG_COMPLETE_SUCCESS ="%S marked as complete";
+
+const std::string ParserFeedback::MSG_DISPLAYCOM = "completed tasks in %s shown";
+const std::string ParserFeedback::MSG_DISPLAYINCOM = "incompleted tasks in %s shown";
+const std::string ParserFeedback::MSG_DISPLAYTODAY = "today tasks in %s shown";
+const std::string ParserFeedback::MSG_DISPLAYALL = "all tasks in %s shown";
+
+const std::string ParserFeedback::MSG_INVALID_CMD = "invalid command";
+const std::string ParserFeedback::MSG_INVALID_INDEX = "invalid line";
+const std::string ParserFeedback::MSG_INVALID_TIME = "invalid time";
+const std::string ParserFeedback::MSG_INVALID_DATE = "invalid date";
+
+const std::string ParserFeedback::MSG_NOT_FOUND ="\"%s\" not found in %s";
+const std::string ParserFeedback::MSG_EMPTY_FILE = "%s is empty";
+const std::string ParserFeedback::DELIMITER =". ";
+
+std::string ParserFeedback::emptyFeedback() {
+	sprintf_s(buffer, MSG_EMPTY_FILE.c_str(), _programName.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::deleteFeedback(std::string removedContent) {
+	sprintf_s(buffer, MSG_DELETE_SUCCESS.c_str(), _programName.c_str(), removedContent.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::addFeedback(std::string userInput) {
+	sprintf_s(buffer, MSG_ADD_SUCCESS.c_str(), _programName.c_str(), userInput.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::invalidFeedback(){
+	sprintf_s(buffer, MSG_INVALID_CMD.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::notFoundFeedback(std::string userInput){
+	sprintf_s(buffer, MSG_NOT_FOUND.c_str(), userInput.c_str(), _programName.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::undoSuccessFeedback(){
+	sprintf_s(buffer, MSG_UNDO_SUCCESS.c_str(), _programName.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::undoFailureFeedback(){
+	sprintf_s(buffer, MSG_UNDO_FAILURE.c_str(), _programName.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::redoSuccessFeedback(){
+	sprintf_s(buffer, MSG_REDO_SUCCESS.c_str(), _programName.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::redoFailureFeedback(){
+	sprintf_s(buffer, MSG_REDO_FAILURE.c_str(), _programName.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::searchSuccessFeedback(std::string userInput){
+	sprintf_s(buffer, MSG_SEARCH_SUCCESS.c_str(), userInput.c_str(), _programName.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::searchFailureFeedback(std::string userInput){
+	sprintf_s(buffer, MSG_SEARCH_FAILURE.c_str(), userInput.c_str(),_programName.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::invalidTimeFeedback(){
+	sprintf_s(buffer, MSG_INVALID_TIME.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::invalidDateFeedback(){
+	sprintf_s(buffer, MSG_INVALID_DATE.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::completeFeedback(std::string userInput){
+	sprintf_s(buffer,  MSG_COMPLETE_SUCCESS.c_str(), userInput.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::editFeedback(std::string userInput){
+	sprintf_s(buffer, MSG_EDIT_SUCCESS.c_str(), userInput.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::displayCompleteFeedback(){
+	sprintf_s(buffer, MSG_DISPLAYCOM.c_str(), _programName.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::displayIncompleteFeedback(){
+	sprintf_s(buffer, MSG_DISPLAYINCOM.c_str(), _programName.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::displayTodayFeedback(){
+	sprintf_s(buffer, MSG_DISPLAYTODAY.c_str(), _programName.c_str());
+	return buffer;
+}
+
+std::string ParserFeedback::displayAllFeedback(){
+	sprintf_s(buffer, MSG_DISPLAYALL.c_str(), _programName.c_str());
+	return buffer;
+}
+
+
+
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+File Location:
+C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\ParserFeedback.h
+uncollated source code:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+//ParserFeedback.h
+//v1.0
+#pragma once
+#ifndef PARSERFEEDBACK_H
+#define PARSERFEEDBACK_H
+
+#include <string>
+
+class ParserFeedback {
+
+private:
+	static const std::string MSG_ADD_SUCCESS;
+
+	static const std::string MSG_EDIT_SUCCESS;
+
+	static const std::string MSG_DELETE_SUCCESS;
+
+	static const std::string MSG_UNDO_SUCCESS;
+	static const std::string MSG_UNDO_FAILURE;
+
+	static const std::string MSG_REDO_SUCCESS;
+	static const std::string MSG_REDO_FAILURE;
+
+	static const std::string MSG_SEARCH_SUCCESS;
+	static const std::string MSG_SEARCH_FAILURE;
+
+	static const std::string MSG_COMPLETE_SUCCESS;
+
+	static const std::string MSG_DISPLAYCOM;
+	static const std::string MSG_DISPLAYINCOM;
+	static const std::string MSG_DISPLAYTODAY;
+	static const std::string MSG_DISPLAYALL;
+
+	static const std::string MSG_INVALID_CMD;
+	static const std::string MSG_INVALID_INDEX;
+	static const std::string MSG_INVALID_TIME;
+	static const std::string MSG_INVALID_DATE;
+
+	static const std::string MSG_NOT_FOUND;
+	static const std::string MSG_EMPTY_FILE;
+	static const std::string DELIMITER;
+	static const int MAX_SIZE = 255;
+
+	char buffer[MAX_SIZE];
+	static const std::string _programName;
+
+public:
+	
+	std::string emptyFeedback();
+	std::string editFeedback(std::string);
+	std::string addFeedback(std::string);
+	std::string deleteFeedback(std::string);
+	std::string undoSuccessFeedback();
+	std::string undoFailureFeedback();
+	std::string redoSuccessFeedback();
+	std::string redoFailureFeedback();
+	std::string searchSuccessFeedback(std::string);
+	std::string searchFailureFeedback(std::string);
+	std::string completeFeedback(std::string);
+
+	std::string notFoundFeedback(std::string);
+	std::string invalidFeedback();
+	std::string invalidTimeFeedback();
+	std::string invalidDateFeedback();
+
+	std::string displayCompleteFeedback();
+	std::string displayIncompleteFeedback();
+	std::string displayTodayFeedback();
+	std::string displayAllFeedback();
+};
+
+#endif
+
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+File Location:
+C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Task.cpp
+uncollated source code:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+// Task.cpp
+	
+
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+File Location:
+C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
+uncollated source code:
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+// Unit Test
+
+#include <QtTest\Qttest>
+#include <QtCore/QCoreApplication>
+#include <QTest>
+#include <QtTest\Qttest>
+#include <cstdlib>
+#include <qobject.h>
+#include <qstring.h>
+#include "TaskStorage.h"
+#include "Task.h"
+#include "TaskDeadline.h"
+#include "TaskTimed.h"
+#include "Parser.h"
+#include "DisplayOutput.h"
+#include "Logic.h"
+#include "Message.h"
+
+class TaskTest : public QObject {
+        Q_OBJECT
+private:
+	
+	private slots:
+
+		// Unit Test START
+
+
+
+

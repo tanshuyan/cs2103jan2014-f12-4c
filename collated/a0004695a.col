@@ -1,0 +1,1780 @@
+//@author: a0004695a
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Comparator.cpp
+	 */
+
+
+// Comparator.cpp
+
+#include "Comparator.h"
+
+const int RANK_ZERO = 0;
+const int RANK_ONE = 1;
+const int RANK_TWO = 2;
+
+bool Comparator::sortByStartDate(const Task* a, const Task* b) {
+	DateTime dateTimeA;
+	DateTime dateTimeB;
+	if(a->getTaskType() == TaskDeadline::TASK_DEADLINE) {
+		dateTimeA = a->getDeadline();
+	} else{
+		dateTimeA = a->getStartDate();
+	}
+	if(b->getTaskType() == TaskDeadline::TASK_DEADLINE) {
+		dateTimeB = b->getDeadline();
+	} else{
+		dateTimeB = b->getStartDate();
+	}
+	return (dateTimeA < dateTimeB);
+}
+
+bool Comparator::sortByEndDate(const Task* a, const Task* b) {
+	return (a->getDeadline() < b->getDeadline());
+}
+
+bool Comparator::sortByCompleteness(const Task* a, const Task* b) {
+	int rankA;
+	int rankB;
+	if(a->getCompleteStatus()){
+		rankA = RANK_ONE;
+	} else{
+		rankA = RANK_ZERO;
+	}
+	if(b->getCompleteStatus()){
+		rankB = RANK_ONE;
+	} else{
+		rankB = RANK_ZERO;
+	}
+	return (rankA < rankB);
+}
+
+bool Comparator::sortByTaskType(const Task* a, const Task* b) {
+	int rankA;
+	int rankB;
+	if(a->getTaskType() == TaskTimed::TASK_TIMED){
+		rankA = RANK_ZERO;
+	} else if(a->getTaskType() == TaskDeadline::TASK_DEADLINE){
+		rankA = RANK_ONE;
+	} else{
+		rankA = RANK_TWO;
+	}
+	if(b->getTaskType() == TaskTimed::TASK_TIMED){
+		rankB = RANK_ZERO;
+	} else if(b->getTaskType() == TaskDeadline::TASK_DEADLINE){
+		rankB = RANK_ONE;
+	} else{
+		rankB = RANK_TWO;
+	}
+	return (rankA < rankB);
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Comparator.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Comparator.h
+	 */
+
+
+// Comparator.h
+
+#ifndef COMPARATOR_H
+#define COMPARATOR_H
+
+#include "Task.h"
+#include "TaskDeadline.h"
+#include "TaskTimed.h"
+#include "TaskFloat.h"
+#include "DateTime.h"
+
+class Comparator {
+public:
+	Comparator();
+
+	static bool sortByStartDate(const Task* a, const Task* b);
+	static bool sortByEndDate(const Task* a, const Task* b);
+	static bool sortByCompleteness(const Task* a, const Task* b);
+	static bool sortByTaskType(const Task* a, const Task* b);
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Comparator.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Exception.h
+	 */
+
+
+//Exception.h
+
+#ifndef EXCEPTION_H
+#define EXCEPTION_H
+
+#include <exception>
+
+#define EXCEPTION_CONSTRUCTOR :std::exception(desc) {}
+
+class InvalidDateTimeException:public std::exception{
+public:
+        InvalidDateTimeException();
+        InvalidDateTimeException(const char* desc) EXCEPTION_CONSTRUCTOR
+};
+
+class InvalidTaskIDException:public std::exception{
+public:
+        InvalidTaskIDException();
+        InvalidTaskIDException(const char* desc) EXCEPTION_CONSTRUCTOR
+};
+
+class CannotUndoException:public std::exception{
+public:
+        CannotUndoException();
+        CannotUndoException(const char* desc) EXCEPTION_CONSTRUCTOR
+};
+
+class CannotRedoException:public std::exception{
+public:
+        CannotRedoException();
+        CannotRedoException(const char* desc) EXCEPTION_CONSTRUCTOR
+};
+
+class InvalidTaskException:public std::exception{
+public:
+        InvalidTaskException();
+        InvalidTaskException(const char* desc) EXCEPTION_CONSTRUCTOR
+};
+
+class EmptyMessageException:public std::exception{
+public:
+        EmptyMessageException();
+        EmptyMessageException(const char* desc) EXCEPTION_CONSTRUCTOR
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Exception.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\History.cpp
+	 */
+
+
+// History.cpp
+
+#include "History.h"
+
+History::History(){
+}
+
+void History::saveHistory(std::vector<Task*> &taskList){
+
+	// to create a deep copy of the vector <Task*> 
+	_currHistory.clear();
+	createDeepCopy(taskList, _currHistory);
+	_prevHistorys.push(_currHistory);
+	clearRedo();
+}
+
+void History::clearRedo(){
+	while (!_nextHistorys.empty()){
+		_deleteTaskList = _nextHistorys.top();
+		for(unsigned int i = 0; i < _deleteTaskList.size(); i++) {
+			delete _deleteTaskList[i];
+		}
+		_nextHistorys.pop();
+		_deleteTaskList.clear();
+	}
+}
+
+void History::createDeepCopy(std::vector<Task*> &taskList, std::vector<Task*> &copyList) {
+
+		for(std::vector<Task*>::iterator iter = taskList.begin(); iter != taskList.end(); iter++) {
+		if((*iter)->getTaskType() == TaskFloat::TASK_FLOAT) { // create a new floating task
+			std::string temp;
+			Task* newFloatPtr = new TaskFloat;
+			temp = (*iter)->taskDetailsToString();
+			newFloatPtr->stringToTask(temp);
+			copyList.push_back(newFloatPtr);
+		
+		} else if ((*iter)->getTaskType() == TaskDeadline::TASK_DEADLINE) { 
+			std::string temp;
+			Task* newDeadlinePtr = new TaskDeadline;
+			temp = (*iter)->taskDetailsToString();
+			newDeadlinePtr->stringToTask(temp);
+			copyList.push_back(newDeadlinePtr);
+
+		} else if ((*iter)->getTaskType() == TaskTimed::TASK_TIMED) {
+			std::string temp;
+			Task* newTimedPtr = new TaskTimed;
+			temp = (*iter)->taskDetailsToString();
+			newTimedPtr->stringToTask(temp);
+			copyList.push_back(newTimedPtr);
+		}
+	}
+}
+
+bool History::undo(std::vector<Task*> &taskList){
+	if(_prevHistorys.size() == 1){
+		return false;
+	}
+	// the _currHistory and top of _prevHistory are the same because of the nature of saveHistory 
+	_nextHistorys.push(_prevHistorys.top()); 
+	_prevHistorys.pop();
+	_currHistory = _prevHistorys.top(); 
+	std::vector<Task*>::iterator iter;
+	for(iter = taskList.begin(); iter != taskList.end(); iter++) {
+		delete (*iter);
+	}
+	taskList.clear();
+	createDeepCopy(_currHistory, taskList);
+	return true;
+}
+
+bool History::redo(std::vector<Task*> &taskList){
+	if(_nextHistorys.empty()){
+		return false;
+	}
+	
+	_prevHistorys.push(_nextHistorys.top());
+	_currHistory = _nextHistorys.top();
+	_nextHistorys.pop();
+	std::vector<Task*>::iterator iter;
+	for(iter = taskList.begin(); iter != taskList.end(); iter++) {
+		delete (*iter);
+	}
+	taskList.clear();
+	createDeepCopy(_currHistory, taskList);
+	return true;
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\History.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\History.h
+	 */
+
+
+// History.h
+
+#ifndef HISTORY_H
+#define HISTORY_H
+
+#include <vector>
+#include <stack>
+#include "Task.h"
+#include "TaskDeadline.h"
+#include "TaskFloat.h"
+#include "TaskTimed.h"
+
+class History {
+private:
+	std::vector<Task*> _currHistory;
+	std::vector<Task*> _deleteTaskList;
+	std::stack<std::vector<Task*>> _prevHistorys;
+	std::stack<std::vector<Task*>> _nextHistorys;
+
+public:
+	History();
+
+	void saveHistory(std::vector<Task*> &taskList);
+	void clearRedo();
+
+	void createDeepCopy(std::vector<Task*> &taskList, std::vector<Task*> &copyList);
+
+	//Returns success of undo operation
+	bool History::undo(std::vector<Task*> &taskList);
+	//Returns success of redo operation
+	bool History::redo(std::vector<Task*> &taskList);
+};
+
+#endif
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\History.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logger.cpp
+	 */
+
+
+// Logger.cpp
+
+#include "Logger.h"
+
+const std::string Logger::LOG_FILENAME = "log.log";
+const std::string Logger::LOG_WARNING = "WARNING";
+const std::string Logger::LOG_ERROR = "ERROR";
+const std::string Logger::LOG_INFORMATION = "INFORMATION";
+
+Logger::Logger() {
+}
+
+void Logger::addWarningLog(std::string newLog) {
+	std::string log = LOG_WARNING + " " + newLog;
+	_logContent.push_back(log);
+}
+
+void Logger::addErrorLog(std::string newLog) {
+	std::string log = LOG_ERROR + " " + newLog;
+	_logContent.push_back(log);
+}
+
+void Logger::addInfoLog(std::string newLog) {
+	std::string log = LOG_INFORMATION + " " + newLog;
+	_logContent.push_back(log);
+}
+
+void Logger::saveLog() {
+	std::ofstream outputFile(LOG_FILENAME.c_str());
+
+	for(unsigned int i = 0; i < _logContent.size(); i++) {
+		outputFile << _logContent[i] << std::endl;		
+	}
+
+	outputFile.close();
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logger.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logger.h
+	 */
+
+
+// Logger.h
+
+#ifndef LOGGER_H
+#define LOGGER_H
+
+#include <string>
+#include <vector>
+#include <iostream>
+#include <string>
+#include <fstream>
+
+class Logger {
+
+private:
+	std::vector<std::string> _logContent;
+	Logger();
+	static const std::string LOG_FILENAME;
+	static const std::string LOG_WARNING;
+	static const std::string LOG_ERROR;
+	static const std::string LOG_INFORMATION;
+
+public:
+	static Logger& getInstance() {
+		static Logger instance;
+		return instance;
+	}
+	
+	void addWarningLog(std::string newLog);
+	void addErrorLog(std::string newLog);
+	void addInfoLog(std::string newLog);
+	void saveLog();
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logger.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logic.cpp
+	 */
+
+
+// Logic.cpp
+
+#include "Logic.h"
+
+Logic::Logic() {
+	loadFileContent();
+	_currentDisplayType.setCommand(Message::CMD_DISPLAY);
+	_currentDisplayType.setDisplayType(Message::DISPLAY_ALL);
+}
+
+Logic::~Logic() {
+	for(unsigned int i = 0; i < _taskList.size(); i++) {
+	delete _taskList[i];
+	}
+}
+	
+DisplayOutput Logic::executeUserInput(std::string userInput) {
+	AnalysedData analysedData;
+	DisplayOutput displayOutput;
+	try{
+		analysedData = _parser.parse(userInput, _displayList);
+		executeCommand(analysedData, displayOutput);
+	}
+	catch(InvalidDateTimeException &e) {
+		displayOutput.setFeedBack(e.what());
+		displayTask(_currentDisplayType, displayOutput);
+	}
+	catch(InvalidTaskIDException &e) {
+		displayOutput.setFeedBack(e.what());
+		displayTask(_currentDisplayType, displayOutput);
+	}
+	catch(CannotUndoException &e) {
+		displayOutput.setFeedBack(e.what());
+		displayTask(_currentDisplayType, displayOutput);
+		Logger& logLogic = Logger::getInstance();
+		logLogic.addInfoLog(_actionMsg.undoFailureFeedback());
+		logLogic.saveLog();
+	}
+	catch(CannotRedoException &e) {
+		displayOutput.setFeedBack(e.what());
+		displayTask(_currentDisplayType, displayOutput);
+		Logger& logLogic = Logger::getInstance();
+		logLogic.addInfoLog(_actionMsg.redoFailureFeedback());
+		logLogic.saveLog();
+	}
+	catch(InvalidTaskException &e) {
+		displayOutput.setFeedBack(e.what());
+		displayTask(_currentDisplayType, displayOutput);
+	}
+	return displayOutput;
+}
+
+void Logic::executeCommand(AnalysedData& analysedData, DisplayOutput& displayOutput) {
+		if(analysedData.getCommand() == Message::CMD_ADD) {
+		addTask(analysedData, displayOutput);
+		displayTask(_currentDisplayType, displayOutput);
+	}
+
+	if(analysedData.getCommand() == Message::CMD_DELETE) {
+		deleteTask(analysedData, displayOutput);
+		displayTask(_currentDisplayType, displayOutput);
+	}
+
+	if(analysedData.getCommand() == Message::CMD_EDIT) {
+		editTask(analysedData, displayOutput);
+		displayTask(_currentDisplayType, displayOutput);
+	}
+
+	if(analysedData.getCommand() == Message::CMD_DISPLAY) {
+		displayTask(analysedData, displayOutput);
+
+		if(analysedData.getDisplayType() == Message::DISPLAY_COMPLETE) {
+			displayOutput.setFeedBack(_actionMsg.displayCompleteFeedback());
+		}
+			
+		if(analysedData.getDisplayType() == Message::DISPLAY_INCOMPLETE) {
+			displayOutput.setFeedBack(_actionMsg.displayIncompleteFeedback());
+		}
+
+		if(analysedData.getDisplayType() == Message::DISPLAY_ALL) {
+			displayOutput.setFeedBack(_actionMsg.displayAllFeedback());
+		}
+
+		if(analysedData.getDisplayType() == Message::DISPLAY_TODAY) {
+			displayOutput.setFeedBack(_actionMsg.displayTodayFeedback());
+		}
+	}
+
+	if(analysedData.getCommand() == Message::CMD_SEARCH) {
+		displayTask(analysedData, displayOutput);
+		if(displayOutput.getDisplayStatus()) {
+			displayOutput.setFeedBack(_actionMsg.searchSuccessFeedback(analysedData.getDisplayType()));
+		} else {
+			displayOutput.setFeedBack(_actionMsg.searchFailureFeedback(analysedData.getDisplayType()));
+		}
+	}
+
+	if(analysedData.getCommand() == Message::CMD_COMPLETE) {
+		setComplete(analysedData, displayOutput);
+		displayTask(_currentDisplayType, displayOutput);
+	}
+
+	if(analysedData.getCommand() == Message::CMD_INCOMPLETE) {
+		setIncomplete(analysedData, displayOutput);
+		displayTask(_currentDisplayType, displayOutput);
+	}
+
+	if(analysedData.getCommand() == Message::CMD_UNDO) {
+		undo(displayOutput);
+		displayTask(_currentDisplayType, displayOutput);
+	}
+
+	if(analysedData.getCommand() == Message::CMD_REDO) {
+		redo(displayOutput);
+		displayTask(_currentDisplayType, displayOutput);
+	}
+
+	if(analysedData.getCommand() == Message::CMD_EXIT) {
+		displayOutput.setFeedBack(Message::CMD_EXIT);
+		exit(0);
+	}
+
+	if(analysedData.getCommand() == Message::CMD_INVALID) {
+		displayOutput.setFeedBack(_actionMsg.invalidFeedback());
+		displayTask(_currentDisplayType, displayOutput);
+	}
+}
+
+void Logic::addTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
+	if(!(_dateTimeResolver.resolveAdd(analysedData))) {
+		throw InvalidDateTimeException(_actionMsg.invalidDateTimeFeedback().c_str());
+		return;
+	} 
+
+	std::string taskDesc = analysedData.getTaskDesc();
+	QDate startDate = analysedData.getStartDate();
+	QDate endDate = analysedData.getEndDate();
+	QTime startTime = analysedData.getStartTime();
+	QTime endTime = analysedData.getEndTime();
+	DateTime startDateTime;
+	startDateTime.setDate(startDate);
+	startDateTime.setTime(startTime);
+	
+	DateTime endDateTime;
+	endDateTime.setDate(endDate);
+	endDateTime.setTime(endTime);
+
+	if(startDate.isNull() && endDate.isNull() && startTime.isNull() && endTime.isNull() && taskDesc.empty()) {
+		throw InvalidTaskException(_actionMsg.invalidTaskFeedback().c_str());
+		return;
+	}
+	
+	if(startDate.isNull() && endDate.isNull() && startTime.isNull() && endTime.isNull()) { // floating task
+		Task* newFloatPtr = new TaskFloat;
+		newFloatPtr->setTask(false, taskDesc);
+		_taskList.push_back(newFloatPtr);
+		sortTaskList();
+		_userStorage.writeFile(_taskList);
+		_History.saveHistory(_taskList);
+		displayOutput.setFeedBack(_actionMsg.addFeedback(taskDesc));
+		return;
+	}
+
+	if((startDate.isNull() && startTime.isNull())) {
+		Task* newDeadlinePtr = new TaskDeadline;
+		newDeadlinePtr->setTask(false, taskDesc, endDateTime);
+		_taskList.push_back(newDeadlinePtr);
+		sortTaskList();
+		_userStorage.writeFile(_taskList);
+		_History.saveHistory(_taskList);
+		displayOutput.setFeedBack(_actionMsg.addFeedback(taskDesc));
+		return;
+	}
+
+	if((endDate.isNull() && endTime.isNull())) {
+		Task* newDeadlinePtr = new TaskDeadline;
+		newDeadlinePtr->setTask(false, taskDesc, startDateTime);
+		_taskList.push_back(newDeadlinePtr);
+		sortTaskList();
+		_userStorage.writeFile(_taskList);
+		_History.saveHistory(_taskList);
+		displayOutput.setFeedBack(_actionMsg.addFeedback(taskDesc));
+		return;
+	}
+
+	Task* newTimedPtr = new TaskTimed;
+	newTimedPtr->setTask(false, taskDesc, startDateTime, endDateTime);
+	_taskList.push_back(newTimedPtr);
+	sortTaskList();
+	_userStorage.writeFile(_taskList);
+	_History.saveHistory(_taskList);
+	displayOutput.setFeedBack(_actionMsg.addFeedback(taskDesc));
+	return;
+}
+
+void Logic::editTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
+	int index = analysedData.getIndex();
+
+	if(!isValidIndex(index)) {
+		throw InvalidTaskIDException(_actionMsg.invalidIndexFeedback().c_str());
+		return;
+	}
+
+	std::vector<Task*>::iterator taskToEdit = indexToIterator(index);
+
+	if(!_dateTimeResolver.resolveEdit(*taskToEdit, analysedData)) {
+		displayOutput.setFeedBack(_actionMsg.invalidDateTimeFeedback());
+		return;
+	} 
+		
+	_taskEditor.edit(*taskToEdit, analysedData);
+
+	std::string taskDesc= (*taskToEdit)->getTaskDesc();
+
+	sortTaskList();
+	_userStorage.writeFile(_taskList);
+	_History.saveHistory(_taskList);
+	displayOutput.setFeedBack(_actionMsg.editFeedback(taskDesc));
+	return;
+}
+
+void Logic::deleteTask(AnalysedData analysedData, DisplayOutput& displayOutput){
+	int taskIndex;
+	std::vector<int> index;
+	index = analysedData.getIndexVector();
+	std::vector<int> invalidIndex;
+
+	int removedIndexCount = 0;
+	std::string removedContent;
+
+	for(unsigned int i = index.size(); i > 0; i--) {
+		taskIndex = index[i-1];
+		if(isValidIndex(taskIndex)) {
+			std::vector<Task*>::iterator taskToDelete = indexToIterator(taskIndex);
+			removedContent  = (*taskToDelete)->getTaskDesc();
+			removedIndexCount++;
+			delete *taskToDelete;
+			_taskList.erase(taskToDelete);
+		} else {
+			invalidIndex.push_back(taskIndex);
+		}
+	}
+	
+	if (removedIndexCount == 1){
+		displayOutput.setFeedBack(_actionMsg.deleteFeedback(removedContent));	
+	} else if(removedIndexCount > 1) {
+		displayOutput.setFeedBack(_actionMsg.deleteMultipleFeedback(removedIndexCount));
+	} else {
+		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
+	}
+
+	sortTaskList();
+	_userStorage.writeFile(_taskList);
+	_History.saveHistory(_taskList);
+	return;
+}
+
+void Logic::setComplete(AnalysedData analysedData, DisplayOutput& displayOutput){
+	int taskIndex;
+	std::vector<int> index;
+	index = analysedData.getIndexVector();
+	std::vector<int> invalidIndex;
+	std::string taskCompleted;
+	int completeIndexCount = 0;
+	
+	for(unsigned int i = index.size(); i > 0; i--) {
+		taskIndex = index[i-1];
+		if(isValidIndex(taskIndex)) {
+			std::vector<Task*>::iterator taskToComplete = indexToIterator(taskIndex);
+			(*taskToComplete)->setCompleteStatus(true);
+			taskCompleted = (*taskToComplete)->getTaskDesc();
+			completeIndexCount++;
+		} else {
+			invalidIndex.push_back(taskIndex);
+		}
+	}
+	
+	if(!invalidIndex.empty()) { 
+		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
+	} else {
+			if ( completeIndexCount == 1){
+				displayOutput.setFeedBack(_actionMsg.completeSuccessFeedback(taskCompleted));
+				}
+			else {
+				displayOutput.setFeedBack(_actionMsg.completeMultipleSuccessFeedback(completeIndexCount));
+			}
+	}
+
+	sortTaskList();
+	_userStorage.writeFile(_taskList);
+	_History.saveHistory(_taskList);
+}
+
+void Logic::setIncomplete(AnalysedData analysedData, DisplayOutput& displayOutput){
+	int taskIndex;
+	std::vector<int> index;
+	index = analysedData.getIndexVector();
+	std::vector<int> invalidIndex;
+	std::string taskIncompleted;
+	int incompleteIndexCount = 0;
+
+	for(unsigned int i = index.size(); i > 0; i--) {
+		taskIndex = index[i-1];
+		if(isValidIndex(taskIndex)) {
+			std::vector<Task*>::iterator taskToIncomplete = indexToIterator(taskIndex);
+			(*taskToIncomplete)->setCompleteStatus(false);
+			taskIncompleted= (*taskToIncomplete)->getTaskDesc();
+			incompleteIndexCount++;
+		} else {
+			invalidIndex.push_back(taskIndex);
+		}
+	}
+	
+	if(!invalidIndex.empty()) {
+		displayOutput.setFeedBack(_actionMsg.invalidIndexFeedback());
+	} else {
+			if ( incompleteIndexCount == 1){
+				displayOutput.setFeedBack(_actionMsg.incompleteSuccessFeedback(taskIncompleted));
+			}
+			else {
+				displayOutput.setFeedBack(_actionMsg.incompleteMultipleSuccessFeedback(incompleteIndexCount));
+			}
+	}
+
+	sortTaskList();
+	_userStorage.writeFile(_taskList);
+	_History.saveHistory(_taskList);
+}
+
+void Logic::displayTask(AnalysedData analysedData, DisplayOutput& displayOutput) {
+	std::vector<std::string> displayListStatus;
+	_displayList.clear();
+	_displayIndexList.clear();
+	if(analysedData.getCommand() == Message::CMD_DISPLAY) {
+
+		if(analysedData.getDisplayType() == Message::DISPLAY_COMPLETE) { 
+			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, true, displayListStatus);
+		}
+			
+		if(analysedData.getDisplayType() == Message::DISPLAY_INCOMPLETE) { 
+			_displayStatus = _filter.search(_taskList, _displayList,_displayIndexList, false, displayListStatus);
+		}
+
+		if(analysedData.getDisplayType() == Message::DISPLAY_ALL) {
+			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, displayListStatus);
+		}
+
+		if(analysedData.getDisplayType() == Message::DISPLAY_TODAY) {
+			_displayStatus = _filter.search(_taskList, _displayList, _displayIndexList, QDate::currentDate(), displayListStatus);
+		}
+	}
+
+	if(analysedData.getCommand() == Message::CMD_SEARCH) {
+		_displayStatus = _filter.search(_taskList, _displayList,  _displayIndexList, analysedData.getDisplayType(), displayListStatus);
+	}
+
+	displayOutput.setDisplayStatus(_displayStatus);
+	displayOutput.displayTasks(_displayList);
+	displayOutput.setDisplayListStatus(displayListStatus);
+	_currentDisplayType.setCommand(analysedData.getCommand());
+	_currentDisplayType.setDisplayType(analysedData.getDisplayType());
+}
+
+void Logic::undo(DisplayOutput& displayOutput) {
+	if(_History.undo(_taskList)){
+		sortTaskList();
+		_userStorage.writeFile(_taskList);
+		displayOutput.setFeedBack(_actionMsg.undoSuccessFeedback());
+	}
+	else{
+		throw CannotUndoException(_actionMsg.undoFailureFeedback().c_str());
+	}
+}
+
+void Logic::redo(DisplayOutput& displayOutput) {
+	if(_History.redo(_taskList)){
+		sortTaskList();
+		_userStorage.writeFile(_taskList);
+		displayOutput.setFeedBack(_actionMsg.redoSuccessFeedback());
+	}
+	else{
+		throw CannotRedoException(_actionMsg.redoFailureFeedback().c_str());
+	}
+}
+
+std::vector<Task*>::iterator Logic::indexToIterator(int index){
+	std::vector<std::vector<Task*>::iterator>::iterator iter = _displayIndexList.begin();
+	for(int i=1; i!=index; i++){
+		iter++;
+	}
+	return *iter;
+}
+
+bool Logic::isValidIndex(int index) {
+	if (index >= 1 && index <= _displayList.size()) { 
+		return true; 
+	} else { 
+		return false; 
+	}
+}
+
+void Logic::loadFileContent() {
+	_taskList.clear();
+	sortTaskList();
+	_userStorage.loadFile(_taskList);
+	_History.saveHistory(_taskList);
+}
+
+void Logic::sortTaskList() {
+
+	std::sort(_taskList.begin(), _taskList.end(), Comparator::sortByTaskType);
+	//Everything from bottomCutoff onwards are floating tasks
+	std::vector<Task*>::iterator bottomCutoff;
+	for(bottomCutoff = _taskList.begin(); bottomCutoff != _taskList.end(); bottomCutoff++){
+		if((*bottomCutoff)->getTaskType() == TaskFloat::TASK_FLOAT){
+			break;
+		}
+	}
+	std::sort(_taskList.begin(), bottomCutoff, Comparator::sortByEndDate);
+	DateTime currentDateTime;
+	currentDateTime.setCurrDateTime();
+	//Everything before topCutoff are overdue tasks
+	std::vector<Task*>::iterator topCutoff;
+	// find the tasklist vector for the first task which is not overdue
+	for(topCutoff = _taskList.begin(); topCutoff != _taskList.end(); topCutoff++){
+		if((*topCutoff)->getDeadline() < currentDateTime){
+			break;
+		}
+	}
+	std::sort(topCutoff, bottomCutoff, Comparator::sortByStartDate);
+	std::sort(_taskList.begin(), _taskList.end(), Comparator::sortByCompleteness);
+}
+
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logic.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logic.h
+	 */
+
+
+// Logic.h
+
+#ifndef LOGIC_H
+#define LOGIC_H
+
+#include <string>
+#include <sstream>
+#include <vector>
+#include <assert.h>
+#include <algorithm>
+#include "Task.h"
+#include "TaskDeadline.h"
+#include "TaskFloat.h"
+#include "TaskTimed.h"
+#include "TaskFilter.h"
+#include "TaskStorage.h"
+#include "History.h"
+#include "AnalysedData.h"
+#include "LogicParser.h"
+#include "DisplayOutput.h"
+#include "Logger.h"
+#include "DateTime.h"
+#include "Comparator.h"
+#include "DateTimeResolver.h"
+#include "TaskEditor.h"
+#include "Exception.h"
+#include "Message.h"
+
+class Logic {
+private:
+	std::vector<Task*> _taskList;
+	std::vector<Task*> _displayList;
+	std::vector<std::vector<Task*>::iterator> _displayIndexList;
+	DisplayOutput _actionMsg;
+	TaskFilter _filter;
+	History _History;
+	TaskStorage _userStorage;
+	LogicParser _parser;
+	AnalysedData _currentDisplayType;
+	DateTimeResolver _dateTimeResolver;
+	TaskEditor _taskEditor;
+
+	bool _loadStatus;
+	bool _displayStatus;
+
+	void executeCommand(AnalysedData &analysedData, DisplayOutput &displayOutput);
+
+	void addTask(AnalysedData analysedData, DisplayOutput &displayOutput);
+	void editTask(AnalysedData analysedData, DisplayOutput &displayOutput);
+	void deleteTask(AnalysedData analysedData, DisplayOutput &displayOutput);
+	void setComplete(AnalysedData analysedData, DisplayOutput &displayOutput);
+	void setIncomplete(AnalysedData analysedData, DisplayOutput &displayOutput);
+	void displayTask(AnalysedData analysedData, DisplayOutput &displayOutput);
+	void undo(DisplayOutput &displayOutput);
+	void redo(DisplayOutput &displayOutput);
+
+	std::vector<Task*>::iterator indexToIterator(int index);
+	bool isValidIndex(int index);
+	void generateDisplayListIndex();
+	void loadFileContent();
+	void sortTaskList();
+
+public:
+	Logic();
+	~Logic();
+	DisplayOutput executeUserInput(std::string userInput);
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Logic.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Parser.cpp
+	 */
+
+
+//Parser.cpp
+
+#include "Parser.h"
+
+Parser::Parser() {
+}
+
+AnalysedData Parser::parse(std::string userInput, const std::vector<Task*> &_displayList) {
+	std::istringstream input(userInput);
+	std::string command;
+	std::string dummy;
+	std::string commandLine;
+	input >> command; 
+	std::getline(input, dummy, ' '); 
+	std::getline(input, commandLine); 
+
+	switch(getCommand(command)) {
+	case ADD: {
+		return addCMD(commandLine);
+		break;
+	}
+	case DELETE: {
+		return deleteCMD(commandLine, _displayList);
+		break;
+	}
+	case EDIT: {
+		return editCMD(commandLine);
+		break;
+	}	
+	case SEARCH: {
+		return searchCMD(commandLine);
+		break;
+	}
+	case DISPLAY: {
+		return displayCMD(commandLine);
+		break;
+	}
+	case COMPLETE: {
+		return completeCMD(commandLine, _displayList);
+		break;
+	}
+	case INCOMPLETE: {
+		return incompleteCMD(commandLine, _displayList);
+		break;
+	}
+	case UNDO: {
+		return undoCMD();
+		break;
+	}
+	case REDO: {
+		return redoCMD();
+		break;
+	}
+	case EXIT: {
+		AnalysedData analysedData;
+		analysedData.setCommand(Message::CMD_EXIT);
+		return analysedData;
+		break;
+	}
+	case INVALID: {
+		AnalysedData analysedData;
+		analysedData.setCommand(Message::CMD_INVALID);
+		return analysedData;
+		break;
+	}
+	default: {
+		AnalysedData analysedData;
+		analysedData.setCommand(Message::CMD_INVALID);
+		return analysedData;
+		break; 
+	}
+	}
+
+}
+
+Parser::COMMAND_TYPE Parser::getCommand(std::string command) {
+	if(command == Message::CMD_ADD) {
+		return COMMAND_TYPE::ADD;
+	} else if ((command== Message::CMD_DELETE)) {
+		return COMMAND_TYPE::DELETE;
+	} else if ((command == Message::CMD_DISPLAY)) {
+		return COMMAND_TYPE::DISPLAY;
+	} else if ((command == Message::CMD_EXIT)) {
+		return COMMAND_TYPE::EXIT;
+	} else if ((command == Message::CMD_SEARCH)) {
+		return COMMAND_TYPE::SEARCH;
+	} else if ((command == Message::CMD_EDIT)) {
+		return COMMAND_TYPE::EDIT;
+	} else if ((command == Message::CMD_COMPLETE)) {
+		return COMMAND_TYPE::COMPLETE;
+	} else if ((command == Message::CMD_INCOMPLETE)) {
+		return COMMAND_TYPE::INCOMPLETE;
+	} else if ((command == Message::CMD_UNDO)) {
+		return COMMAND_TYPE::UNDO;
+	} else if ((command == Message::CMD_REDO)) {
+		return COMMAND_TYPE::REDO;
+	} else {
+		return COMMAND_TYPE::INVALID;
+	}
+}
+
+AnalysedData Parser::undoCMD() {
+	AnalysedData analysedData;
+	analysedData.setCommand(Message::CMD_UNDO);
+	return analysedData;
+}
+
+AnalysedData Parser::redoCMD() {
+	AnalysedData analysedData;
+	analysedData.setCommand(Message::CMD_REDO);
+	return analysedData;
+}
+
+AnalysedData Parser::searchCMD(std::string userInput) {
+	AnalysedData analysedData;
+	analysedData.setCommand(Message::CMD_SEARCH);
+	analysedData.setDisplayType(userInput);
+	return analysedData;
+}
+
+AnalysedData Parser::displayCMD(std::string userInput) {
+	AnalysedData analysedData;
+	analysedData.setCommand(Message::CMD_DISPLAY);
+	if(userInput.empty()) {
+		analysedData.setDisplayType(Message::DISPLAY_ALL);
+	} else if(userInput == Message::DISPLAY_COMPLETE || userInput == Message::DISPLAY_ALL || userInput == Message::DISPLAY_INCOMPLETE || userInput == Message::DISPLAY_TODAY) {
+		analysedData.setDisplayType(userInput);
+	} else {
+		analysedData.setCommand(Message::CMD_INVALID);
+	}
+	return analysedData;
+}
+
+AnalysedData Parser::incompleteCMD(std::string userInput, const std::vector<Task*> &_displayList) {
+	AnalysedData analysedData;
+	analysedData.setCommand(Message::CMD_INCOMPLETE);
+	_index = _nlpSentenceParser.parseSentence(userInput.c_str(), _displayList);
+	analysedData.setIndexVector(_index);
+	return analysedData;
+}
+
+AnalysedData Parser::completeCMD(std::string userInput, const std::vector<Task*> &_displayList) {
+	AnalysedData analysedData;
+	analysedData.setCommand(Message::CMD_COMPLETE);
+	_index = _nlpSentenceParser.parseSentence(userInput.c_str(), _displayList);
+	analysedData.setIndexVector(_index);
+	return analysedData;
+}
+
+AnalysedData Parser::deleteCMD(std::string userInput, const std::vector<Task*> &_displayList) {
+	AnalysedData analysedData;
+	analysedData.setCommand(Message::CMD_DELETE);
+	_index = _nlpSentenceParser.parseSentence(userInput.c_str(), _displayList);
+	analysedData.setIndexVector(_index);
+	return analysedData;
+}
+
+AnalysedData Parser::editCMD(std::string userInput) {
+	AnalysedData analysedData;
+	std::istringstream inputStream(userInput);
+	int index;
+	inputStream >> index;
+	std::string input;
+	std::getline(inputStream, input);
+	QString descString(input.c_str());
+	QDate startDate;
+	QTime startTime;
+	QDate endDate;
+	QTime endTime;
+	bool dateTimeIsUnlabelled;
+	int dayOfWeek = -1;
+
+	_nlpDateParser.parseDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek);
+	descString = descString.trimmed();
+
+	analysedData.setCommand(Message::CMD_EDIT);
+	analysedData.setIndex(index);
+	analysedData.setTaskDesc(descString.toStdString());
+	analysedData.setStartDate(startDate);
+	analysedData.setStartTime(startTime);
+	analysedData.setEndDate(endDate);
+	analysedData.setEndTime(endTime);
+	analysedData.setDateTimeUnlabelled(dateTimeIsUnlabelled);
+	analysedData.setDayOfWeek(dayOfWeek);
+	return analysedData;
+}
+
+AnalysedData Parser::addCMD(std::string userInput) {
+	AnalysedData analysedData;
+	QString descString(userInput.c_str());
+	QDate startDate;
+	QTime startTime;
+	QDate endDate;
+	QTime endTime;
+	bool dateTimeIsUnlabelled;
+	int dayOfWeek = -1;
+
+	_nlpDateParser.parseDateTime(descString, startDate, startTime, endDate, endTime, dateTimeIsUnlabelled, dayOfWeek);	
+	descString = descString.trimmed();
+
+	analysedData.setCommand(Message::CMD_ADD);
+	analysedData.setTaskDesc(descString.toStdString());
+	analysedData.setStartDate(startDate);
+	analysedData.setStartTime(startTime);
+	analysedData.setEndDate(endDate);
+	analysedData.setEndTime(endTime);
+	analysedData.setDateTimeUnlabelled(dateTimeIsUnlabelled);
+	analysedData.setDayOfWeek(dayOfWeek);
+	return analysedData;
+}
+
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Parser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Parser.h
+	 */
+
+
+//Parser.h
+
+#ifndef PARSER_H
+#define PARSER_H
+
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+#include <sstream>
+#include <QRegExp>
+#include "NLPDateParser.h"
+#include "NLPSentenceParser.h"
+#include "AnalysedData.h"
+#include "Message.h"
+
+class Parser{
+private:
+	DateTimeParser _dateTimeParser;
+	std::vector<int> _index;
+	NLPDateParser _nlpDateParser;
+	NLPSentenceParser _nlpSentenceParser;
+
+	enum COMMAND_TYPE {
+		ADD, DELETE, SEARCH, EDIT, COMPLETE, INCOMPLETE, UNDO, REDO, DISPLAY, EXIT, INVALID
+	};
+
+public:
+	Parser();
+	
+	AnalysedData parse(std::string, const std::vector<Task*> &_displayList);
+	COMMAND_TYPE getCommand(std::string userInput);
+	
+	AnalysedData undoCMD();
+	AnalysedData redoCMD();	
+	AnalysedData searchCMD(std::string userInput);
+	AnalysedData displayCMD(std::string userInput);
+	AnalysedData incompleteCMD(std::string userInput, const std::vector<Task*> &_taskList);
+	AnalysedData completeCMD(std::string userInput, const std::vector<Task*> &_taskList);
+	AnalysedData deleteCMD(std::string userInput, const std::vector<Task*> &_taskList);
+	AnalysedData editCMD(std::string userInput);
+	AnalysedData addCMD(std::string userInput);
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Parser.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskEditor.cpp
+	 */
+
+
+//TaskEditor.cpp
+
+#include "TaskEditor.h"
+
+void TaskEditor::edit(Task* &task, AnalysedData &analysedData){
+	std::string taskDesc = analysedData.getTaskDesc();
+	QDate startDate = analysedData.getStartDate();
+	QTime startTime = analysedData.getStartTime();
+	QDate endDate = analysedData.getEndDate();
+	QTime endTime = analysedData.getEndTime();
+	
+	if(task->getTaskType() == TaskFloat::TASK_FLOAT){
+		editFloat(task, taskDesc, startDate, startTime, endDate, endTime);
+	}
+	if(task->getTaskType() == TaskDeadline::TASK_DEADLINE){
+		editDeadline(task, taskDesc, startDate, startTime, endDate, endTime);
+	}
+	if(task->getTaskType() == TaskTimed::TASK_TIMED){
+		editTimed(task, taskDesc, startDate, startTime, endDate, endTime);
+	}
+	return;
+}
+
+void TaskEditor::editFloat(Task* &task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
+	//Updates desc if field is not empty
+	setDesc(task, taskDesc);
+	//Only desc to change
+	if(startDate.isNull() && startTime.isNull() && endDate.isNull() && endTime.isNull()){
+		return;
+	}
+	//Only start date/time
+	if(startDate.isValid() && startTime.isValid() && endDate.isNull() && endTime.isNull()){
+		upgradeToDeadline(task, startDate, startTime);
+		return;
+	}
+	//Only end date/time
+	if(startDate.isNull() && startTime.isNull() && endDate.isValid() && endTime.isValid()){
+		upgradeToDeadline(task, endDate, endTime);
+		return;
+	}
+	//Both start date/time and end date/time
+	if(startDate.isValid() && startTime.isValid() && endDate.isValid() && endTime.isValid()){
+		upgradeToTimed(task, startDate, startTime, endDate, endTime);
+		return;
+	}
+
+	Logger& logTaskEditor = Logger::getInstance();
+	DisplayOutput actionMsg;
+	logTaskEditor.addErrorLog(actionMsg.unableToConvertFeedback());
+	logTaskEditor.saveLog();
+	assert(false);
+	return;
+}
+
+void TaskEditor::editDeadline(Task* &task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
+	//Updates desc if field is not empty
+	setDesc(task, taskDesc);
+	//Only desc to change
+	if(startDate.isNull() && startTime.isNull() && endDate.isNull() && endTime.isNull()){
+		return;
+	}
+	//Only date to change
+	if(startDate.isValid() && startTime.isNull() && endDate.isNull() && endTime.isNull()){
+		setEndDate(task, startDate);
+		return;
+	}
+	if(startDate.isNull() && startTime.isNull() && endDate.isValid() && endTime.isNull()){
+		setEndDate(task, endDate);
+		return;
+	}
+	//Only time to change
+	if(startDate.isNull() && startTime.isValid() && endDate.isNull() && endTime.isNull()){
+		setEndTime(task, startTime);
+		return;
+	}
+	if(startDate.isNull() && startTime.isNull() && endDate.isNull() && endTime.isValid()){
+		setEndTime(task, endTime);
+		return;
+	}
+	//Both date/time to change
+	if(startDate.isValid() && startTime.isValid() && endDate.isNull() && endTime.isNull()){
+		setEndDate(task, startDate);
+		setEndTime(task, startTime);
+		return;
+	}
+	if(startDate.isNull() && startTime.isNull() && endDate.isValid() && endTime.isValid()){
+		setEndDate(task, endDate);
+		setEndTime(task, endTime);
+		return;
+	}
+	//Both start date/time and end date/time (upgrade to timed task)
+	if(startDate.isValid() && startTime.isValid() && endDate.isValid() && endTime.isValid()){
+		upgradeToTimed(task, startDate, startTime, endDate, endTime);
+		return;
+	}
+
+	Logger& logTaskEditor = Logger::getInstance();
+	DisplayOutput actionMsg;
+	logTaskEditor.addErrorLog(actionMsg.unableToConvertFeedback());
+	logTaskEditor.saveLog();
+	assert(false);
+	return;
+}
+
+void TaskEditor::editTimed(Task* task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
+	//Updates desc if field is not empty
+	setDesc(task, taskDesc);
+	//updates date/time fields only if they are valid
+	if(startDate.isValid()){
+		setStartDate(task, startDate);
+	}
+	if(startTime.isValid()){
+		setStartTime(task, startTime);
+	}
+	if(endDate.isValid()){
+		setEndDate(task, endDate);
+	}
+	if(endTime.isValid()){
+		setEndTime(task, endTime);
+	}
+	return;
+}
+
+void TaskEditor::setDesc(Task* task, std::string taskDesc){
+	QString desc(taskDesc.c_str());
+	//updates desc only if field is not empty
+	if(!desc.trimmed().isEmpty()){
+		task->setTaskDesc(desc.trimmed().toStdString());
+	}
+	return;
+}
+
+void TaskEditor::setStartDate(Task* task, QDate startDate){
+	DateTime start(task->getStartDate());
+	start.setDate(startDate);
+	task->setStartDate(start);
+	return;
+}
+
+void TaskEditor::setStartTime(Task* task, QTime startTime){
+	DateTime start(task->getStartDate());
+	start.setTime(startTime);
+	task->setStartDate(start);
+	return;
+}
+
+void TaskEditor::setEndDate(Task* task, QDate endDate){
+	DateTime deadline(task->getDeadline());
+	deadline.setDate(endDate);
+	task->setDeadline(deadline);
+	return;
+}
+
+void TaskEditor::setEndTime(Task* task, QTime endTime){
+	DateTime deadline(task->getDeadline());
+	deadline.setTime(endTime);
+	task->setDeadline(deadline);
+	return;
+}
+
+void TaskEditor::upgradeToDeadline(Task* &task, QDate date, QTime time){
+	DateTime deadline(date, time);
+	std::string desc = task->getTaskDesc();
+	bool status = task->getCompleteStatus();
+	delete task;
+	task = new TaskDeadline;
+	task->setTask(status,desc,deadline);
+	return;
+}
+
+void TaskEditor::upgradeToTimed(Task* &task, QDate startDate, QTime startTime, QDate endDate, QTime endTime){
+	DateTime start(startDate, startTime);
+	DateTime deadline(endDate, endTime);
+	std::string desc = task->getTaskDesc();
+	bool status = task->getCompleteStatus();
+	delete task;
+	task = new TaskTimed;
+	task->setTask(status,desc,start,deadline);
+	return;
+}
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskEditor.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskEditor.h
+	 */
+
+
+//TaskEditor.h
+
+#ifndef TASKEDITOR
+#define TASKEDITOR
+
+#include <QDateTime>
+#include <assert.h>
+#include "Task.h"
+#include "TaskDeadline.h"
+#include "TaskTimed.h"
+#include "AnalysedData.h"
+#include "TaskDeadline.h"
+#include "TaskFloat.h"
+#include "TaskTimed.h"
+#include "Logger.h"
+#include "DisplayOutput.h"
+#include "DateTime.h"
+
+class TaskEditor{
+private:
+	void editFloat(Task* &task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime);
+	void editDeadline(Task* &task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime);
+	void editTimed(Task* task, std::string taskDesc, QDate startDate, QTime startTime, QDate endDate, QTime endTime);
+	
+	void setDesc(Task* task, std::string taskDesc);
+	void setStartDate(Task* task, QDate startDate);
+	void setStartTime(Task* task, QTime startTime);
+	void setEndDate(Task* task, QDate endDate);
+	void setEndTime(Task* task, QTime endTime);
+	void upgradeToDeadline(Task* &task, QDate date, QTime time);
+	void upgradeToTimed(Task* &task, QDate startDate, QTime startTime, QDate endDate, QTime endTime);
+
+public:
+	//Edits the given task using the given parameters. Does not make changes if the parameters are null or empty
+	void edit(Task* &task, AnalysedData&);
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskEditor.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFilter.cpp
+	 */
+
+
+// TaskFilter.cpp
+
+#include "TaskFilter.h"
+
+TaskFilter::TaskFilter(){
+}
+
+bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, bool status, std::vector<std::string> &displayListStatus){
+	displayList.clear();
+	displayIndexList.clear();
+	for(std::vector<Task*>::iterator iter = taskList.begin(); iter != taskList.end(); iter++){
+		if ((*iter)->getCompleteStatus() == status && iter != taskList.end()){
+			displayList.push_back(*iter);
+			displayIndexList.push_back(iter);
+		}
+	}
+	if (displayList.empty()){
+		return false;
+	}
+	markDisplayList(displayList, displayListStatus);
+	return true;
+}
+
+bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, std::string taskDesc, std::vector<std::string> &displayListStatus){
+	displayList.clear();
+	displayIndexList.clear();
+	std::string upperCaseTaskDesc;
+	if(isTaskType(taskDesc)) {
+		upperCaseTaskDesc = toUpper(taskDesc);
+		for(std::vector<Task*>::iterator iter = taskList.begin(); iter != taskList.end(); iter++){
+			if (((*iter)->getTaskDesc().find(taskDesc) != std::string::npos) || ((*iter)->getTaskType() == upperCaseTaskDesc)) { // either finds the search term or the same type of task
+				displayList.push_back(*iter);
+				displayIndexList.push_back(iter);
+			}
+		}
+	} else {
+		for(std::vector<Task*>::iterator iter = taskList.begin(); iter != taskList.end(); iter++){
+			if ((*iter)->getTaskDesc().find(taskDesc) != std::string::npos) { 
+				displayList.push_back(*iter);
+				displayIndexList.push_back(iter);
+			}
+		}
+	}
+	if (displayList.empty()){
+		return false;
+	}
+	markDisplayList(displayList, displayListStatus);
+	return true;
+}
+
+bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, std::vector<std::string> &displayListStatus) {
+	displayList.clear();
+	displayIndexList.clear();
+	for(std::vector<Task*>::iterator iter = taskList.begin(); iter != taskList.end(); iter++){
+			displayList.push_back(*iter);
+			displayIndexList.push_back(iter);
+	}
+	if (displayList.empty()){
+		return false;
+	}
+	markDisplayList(displayList, displayListStatus);
+	return true;
+}
+
+bool TaskFilter::search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, QDate currentDate, std::vector<std::string> &displayListStatus){
+	displayList.clear();
+	displayIndexList.clear();
+	for(std::vector<Task*>::iterator iter = taskList.begin(); iter != taskList.end(); iter++){
+		// for deadline tasks, display those with deadline = today's date
+		if((*iter)->getTaskType() == TaskDeadline::TASK_DEADLINE) {
+			if((*iter)->getDeadline().getDate().operator==(currentDate)) {
+				displayList.push_back(*iter);
+				displayIndexList.push_back(iter);
+			}
+		}
+		// for timed tasks, display those that are ongoing 	
+		if((*iter)->getTaskType() == TaskTimed::TASK_TIMED) {
+			if((*iter)->getStartDate().getDate().operator<=(currentDate) && (*iter)->getDeadline().getDate().operator>=(currentDate)) {
+				displayList.push_back(*iter);
+				displayIndexList.push_back(iter);
+			}
+		}
+	}
+	if (displayList.empty()){
+		return false;
+	}
+	markDisplayList(displayList, displayListStatus);
+	return true;
+}
+
+bool TaskFilter::isTaskType(std::string searchTerm) {
+	searchTerm = toUpper(searchTerm);
+	if(searchTerm == TaskFloat::TASK_FLOAT || searchTerm == TaskDeadline::TASK_DEADLINE || searchTerm == TaskTimed::TASK_TIMED) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+std::string TaskFilter::toUpper(std::string string) {
+	for(int i = 0; i < (int) string.size(); i++) {
+		string[i] = toupper(string[i]);
+	}
+	return string;
+}
+
+std::string TaskFilter::markTask(const Task* taskToBeMarked, DateTime currentDateTime) {
+	if(taskToBeMarked->getCompleteStatus() == true) {
+		return Message::STATUS_COMPLETE;
+	}
+
+	if(taskToBeMarked->getTaskType() == TaskFloat::TASK_FLOAT) {
+		return Message::STATUS_INCOMPLETE;
+	}
+
+	if(taskToBeMarked->getTaskType() == TaskDeadline::TASK_DEADLINE) {
+		if(taskToBeMarked->getDeadline() < currentDateTime) {
+			return Message::STATUS_OVERDUE;
+		}
+
+		if( (taskToBeMarked->getDeadline().getDate() == currentDateTime.getDate()) && (taskToBeMarked->getDeadline().getTime() > currentDateTime.getTime()) ) {
+			return Message::STATUS_ONGOING;
+		}
+		return Message::STATUS_INCOMPLETE;
+	}
+
+	if(taskToBeMarked->getTaskType() == TaskTimed::TASK_TIMED) {
+		if(taskToBeMarked->getDeadline() < currentDateTime) {
+			return Message::STATUS_OVERDUE;
+		}
+		if(taskToBeMarked->getStartDate() < currentDateTime) {
+			return Message::STATUS_ONGOING;
+		}
+		return Message::STATUS_INCOMPLETE;
+	}
+	assert(false);
+	return Message::STATUS_INCOMPLETE;
+}
+
+void TaskFilter::markDisplayList(const std::vector<Task*> &displayList, std::vector<std::string> &displayListStatus) {
+	std::vector<Task*>::const_iterator iter;
+	DateTime currentDateTime;
+	currentDateTime.setCurrDateTime();
+	for(iter = displayList.begin(); iter!=displayList.end(); iter++) {
+		displayListStatus.push_back(markTask(*iter, currentDateTime));
+	}
+}
+
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFilter.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFilter.h
+	 */
+
+
+// TaskFilter.h
+
+#ifndef TASKFILTER_H
+#define TASKFILTER_H
+
+#include <algorithm>
+#include <assert.h>
+#include <string>
+#include <sstream>
+#include <vector>
+#include "Task.h"
+#include "TaskDeadline.h"
+#include "TaskFloat.h"
+#include "TaskTimed.h"
+#include "DateTime.h"
+#include "DisplayOutput.h"
+
+class TaskFilter {
+private:
+	bool isTaskType(std::string);
+	std::string toUpper(std::string);
+	std::string markTask(const Task* taskToBeMarked, DateTime currentDateTime);
+	void markDisplayList(const std::vector<Task*>& displayList, std::vector<std::string>& displayListStatus);
+public:
+	TaskFilter();
+	//filters out tasks by complete/incomplete (specify at the bool)
+	//post: returns false if no matching tasks are found
+	bool search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, bool, std::vector<std::string> &displayListStatus);
+	
+	//filters out tasks by search term (specify at the string)
+	//post: returns false if matching tasks are found
+	bool search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, std::string, std::vector<std::string> &displayListStatus);
+
+	//displays all the tasks
+	bool search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, std::vector<std::string> &displayListStatus);
+
+	//displays today tasks
+	bool search(std::vector<Task*> &taskList, std::vector<Task*> &displayList, std::vector<std::vector<Task*>::iterator> &displayIndexList, QDate, std::vector<std::string> &displayListStatus);
+};
+#endif
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFilter.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
+	 */
+
+		// System testing
+		// this series of system test will require an empty CalenizerStorage.txt file to pass
+		// delete function is called at the end of every system testing to clear the CalenizerStorage.txt for the next system test
+
+		// addTest tests the functionality adding of tasks
+		// addTest tests the functionality inherent sorting of display list 
+		// addTest tests the functionality function of delete all
+		void addTest() {
+			Logic logic;
+			DisplayOutput displayOutput;
+			std::vector<std::string> output;
+			std::string testFloat = "add do cs diagram";
+			std::string testDeadline = "add do homework on 23 dec 10pm";
+			std::string testTimed = "add finish homework from 22 dec to 25 dec 10pm";
+			displayOutput = logic.executeUserInput(testFloat);
+			displayOutput = logic.executeUserInput(testDeadline);
+			displayOutput = logic.executeUserInput(testTimed);
+			output = displayOutput.getDisplay();
+			std::string expectedOutput1 = "3. FLOAT<>do cs diagram<>false\n";
+			QVERIFY(output[2] == expectedOutput1);
+			std::string expectedOutput2 = "1. DEADLINE<>do homework<>23 Dec 2014 10:00 pm<>false\n";
+			QVERIFY(output[0] == expectedOutput2);
+			std::string expectedOutput3 = "2. TIMED<>finish homework<>22 Dec 2014 10:00 pm to 25 Dec 2014 10:00 pm<>false\n";
+			QVERIFY(output[1] == expectedOutput3);
+			displayOutput = logic.executeUserInput("delete all");
+			QVERIFY(displayOutput.getDisplay().size() == 0);
+		}
+				
+		// undoRedoTest tests the the functionality of undo and redo
+		// undoRedoTest tests the functionality to complete "incomplete"
+		// undoRedoTest tests the functionality to delete tasks containing "searchterm"
+		void undoRedoTest() {
+			Logic logic;
+			DisplayOutput displayOutput;
+			std::vector<std::string> output;
+			std::string testDeadline = "add do homework on 23 may 10pm";
+			std::string testTimed = "add finish homework from 22 may to 25 may 10pm";
+			displayOutput = logic.executeUserInput(testDeadline);
+			displayOutput = logic.executeUserInput(testTimed);
+			displayOutput = logic.executeUserInput("undo");
+			output = displayOutput.getDisplay();
+			std::string expectedOutput1 = "1. DEADLINE<>do homework<>23 May 2014 10:00 pm<>false\n";
+			QVERIFY(output[0] == expectedOutput1);
+			displayOutput = logic.executeUserInput("redo");
+			output = displayOutput.getDisplay();
+			std::string expectedOutput2 = "2. TIMED<>finish homework<>22 May 2014 10:00 pm to 25 May 2014 10:00 pm<>false\n";
+			QVERIFY(output[1] == expectedOutput2);
+			displayOutput = logic.executeUserInput("complete incomplete");
+			displayOutput = logic.executeUserInput("undo");
+			displayOutput = logic.executeUserInput("complete 1");
+			displayOutput = logic.executeUserInput("undo");
+			QVERIFY(output[0] == expectedOutput1);
+			displayOutput = logic.executeUserInput("delete tasks contain \"homework\"");
+		}
+				
+		// completeIncompleteTest tests the functionality of multiple incomplete and complete 
+		// completeIncompleteTest tests the functionality of resolveAdd to auto fill in time when user doesnt specify
+		// completeIncompleteTest tests the functionality to delete multiple indexes
+		void completeIncompleteTest() {
+			Logic logic;
+			DisplayOutput displayOutput;
+			std::vector<std::string> output;
+			std::string testDeadline = "add do internship report on 23 june 10pm";
+			std::string testTimed = "add finish reservist from 22 july to 25 july";
+			displayOutput = logic.executeUserInput(testDeadline);
+			displayOutput = logic.executeUserInput(testTimed);
+			displayOutput = logic.executeUserInput("complete 1 to 3");
+			output = displayOutput.getDisplay();
+			std::string expectedOutput1 = "1. DEADLINE<>do internship report<>23 Jun 2014 10:00 pm<>true\n";
+			std::string expectedOutput2 = "2. TIMED<>finish reservist<>22 Jul 2014 12:00 am to 25 Jul 2014 11:59 pm<>true\n";
+			QVERIFY(output[0] == expectedOutput1);
+			QVERIFY(output[1] == expectedOutput2);
+			displayOutput = logic.executeUserInput("incomplete contain \"do\"");
+			output = displayOutput.getDisplay();
+			std::string expectedOutput3 = "1. DEADLINE<>do internship report<>23 Jun 2014 10:00 pm<>false\n";
+			QVERIFY(output[0] == expectedOutput3);
+			displayOutput = logic.executeUserInput("delete 1 to 50");
+		}
+		// editDeleteTest tests the functionality of shifting the duration of timed tasks (using "on")
+		// editDeleteTest tests the functionality of editing end dates and start dates
+		// editDeleteTest tests the functionality of delete incomplete
+		// editDeleteTest tests the sorting algo in ranking the tasks 
+
+		void editDeleteTest() {
+			Logic logic;
+			DisplayOutput displayOutput;
+			std::vector<std::string> output;
+			std::string testDeadline = "add do homework on 23 dec 10pm";
+			std::string testTimed = "add finish homework from 22 dec to 25 dec 10pm";
+			std::string testTimed2 = "add unfinish homework from 22 dec to 25 dec 10pm";
+			std::string testTimed3 = "add do finish homework from 22 dec to 25 dec 10pm";
+			std::string testTimed4 = "add must finish homework from 22 dec to 25 dec 10pm";
+			displayOutput = logic.executeUserInput(testDeadline);
+			displayOutput = logic.executeUserInput(testTimed);
+			displayOutput = logic.executeUserInput(testTimed2);
+			displayOutput = logic.executeUserInput(testTimed3);
+			displayOutput = logic.executeUserInput(testTimed4);
+			displayOutput = logic.executeUserInput("edit 1 on 25 dec 11pm");
+			output = displayOutput.getDisplay();
+			std::string expectedOutput1 = "5. DEADLINE<>do homework<>25 Dec 2014 11:00 pm<>false\n";
+			QVERIFY(output[4] == expectedOutput1);
+			displayOutput = logic.executeUserInput("delete 1");
+			// pushes back the duration of the task for timed task
+			displayOutput = logic.executeUserInput("edit 1 on 25 dec 11pm");
+			displayOutput = logic.executeUserInput("edit 1 start 23 dec");
+			displayOutput = logic.executeUserInput("edit 2 end 24 dec");
+			output = displayOutput.getDisplay();
+			expectedOutput1 = "1. TIMED<>must finish homework<>22 Dec 2014 10:00 pm to 24 Dec 2014 10:00 pm<>false\n";
+			std::string expectedOutput2 = "2. TIMED<>do finish homework<>23 Dec 2014 10:00 pm to 25 Dec 2014 10:00 pm<>false\n";
+			std::string expectedOutput3 = "3. DEADLINE<>do homework<>25 Dec 2014 11:00 pm<>false\n";
+			std::string expectedOutput4 = "4. TIMED<>unfinish homework<>25 Dec 2014 11:00 pm to 28 Dec 2014 11:00 pm<>false\n";
+			QVERIFY(output[0] == expectedOutput1);
+			QVERIFY(output[1] == expectedOutput2);
+			QVERIFY(output[2] == expectedOutput3);
+			QVERIFY(output[3] == expectedOutput4);
+			displayOutput = logic.executeUserInput("delete incomplete");
+		}
+		
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
+
+
+
+
+
