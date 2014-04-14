@@ -3,7 +3,7 @@
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeParser.cpp
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\DateTimeParser.cpp
 	 */
 
 
@@ -427,14 +427,14 @@ int DateTimeParser::dayOFWeekToInt(QString dayOfWeek){
 	}
 	return -1;
 }
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeParser.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\DateTimeParser.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeParser.h
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\DateTimeParser.h
 	 */
 
 
@@ -525,14 +525,14 @@ public:
 	bool extractDate(QString &input, QDate &date);
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeParser.h
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\DateTimeParser.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeResolver.cpp
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\DateTimeResolver.cpp
 	 */
 
 
@@ -835,14 +835,14 @@ bool DateTimeResolver::checkDateOrderIsValid(QDate startDate, QTime startTime, Q
 	}
 	return true;
 }
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeResolver.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\DateTimeResolver.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeResolver.h
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\DateTimeResolver.h
 	 */
 
 
@@ -886,14 +886,14 @@ public:
 	bool resolveEdit(const Task* task, AnalysedData &analysedData);
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DateTimeResolver.h
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\DateTimeResolver.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\MultipleIndexParser.cpp
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\MultipleIndexParser.cpp
 	 */
 
 
@@ -968,14 +968,14 @@ std::vector<int> MultipleIndexParser::parseMultipleIndex(QString descString) {
 
 
 
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\MultipleIndexParser.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\MultipleIndexParser.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\MultipleIndexParser.h
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\MultipleIndexParser.h
 	 */
 
 
@@ -1002,14 +1002,14 @@ public:
 	std::vector<int> parseMultipleIndex(QString);
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\MultipleIndexParser.h
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\MultipleIndexParser.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateFunctions.cpp
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\NLPDateFunctions.cpp
 	 */
 
 
@@ -1234,14 +1234,14 @@ void NLPDateFunctions::guessContextualTime(QString descString, QTime &startTime)
 	}
 	return;
 }
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateFunctions.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\NLPDateFunctions.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateFunctions.h
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\NLPDateFunctions.h
 	 */
 
 
@@ -1293,14 +1293,14 @@ public:
 	void guessContextualTime(QString descString, QTime &startTime);
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateFunctions.h
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\NLPDateFunctions.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateParser.cpp
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\NLPDateParser.cpp
 	 */
 
 
@@ -1375,14 +1375,14 @@ void NLPDateParser::extractUnmarkedDateTime(QString &descString, QDate &startDat
 void NLPDateParser::guessContextualTime(QString descString, QTime &startTime){
 	_nlpDateFunctions.guessContextualTime(descString, startTime);
 }
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateParser.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\NLPDateParser.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateParser.h
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\NLPDateParser.h
 	 */
 
 
@@ -1415,14 +1415,14 @@ public:
 	void parseDateTime(QString &descString, QDate &startDate, QTime &startTime, QDate &endDate, QTime &endTime, bool &dateTimeIsUnlablled, int &dayOfWeek);
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPDateParser.h
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\NLPDateParser.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPSentenceParser.cpp
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\NLPSentenceParser.cpp
 	 */
 
 
@@ -1520,14 +1520,14 @@ std::vector<int> NLPSentenceParser::parseIncomplete(const std::vector<Task*> &_d
 	}
 	return indexList;
 }
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPSentenceParser.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\NLPSentenceParser.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPSentenceParser.h
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\NLPSentenceParser.h
 	 */
 
 
@@ -1566,21 +1566,21 @@ public:
 	std::vector<int> parseSentence(QString inputString, const std::vector<Task*> &_displayList);
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\NLPSentenceParser.h
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\NLPSentenceParser.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
+	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\unittest\main.cpp
 	 */
 
-		//Parser Unit Tests
-		//Tests ability to ignore non-valid keywords (i.e. the "from" and "to" in this test case)
-		//Tests ability to recognise "today"
-		//Tests ability to trim whitespaces from the start and end of descriptions
-		//Tests ability to recognise that the date has a start/end date labelled
+		////Parser Unit Tests
+		////Tests ability to ignore non-valid keywords (i.e. the "from" and "to" in this test case)
+		////Tests ability to recognise "today"
+		////Tests ability to trim whitespaces from the start and end of descriptions
+		////Tests ability to recognise that the date has a start/end date labelled
 		void addSingleStartTime() {
 			Parser parser;
 			AnalysedData expectedOutput;
@@ -1598,10 +1598,10 @@ public:
 			QVERIFY(output == expectedOutput);
 		}
 
-		//Tests ability to ignore non-date terms (i.e. on 10th street)
-		//Tests ability to take in worded months
-		//Tests ability to take in start time, start date, end time, end date
-		//Tests ability to auto-complete the year when not given
+		////Tests ability to ignore non-date terms (i.e. on 10th street)
+		////Tests ability to take in worded months
+		////Tests ability to take in start time, start date, end time, end date
+		////Tests ability to auto-complete the year when not given
 		void addStartAndEnd() {
 			Parser parser;
 			AnalysedData expectedOutput;
@@ -1645,10 +1645,10 @@ public:
 			QVERIFY(output == expectedOutput);
 		}
 
-		//Tests ability to parse a sentence with no valid date or time
-		//Tests ability to extract a quoted sentence and make it the description
-		//Tests ability to treat nested quotes as part of the larger quoted sentence
-		//Tests ability to read the index to be edited, in the case with quotes
+		////Tests ability to parse a sentence with no valid date or time
+		////Tests ability to extract a quoted sentence and make it the description
+		////Tests ability to treat nested quotes as part of the larger quoted sentence
+		////Tests ability to read the index to be edited, in the case with quotes
 		void editWithQuotes() {
 			Parser parser;
 			AnalysedData expectedOutput;
@@ -1685,7 +1685,7 @@ public:
 		}
 		// Unit Test END
 
-	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\unittest\main.cpp
 
 
 
