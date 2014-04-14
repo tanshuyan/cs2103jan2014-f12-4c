@@ -18,7 +18,7 @@ class DisplayOutput{
 private:
 	std::string intToString(int userInput);
 
-	static const int MAX_SIZE = 255;
+	static const int MAX_SIZE = 10000;
 	char buffer[MAX_SIZE];
 
 	std::string _feedback;
