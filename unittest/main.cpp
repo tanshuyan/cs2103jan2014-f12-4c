@@ -78,12 +78,12 @@ private:
 			QVERIFY(display.getDisplayStatus() == expected);
 		}		
 
-		////@author A0097286M
-		////Parser Unit Tests
-		////Tests ability to ignore non-valid keywords (i.e. the "from" and "to" in this test case)
-		////Tests ability to recognise "today"
-		////Tests ability to trim whitespaces from the start and end of descriptions
-		////Tests ability to recognise that the date has a start/end date labelled
+		//@author A0097286M
+		//Parser Unit Tests
+		//Tests ability to ignore non-valid keywords (i.e. the "from" and "to" in this test case)
+		//Tests ability to recognise "today"
+		//Tests ability to trim whitespaces from the start and end of descriptions
+		//Tests ability to recognise that the date has a start/end date labelled
 		void addSingleStartTime() {
 			Parser parser;
 			AnalysedData expectedOutput;
@@ -101,10 +101,10 @@ private:
 			QVERIFY(output == expectedOutput);
 		}
 
-		////Tests ability to ignore non-date terms (i.e. on 10th street)
-		////Tests ability to take in worded months
-		////Tests ability to take in start time, start date, end time, end date
-		////Tests ability to auto-complete the year when not given
+		//Tests ability to ignore non-date terms (i.e. on 10th street)
+		//Tests ability to take in worded months
+		//Tests ability to take in start time, start date, end time, end date
+		//Tests ability to auto-complete the year when not given
 		void addStartAndEnd() {
 			Parser parser;
 			AnalysedData expectedOutput;
@@ -148,10 +148,10 @@ private:
 			QVERIFY(output == expectedOutput);
 		}
 
-		////Tests ability to parse a sentence with no valid date or time
-		////Tests ability to extract a quoted sentence and make it the description
-		////Tests ability to treat nested quotes as part of the larger quoted sentence
-		////Tests ability to read the index to be edited, in the case with quotes
+		//Tests ability to parse a sentence with no valid date or time
+		//Tests ability to extract a quoted sentence and make it the description
+		//Tests ability to treat nested quotes as part of the larger quoted sentence
+		//Tests ability to read the index to be edited, in the case with quotes
 		void editWithQuotes() {
 			Parser parser;
 			AnalysedData expectedOutput;
@@ -244,9 +244,9 @@ private:
 			displayOutput = logic.executeUserInput("delete tasks contain \"homework\"");
 		}
 				
-		//// completeIncompleteTest tests the functionality of multiple incomplete and complete 
-		//// completeIncompleteTest tests the functionality of resolveAdd to auto fill in time when user doesnt specify
-		//// completeIncompleteTest tests the functionality to delete multiple indexes
+		// completeIncompleteTest tests the functionality of multiple incomplete and complete 
+		// completeIncompleteTest tests the functionality of resolveAdd to auto fill in time when user doesnt specify
+		// completeIncompleteTest tests the functionality to delete multiple indexes
 		void completeIncompleteTest() {
 			Logic logic;
 			DisplayOutput displayOutput;
@@ -267,11 +267,11 @@ private:
 			QVERIFY(output[0] == expectedOutput3);
 			displayOutput = logic.executeUserInput("delete 1 to 50");
 		}
-		//// editDeleteTest tests the functionality of shifting the duration of timed tasks (using "on")
-		//// editDeleteTest tests the functionality of editing end dates and start dates
-		//// editDeleteTest tests the functionality of delete incomplete
-		//// editDeleteTest tests the sorting algo in ranking the tasks 
 
+		// editDeleteTest tests the functionality of shifting the duration of timed tasks (using "on")
+		// editDeleteTest tests the functionality of editing end dates and start dates
+		// editDeleteTest tests the functionality of delete incomplete
+		// editDeleteTest tests the sorting algo in ranking the tasks 
 		void editDeleteTest() {
 			Logic logic;
 			DisplayOutput displayOutput;

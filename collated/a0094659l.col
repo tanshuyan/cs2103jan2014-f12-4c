@@ -3,7 +3,7 @@
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\DisplayOutput.cpp
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DisplayOutput.cpp
 	 */
 
 
@@ -222,14 +222,14 @@ std::string DisplayOutput::unableToConvertFeedback(){
 	sprintf_s(buffer, Message::MSG_UNABLE_TO_CONVERT.c_str());
 	return buffer;
 }
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\DisplayOutput.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DisplayOutput.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\DisplayOutput.h
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DisplayOutput.h
 	 */
 
 
@@ -306,14 +306,14 @@ public:
 	std::string unableToConvertFeedback();
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\DisplayOutput.h
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\DisplayOutput.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\LogicParser.cpp
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\LogicParser.cpp
 	 */
 
 
@@ -329,14 +329,14 @@ AnalysedData LogicParser::parse(std::string userInput, const std::vector<Task*> 
 	analysedData = _parser.parse(userInput, _displayList);
 	return analysedData;
 }
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\LogicParser.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\LogicParser.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\LogicParser.h
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\LogicParser.h
 	 */
 
 
@@ -358,14 +358,14 @@ public:
 	AnalysedData parse(std::string userInput, const std::vector<Task*> &_displayList);
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\LogicParser.h
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\LogicParser.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Message.cpp
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Message.cpp
 	 */
 
 
@@ -426,14 +426,14 @@ const std::string Message::STATUS_ONGOING = "Ongoing";
 const std::string Message::STATUS_COMPLETE = "Complete"; 
 const std::string Message::STATUS_INCOMPLETE = "Incomplete";
 
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Message.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Message.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Message.h
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Message.h
 	 */
 
 
@@ -499,14 +499,14 @@ public:
 	static const std::string STATUS_INCOMPLETE;
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Message.h
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Message.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Task.h
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Task.h
 	 */
 
 
@@ -545,14 +545,14 @@ public:
 
 #endif
 
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\Task.h
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\Task.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskDeadline.cpp
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskDeadline.cpp
 	 */
 
 
@@ -669,14 +669,14 @@ void TaskDeadline::stringToTask(std::string content) {
 	setTask(status, taskDesc, deadline);
 }
 
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskDeadline.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskDeadline.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskDeadline.h
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskDeadline.h
 	 */
 
 
@@ -729,14 +729,14 @@ public:
 };
 #endif
 
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskDeadline.h
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskDeadline.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskFloat.cpp
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFloat.cpp
 	 */
 
 
@@ -829,14 +829,14 @@ void TaskFloat::stringToTask(std::string content) {
 	}
 	setTask(status, taskDesc);
 }
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskFloat.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFloat.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskFloat.h
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFloat.h
 	 */
 
 
@@ -888,14 +888,14 @@ public:
 };
 #endif
 
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskFloat.h
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskFloat.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskStorage.cpp
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskStorage.cpp
 	 */
 
 
@@ -974,14 +974,14 @@ void TaskStorage::loadFile(std::vector<Task*>& taskList) {
 	logStorage.saveLog();
 	_fileInput.close();
 }
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskStorage.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskStorage.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskStorage.h
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskStorage.h
 	 */
 
 
@@ -1017,14 +1017,14 @@ public:
 	void loadFile(std::vector<Task*> &taskList);
 };
 #endif
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskStorage.h
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskStorage.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskTimed.cpp
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskTimed.cpp
 	 */
 
 
@@ -1158,14 +1158,14 @@ void TaskTimed::stringToTask(std::string content) {
 	setTask(status, taskDesc, startDateTime, endDateTime);
 }
 
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskTimed.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskTimed.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskTimed.h
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskTimed.h
 	 */
 
 
@@ -1218,14 +1218,14 @@ public:
 #endif
 
 
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\CalenizerLib\TaskTimed.h
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\CalenizerLib\TaskTimed.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\unittest\main.cpp
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
 	 */
 
 
@@ -1254,14 +1254,14 @@ private:
 	private slots:
 
 		// Unit Test START
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\unittest\main.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Desmond\Desktop\QtCalenizer\unittest\main.cpp
+	 * origin: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
 	 */
 
 		// constructDeadlineTask tests the functionality of storage as well as the constructor of a deadline task
@@ -1316,7 +1316,7 @@ private:
 			QVERIFY(display.getDisplayStatus() == expected);
 		}		
 
-	// End of segment: C:\Users\Desmond\Desktop\QtCalenizer\unittest\main.cpp
+	// End of segment: C:\Users\Desmond\Desktop\QTCalenizer\unittest\main.cpp
 
 
 
