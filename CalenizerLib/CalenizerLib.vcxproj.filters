@@ -93,77 +93,77 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Task.h">
+    <CustomBuild Include="AnalysedData.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskFloat.h">
+    </CustomBuild>
+    <CustomBuild Include="Comparator.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskDeadline.h">
+    </CustomBuild>
+    <CustomBuild Include="DateTime.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskTimed.h">
+    </CustomBuild>
+    <CustomBuild Include="DateTimeParser.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic.h">
+    </CustomBuild>
+    <CustomBuild Include="DateTimeResolver.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskFilter.h">
+    </CustomBuild>
+    <CustomBuild Include="DisplayOutput.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="History.h">
+    </CustomBuild>
+    <CustomBuild Include="Exception.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskStorage.h">
+    </CustomBuild>
+    <CustomBuild Include="Message.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Parser.h">
+    </CustomBuild>
+    <CustomBuild Include="NLPSentenceParser.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DateTime.h">
+    </CustomBuild>
+    <CustomBuild Include="History.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Logger.h">
+    </CustomBuild>
+    <CustomBuild Include="Logger.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DateTimeParser.h">
+    </CustomBuild>
+    <CustomBuild Include="Logic.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MultipleIndexParser.h">
+    </CustomBuild>
+    <CustomBuild Include="LogicParser.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AnalysedData.h">
+    </CustomBuild>
+    <CustomBuild Include="MultipleIndexParser.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DisplayOutput.h">
+    </CustomBuild>
+    <CustomBuild Include="NLPDateFunctions.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Comparator.h">
+    </CustomBuild>
+    <CustomBuild Include="NLPDateParser.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DateTimeResolver.h">
+    </CustomBuild>
+    <CustomBuild Include="Parser.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskEditor.h">
+    </CustomBuild>
+    <CustomBuild Include="Task.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LogicParser.h">
+    </CustomBuild>
+    <CustomBuild Include="TaskDeadline.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Exception.h">
+    </CustomBuild>
+    <CustomBuild Include="TaskEditor.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NLPSentenceParser.h">
+    </CustomBuild>
+    <CustomBuild Include="TaskFilter.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NLPDateParser.h">
+    </CustomBuild>
+    <CustomBuild Include="TaskFloat.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NLPDateFunctions.h">
+    </CustomBuild>
+    <CustomBuild Include="TaskStorage.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Message.h">
+    </CustomBuild>
+    <CustomBuild Include="TaskTimed.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
+    </CustomBuild>
   </ItemGroup>
 </Project>
