@@ -129,21 +129,19 @@ private:
 		//Tests ability to take in a fully specified date in slash format
 		//Tests ability to recognise "at 8" as 8am
 		//Tests ability to recognise date as an unlabelled date (it is not clearly marked as a start or end date)
-		//Tests ability to read the index to be edited
-		void editSlashFormat() {
+		void addSlashFormat() {
 			Parser parser;
 			AnalysedData expectedOutput;
 			//test input
-			std::string testString = "12 event on 4/12/2015 at 8";
-			AnalysedData output = parser.editCMD(testString);
+			std::string testString = "event on 4/12/2015 at 8";
+			AnalysedData output = parser.addCMD(testString);
 			//expected output
-			expectedOutput.setCommand("edit");
+			expectedOutput.setCommand("add");
 			expectedOutput.setTaskDesc("event");
 			QDate startDate(2015,12,4);
 			expectedOutput.setStartDate(startDate);
 			QTime startTime(8,0);
 			expectedOutput.setStartTime(startTime);
-			expectedOutput.setIndex(12);
 			expectedOutput.setDateTimeUnlabelled(true);
 			QVERIFY(output == expectedOutput);
 		}
@@ -151,18 +149,110 @@ private:
 		//Tests ability to parse a sentence with no valid date or time
 		//Tests ability to extract a quoted sentence and make it the description
 		//Tests ability to treat nested quotes as part of the larger quoted sentence
+		void addWithQuotes() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			//test input
+			std::string testString = "not part of the desc \"meeting on \"imports\" from 8.01 warehouse\" from today NOT";
+			AnalysedData output = parser.addCMD(testString);
+			//expected output
+			expectedOutput.setCommand("add");
+			expectedOutput.setTaskDesc("meeting on \"imports\" from 8.01 warehouse");
+			expectedOutput.setDateTimeUnlabelled(true);
+			QVERIFY(output == expectedOutput);
+		}
+
+		//Tests ability to recognise "tmr"
+		//Tests ability to recognise that the date has a start/end date labelled
+		void editSingleStartTime() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			//test input
+			std::string testString = "1 get homework done  at 12pm tmr";
+			AnalysedData output = parser.editCMD(testString);
+			//expected output
+			expectedOutput.setCommand("edit");
+			expectedOutput.setIndex(1);
+			expectedOutput.setTaskDesc("get homework done");
+			QDate startDate = QDate::currentDate().addDays(1);
+			expectedOutput.setStartDate(startDate);
+			QTime startTime(12,0);
+			expectedOutput.setStartTime(startTime);
+			expectedOutput.setDateTimeUnlabelled(true);
+			QVERIFY(output == expectedOutput);
+		}
+
+		//Tests ability to ignore non-date terms (i.e. on 10th street)
+		//Tests ability to take in worded months
+		//Tests ability to take in start time, start date, end time, end date
+		//Tests ability to auto-complete the year when not given
+		void editStartAndEnd() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			//test input
+			std::string testString = "1 meet boss on 10th story until 18 november 2016 at 02:59 from 10:04 16th november 15";
+			AnalysedData output = parser.editCMD(testString);
+			//expected output
+			expectedOutput.setCommand("edit");
+			expectedOutput.setIndex(1);
+			expectedOutput.setTaskDesc("meet boss on 10th story");
+			QDate startDate(2015,11,16);
+			expectedOutput.setStartDate(startDate);
+			QTime startTime(10,04);
+			expectedOutput.setStartTime(startTime);
+			QDate endDate(2016,11,18);
+			expectedOutput.setEndDate(endDate);
+			QTime endTime(2,59);
+			expectedOutput.setEndTime(endTime);
+			expectedOutput.setDateTimeUnlabelled(false);
+			QVERIFY(output == expectedOutput);
+		}
+		//Tests ability to take in a fully specified date in dash format
+		//Tests ability to recognise "at 3" as 3pm (office hours)
+		//Tests ability to recognise date as an unlabelled date (it is not clearly marked as a start or end date)
+		//Tests ability to read the index to be edited
+		void editSlashFormat() {
+			Parser parser;
+			AnalysedData expectedOutput;
+			//test input
+			std::string testString = "22 from to event at 3 on 12-5-2013";
+			AnalysedData output = parser.editCMD(testString);
+			//expected output
+			expectedOutput.setCommand("edit");
+			expectedOutput.setTaskDesc("from to event");
+			QDate startDate(2013,5,12);
+			expectedOutput.setStartDate(startDate);
+			QTime startTime(15,0);
+			expectedOutput.setStartTime(startTime);
+			expectedOutput.setIndex(22);
+			expectedOutput.setDateTimeUnlabelled(true);
+			QVERIFY(output == expectedOutput);
+		}
+
+		//Tests ability to read time and date when there are quotes
+		//Tests ability to extract a quoted sentence and make it the description
+		//Tests ability to treat nested quotes as part of the larger quoted sentence
 		//Tests ability to read the index to be edited, in the case with quotes
 		void editWithQuotes() {
 			Parser parser;
 			AnalysedData expectedOutput;
 			//test input
-			std::string testString = "1 not part of the desc \"meeting on \"imports\" from 8.01 warehouse\" from today NOT";
+			std::string testString = "9 \"meeting on \"imports\"\" from 1/1 at 5:30 until 2/1 at 5";
 			AnalysedData output = parser.editCMD(testString);
 			//expected output
 			expectedOutput.setCommand("edit");
-			expectedOutput.setTaskDesc("meeting on \"imports\" from 8.01 warehouse");
+			expectedOutput.setTaskDesc("meeting on \"imports\"");
 			expectedOutput.setIndex(1);
-			expectedOutput.setDateTimeUnlabelled(true);
+			QDate startDate(2015,1,1);
+			expectedOutput.setStartDate(startDate);
+			QTime startTime(17,30);
+			expectedOutput.setStartTime(startTime);
+			QDate endDate(2015,1,2);
+			expectedOutput.setEndDate(endDate);
+			QTime endTime(17,00);
+			expectedOutput.setEndTime(endTime);
+			expectedOutput.setIndex(9);
+			expectedOutput.setDateTimeUnlabelled(false);
 			QVERIFY(output == expectedOutput);
 		}
 
@@ -184,6 +274,118 @@ private:
 			index.push_back(10);
 			index.push_back(11);
 			expectedOutput.setIndexVector(index);
+			QVERIFY(output == expectedOutput);
+		}
+
+		//DateTimeResolver tests
+		//Tests ability to correctly deduce missing start time field
+		void resolveAddMissingStartTime() {
+			DateTimeResolver dateTimeResolver;
+			AnalysedData output;
+			AnalysedData expectedOutput;
+			//test input
+			output.setCommand("add");
+			QDate startDate(2015,12,4);
+			output.setStartDate(startDate);
+			QDate endDate(2015,12,5);
+			output.setEndDate(endDate);
+			QTime endTime(6,00);
+			output.setEndTime(endTime);
+			output.setDateTimeUnlabelled(false);
+			dateTimeResolver.resolveAdd(output);
+			//expected output
+			expectedOutput.setCommand("add");
+			QDate exStartDate(2015,12,4);
+			expectedOutput.setStartDate(exStartDate);
+			QTime exStartTime(6,00);
+			expectedOutput.setStartTime(exStartTime);
+			QDate exEndDate(2015,12,5);
+			expectedOutput.setEndDate(exEndDate);
+			QTime exEndTime(6,00);
+			expectedOutput.setEndTime(exEndTime);
+			expectedOutput.setDateTimeUnlabelled(false);
+			QVERIFY(output == expectedOutput);
+		}
+
+		//Tests ability to correctly deduce missing start date field
+		void resolveAddMissingStartDate() {
+			DateTimeResolver dateTimeResolver;
+			AnalysedData output;
+			AnalysedData expectedOutput;
+			//test input
+			output.setCommand("add");
+			QTime startTime(23,59);
+			output.setStartTime(startTime);
+			QDate endDate(2015,12,5);
+			output.setEndDate(endDate);
+			QTime endTime(6,00);
+			output.setEndTime(endTime);
+			output.setDateTimeUnlabelled(false);
+			dateTimeResolver.resolveAdd(output);
+			//expected output
+			expectedOutput.setCommand("add");
+			QDate exStartDate = QDate::currentDate();
+			expectedOutput.setStartDate(exStartDate);
+			QTime exStartTime(23,59);
+			expectedOutput.setStartTime(exStartTime);
+			QDate exEndDate(2015,12,5);
+			expectedOutput.setEndDate(exEndDate);
+			QTime exEndTime(6,00);
+			expectedOutput.setEndTime(exEndTime);
+			expectedOutput.setDateTimeUnlabelled(false);
+			QVERIFY(output == expectedOutput);
+		}
+		
+		//Tests ability to correctly deduce missing time fields
+		void resolveAddMissingTimes() {
+			DateTimeResolver dateTimeResolver;
+			AnalysedData output;
+			AnalysedData expectedOutput;
+			//test input
+			output.setCommand("add");
+			QTime startTime(23,59);
+			output.setStartTime(startTime);
+			QTime endTime(0,0);
+			output.setEndTime(endTime);
+			output.setDateTimeUnlabelled(false);
+			dateTimeResolver.resolveAdd(output);
+			//expected output
+			expectedOutput.setCommand("add");
+			QDate exStartDate = QDate::currentDate();
+			expectedOutput.setStartDate(exStartDate);
+			QTime exStartTime(23,59);
+			expectedOutput.setStartTime(exStartTime);
+			QDate exEndDate = QDate::currentDate().addDays(1);
+			expectedOutput.setEndDate(exEndDate);
+			QTime exEndTime(0,0);
+			expectedOutput.setEndTime(exEndTime);
+			expectedOutput.setDateTimeUnlabelled(false);
+			QVERIFY(output == expectedOutput);
+		}
+		//Tests ability to correctly deduce missing date fields
+		void resolveAddMissingDate() {
+			DateTimeResolver dateTimeResolver;
+			AnalysedData output;
+			AnalysedData expectedOutput;
+			//test input
+			output.setCommand("add");
+			QDate startDate(2015,12,4);
+			output.setStartDate(startDate);
+			QDate endDate(2015,12,5);
+			output.setEndDate(endDate);
+			output.setDateTimeUnlabelled(false);
+			dateTimeResolver.resolveAdd(output);
+			//expected output
+			expectedOutput.setCommand("add");
+			QDate exStartDate(2015,12,4);
+			expectedOutput.setStartDate(exStartDate);
+			QTime exStartTime(00,00);
+			expectedOutput.setStartTime(exStartTime);
+			QDate exEndDate(2015,12,5);
+			expectedOutput.setEndDate(exEndDate);
+			QTime exEndTime(23,59);
+			expectedOutput.setEndTime(exEndTime);
+			expectedOutput.setDateTimeUnlabelled(false);
 			QVERIFY(output == expectedOutput);
 		}
 		// Unit Test END
