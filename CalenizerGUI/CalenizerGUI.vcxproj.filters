@@ -61,10 +61,8 @@
     <CustomBuild Include="calenizergui.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="GeneratedFiles\ui_calenizergui.h">
+    <CustomBuild Include="GeneratedFiles\ui_calenizergui.h">
       <Filter>Generated Files</Filter>
-    </ClInclude>
+    </CustomBuild>
   </ItemGroup>
 </Project>
