@@ -329,7 +329,6 @@ bool DateTimeParser::parseShortWeekDays(QDate &date, int &dayOfWeek){
 		testDate = testDate.addDays(1);
 		if(testDate.toString("ddd").toLower() == RX_SHORT_WEEK_DAYS.cap(1).toLower()){
 			dayOfWeek = dayOFWeekToInt(RX_SHORT_WEEK_DAYS.cap(1));
-			dayOfWeek = i;
 			date = testDate;
 			return true;
 		}
@@ -415,6 +414,9 @@ void DateTimeParser::autoCompleteYear(int size, int &year){
 int DateTimeParser::dayOFWeekToInt(QString dayOfWeek){
 	for(int i=1; i<8; i++){
 		if(QDate::longDayName(i).toLower() == dayOfWeek.toLower()){
+			return i;
+		}
+		if(QDate::shortDayName(i).toLower() == dayOfWeek.toLower()){
 			return i;
 		}
 	}
